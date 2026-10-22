@@ -24,7 +24,7 @@
             <form @onsubmit="AddTask" @onsubmit:preventDefault>
                 <label class="sr-only" for="task-title">New task title</label>
                 <div class="add-task">
-                    <input id="task-title" @bind="newTitle" @bind:event="oninput" maxlength="@TaskService.MaxTitleLength" placeholder="What would you like to get done?" aria-describedby="task-error" />
+                    <input id="task-title" @focus="AddTask" @bind="newTitle" @bind:event="oninput" maxlength="@TaskService.MaxTitleLength" placeholder="What would you like to get done?" aria-describedby="task-error" />
                     <button class="primary" type="submit">+ Add task</button>
                 </div>
                 <p id="task-error" class="validation" role="status">@error</p>
