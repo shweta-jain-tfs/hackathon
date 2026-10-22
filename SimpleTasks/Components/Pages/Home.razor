@@ -1,0 +1,89 @@
+@page "/"
+@rendermode InteractiveServer
+@using SimpleTasks.Models
+@using SimpleTasks.Services
+@inject TaskService TaskService
+
+<PageTitle>SimpleTasks · Your daily focus</PageTitle>
+
+<div class="workspace">
+    <header class="brand"><span class="brand-icon" aria-hidden="true">✓</span> SimpleTasks <span class="badge">BLAZOR STARTER</span></header>
+    <main>
+        <section class="intro">
+            <p class="eyebrow">A LITTLE STRUCTURE. MORE FOCUS.</p>
+            <h1>Make room for<br />what matters.</h1>
+            <p class="subtitle">Capture your tasks, take the next step, and enjoy the progress.</p>
+        </section>
+        <section class="summary" aria-label="Task summary">
+            <div><strong>@TaskService.Tasks.Count</strong><span>Total tasks</span></div>
+            <div><strong>@ActiveCount</strong><span>In progress</span></div>
+            <div><strong>@CompletedCount</strong><span>Completed</span></div>
+        </section>
+        <section class="task-panel" aria-labelledby="tasks-heading">
+            <div class="panel-heading"><h2 id="tasks-heading">Your tasks</h2><span>One step at a time</span></div>
+            <form @onsubmit="AddTask" @onsubmit:preventDefault>
+                <label class="sr-only" for="task-title">New task title</label>
+                <div class="add-task">
+                    <input id="task-title" @bind="newTitle" @bind:event="oninput" maxlength="@TaskService.MaxTitleLength" placeholder="What would you like to get done?" aria-describedby="task-error" />
+                    <button class="primary" type="submit">+ Add task</button>
+                </div>
+                <p id="task-error" class="validation" role="status">@error</p>
+            </form>
+            <div class="filters" role="group" aria-label="Filter tasks">
+                @foreach (var filter in Enum.GetValues<TaskFilter>())
+                {
+                    <button type="button" class="@(currentFilter == filter ? "selected" : null)" aria-pressed="@(currentFilter == filter)" @onclick="() => currentFilter = filter">@filter</button>
+                }
+            </div>
+            @if (!VisibleTasks.Any())
+            {
+                <div class="empty-state"><h3>No tasks here</h3><p>Add a task or choose another filter to keep going.</p></div>
+            }
+            else
+            {
+                <ul class="task-list">
+                    @foreach (var task in VisibleTasks)
+                    {
+                        <li @key="task.Id" class="@(task.IsCompleted ? "completed" : null)">
+                            <label class="task-label">
+                                <input type="checkbox" checked="@task.IsCompleted" @onchange="() => TaskService.Toggle(task.Id)" />
+                                <span>@task.Title</span>
+                            </label>
+                            <button type="button" class="delete" aria-label="@($"Delete task: {task.Title}")" @onclick="() => TaskService.Delete(task.Id)">Delete</button>
+                        </li>
+                    }
+                </ul>
+            }
+            <p class="remaining" role="status">@ActiveCount task@(ActiveCount == 1 ? "" : "s") left to do. You've got this.</p>
+        </section>
+        <footer>Built with Blazor &amp; .NET 10 <span>Session-only demo · Tasks reset on refresh</span></footer>
+    </main>
+</div>
+
+@code {
+    private string newTitle = string.Empty;
+    private string? error;
+    private TaskFilter currentFilter;
+    private int ActiveCount => TaskService.Tasks.Count(task => !task.IsCompleted);
+    private int CompletedCount => TaskService.Tasks.Count(task => task.IsCompleted);
+    private IEnumerable<TaskItem> VisibleTasks => TaskService.Tasks.Where(task => currentFilter switch
+    {
+        TaskFilter.Active => !task.IsCompleted,
+        TaskFilter.Completed => task.IsCompleted,
+        _ => true
+    });
+
+    private void AddTask()
+    {
+        if (!TaskService.Add(newTitle))
+        {
+            error = $"Enter a task between 1 and {TaskService.MaxTitleLength} characters.";
+            return;
+        }
+        newTitle = string.Empty;
+        error = null;
+        currentFilter = TaskFilter.All;
+    }
+
+    private enum TaskFilter { All, Active, Completed }
+}
