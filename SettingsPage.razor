@@ -1,0 +1,445 @@
+@layout SettingsLayout
+@attribute [Route(PageRoute.SubSettings)]
+@attribute [Authorize]
+@inherits ComponentWithClientScriptBase
+
+@using Pharos.Client.App.Settings.ViewModels
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.FormElements.RadioButton
+
+<PhNavigationLock Modified="@(Selected?.IsModified == true)"
+                  OnSave="Save" IsValid="@(Selected?.IsValid == true)"
+                  ReloadPageRouteMap="ReloadPageRouteMap"
+                  InvalidEntryPrompt="ShowSaveSettingsErrorDialog"
+                  DiscardChanges="DiscardChanges" />
+
+<SectionContent SectionName="page-header">
+    @if (ShowBreadcrumbs)
+    {
+        <Breadcrumb Items="@Items" />
+    }
+    @if (Selected != null)
+    {
+        <div class="flex items-center gap-md">
+            <PhButton Disabled="@(_isSaving || Selected.IsModified == false)" OnClick="() => DiscardChanges()">@Loc["Settings_Discard"]</PhButton>
+            <PhButton Type="ButtonType.Primary" Disabled="@(_isSaving || Selected.IsModified == false)" OnClick="() => Save()">@Loc["Settings_Save"]</PhButton>
+        </div>
+    }
+</SectionContent>
+
+<div class="@SettingsPageCssClass">
+    @if (_isSaving)
+    {
+        <div class="ph-settings-page__saving-overlay">
+            <PhLoaderContent IsLoading="true" />
+        </div>
+    }
+
+    <div class="ph-settings-page__scroll-area">
+        <div class="ph-settings-page__content">
+        
+            <PhStack>
+            @* A page *@
+            @if (Selected != null)
+            {
+                @*Split the children into the general settings and grouped settings*@
+                var generalSettings = new List<SettingsViewModelBase>();
+                var settings = new List<SettingsViewModelBase>();
+                @foreach (var setting in Selected.Items)
+                {
+                    if (setting is PageViewModel or OptionViewModelBase)
+                    {
+                        generalSettings.Add(setting);
+                    }
+                    else
+                    {
+                        settings.Add(setting);
+                    }
+                }
+                @if (generalSettings.Any())
+                {
+                    <PhSettingsGroup TItem="SettingsViewModelBase"
+                                     IsDependencyEnabled="true"
+                                     Id="@Selected.Key"
+                                     Label="@Selected.Header"
+                                     Items="@generalSettings"
+                                     ResetToDefault="() => ResetToDefault(generalSettings)"
+                                     CreateItem="@(item => CreateItem(item))" />
+                }
+                @*Create the settings for grouped settings*@
+                @foreach (var setting in settings)
+                {
+                    @CreateItem(setting)
+                }
+            }
+            </PhStack>
+        </div>
+    </div>
+</div>
+
+@code
+{
+    public RenderFragment CreateItem(SettingsViewModelBase viewModel, string? groupName = null)
+    {
+        switch (viewModel)
+        {
+            case { Model: { ShowOnlyInRndMode: true } } when !_isRndMode:
+                return __builder => { };
+
+            case GroupViewModel groupViewModel:
+                return __builder =>
+                {
+                    <PhSettingsGroup TItem="SettingsViewModelBase"
+                                     IsDependencyEnabled="@(groupViewModel.IsDependencyEnabled)"
+                                     Id="@groupViewModel.Key"
+                                     Label="@groupViewModel.Label"
+                                     Items="@groupViewModel.Items"
+                                     ResetToDefault="() => ResetToDefault(groupViewModel.Items)"
+                                     CreateItem="@(item => CreateItem(item, groupViewModel.Label))" />
+                };
+
+            case OptionViewModelBase { Model: Option { IsHidden: true } }:
+                return __builder => { };
+
+            case OptionViewModelBase optionViewModelBase:
+                return CreateOption(optionViewModelBase);
+
+            case PageViewModel pageViewModel:
+                return __builder =>
+                {
+                    <div @attributes="GetDivAttributes(pageViewModel)">
+                        <PhHrefLink 
+                            Disabled=@(InputAttributeDisabled(pageViewModel))
+                            OnClick="() => GoToSubSettings(pageViewModel.EncodedUrl)" 
+                            LinkSize="LinkSize.Body1">@pageViewModel.Label
+                        </PhHrefLink>
+                    </div>
+                };
+
+            case PageListViewModel pageListViewModel:
+                return __builder =>
+                {
+                    <div>
+                    <PhDockedButtonRow>
+                        <ChildContent>
+
+                            @if (pageListViewModel?.Headers is not null)
+                            {
+                                var isInGroup = !string.IsNullOrEmpty(groupName);
+                                var rowType = isInGroup ? RowTypeEnum.LinesBetweenRows : RowTypeEnum.ZebraStripes;
+                                <PhDataGrid @ref="_phDataGrid"
+                                            @key="pageListViewModel.Key"
+                                            StateID="@pageListViewModel.Key"
+                                            SelectionType="@(pageListViewModel.IsProviderManaged ? SelectionTypeEnum.Off : SelectionTypeEnum.MultiSelectWithSelectAll)"
+                                            TGridItem="TableRowViewModel"
+                                            Items="pageListViewModel.VisibleRows"
+                                            RowType="@rowType"
+                                            OnSelectedItemsChanged="pageListViewModel.SelectedItemsChanged">
+                                    <Columns>
+
+                                        @foreach (var currentKey in pageListViewModel.Headers)
+                                        {
+                                            var key = currentKey;
+                                            <Column Title="@currentKey" TGridItem="TableRowViewModel" TProp="string">
+                                                @{
+                                                    var entry = context.GetValue(key);
+                                                }
+                                                @if (pageListViewModel.IsProviderManaged && entry.Model is ChildPageItem)
+                                                {
+                                                    <PhHrefLink href="@($"{PageRoute.Settings}/{context.EncodedUrl}")">@entry.Value</PhHrefLink>
+                                                }
+                                                else if (entry.Model is Option option)
+                                                {
+                                                    if (option.IsNameColumn)
+                                                    {
+                                                            <PhHrefLink href="@($"{PageRoute.Settings}/{context.EncodedUrl}")">@entry.Value</PhHrefLink>
+                                                    }
+                                                    else
+                                                    {
+                                                        if (!option.IsNameColumn)
+                                                        {
+                                                            switch (option.Type)
+                                                            {
+                                                                case OptionType.Integer:
+                                                                case OptionType.Double:
+                                                                case OptionType.String: // don't localize strings
+                                                                case OptionType.Date: // Maybe needs localization as well
+                                                                    <PhLabel>@option.Value</PhLabel>
+                                                                    break;
+                                                                case OptionType.Boolean:
+                                                                    <PhLabel>@GetBooleanLabel(option.Value)</PhLabel>
+                                                                    break;
+                                                                case OptionType.Choice:
+                                                                    <PhLabel>@option.Choices.First(c => c.Value == option.Value).Label</PhLabel>
+                                                                    break;
+                                                                default:
+                                                                    throw new ArgumentOutOfRangeException();
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            </Column>
+                                        }
+                                    </Columns>
+                                </PhDataGrid>
+                            }
+                        </ChildContent>
+                        <Buttons>
+                            @if (!pageListViewModel.IsProviderManaged)
+                            {
+                                @if (pageListViewModel.CopyEnabled)
+                                {
+                                    <PhButton Type="ButtonType.Secondary"
+                                              Disabled="@(!pageListViewModel.CanCopy || IsMaxNumberOfItemsReached(pageListViewModel))"
+                                              OnClick="() => CopyPageListViewModel(pageListViewModel)">@Loc["Copy"]</PhButton>
+                                }
+                                <PhButton Type="ButtonType.Secondary"
+                                          Disabled="@IsMaxNumberOfItemsReached(pageListViewModel)"
+                                          OnClick="() => CreateNewPageListEntry(pageListViewModel)">@Loc["New"]</PhButton>
+                                <PhButton Type="ButtonType.Secondary" Disabled="@(!pageListViewModel.CanDelete)" OnClick="() => DeletePageListEntryButtonClicked(pageListViewModel)">@Loc["Delete"]</PhButton>
+                            }
+                        </Buttons>
+                    </PhDockedButtonRow>
+                    </div>
+                };
+            case ActionButtonViewModel actionButtonViewModel:
+                return __builder =>
+                {
+                    <div @attributes="GetDivAttributes(actionButtonViewModel)">
+                        <PhButton StartIconType="@GetActionButtonIcon(actionButtonViewModel)"
+                                  Type="@GetActionButtonType(actionButtonViewModel)"
+                                  Disabled="@(InputAttributeDisabled(actionButtonViewModel))"
+                                  OnClick="() => ExecuteAction(actionButtonViewModel)">
+                            @actionButtonViewModel.Label
+                        </PhButton>
+
+                        @if (!string.IsNullOrWhiteSpace(actionButtonViewModel.LabelHelpText))
+                        {
+                            <div class="mt-xs t-helper-text text-hint">@actionButtonViewModel.LabelHelpText</div>
+                        }
+                    </div>
+                };
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+
+    public RenderFragment CreateOption(OptionViewModelBase viewModel)
+    {
+        var label = $"{viewModel.Label}{(viewModel.IsRequired ? " *" : "")}";
+        var labelHelpText = $"{viewModel.LabelHelpText}";
+        var errorText = viewModel.ValidationErrors.Any() ? string.Join(Environment.NewLine, viewModel.ValidationErrors) : string.Empty;
+        switch (viewModel)
+        {
+            case BoolViewModel boolViewModel:
+                return __builder =>
+                {
+                    <div @attributes="GetDivAttributes(boolViewModel)">
+                        <PhCheckBox @bind-Value="boolViewModel.Value"
+                                    Label="@label"
+                                    ErrorText="@errorText"
+                                    LabelHelpText="@labelHelpText"
+                                    Disabled=@(InputAttributeDisabled(boolViewModel)) />
+                    </div>
+
+                };
+
+            case PasswordViewModel passwordViewModel:
+                return __builder =>
+                {
+                    <div @attributes="GetDivAttributes(passwordViewModel)">
+                        <PhTextBox @bind-Value="passwordViewModel.Value"
+                                   Label="@label"
+                                   HelpText="@labelHelpText"
+                                   Disabled=@(InputAttributeDisabled(passwordViewModel))
+                                   Error="@(passwordViewModel.ValidationErrors.Any())"
+                                   MaxLength="@passwordViewModel.InputMaxLength"
+                                   Type="TextBoxType.Password"
+                                   @onfocus="() => passwordViewModel.ClearOnFirstInteraction()"
+                                   @onblur="() => passwordViewModel.Validate()"
+                                   ErrorText="@errorText" />
+                    </div>
+                };
+
+            case StringViewModel stringViewModel:
+                return __builder =>
+                {
+                    <div @attributes="GetDivAttributes(stringViewModel)">
+                        <PhTextBox @bind-Value="stringViewModel.Value"
+                                   Label="@label"
+                                   HelpText="@labelHelpText"
+                                   Disabled=@(InputAttributeDisabled(stringViewModel))
+                                   Error="@(stringViewModel.ValidationErrors.Any())"
+                                   MaxLength="@stringViewModel.InputMaxLength"
+                                   Type="TextBoxType.Text"
+                                   @onblur="() => stringViewModel.Validate()"
+                                   ErrorText="@errorText" />
+                    </div>
+                };
+
+            case ChoicesViewModel choicesViewModel:
+                return __builder =>
+                {
+                    <div @attributes="GetDivAttributes(choicesViewModel)">
+                        <PhLabel Text="@label" HelpText="@labelHelpText">
+
+                            @{
+                                var option = choicesViewModel.Model as Option;
+                                var isRadioButton = option?.IsDisplayModeRadioButtons == true;
+                                var count = choicesViewModel.Choices?.Count() ?? 0;
+                                var showRadioButton = isRadioButton && count >= 2 && count <= 4;
+                            }
+
+                            @if (showRadioButton)
+                            {
+                                <PhRadioGroup SelectedValue="choicesViewModel.Value" SelectedValueChanged="EventCallback.Factory.Create<string>(this, v => choicesViewModel.Value = v)" Error="@(choicesViewModel.ValidationErrors.Any())">
+                                    @foreach (var choice in choicesViewModel.Choices ?? Enumerable.Empty<DropDownOption<string>>())
+                                    {
+                                        <PhRadioButton Value="@choice.Value"
+                                                       Label="@choice.Text"
+                                                       Disabled="@(InputAttributeDisabled(choicesViewModel))" />
+                                    }
+                                </PhRadioGroup>
+                            }
+                            else
+                            {
+                                <PhDropdown @key="@(string.IsNullOrEmpty(choicesViewModel.Value))"
+                                            TValue="string"
+                                            @bind-Value="choicesViewModel.Value"
+                                            Options="@choicesViewModel.Choices"
+                                            Disabled="@(InputAttributeDisabled(choicesViewModel))"
+                                            Error="@(choicesViewModel.ValidationErrors.Any())"
+                                            ErrorText="@errorText"
+                                            Size="@(GetDropdownSize(choicesViewModel))" />
+                            }
+                        </PhLabel>
+                    </div>
+                };
+
+            case IntegerViewModel integerViewModel:
+                return __builder =>
+                {
+                    var range = (integerViewModel.MinInt != int.MinValue && integerViewModel.MaxInt != int.MaxValue)
+                             ? $" ({integerViewModel.MinInt} - {integerViewModel.MaxInt}{(string.IsNullOrEmpty(integerViewModel.UnitResourceName) ? ")" : $" {integerViewModel.UnitResourceName})") }"
+                             : string.Empty;
+                    label += range;
+                    <div @attributes="GetDivAttributes(integerViewModel)">
+                        <PhNumberField @bind-Value="integerViewModel.Value"
+                                       Label="@label"
+                                       HelpText="@labelHelpText"
+                                       Disabled="@(InputAttributeDisabled(integerViewModel))"
+                                       Error="@(integerViewModel.ValidationErrors.Any())"
+                                       ErrorText="@errorText"
+                                       AllowNegativeNumbers="true"/>
+                    </div>
+                };
+
+            case DoubleViewModel doubleViewModel:
+                return __builder =>
+                {
+                    var range = (doubleViewModel.MinDouble != double.MinValue && doubleViewModel.MaxDouble != double.MaxValue)
+                             ? $" ({doubleViewModel.MinDouble} - {doubleViewModel.MaxDouble}{(string.IsNullOrEmpty(doubleViewModel.UnitResourceName) ? ")" : $" {doubleViewModel.UnitResourceName})") }"
+                             : string.Empty;
+                    label += range;
+                    <div @attributes="GetDivAttributes(doubleViewModel)">
+                        <PhNumberField @bind-Value="doubleViewModel.Value"
+                                       Label="@label"
+                                       HelpText="@labelHelpText"
+                                       Disabled="@(InputAttributeDisabled(doubleViewModel))"
+                                       Error="@(doubleViewModel.ValidationErrors.Any())"
+                                       ErrorText="@errorText"
+                                       AllowNegativeNumbers="true"/>
+                    </div>
+                };
+
+            case DateViewModel dateViewModel:
+                return __builder =>
+                {
+                    <div @attributes="GetDivAttributes(dateViewModel)">
+                        <PhLabel Text="@label" HelpText="@labelHelpText">
+                            <PhDatePicker @bind-Value="dateViewModel.Value"
+                                          Error="@(dateViewModel.ValidationErrors.Any())"
+                                          ErrorText="@errorText" />
+                        </PhLabel>
+                    </div>
+                };
+
+            case TimeViewModel timeViewModel:
+                return __builder =>
+                {
+                    <div @attributes="GetDivAttributes(timeViewModel)">
+                        <PhLabel Text="@label" HelpText="@labelHelpText">
+                            <PhTimePicker Value="timeViewModel.Value" 
+                                          IncludeNull="false" ValueChanged="time => { if (time.HasValue) { timeViewModel.Value = time.Value; } }" 
+                                          Disabled="@(InputAttributeDisabled(timeViewModel))" 
+                                          Error="@(timeViewModel.ValidationErrors.Any())"
+                                          ErrorText="@errorText" />
+                        </PhLabel>
+                    </div>
+                };
+
+            default: throw new ArgumentOutOfRangeException("no matching type");
+        }
+    }
+
+    /// <summary>
+    /// Gets class and hidden attributes for a div wrapping an input, based on the dependency of the viewmodel
+    /// </summary>
+    /// <param name="viewModelBase"></param>
+    /// <returns></returns>
+    public Dictionary<string, object?> GetDivAttributes(SettingsViewModelBase viewModelBase)
+    {
+        var attributes = new Dictionary<string, object?>();
+
+        if (viewModelBase.Dependency is not null && viewModelBase.Dependency.Any())
+        {
+            if (viewModelBase.Dependency.First().Type == DependencyType.Hide)
+            {
+                attributes["hidden"] = !viewModelBase.IsDependencyEnabled;
+            }
+
+            attributes["class"] = "ph-conditional-indent-content";
+        }
+
+        return attributes;
+    }
+
+    public bool InputAttributeDisabled(SettingsViewModelBase viewModelBase)
+    {
+        if (viewModelBase.Model is Option { IsReadOnly: true })
+        {
+            return true;
+        }
+
+        if (viewModelBase.Dependency is null)
+        {
+            return false;
+        }
+
+        return !viewModelBase.IsDependencyEnabled;
+    }
+
+    private static DropdownSize GetDropdownSize(ChoicesViewModel choicesViewModel)
+    {
+        const int largeInputWidthTextLengthThreshold = 24;
+        const int fitContentTextLengthThreshold = 35;
+
+        var maxOptionTextLength = choicesViewModel.Choices?
+            .Where(c => !string.IsNullOrWhiteSpace(c.Text))
+            .Select(c => c.Text!.Length)
+            .DefaultIfEmpty(0)
+            .Max() ?? 0;
+
+        if (maxOptionTextLength > fitContentTextLengthThreshold)
+        {
+            return DropdownSize.FitContent;
+        }
+
+        if (maxOptionTextLength > largeInputWidthTextLengthThreshold)
+        {
+            return DropdownSize.LargeInputWidth;
+        }
+
+        return DropdownSize.MediumInputWidth;
+    }
+}
