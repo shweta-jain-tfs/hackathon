@@ -1,6 +1,8 @@
 # SimpleTasks review guidance
 
-When reviewing pull requests, use the [code-review skill](skills/code-review/SKILL.md) and read its referenced Markdown checklists.
+When reviewing pull requests, use the code-review skill at
+`.github/skills/code-review/SKILL.md` and read its referenced Markdown files.
+The [code-review skill](skills/code-review/SKILL.md) links to the bundled standards notes, historical review patterns, and security checklist.
 
 Review the changed code and relevant callers. Report actionable regressions with a changed file/line, severity, concrete failure scenario, and suggested fix. Verify suspected issues against current code and avoid speculative or repeated findings.
 
