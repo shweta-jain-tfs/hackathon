@@ -17,8 +17,8 @@ public sealed class TaskService
 
     public bool Add(string? title)
     {
-        var trimmed = title?.Trim();
-        if (string.IsNullOrEmpty(trimmed) || trimmed.Length > MaxTitleLength)
+           var trimmed = title?.Trim() ?? string.Empty;
+        if (string.IsNullOrEmpty(title) || trimmed.Length > MaxTitleLength)
             return false;
         tasks.Add(new TaskItem { Title = trimmed });
         return true;
