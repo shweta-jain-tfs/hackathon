@@ -1,0 +1,98 @@
+name: Formatted Copilot report
+
+on:
+  pull_request_review:
+    types: [submitted]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request number to format
+        required: true
+        type: string
+
+permissions:
+  pull-requests: write
+
+concurrency:
+  group: formatted-copilot-${{ github.event.pull_request.number || inputs.pr_number }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.review.user.login == 'copilot-pull-request-reviewer[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Collect findings and publish formatted comment
+        uses: actions/github-script@v8
+        env:
+          MANUAL_PR: ${{ inputs.pr_number }}
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const pr = Number(context.payload.pull_request?.number || process.env.MANUAL_PR);
+            if (!Number.isSafeInteger(pr) || pr <= 0) {
+              throw new Error('Enter a valid pull request number.');
+            }
+            const bot = 'copilot-pull-request-reviewer[bot]';
+            const reviews = await github.paginate(github.rest.pulls.listReviews, {
+              owner, repo, pull_number: pr, per_page: 100
+            });
+            const review = reviews
+              .filter(r => r.user?.login === bot && r.submitted_at && r.state !== 'PENDING')
+              .sort((a, b) => Date.parse(b.submitted_at) - Date.parse(a.submitted_at) || b.id - a.id)[0];
+            if (!review) throw new Error('No submitted Copilot review exists on this PR.');
+
+            const comments = await github.paginate(github.rest.pulls.listCommentsForReview, {
+              owner, repo, pull_number: pr, review_id: review.id, per_page: 100
+            });
+            const { data: pull } = await github.rest.pulls.get({ owner, repo, pull_number: pr });
+            const marker = '<!-- formatted-copilot-report:v1 -->';
+            const stale = review.commit_id !== pull.head.sha
+              ? '\n**Earlier revision:** this review does not cover the current PR head.\n'
+              : '';
+            const findings = comments.length
+              ? comments.map((c, i) => {
+                  const location = `${c.path}:${c.line ?? c.original_line ?? 'line unavailable'}`;
+                  const excerpt = (c.body || '').slice(0, 2500);
+                  return `### Published comment ${i + 1}\n\n[${location}](${c.html_url})\n\n` +
+                    excerpt.split('\n').map(line => '> ' + line).join('\n') +
+                    (c.body?.length > 2500 ? '\n\nFull text is available at the source link.' : '');
+                }).join('\n\n')
+              : 'No inline comments were published in this review. This does not establish a clean review.';
+            let body = [
+              marker,
+              '# Formatted Copilot review report',
+              `PR #${pr} | Reviewed commit: \`${review.commit_id}\` | [Original review](${review.html_url})`,
+              'This report reorganizes published Copilot output. It does not run another review or verify which references Copilot read.',
+              stale,
+              '## 1. Application practices',
+              '**Status: Unverified.** Published output does not establish full application-practices coverage. See the source findings below.',
+              '## 2. Coding practices',
+              '**Status: Unverified.** No independent standards assessment was performed by this formatter.',
+              '## 3. Risk',
+              '**Status: Partial — published findings collected.** Comments are reproduced here without independently validating or classifying them. Their original priorities and wording are preserved.',
+              findings,
+              '## 4. Past PR comments',
+              '**Status: Unverified.** Skill attribution alone does not prove historical-feedback Markdown was read or applied. This formatter cannot inspect the reviewer session.',
+              '## Coverage and checks',
+              '| Evidence pass | Status | Evidence and limitations |\n| --- | --- | --- |\n| Standards/project patterns | Unverified | Published comments only; no independent source or standards checks |\n| Historical PR feedback | Unverified | No file-read or historical-applicability evidence available |',
+              'No builds, tests, or browser checks were run by this formatter.'
+            ].filter(Boolean).join('\n\n');
+            if (body.length > 60000) {
+              body = body.slice(0, 58000) + '\n\nReport truncated. Read the linked original review for all findings.';
+            }
+            const existing = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number: pr, per_page: 100
+            });
+            const previous = existing.find(c =>
+              c.user?.login === 'github-actions[bot]' && c.body?.startsWith(marker)
+            );
+            if (previous) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: previous.id, body });
+              core.notice(`Updated formatted report: ${previous.html_url}`);
+            } else {
+              const { data } = await github.rest.issues.createComment({ owner, repo, issue_number: pr, body });
+              core.notice(`Published formatted report: ${data.html_url}`);
+            }
