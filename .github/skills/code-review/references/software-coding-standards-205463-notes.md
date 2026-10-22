@@ -51,5 +51,4 @@ Source extracted from: `205463 - Software Coding Standards.pdf` (56 pages).
 
 ## Review Use
 
-When reviewing C# code, treat this file as the standards baseline.
-If a repo-local convention conflicts, call out the conflict explicitly in the finding.
+This is an extracted summary, not the full formal standard or proof that SimpleTasks adopted every rule. Establish applicability from current project requirements and configuration before reporting a violation. Current repository requirements and intentional framework patterns take precedence over imported examples. Record unresolved authority conflicts as coverage limitations rather than automatic findings. Disclose when the full formal standard is unavailable.
