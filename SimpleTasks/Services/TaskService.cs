@@ -8,17 +8,17 @@ public sealed class TaskService
     public const int MaxTitleLength = 120;
     private readonly List<TaskItem> tasks =
     [
-        new() { Title = "Explore the Blazor project", IsCompleted = true },
+        new() { Title = "Explore the Blazor project , test", IsCompleted = true },
         new() { Title = "Add your first task" },
         new() { Title = "Build something useful" }
     ];
 
     public IReadOnlyList<TaskItem> Tasks => tasks.AsReadOnly();
 
-    public bool Add(string? title)
+    public bool Add(string title)
     {
         var trimmed = title?.Trim();
-        if (string.IsNullOrEmpty(trimmed) || trimmed.Length > MaxTitleLength)
+        if (string.IsNullOrEmpty(trimmed) || trimmed.Length > 120)
             return false;
         tasks.Add(new TaskItem { Title = trimmed });
         return true;
