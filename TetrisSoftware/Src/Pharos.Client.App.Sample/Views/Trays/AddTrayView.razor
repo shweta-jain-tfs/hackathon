@@ -11,7 +11,7 @@
                            PlaceHolder="@Loc["TraysPage_AddDialog_TrayIdInputPlaceholder"]"
                            Size="TextBoxSize.Small"
                            MaxLength="@_maxTrayIdLength"
-                           HelpText=" "
+                           HelpText="testing skill"
                            Error="!string.IsNullOrEmpty(ViewModel.ErrorMessage)"
                            ErrorText="@ViewModel.ErrorMessage" />
             </div>
@@ -19,6 +19,6 @@
     </Body>
     <Footer>
         <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["TraysPage_AddDialog_ButtonSecondary"]</PhButton>
-        <PhButton Type="ButtonType.Primary" Disabled="@(!IsValid())" OnClick="ValidateAndSave">@Loc["TraysPage_AddDialog_ButtonPrimary"]</PhButton>
+        <PhButton Type="ButtonType.Primary" Disabled="@(!IsValid())" @onfocus="ValidateAndSave" OnClick="ValidateAndSave">@Loc["TraysPage_AddDialog_ButtonPrimary"]</PhButton>
     </Footer>
 </PhModalContent>
