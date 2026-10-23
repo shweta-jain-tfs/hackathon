@@ -1,0 +1,9 @@
+﻿@using Pharos.Common.Web.Components.DetailsList
+@if (!string.IsNullOrEmpty(Version))
+{
+    <PhDetailsList TextSize="DetailsListTextSize.Body2">
+        <PhDetailsListItem Label="@Loc["ParameterUpdatePackageVersion_Label"]">
+            @Version
+        </PhDetailsListItem>
+    </PhDetailsList>
+}

@@ -1,0 +1,33 @@
+
+.reagent-page {
+    display: flex;
+    flex-direction: row;
+
+    &__reagent-container {
+        display: flex;
+        flex: 10;
+        margin-left: 117px;
+    }
+
+    &__reagent-loader-panel-container {
+        display: flex;
+        margin-left: 39px;
+    }
+
+    &__reagent-drawer-view-container {
+        display: flex;
+        justify-content: center;
+
+        &--expanded {
+            flex: 4;
+            justify-content: flex-start;
+        }
+    }
+
+    &__legend-view-container {
+        display: flex;
+        justify-content: flex-end;
+        flex: 2;
+        margin-top: 57px;
+    }
+}

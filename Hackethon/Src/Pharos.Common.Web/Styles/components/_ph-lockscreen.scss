@@ -1,0 +1,38 @@
+@use "../abstracts/colors";
+@use "../abstracts/scrollbar";
+@use "../abstracts/spacing";
+@use "../abstracts/size";
+@use "../abstracts/typography" as text;
+
+.ph-lockscreen {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: radial-gradient(61.12% 50% at 50% 50%, colors.$lockscreen-gradient-center 10.1%, colors.$lockscreen-gradient-edge 100%);
+    cursor: pointer;
+
+    &__content {
+        gap: spacing.$gap-xl;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: size.$task-card-width;
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding-block: 50px;
+        @include scrollbar.hideScrollbar;
+
+        &--centered {
+            justify-content: center;
+        }
+    }
+
+    &__login-hint {
+        display: grid;
+        grid-auto-flow: column;
+        justify-content: center;
+        align-items: center;
+        gap: spacing.$gap-md;
+        @include text.body1;
+    }
+}

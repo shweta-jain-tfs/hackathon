@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Src\Pharos.Client.App.Search\Pharos.Client.App.Search.csproj" />
+  </ItemGroup>
+
+</Project>

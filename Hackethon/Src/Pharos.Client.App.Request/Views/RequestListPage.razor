@@ -1,0 +1,103 @@
+@using Pharos.Client.Common.App.Auth
+@using Pharos.Client.Common.App.PageRouting
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Common.Web.Components.UploadFile
+@using Pharos.Common.Web.Components.DropdownButton
+@attribute [Route(PageRoute.Requests)]
+@attribute [Authorize]
+
+<PhPage>
+    <PhDockedButtonRow>
+        <ChildContent>
+            @if (_uiSettings != null)
+            {
+                <PhDataGrid @ref="_phDataGrid"
+                            TableTitle="@Loc["RequestListPage_Title"]"
+                            HeaderSize="@HeaderSizeEnum.WholePage"
+                            StateID="requestlist"
+                            TGridItem="RequestSummary"
+                            DefaultSortColumn="SampleCollectionDate"
+                            DefaultSortDirection="SortDirection.Descending"
+                            ItemsProvider="ViewModel.ProvideGridItems"
+                            SelectionType="@(HasManageTestOrdersPermission ? SelectionTypeEnum.MultiSelectWithSelectAll : SelectionTypeEnum.Off)"
+                            OnSelectedItemsChanged="SelectedItemsChanged">
+                    <Columns>
+                        <Column Title="@Loc["RequestListPage_Col_SampleId"]" Property="@(x => x.SampleId)" QuickFilter="true" FilterTitle="@Loc["RequestListPage_Filter"]">
+                            <PhHrefLink Href="@($"{PageRoute.SampleDetails.Default}/{context?.Id}")">@context?.SampleIdDisplay</PhHrefLink>
+                        </Column>
+                        <Column Title="@Loc["RequestListPage_Col_SampleCollectionDate"]" Property="@(x => x.SampleCollectionDate)" QuickFilter="true" Format="@FormatStrings.ShortDate" Sortable="true"/>
+                        <Column Title="@Loc["RequestListPage_Col_LastTray"]" Property="@(x => x.LastTray)">
+                            @if (context?.HasMultipleTubes == true)
+                            {
+                                <PhHrefLink Href="@GetRequestDetailsTubesHref(context.Id)">
+                                    @Loc["RequestListPage_LastTray_MultipleTubes"]
+                                </PhHrefLink>
+                            }
+                            else if (context is { LastTray: not null, LastTrayId: not null, LastTrayTubePosition: > 0 })
+                            {
+                                <PhHrefLink Href="@PageRoute.Trays.SelectedPosition(context.LastTrayId, context.LastTrayTubePosition.Value)">
+                                    @context.LastTray
+                                </PhHrefLink>
+                            }
+                            else
+                            {
+                                @context?.LastTray
+                            }
+                        </Column>
+                        <Column Title="@Loc["RequestListPage_Col_InstrumentName"]" Property="@(x => x.InstrumentName)"/>
+                        <Column Property="x => x.State" Title="@Loc["RequestListPage_Col_State"]" QuickFilter="true" EnumDisplayNameSelector="@(state => state.ToLocalizedString("Request_Enum"))">
+                            <PhStatus Status="@GetStatusType(context.State)" Size="StatusSize.Xs" Text="@context.State.ToLocalizedString("Request_Enum")"></PhStatus>
+                        </Column>
+                        <Column Title="@Loc["RequestListPage_Col_Issue"]" Property="@(x => x.Issues)">
+                            @if (context.Issues.Count == 1)
+                            {
+                                var issue = context.Issues.First();
+
+                                <PhStatus Status="@GetIssueStatusType(issue.Urgency)" Size="StatusSize.Xs" Text="@GetIssueText(issue)"></PhStatus>
+                            }
+                            else if (context.Issues.Count > 1)
+                            {
+                                <PhLabel Text="Multiple issues" />
+                            }
+                        </Column>
+                        <Column Title="@Loc["RequestListPage_Col_RequestorId"]" Property="@(x => x.RequestorId)" HasPermission="@HasRequestorPermission" />
+                        <Column Title="@Loc["RequestListPage_Col_RequestorName"]" Property="@(x => x.RequestorName)" HasPermission="@HasRequestorPermission" />
+                        <Column Title="@Loc["RequestListPage_Col_PatientId"]" Property="@(x => x.PatientId)" HasPermission="@HasPatientPermission" />
+                        <Column Title="@Loc["RequestListPage_Col_PatientName"]" Property="@(x => x.PatientName)" HasPermission="@HasPatientPermission" />
+                        
+                        @* TODO Column will be replaced by external filter when that has been implemented *@
+                        <Column Title="@Loc["RequestListPage_Col_Issue"]" Property="@(x => x.IssueTemp)" Visible="false" QuickFilter="true" EnumDisplayNameSelector="@(issue => issue.ToLocalizedString())" />
+                        <Column Title="@Loc["RequestListPage_Col_OnHold"]" Property="@(x => x.HasOnHoldTests)" Visible="false" QuickFilter="true" QuickFilterDefault="false" />
+                    </Columns>
+                </PhDataGrid>
+            }
+        </ChildContent>
+        <Buttons>
+            <PhAuthorize Permission="@Permissions.ManageTestOrders">
+                <PhButton Type="ButtonType.Secondary" OnClick="AddRequest">@Loc["RequestListPage_AddNewRequest"]</PhButton>
+                <PhButton Type="ButtonType.Secondary" Disabled="!HasSelectedItems" OnClick="DeleteRequestsOrOpenDialog">@Loc["RequestListPage_DeleteRequests"]</PhButton>
+                <PhDropdownButton Text="@Loc["RequestPage_MoreButton"]" DropdownButtonType="DropdownButtonType.Secondary">
+                    @if (_canImportRequests)
+                    {
+                        <PhDropdownButtonItem Text="@Loc["RequestsPage_Import_Requests"]" OnClick="ImportPackage_OpenFileDialog" />
+                    }
+                    @if (_uiSettings != null && _uiSettings.RequestSettings.ManualQueryForAll)
+                    {
+                        <PhDropdownButtonItem Text="@Loc["RequestsPage_ImportLIS"]" OnClick="QueryLisAll"/>
+                    }
+                    @if (_uiSettings != null && _uiSettings.RequestSettings.ManualRefreshExistingRequests)
+                    {
+                        <PhDropdownButtonItem Text="@Loc["RequestsPage_RefreshLIS"]" OnClick="QueryLisSelected" Disabled="!HasSelectedItems"/>
+                    }
+                    @if (_uiSettings != null && _uiSettings.RequestSettings.ManualExportRequests)
+                    {
+                        <PhDropdownButtonItem Text="@Loc["RequestsPage_ExportLIS"]" OnClick="ExportToLis" Disabled="!HasSelectedItems"/>
+                    }
+                    <PhDropdownButtonItem Text="@Loc["RequestsPage_ResetButton"]" OnClick="TestsResetButtonClicked" Disabled="!HasSelectedItems"/>
+                </PhDropdownButton>
+            </PhAuthorize>
+        </Buttons>
+    </PhDockedButtonRow>
+
+    <PhUploadFiles @ref="_uploadFiles" Accept=".csv" OnFileUploaded="ImportPackage_UploadFile" />
+</PhPage>

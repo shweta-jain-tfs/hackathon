@@ -1,0 +1,27 @@
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+
+.liquid-position-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 808px;
+
+    &__bottle-position {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 56px;
+        height: 56px;
+        font-weight: text.$font-bold;
+        @include text.body1;
+
+        &--inuse {
+            color: colors.$text-primary;
+            border: 4px solid colors.$border-primary;
+            @include rounded.rounded-full;
+        }
+    }
+}

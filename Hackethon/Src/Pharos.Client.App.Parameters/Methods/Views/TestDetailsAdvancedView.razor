@@ -1,0 +1,37 @@
+﻿<PhStack Gap="StackGap.Lg">
+    <h3 class="t-h3">@Loc["TestDetailsAdvancedView_Header"]</h3>
+    <span>
+        <PhLabel Text="@Loc["TestDetailsAdvancedView_DescriptionFirstLabel"]"
+                 Size="LabelSize.Body1" />
+        <PhLabel Text="@Loc["TestDetailsAdvancedView_DescriptionSecondLabel"]" Size="LabelSize.Body1" />
+    </span>
+    <PhStack Gap="StackGap.Md">
+        <PhLabel Text="@Loc["TestDetailsAdvancedView_OrderVariantA"]" Size="LabelSize.Body1" />
+        <div class="ph-methods-page__test-advanced-tab-order-variant">
+            <PhNumberField Size="TextBoxSize.Small"
+                           @bind-Value="@ViewModel.OrderInPriorityGroupA"
+                           Disabled="@IsEditingDisabled"
+                           Label="@Loc["TestDetailsAdvancedView_Priority"]" />
+            <div class="ph-methods-page__test-advanced-tab-order-variant-checkbox">
+                <PhCheckBox Label="@Loc["TestDetailsAdvancedView_PrioritizeAdditionalTests"]"
+                            LabelHelpText="@Loc["TestDetailsAdvancedView_PrioritizeAdditionalTests_HelpText"]"
+                            @bind-Value="@ViewModel.IncludeInPriorityGroupA"
+                            Disabled="@IsEditingDisabled" />
+            </div>
+        </div>
+        <div class="ph-methods-page__test-advanced-tab-divider"></div>
+        <PhLabel Text="@Loc["TestDetailsAdvancedView_OrderVariantB"]" Size="LabelSize.Body1" />
+        <div class="ph-methods-page__test-advanced-tab-order-variant">
+            <PhNumberField Size="TextBoxSize.Small"
+                           @bind-Value="@ViewModel.OrderInPriorityGroupB"
+                           Disabled="@IsEditingDisabled"
+                           Label="@Loc["TestDetailsAdvancedView_Priority"]" />
+            <div class="ph-methods-page__test-advanced-tab-order-variant-checkbox">
+                <PhCheckBox Label="@Loc["TestDetailsAdvancedView_PrioritizeAdditionalTests"]"
+                            LabelHelpText="@Loc["TestDetailsAdvancedView_PrioritizeAdditionalTests_HelpText"]"
+                            @bind-Value="@ViewModel.IncludeInPriorityGroupB"
+                            Disabled="@IsEditingDisabled" />
+            </div>
+        </div>
+    </PhStack>
+</PhStack>

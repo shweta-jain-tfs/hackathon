@@ -1,0 +1,29 @@
+﻿@using Pharos.Common.Web.Components.TrailingEdge
+<div class="@_classNames">
+    @if (HasPageHeader)
+    {
+        <header class="ph-page__header">
+            @PageHeader
+        </header>
+    }
+    @if (HasSidebar)
+    {
+        <aside class="ph-page__sidebar">
+            @Sidebar
+        </aside>
+    }
+    <div class="ph-page__content-area">
+        <div class="ph-page__content">
+            @if (TrailingEdge.HasValue)
+            {
+                <PhTrailingEdge Size="TrailingEdge.Value" Fill>
+                    @ChildContent
+                </PhTrailingEdge>
+            }
+            else
+            {
+                @ChildContent
+            }
+        </div>
+    </div>
+</div>

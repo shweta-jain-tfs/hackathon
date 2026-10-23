@@ -1,0 +1,34 @@
+@using Pharos.Client.Common.Localization
+@using Pharos.Common.Web.Components.Loader
+
+<PhModalContent>
+    <Body>
+        <PhStack>
+            <p>
+                @StatusInfoPrefix<strong>@Loc["TestOrderState_NotStarted"]</strong>@StatusInfoSuffix
+            </p>
+            <ul class="list-disc">
+                <li>@Loc["TestOrderState_Scheduled"]</li>
+                <li>@Loc["TestOrderState_UnableToStart"]</li>
+                <li>@Loc["TestOrderState_Started"]</li> @* TestOrderState_Pipetted is displayed as Processing as well. *@
+                <li>@Loc["TestOrderState_Aborted"]</li>
+            </ul>
+
+            @if (TestsResetCount > 0)
+            {
+                <p>@string.Format(Loc["RequestDetailPage_ResetDialog_Summary"], TestsResetCount, TestsSelectedCount)</p>
+            }
+            else
+            {
+                <div class="flex gap-xs">
+                    <PhIcon IconType="IconType.Warning" Size="IconSize.Lg" Color="IconColor.Warning" />
+                    <span>@Loc["RequestDetailPage_ResetDialog_NoTests"]</span>
+                </div>
+            }
+        </PhStack>
+    </Body>
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => Close(ModalResult.Cancel()))">@Loc["RequestDetailPage_ResetDialogButtonCancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" Disabled="@(TestsResetCount == 0)" OnClick="@(() => Close(ModalResult.Ok()))">@Loc["RequestDetailPage_ResetDialogButtonOk"]</PhButton>
+    </Footer>
+</PhModalContent>

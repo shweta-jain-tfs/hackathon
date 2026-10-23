@@ -1,0 +1,31 @@
+﻿<div class="ph-drawer">
+    @if (!string.IsNullOrWhiteSpace(Name))
+    {
+        <div class="ph-drawer__title">@Name</div>
+    }
+    <div class="ph-drawer__info-container">
+        <div class="@DrawerContainerCss">
+            @ChildContent
+        </div>
+        <div class="ph-drawer__indicator-container">
+            @if (!IsButtonVisible && HasManageSamplePermission)
+            {
+                <div class="ph-drawer__indicator">
+                    <div class="@IndicatorLedCss"></div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="ph-drawer__action-container">
+        <div class="ph-drawer__action-button">
+            @if (!string.IsNullOrEmpty(DoorStateText))
+            {
+                <div class="ph-drawer__state">@DoorStateText</div>
+            }
+            else if (IsButtonVisible && HasManageSamplePermission)
+            {
+                <PhButton @onclick="OnUnlockDrawerClicked">@ActionName</PhButton>
+            }
+        </div>
+    </div>
+</div>

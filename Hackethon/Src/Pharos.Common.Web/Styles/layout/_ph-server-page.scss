@@ -1,0 +1,43 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-server-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-xl;
+        min-width: 610px;
+        max-width: 90vw;
+        min-height: 75vh;
+        @include text.body2;
+    }
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: spacing.$gap-md;
+        text-align: center;
+    }
+
+    &__footer {
+        display: flex;
+        gap: spacing.$gap-lg;
+
+        > .ph-button {
+            flex: 1;
+            min-width: 0;
+        }
+    }
+
+    &__error_message {
+        max-width: 610px;
+        margin-block-start: calc(-1 * #{spacing.$gap-xl} + #{spacing.$gap-xs}); //Making a smaller gap because the error message should be cloase to the textbox
+    }
+}

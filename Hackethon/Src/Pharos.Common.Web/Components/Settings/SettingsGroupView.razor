@@ -1,0 +1,19 @@
+﻿<PhModalContent>
+    <Body>
+        Reset to default settings?
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok()))" ButtonType="ButtonType.Primary">Reset</PhButton>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))" ButtonType="ButtonType.Secondary">Cancel</PhButton>
+    </Footer>
+</PhModalContent>
+
+@code {
+    [CascadingParameter] public ModalInstance Modal { get; set; } = default!;
+
+    private async Task CloseModal(ModalResult result)
+    {
+        await Modal.CloseAsync(result);
+    }
+
+}

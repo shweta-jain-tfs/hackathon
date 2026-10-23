@@ -1,0 +1,67 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+@use "../abstracts/size";
+@use "../abstracts/rounded";
+
+.ph-bottle-drawer-panel {
+    display: flex;
+    flex-direction: column;
+    max-height: 304px;
+    border: 2px solid colors.$drawer-filled-container-background;
+    border-bottom: 2px solid transparent;
+    background-color: colors.$background-secondary;
+    padding: spacing.$gap-sm;
+    gap: spacing.$gap-sm;
+
+    &__close-button {
+        display: flex;
+        justify-content: flex-end;
+        min-height: 40px;
+    }
+
+    &__bottle-wrapper {
+        color: colors.$border-subtle-01;
+    }
+
+    &__details-wrapper {
+        display: flex;
+        gap: spacing.$gap-md;
+    }
+
+    &__details {
+        display: flex;
+        flex: 1;
+        gap: spacing.$gap-md;
+    }
+
+    &__section {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: spacing.$gap-md;
+    }
+
+    &__selected-indicator {
+        position: absolute;
+        top: calc(100% - 50px);
+    }
+
+    &__shape-container {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: spacing.$gap-xs;
+    }
+
+    &__shape-wrapper {
+        display: flex;
+        align-items: center;
+        height: size.$hit-area-md;
+        background-color: colors.$layer-subtle;
+        border-radius: rounded.$rounded-default;
+        padding-left: spacing.$gap-sm;
+        @include text.body1;
+        gap: spacing.$gap-xs;
+    }
+}

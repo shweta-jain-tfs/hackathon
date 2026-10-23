@@ -1,0 +1,51 @@
+@layout ParametersLayout
+@using Pharos.Client.App.Parameters.Layout
+@using Pharos.Client.Common.App.Validation
+@using Pharos.Common.Web.Components.NavigationLock
+@attribute [Route(PageRoute.Parameters.MethodDetails.IdParameter)]
+@attribute [Authorize]
+@inherits DetailsPageBase<Pharos.Client.App.Parameters.Methods.ViewModels.MethodDetailsViewModel, MethodDetails>
+
+@if (DetailViewModel is not null)
+{
+    <PhNavigationLock Modified="@DetailViewModel.IsModified" OnSave="() => SaveChanges(true)" IsValid="@IsValid()"/>
+
+    <SectionContent SectionName="page-header">
+        <Breadcrumb Items="@Breadcrumbs"/>
+        <div class="flex gap-md">
+            <PhButton Disabled="@(!DetailViewModel.IsModified)" OnClick="DiscardChanges">@Loc["Settings_Discard"]</PhButton>
+            <PhButton Type="ButtonType.Primary" Disabled="@(!DetailViewModel.IsModified || !IsValid())" OnClick="() => SaveChanges(false)">@Loc["Settings_Save"]</PhButton>
+        </div>
+    </SectionContent>
+
+    <PhValidationContext @ref="_validation" OnValidationStateChanged="OnValidationContextStateChanged">
+        <PhTabControl>
+            <PhTabPage TabId="@((int)TabItems.General)" Text="@Loc["MethodDetailsTab_General"]" HasValidationError="@TabHasError(TabItems.General.ToString())">
+                <PhValidationSection Model="@DetailViewModel" SectionName="@TabItems.General.ToString()">
+                    <MethodDetailsView ViewModel="@DetailViewModel" />
+                </PhValidationSection>
+            </PhTabPage>
+            <PhTabPage TabId="@((int)TabItems.Test)" Text="@Loc["MethodDetailsTab_Test"]" HideTrailingEdge="true">
+                <MethodTestsView MethodId="@DetailViewModel.Model.Id" />
+            </PhTabPage>
+            <PhTabPage TabId="@((int)TabItems.Calibrators)" Text="@Loc["MethodDetailsTab_Calibrators"]" HideTrailingEdge="true" HasValidationError="@TabHasError(TabItems.Calibrators.ToString())">
+                <PhValidationSection Model="@DetailViewModel.CalibratorCurve" SectionName="@TabItems.Calibrators.ToString()">
+                    <MethodCalibratorsView
+                        ViewModel="@DetailViewModel.CalibratorCurve"
+                        AllowMonthlyCalibration="@DetailViewModel.Model.AllowMonthlyCalibration" />
+                </PhValidationSection>
+            </PhTabPage>
+            <PhTabPage TabId="@((int)TabItems.CurveControl)" Text="@Loc["MethodDetailsTab_CurveControl"]" HideTrailingEdge="true">
+                <MethodCurveControlsView ViewModel="@DetailViewModel" />
+            </PhTabPage>
+            <PhTabPage TabId="@((int)TabItems.Report)" Text="@Loc["MethodDetailsTab_Report"]" HasValidationError="@TabHasError(TabItems.Report.ToString())">
+                <PhValidationSection Model="@DetailViewModel.Report" SectionName="@TabItems.Report.ToString()">
+                    <MethodReportsView ReportViewModel="@DetailViewModel.Report" />
+                </PhValidationSection>
+            </PhTabPage>
+            <PhTabPage TabId="@((int)TabItems.Class)" Text="@Loc["MethodDetailsTab_Class"]" HideTrailingEdge="true">
+                <MethodClassView ViewModel="@DetailViewModel" />
+            </PhTabPage>
+        </PhTabControl>
+    </PhValidationContext>
+}

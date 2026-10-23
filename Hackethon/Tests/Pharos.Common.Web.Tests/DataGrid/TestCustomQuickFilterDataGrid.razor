@@ -1,0 +1,23 @@
+@using Microsoft.AspNetCore.Components
+@using Pharos.Common.Web.Components.DataGrid
+@using Pharos.Common.Web.Components.DataGrid.Columns
+@using Pharos.Common.Web.Models.DataGrid
+@namespace Pharos.Common.Web.Tests.DataGrid
+
+<PhDataGrid TGridItem="Person"
+            StateID="test-custom-filter-grid"
+            Items="Items"
+            CustomQuickFilters="CustomQuickFilters">
+    <Columns>
+        <Column Title="First name"
+                Property="@(person => person.FirstName)"
+                QuickFilter="true" />
+        <Column Title="Last name"
+                Property="@(person => person.LastName)" />
+    </Columns>
+</PhDataGrid>
+
+@code {
+    [Parameter] public IQueryable<Person> Items { get; set; } = default!;
+    [Parameter] public IEnumerable<CustomQuickFilter>? CustomQuickFilters { get; set; }
+}

@@ -1,0 +1,72 @@
+@using Pharos.Common.Web.Components.DropdownButton
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.Modal
+@attribute [Stories("Components/DropdownButton")]
+@inject IModalService Modal
+
+<Stories TComponent="PhDropdownButton">
+    <Story Name="Dropdown Button">
+        <Template>
+            <div style="overflow: auto;">
+
+                @* Enabled components. *@
+                @foreach (DropdownButtonType dropdownButtonType in Enum.GetValues(typeof(DropdownButtonType)))
+                {
+                    <h5><b>@dropdownButtonType</b></h5>
+                    <div class="flex gap-xxl">
+                        <PhDropdownButton DropdownButtonType="dropdownButtonType" IconType="IconType.Bell" Text="anything">
+                            <PhDropdownButtonItem Text="B1" OnClick="OpenDialog"></PhDropdownButtonItem>
+                            <PhDropdownButtonItem Text="B2" OnClick="OpenDialog"></PhDropdownButtonItem>
+                            <PhDropdownButtonItem Text="B3" OnClick="OpenDialog"></PhDropdownButtonItem>
+                            <PhDropdownButtonItemLink Text="Link - 1" Uri="#a"></PhDropdownButtonItemLink>
+                            <PhDropdownButtonItemLink Text="Link - 1" Uri="#b"></PhDropdownButtonItemLink>
+                            <PhDropdownButtonItemLink Text="Link - 1" Uri="#c"></PhDropdownButtonItemLink>
+                        </PhDropdownButton>
+                    </div>
+                    <br />
+                }
+
+                @* Disabled components. *@
+                @foreach (DropdownButtonType dropdownButtonType in Enum.GetValues(typeof(DropdownButtonType)))
+                {
+                    <h5><b>@dropdownButtonType</b> - Disabled</h5>
+                    <div class="flex gap-xxl">
+                        <PhDropdownButton DropdownButtonType="dropdownButtonType" IconType="IconType.Bell" Text="anything" Disabled>
+                            <PhDropdownButtonItem Text="B1" OnClick="OpenDialog"></PhDropdownButtonItem>
+                            <PhDropdownButtonItem Text="B2" OnClick="OpenDialog"></PhDropdownButtonItem>
+                            <PhDropdownButtonItem Text="B3" OnClick="OpenDialog"></PhDropdownButtonItem>
+                            <PhDropdownButtonItemLink Text="Link - 1" Uri="#a"></PhDropdownButtonItemLink>
+                            <PhDropdownButtonItemLink Text="Link - 1" Uri="#b"></PhDropdownButtonItemLink>
+                            <PhDropdownButtonItemLink Text="Link - 1" Uri="#c"></PhDropdownButtonItemLink>
+                        </PhDropdownButton>
+                    </div>
+                    <br />
+                }
+
+            </div>
+
+            <PhModal />
+        </Template>
+    </Story>
+
+    <Story Name="Dropdown Button with disabled items">
+        <Template>
+            <PhDropdownButton Text="Disabled items">
+                <PhDropdownButtonItem Text="B1" Disabled />
+                <PhDropdownButtonItem Text="B2" Disabled />
+                <PhDropdownButtonItem Text="B3" Disabled />
+            </PhDropdownButton>
+        </Template>
+    </Story>
+</Stories>
+
+
+@code
+{
+    private async Task OpenDialog()
+    {
+        var modal = Modal.ShowInformation("Some action", "OK", new ModalOptions() { Title = "Dummy action" });
+
+        var result = await modal.Result;
+    }
+}

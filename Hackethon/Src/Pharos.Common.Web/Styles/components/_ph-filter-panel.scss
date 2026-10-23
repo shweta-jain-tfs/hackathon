@@ -1,0 +1,58 @@
+@use '../abstracts/colors';
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-filter-panel {
+    --_max-height: 450px;
+    --_block-padding: #{spacing.$gap-xs};
+    --ph-bg-color: #{colors.$layer-secondary};
+    max-height: min(90vh, var(--_max-height));
+    display: flex;
+    gap: spacing.$gap-sm;
+    flex-direction: column;
+    padding-block: var(--_block-padding);
+    border-width: 2px;
+    @include rounded.rounded;
+    background-color: var(--ph-bg-color);
+
+    &__content {
+        padding-inline: spacing.$padding-sm;
+        overflow: auto;
+    }
+
+    &__footer {
+        border-top: 1px solid colors.$border-subtle-02;
+        padding-top: var(--_block-padding);
+        margin-inline: spacing.$padding-xs;
+    }
+
+    &__clear-button {
+        display: block;
+        @include text.body1;
+        color: colors.$text-link;
+        padding: 4px spacing.$gap-xs;
+
+        &:hover {
+            color: colors.$text-link-hover;
+        }
+
+        &:active {
+            color: colors.$text-link-pressed;
+        }
+
+        &:disabled {
+            color: colors.$text-link-disabled;
+        }
+    }
+
+    &--loose {
+        --_max-height: 550px;
+        --_block-padding: #{spacing.$gap-sm};
+    }
+
+    &--wide {
+        width: size.$filter-wide-width;
+    }
+}

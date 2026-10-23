@@ -1,0 +1,104 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Common.Web.Components.StepGuide
+@attribute [Stories("Components/StepGuide")]
+
+<Stories TComponent="PhStepGuide">
+    <Story Name="Step guide">
+        <Template>
+            <PhStepGuide @attributes="context.Args">
+                <PhStepGuideStep>Step 1</PhStepGuideStep>
+                <PhStepGuideStep>Step 2<br/>Additional content</PhStepGuideStep>
+                <PhStepGuideStep Filled>Step 3</PhStepGuideStep>
+                <PhStepGuideStep Current>Step 4</PhStepGuideStep>
+                <PhStepGuideStep>Step 5</PhStepGuideStep>
+            </PhStepGuide>
+        </Template>
+    </Story>
+    <Story Name="Wizard">
+        <Arguments>
+            <Arg For="_ => _!.Mode" Value="StepGuideMode.Wizard" />
+            <Arg For="_ => _!.AlignStepSymbolToInputField" Value="true" />
+        </Arguments>
+        <Template>
+            <PhStepGuide @attributes="context.Args">
+                <PhStepGuideWizardStep Active>
+                    <PhLabel Text="Test:" Direction="LabelDirection.Horizontal" Size="LabelSize.Body1">
+                        <PhValueBox>fx77</PhValueBox>
+                    </PhLabel>
+                </PhStepGuideWizardStep>
+                <PhStepGuideWizardStep Active PlaceholderText="Select how to compare">
+                    <PhLabel Text="Result type">
+                        <PhDropdown TValue="string" Title="Select how to compare" />
+                    </PhLabel>
+                </PhStepGuideWizardStep>
+                <PhStepGuideWizardStep Active Current PlaceholderText="Select how to compare">
+                    <PhLabel Text="Compare by">
+                        <PhDropdown TValue="string" Title="Select how to compare" />
+                    </PhLabel>
+                </PhStepGuideWizardStep>
+                <PhStepGuideWizardStep PlaceholderText="Enter value(s) to compare to">
+                    Content to show when step is active
+                </PhStepGuideWizardStep>
+            </PhStepGuide>
+        </Template>
+    </Story>
+    <Story Name="Step navigation">
+        <Arguments>
+            <Arg For="_ => _!.Mode" Value="StepGuideMode.Navigation" />
+            <Arg For="_ => _!.AlignStepSymbolToInputField" Value="false" />
+        </Arguments>
+        <Template>
+            <PhStepGuide @attributes="context.Args">
+                <PhStepGuideNavStep OnClick="() => {}">Overview</PhStepGuideNavStep>
+                <PhStepGuideNavStep OnClick="() => {}">Preparations</PhStepGuideNavStep>
+                <PhStepGuideNavStep Filled OnClick="() => {}">Remove chute</PhStepGuideNavStep>
+                <PhStepGuideNavStep Current OnClick="() => {}">Clean chute</PhStepGuideNavStep>
+                <PhStepGuideNavStep OnClick="() => {}">Reassemble</PhStepGuideNavStep>
+                <PhStepGuideNavStep OnClick="() => {}">Close and test</PhStepGuideNavStep>
+                <PhStepGuideNavStep OnClick="() => {}">Confirm</PhStepGuideNavStep>
+                <PhStepGuideNavStep Disabled OnClick="() => {}">Disabled</PhStepGuideNavStep>
+            </PhStepGuide>
+        </Template>
+    </Story>
+    <Story Name="Single step">
+        <Template>
+            <PhStepGuide @attributes="context.Args">
+                <PhStepGuideStep>Single step</PhStepGuideStep>
+            </PhStepGuide>
+        </Template>
+    </Story>
+    <Story Name="Toggle states">
+        <Template>
+            <PhStack>
+                <PhStepGuide @attributes="context.Args">
+                    <PhStepGuideStep Filled="_item1Filled" Current="_item1Current">
+                        Step 1
+                        <PhCheckBox Label="Filled" @bind-Value="_item1Filled" />
+                        <PhCheckBox Label="Current" @bind-Value="_item1Current" />
+                    </PhStepGuideStep>
+                    <PhStepGuideStep Filled="_item2Filled" Current="_item2Current">
+                        Step 2
+                        <PhCheckBox Label="Filled" @bind-Value="_item2Filled" />
+                        <PhCheckBox Label="Current" @bind-Value="_item2Current" />
+                    </PhStepGuideStep>
+                    <PhStepGuideStep Filled="_item3Filled" Current="_item3Current">
+                        Step 3
+                        <PhCheckBox Label="Filled" @bind-Value="_item3Filled" />
+                        <PhCheckBox Label="Current" @bind-Value="_item3Current" />
+                    </PhStepGuideStep>
+                </PhStepGuide>
+            </PhStack>
+        </Template>
+    </Story>
+</Stories>
+
+@code {
+    private bool _item1Filled;
+    private bool _item1Current;
+    private bool _item2Filled;
+    private bool _item2Current;
+    private bool _item3Filled;
+    private bool _item3Current;
+}

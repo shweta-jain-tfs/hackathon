@@ -1,0 +1,24 @@
+<PhDataGrid TableTitle="@Loc["MethodDetailsClassTab_ClassTables"]" StateID="classes" TGridItem="MethodClassTable" Items="ClassTableItems"
+            HideTrailingEdge="true" RowType="RowTypeEnum.LinesBetweenRows">
+    <Columns>
+
+        <Column Title="@Loc["MethodDetailsClassTab_Table"]" Property="@(x => x.ClassTableId)" Align="ColumnAlignEnum.Left">
+            <PhHrefLink OnClick="@(() => OpenClassTableDetails(context))">@context.ClassTableId</PhHrefLink>
+        </Column>
+
+        <Column Title="@GetClassColumnTitle(1)" Property="@(x => x.TextBelow)" Align="ColumnAlignEnum.Left">
+            @context.TextBelow
+            <span class="text-disabled"> @GetClassOneRangeText(context)</span>
+        </Column>
+
+        @for (var i = 0; i < _numberOfClassRangeColumns; i++)
+        {
+            var r = i;
+            <Column Title="@GetClassColumnTitle(r + 2)" Property="@(x => x.ClassTableId)" Align="ColumnAlignEnum.Left">
+                @GetOrderedRows(context).ElementAtOrDefault(r)?.TextAbove
+                <span class="text-disabled"> @GetClassRangeText(context, r) </span>
+            </Column>
+        }
+
+    </Columns>
+</PhDataGrid>

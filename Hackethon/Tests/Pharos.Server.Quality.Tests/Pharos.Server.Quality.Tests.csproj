@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Pharos.Server.Quality</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Src\Pharos.Server.Quality\Pharos.Server.Quality.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server.Application.Modules\Pharos.Server.Application.Modules.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Integration.Tests.Common\Pharos.Server.Integration.Tests.Common.csproj" />
+	</ItemGroup>
+
+</Project>

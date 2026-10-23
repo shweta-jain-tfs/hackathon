@@ -1,0 +1,52 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-subnav-item {
+    &__link {
+        display: flex;
+        align-items: center;
+        min-height: size.$hit-area-lg;
+        padding-inline: spacing.$padding-md;
+        padding-block: spacing.$padding-xs;
+        @include text.body1;
+
+        &:focus {
+            outline: none;
+        }
+        
+        &:hover,
+        &:focus-visible {
+            background: colors.$layer-hover-01; 
+        }
+
+        &:active {
+            background: colors.$layer-selected-01;
+        }
+
+        // No disabled style. If it can't be clicked it shouldn't be shown.
+
+        // .active is set form NavLink
+        &.active {
+            background: colors.$layer-selected-01;
+            border-color: colors.$button-outline;
+
+            &:hover,
+            &:focus-visible {
+                background: colors.$layer-selected-hover;
+            }
+    
+            &:active {
+                background: colors.$layer-selected-pressed;
+            }
+        }
+    }
+
+    &__label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}

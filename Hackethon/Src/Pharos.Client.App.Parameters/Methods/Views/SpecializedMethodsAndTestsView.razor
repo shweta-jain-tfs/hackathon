@@ -1,0 +1,37 @@
+@using Pharos.Client.App.Parameters.Methods.ViewModels
+@using Pharos.Common.Web.Models.DataGrid
+
+@attribute [Authorize]
+
+<PhModalContent>
+    <Body>
+        <PhDataGrid TableTitle="@Loc["SpecializedMethodsAndTestsModalView_TableTitle"]"
+                    TGridItem="SpecializedMethodOrTest"
+                    StateID=""
+                    ItemsProvider="ViewModel.ProvideGridItems"
+                    SuppressRefresh="true"
+                    RowType="RowTypeEnum.LinesBetweenRows"
+                    DefaultSortColumn="@nameof(SpecializedMethodOrTest.Type)"
+                    DefaultSortDirection="SortDirection.Ascending">
+            <Columns>
+                <Column Title="@Loc["SpecializedMethodsAndTestsModalView_Name"]"
+                        Property="@(item => item!.Name)"
+                        QuickFilter="true" />
+                <Column Title="@Loc["SpecializedMethodsAndTestsModalView_Active"]"
+                        Property="@(item => item!.IsSpecializedMethodOrTestActivated)">
+                    <PhCheckBox Value="context.IsSpecializedMethodOrTestActivated" ValueChanged="@(async isChecked => await ViewModel.SetActive(context, isChecked))" />
+                </Column>
+                <Column Title="@Loc["SpecializedMethodsAndTestsModalView_Type"]"
+                        Property="@(item => item!.Type)"
+                        QuickFilter="true"
+                        MultiSelectFilterItems="_typeList">
+                    @GetTypeDisplay(context.Type)
+                </Column>
+            </Columns>
+        </PhDataGrid>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["SpecializedMethodsAndTestsModalView_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" Disabled="!ViewModel.HasChanges" OnClick="Save">@Loc["SpecializedMethodsAndTestsModalView_Save"]</PhButton>
+    </Footer>
+</PhModalContent>

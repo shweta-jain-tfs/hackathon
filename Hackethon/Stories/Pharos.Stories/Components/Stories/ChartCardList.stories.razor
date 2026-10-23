@@ -1,0 +1,56 @@
+﻿@using Pharos.Common.Web.Components.ChartCard
+@using Pharos.Common.Web.Components.PlaceHolder
+@using Pharos.Common.Web.Components.Status
+@attribute [Stories("Components/ChartCardList")]
+
+<Stories TComponent="PhChartCardList">
+    <Story Name="A few chart cards">
+        <Template>
+            <PhChartCardList>
+                @for (var i = 0; i < 3; i++)
+                {
+                    <PhChartCard Title="@($"Chart {i}")" Href="#url" Status="StatusType.Success">
+                        <div style="width: 192px; height: 140px">
+                            <PhPlaceHolder Title="Chart" Text="" />
+                        </div>
+                    </PhChartCard>
+                }
+            </PhChartCardList>
+        </Template>
+    </Story>
+
+    <Story Name="Max that fits on an instrument screen">
+        <Template>
+            <PhChartCardList>
+                @for (var i = 0; i < 7; i++)
+                {
+                    <PhChartCard Title="@($"Chart {i}")" Href="#url" Status="StatusType.Success">
+                        <div style="width: 192px; height: 140px">
+                            <PhPlaceHolder Title="Chart" Text="" />
+                        </div>
+                    </PhChartCard>
+                }
+            </PhChartCardList>
+        </Template>
+    </Story>
+
+    <Story Name="Many chart cards">
+        <Template>
+            <PhChartCardList>
+                @for (var i = 0; i < 15; i++)
+                {
+                    <PhChartCard Title="@($"Chart {i}")" Href="#url" Status="StatusType.Success" Narrow>
+                        <div style="width: 192px; height: 140px">
+                            <PhPlaceHolder Title="Chart" Text="" />
+                        </div>
+                    </PhChartCard>
+                }
+            </PhChartCardList>
+        </Template>
+    </Story>
+
+</Stories>
+
+@code
+{
+}

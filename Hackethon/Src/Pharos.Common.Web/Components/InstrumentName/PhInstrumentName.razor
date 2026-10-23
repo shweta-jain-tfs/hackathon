@@ -1,0 +1,25 @@
+@using Microsoft.AspNetCore.Components.Routing
+@using Pharos.Common.Web.Components.Health
+
+<div class="@CssClasses">
+    <div class="@CssClassesStatus">
+        @if (LockScreenMode) {
+            <PhHealth Status="Status" Size="HealthSize.Lg" Outline="true" />
+        }
+        else {
+            <PhHealth Status="Status" Size="HealthSize.Md" />
+        }
+    </div>
+    <h1 class="ph-instrument-name__title">
+        @if (!string.IsNullOrWhiteSpace(Href))
+        {
+            <NavLink href="@Href" ActiveClass="ph-instrument-name__link--active" class="ph-instrument-name__link" Match="NavLinkMatch.Prefix">
+                @Name
+            </NavLink>
+        }
+        else
+        {
+            @Name
+        }
+    </h1>
+</div>

@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.Routing
+<AuthorizeView Policy="@Permission">
+    <Authorized>
+
+        <li>
+            <NavLink class="ph-menu__item" href="@Uri" @onclick="OnClickHandler" Match="@Match" ActiveClass="ph-menu__item--active">
+                @if (IconType.HasValue)
+                {
+                    <PhIcon IconType="@IconType.Value" Size="IconSize.Md"></PhIcon>
+                }
+                <div class="ph-menu__label">
+                    <span class="ph-menu__label-text">@Text</span>
+                </div>
+                @if (Number > 0)
+                {
+                    <div class="@NotificationCssClasses">@Number</div>
+                }
+            </NavLink>
+        </li>
+
+    </Authorized>
+</AuthorizeView>

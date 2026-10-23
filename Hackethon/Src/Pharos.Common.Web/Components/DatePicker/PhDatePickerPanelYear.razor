@@ -1,0 +1,22 @@
+@inherits ComponentWithClientScriptBase
+
+<div class="ph-datepicker-panel-year">
+    <div class="ph-datepicker-panel-year__grid">
+        @foreach (var year in Years)
+        {
+            var isCurrentYear = year == DateTime.Now.Year;
+            var isSelectedYear = year == SelectedYear;
+            var isDisabled = IsYearOutOfRange(year);
+
+            <button type="button" 
+                    id="@(isSelectedYear ? $"year-{year}" : null)"
+                    class="ph-datepicker-panel-year__button @(isSelectedYear ? "selected" : "")"
+                    @onclick="@(() => OnYearClicked(year))"
+                    disabled="@isDisabled"
+                    aria-current="@(isCurrentYear ? "date" : null)"
+                    aria-selected="@isSelectedYear">
+                @year
+            </button>
+        }
+    </div>
+</div>

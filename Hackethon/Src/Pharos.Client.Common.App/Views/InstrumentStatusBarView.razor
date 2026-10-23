@@ -1,0 +1,46 @@
+@using Pharos.Client.Common.App.Layout.Instrument
+@using Pharos.Common.Web.Components.Links
+@using Pharos.Common.Web.Components.SearchBox
+
+<div class="@CssClass">
+    @if (LockScreenMode)
+    {
+        <div class="ph-statusbar__lockscreen-center">
+            <PhInstrumentName Name="@InstrumentModel.Name" Status="@ViewModel.MapHealthStatus()" LockScreenMode />
+        </div>
+        <div class="ph-statusbar__lockscreen-actions">
+            <MuteSoundButton />
+        </div>
+    }
+    else
+    {
+        <div class="ph-statusbar__left">
+            <PhInstrumentName Name="@InstrumentModel.Name" Status="@ViewModel.MapHealthStatus()" Href="@PageRoute.Dashboard" />
+        </div>
+        <div class="ph-statusbar__right">
+            <ToasterView />
+            <PhRunInformation Row1="@ViewModel.RunInformationRow1" Row2="@ViewModel.RunInformationRow2">
+                @if (CanShowSkipTodayLink)
+                {
+                    <span class="ml-xs">
+                        <PhHrefLink OnClick="@(_ => SkipToday())">@Loc["InstrumentStatusBarView_SkipToday"]</PhHrefLink>
+                    </span>
+                }
+            </PhRunInformation>
+            <AuthorizeView>
+                <Authorized>
+                    <PhSearchBox OnSearch="NavigateToSearch" PlaceholderText="@Loc["InstrumentStatusBarView_Search_Placeholder"]"></PhSearchBox>
+                    <div class="ph-statusbar__statusmenu">
+                        <MuteSoundButton />
+                        <PhUserMenu Name="@context.User.Identity?.Name"></PhUserMenu>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    }
+</div>
+
+@if (_playSound)
+{
+    <PhAudio />
+}

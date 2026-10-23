@@ -1,0 +1,35 @@
+﻿<PhDockedButtonRow Justified="false">
+    <ChildContent>
+        <PhDataGrid @ref="_dataGrid"
+                    TableTitle="@Loc["LabQualityControlDetailsPage_TestListView_Header"]"
+                    StateID=""
+                    TGridItem="LabQualityControlTest"
+                    Items="ViewModel.Tests.AsQueryable()"
+                    SelectionType="SelectionTypeEnum.MultiSelectWithSelectAll"
+                    RowType="RowTypeEnum.LinesBetweenRows"
+                    OnSelectedItemsChanged="SelectedItemsChanged">
+            <Columns>
+                <Column Title="@Loc["LabQualityControlDetailsPage_TestListView_Method"]" Property="@(item => item!.MethodName)" />
+                <Column Title="@Loc["LabQualityControlDetailsPage_TestListView_Test"]" Property="@(item => item!.TestName)">
+                    <PhHrefLink OnClick="@(() => EditTest(context))">@context.TestName</PhHrefLink>
+                </Column>
+                <Column Title="@Loc["LabQualityControlDetailsPage_TestListView_Replicates"]" Property="@(item => item!.Replicates)" />
+                <Column Title="@Loc["LabQualityControlDetailsPage_TestListView_ReplicatesCvPercentage"]" Property="@(item => item!.ReplicateCvLimit)" />
+                <Column Title="@Loc["LabQualityControlDetailsPage_TestListView_Qualification"]" Property="@(item => item!.UseLotQualification)">
+                    @if (context.UseLotQualification)
+                    {
+                        <span>@Loc["LabQualityControlDetailsPage_TestListView_Qualification_Yes"] - @context.NumberOfTests points</span>
+                    }
+                    else
+                    {
+                        <span>@Loc["LabQualityControlDetailsPage_TestListView_Qualification_No"]</span>
+                    }
+                </Column>
+            </Columns>
+        </PhDataGrid>
+    </ChildContent>
+    <Buttons>
+        <PhButton OnClick="AddTests">@Loc["LabQualityControlDetailsPage_TestListView_Add"]</PhButton>
+        <PhButton Disabled="@(_selectedItems.Count == 0)" OnClick="DeleteTests">@Loc["LabQualityControlDetailsPage_TestListView_Delete"]</PhButton>
+    </Buttons>
+</PhDockedButtonRow>

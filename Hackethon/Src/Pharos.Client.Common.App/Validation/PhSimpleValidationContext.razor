@@ -1,0 +1,7 @@
+﻿@inherits PhValidationContext
+
+<CascadingValue Value="this" IsFixed="true">
+    <PhValidationSection SectionName="Simple" Model="@Model" RuleSets="@RuleSets">
+        @ChildContent
+    </PhValidationSection>
+</CascadingValue>

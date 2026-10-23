@@ -1,0 +1,29 @@
+﻿@use "../abstracts/colors";
+
+
+.ph-link {
+
+    &, &:visited {
+        text-decoration: none;
+        color: colors.$text-link;
+        cursor: pointer;
+    }
+
+    &:hover {
+        color: colors.$text-link-hover;
+    }
+
+    &:active {
+        color: colors.$text-link-pressed;
+    }
+
+    &--underline,
+    &--underline:visited {
+        text-decoration: underline;
+    }
+
+    &--disabled {
+        color: colors.$text-link-disabled;
+        pointer-events: none;
+    }
+}

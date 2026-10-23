@@ -1,0 +1,30 @@
+﻿<PhModalContent>
+    <Body>
+        <span class="whitespace-pre-line">@ErrorMessage</span>
+    </Body>
+
+    <Footer>
+        <PhButton Type="ButtonType.Primary" OnClick="CloseAsync">
+            Close
+        </PhButton>
+    </Footer>
+</PhModalContent>
+
+@code {
+    [Parameter, EditorRequired]
+    public Exception Exception { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+#if DEBUG
+    private string ErrorMessage => Exception.Message;
+#else
+    private string ErrorMessage => "An unexpected error has occurred.";
+#endif
+
+    private Task CloseAsync()
+    {
+        return OnClose.InvokeAsync();
+    }
+}

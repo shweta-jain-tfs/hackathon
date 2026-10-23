@@ -1,0 +1,37 @@
+@typeparam TValue
+
+<div class="ph-numberrange">
+    <div class="ph-numberrange__fields">
+        <PhNumberField TValue="TValue"
+                       @bind-Value="@MinValue"
+                       Disabled="@Disabled"
+                       DisplayOnly="@DisplayOnly"
+                       Size="@Size"
+                       Error="@_minError"
+                       PlaceHolder="@MinPlaceholder"
+                       Culture="@Culture"
+                       ValueChangedOnInput="false" />
+        <span class="ph-numberrange__separator">-</span>
+        <PhNumberField TValue="TValue"
+                       @bind-Value="@MaxValue"
+                       Disabled="@Disabled"
+                       DisplayOnly="@DisplayOnly"
+                       Size="@Size"
+                       Error="@_maxError"
+                       PlaceHolder="@MaxPlaceholder"
+                       Culture="@Culture"
+                       ValueChangedOnInput="false" />
+    </div>
+    @if (HasErrorText)
+    {
+        <span class="ph-numberrange__error-text">
+            @_computedErrorText
+        </span>
+    }
+    else if (!string.IsNullOrEmpty(HelpText))
+    {
+        <span class="ph-numberrange__help-text">
+            @HelpText
+        </span>
+    }
+</div>

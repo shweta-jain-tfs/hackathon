@@ -1,0 +1,50 @@
+@using Pharos.Client.App.ServiceTools.ViewModels.RequestGenerator
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.FormElements
+
+<div class="flex flex-col">
+    <PhStack Gap="StackGap.Gutter">
+        <PhValidationSection SectionName="SampleId" Model="ViewModel" RuleSets="ConfigurationView">
+            <PhPanel>
+                <h4 class="t-h3">@Loc["RequestGenerator_SampleId"]</h4>
+                <div class="flex flex-col gap-sm">
+                    <div class="flex gap-sm mt-sm">
+                        <PhTextBox Label="@Loc["RequestGenerator_HeadingCharacters"]"
+                                   @bind-Value="ViewModel.HeadingCharacters"
+                                   MaxLength="7" Size="TextBoxSize.Small" />
+                        <PhNumberField Label="@Loc["RequestGenerator_NumberOfDigits"]"
+                                       @bind-Value="ViewModel.NumberOfDigits"
+                                       MaxNumberOfDigits="GeneratorViewModel.NumberOfDigitsMaxNumberOfDigits"
+                                       Size="TextBoxSize.Small" />
+                    </div>
+                    <div class="flex gap-sm">
+                        <PhNumberField Label="@Loc["RequestGenerator_StartOffset"]"
+                                       @bind-Value="ViewModel.SampleIdStartOffset"
+                                       MaxNumberOfDigits="GeneratorViewModel.SampleId_StartOffsetMaxNumberOfDigits"
+                                       Size="TextBoxSize.Small" />
+                        <PhTextBox Label="@Loc["RequestGenerator_TrailingCharacters"]"
+                                   @bind-Value="ViewModel.TrailingCharacters"
+                                   MaxLength="7" Size="TextBoxSize.Small" />
+                    </div>
+                </div>
+            </PhPanel>
+        </PhValidationSection>
+
+        <PhValidationSection SectionName="GenerationOptions" Model="ViewModel" RuleSets="GeneratorView">
+            <PhPanel>
+                <h4 class="t-h3">@Loc["RequestGenerator_Generate"]</h4>
+                <div class="flex gap-sm mt-sm">
+                    <PhNumberField Label="@Loc["RequestGenerator_AmountToGenerate"]"
+                                   @bind-Value="ViewModel.AmountToGenerate"
+                                   MaxNumberOfDigits="GeneratorViewModel.AmountToGenerateMaxNumberOfDigits"
+                                   Size="TextBoxSize.Small" />
+
+                    <PhNumberField Label="@Loc["RequestGenerator_PreDilutionFactor"]"
+                                   @bind-Value="ViewModel.PreDilutionFactor"
+                                   MaxNumberOfDigits="GeneratorViewModel.PreDilutionFactorMaxNumberOfDigits"
+                                   Size="TextBoxSize.Small" />
+                </div>
+            </PhPanel>
+        </PhValidationSection>
+    </PhStack>
+</div>

@@ -1,0 +1,39 @@
+﻿<PhModalContent>
+    <Body>
+        @Message
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => Close(ModalResult.Cancel()))">@CancelButton</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => Close(ModalResult.Ok(true)))">@OkButton</PhButton>
+    </Footer>
+</PhModalContent>
+
+@code
+{
+    /// <summary>
+    /// Gets or sets the modal instance.
+    /// </summary>
+    [CascadingParameter] public ModalInstance Modal { get; set; } = default!;
+
+    /// <summary>
+    /// Gets or sets the error message to be displayed.
+    /// </summary>
+    [Parameter] public string? Message { get; set; }
+    /// <summary>
+    /// Gets or sets the text for the OK button.
+    /// </summary>
+    [Parameter] public string? OkButton { get; set; }
+
+    /// <summary>
+    /// Gets or sets the text for the Cancel button.
+    /// </summary>
+    [Parameter] public string? CancelButton { get; set; }
+
+    /// <summary>
+    /// Invokes the OnClose callback when the close button is clicked.
+    /// </summary>
+    private async Task Close(ModalResult result)
+    {
+        await Modal.CloseAsync(result);
+    }
+}

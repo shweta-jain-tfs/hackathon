@@ -1,0 +1,23 @@
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.liquid-drawer-view {
+    display: flex;
+    gap: spacing.$gap-sm;
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-md;
+
+        .ph-drawer__action-container {
+           display: none;
+        }
+    }
+
+    &__bottom-text {
+        display: flex;
+        justify-content: center;
+        @include text.body1;
+    }
+}

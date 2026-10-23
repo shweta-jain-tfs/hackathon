@@ -1,0 +1,38 @@
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+@use '../abstracts/colors';
+
+.liquid-indicator-view {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: spacing.$gap-md;
+    padding-top: spacing.$gap-sm;
+    margin-left: 41px;
+
+    &__wrapper {
+        display: flex;
+        justify-content: flex-end;
+        gap: spacing.$gap-sm;
+    }
+
+    &__text {
+        writing-mode: vertical-lr;
+        transform: rotate(180deg);
+        margin: auto;
+        @include text.body1;
+    }
+
+    &__indicator {
+        width: 8px;
+        height: 376px;
+
+        &--waste {
+            background-color: colors.$liquid-waste-indicator;
+        }
+
+        &--rinse {
+            background-color: colors.$liquid-rinse-indicator;
+        }
+    }
+}

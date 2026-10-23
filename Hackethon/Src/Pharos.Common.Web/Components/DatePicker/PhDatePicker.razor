@@ -1,0 +1,49 @@
+﻿@typeparam TValue
+
+<PhLabel Text="@Label"
+         HelpText="@HelpText"
+         ErrorText="@(HasErrorText ? ErrorText : null)"
+         Disabled="@Disabled"
+         RenderAsLabel="@(!DisplayOnly)"
+         SuppressAutoValidation="@DisplayOnly"
+         ValidationFor="@(DisplayOnly ? null : ValidationForExpression)">
+    <div class="@CssClassItems" uiname="@AutomatedTestId">
+        @if (DisplayOnly)
+        {
+            <PhValueBox Disabled="@Disabled" Overflow="ValueBoxOverflow.Ellipsis">
+                @BindValue
+            </PhValueBox>
+        }
+        else
+        {
+            <PhPopover @ref="_popover" Appearance="PopoverStyle.None" AutoHide OnToggle="SetOpenState">
+                <Anchor>
+                    <div class="ph-datepicker__input">
+                        <InputText class="ph-datepicker__textbox"
+                            placeholder="@PlaceholderText"
+                            @bind-Value="BindValue"
+                            disabled
+                            size="10"
+                            id="@Id" />
+                        @if (_error)
+                        {
+                            <span class="ph-datepicker__error-icon">
+                                <PhIcon IconType="IconType.Alert" Size="IconSize.Md" />
+                            </span>
+                        }
+                        <button class="ph-datepicker__btn" disabled="@Disabled" popovertarget="@(_popover?.Id)" type="button">
+                            <PhIcon IconType="IconType.DatePicker" Size="IconSize.Md"></PhIcon>
+                        </button>
+                    </div>
+                </Anchor>
+                <Panel>
+                    <PhDatePickerPanel SelectedDate="@SelectedDateForPanel"
+                        SelectedDateChanged="SelectedDateHandler"
+                        MinDate="MinDate"
+                        MaxDate="MaxDate"
+                        Culture="@Culture" />
+                </Panel>
+            </PhPopover>
+        }
+    </div>
+</PhLabel>

@@ -1,0 +1,17 @@
+﻿@using Pharos.Client.App.Reagents.Views.Drawer.Carrier
+@using Pharos.Client.App.Reagents.Views.Drawer.Cartridge
+
+<div class="@_compartmentCss">
+    @foreach (var cellContent in Compartment.CellContent)
+    {
+        if (Compartment.Type == CompartmentReagentType.Cartridge)
+        {
+            <ReagentCartridgeView CellContent="cellContent" Size="ReagentIconSize.Small" LegendSelectedStatus="@LegendSelectedStatus"></ReagentCartridgeView>
+        }
+        else if (Compartment.Type == CompartmentReagentType.Carrier)
+        {
+            <ReagentCarrierView CellContent="cellContent" Size="ReagentIconSize.Small" LegendSelectedStatus="@LegendSelectedStatus"></ReagentCarrierView>
+
+        }
+    }
+</div>

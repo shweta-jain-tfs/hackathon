@@ -1,0 +1,1 @@
+{%- for property in Properties -%} {%- if property.PropertyName == "Id" -%}{% if property.Type != "int?" %}{% if HasInheritance %}, {% else %} : {% endif %}IEntityModel<{{property.Type}}>, IEquatable<{{ClassName}}>{% endif %}{% endif %}{% endfor %}

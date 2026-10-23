@@ -1,0 +1,76 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Spinners
+@using Pharos.Client.App.ServiceTools.ViewModels
+<PhModalContent>
+    <Body>
+        <div class="mt-md flex flex-col gap-gutter items-center t-body1 text-primary">
+            @if (!_isInitialized)
+            {
+                <PhLoadingIndicator />
+            }
+            else
+            {
+                switch (ViewModel.Stage)
+                {
+                    case PairingStage.WaitingForInstrument:
+                        <PhLoadingIndicator />
+                        break;
+
+                    case PairingStage.SubmittingApproval:
+                        <PhLoadingIndicator />
+                        <p>@Loc["ServiceToolsPage_PairingModal_WaitingForConfirmation"]</p>
+                        break;
+
+                    case PairingStage.WaitingForApproval:
+                        <p>@Loc["ServiceToolsPage_PairingModal_ApprovalQuestion"]</p>
+                        <PhTextBox Label="@Loc["ServiceToolsPage_PairingModal_SerialNumber"].Value" Value="@ViewModel.InstrumentToPair" DisplayOnly />
+                        <p>@Loc["ServiceToolsPage_PairingModal_ApprovalWarning"]</p>
+                        break;
+
+                    case PairingStage.Done:
+                        <p>@Loc["ServiceToolsPage_PairingModal_InstrumentPairedSuccessfully"]</p>
+                        <PhTextBox Label="@Loc["ServiceToolsPage_PairingModal_SerialNumber"].Value" Value="@ViewModel.PairedInstrument" DisplayOnly />
+                        if (_showRefreshOption)
+                        {
+                            <p class="t-body2 text-secondary">@Loc["ServiceToolsPage_PairingModal_RefreshInfo"]</p>
+                        }
+                        break;
+                    case PairingStage.Off:
+                        <p>@Loc["ServiceToolsPage_PairingModal_PairingModeTimedOut"]</p>
+                        break;
+                }
+            }
+        </div>
+    </Body>
+    <Footer>
+        <div class="flex flex-wrap gap-gutter">
+            @switch (ViewModel.Stage)
+            {
+                case PairingStage.WaitingForInstrument:
+                    <PhButton OnClick="CancelModal">@Loc["ServiceToolsPage_PairingModal_CancelPairingButton"]</PhButton>
+                    break;
+                case PairingStage.SubmittingApproval:
+                case PairingStage.WaitingForApproval:
+                    <PhButton OnClick="CancelModal" Disabled="IsSubmittingApproval">@Loc["ServiceToolsPage_PairingModal_CancelPairingButton"]</PhButton>
+                    <PhButton OnClick="ViewModel.Reject" Disabled="IsSubmittingApproval">@Loc["ServiceToolsPage_PairingModal_RejectButton"]</PhButton>
+                    <PhButton Type="ButtonType.Primary" OnClick="ViewModel.Pair" Disabled="IsSubmittingApproval">@Loc["ServiceToolsPage_PairingModal_PairButton"]</PhButton>
+                    break;
+
+                case PairingStage.Done:
+                    if (_showRefreshOption)
+                    {
+                        <PhButton OnClick="Dismiss">@Loc["ServiceToolsPage_PairingModal_CloseButton"]</PhButton>
+                        <PhButton Type="ButtonType.Primary" OnClick="Refresh">@Loc["ServiceToolsPage_PairingModal_RefreshButton"]</PhButton>
+                    }
+                    else
+                    {
+                        <PhButton Type="ButtonType.Primary" OnClick="Dismiss">@Loc["ServiceToolsPage_PairingModal_CloseButton"]</PhButton>
+                    }
+                    break;
+                case PairingStage.Off:
+                    <PhButton Type="ButtonType.Primary" OnClick="Dismiss">@Loc["ServiceToolsPage_PairingModal_CloseButton"]</PhButton>
+                    break;
+            }
+        </div>
+    </Footer>
+</PhModalContent>

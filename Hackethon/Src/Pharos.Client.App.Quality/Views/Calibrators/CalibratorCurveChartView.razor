@@ -1,0 +1,26 @@
+﻿@using Pharos.Common.Web.Components.ChartCard
+
+@if (CalibratorCurveViewModel.IsLoaded)
+{
+    @if (CalibratorCurveViewModel.Data is { Count: > 0 })
+    {
+        <PhChartCard Status="@CalibratorCurveViewModel.Status" Title="@Loc["MethodQuality_Calibrators"]" Href="@NavigateToCalibratorDetails()">
+            <CalibratorCurveView Miniature="true" ViewModel="CalibratorCurveViewModel" />
+        </PhChartCard>
+    }
+    else
+    {
+        <PhChartCard Status="StatusType.Alarm" Title="@Loc["MethodQuality_Calibrators"]" Href="@NavigateToCalibratorDetails()">
+            <div style="width: 500px; height: 180px">
+                <PhPlaceHolder Title="No Curve" Text=""/>
+            </div>
+        </PhChartCard>
+    }
+}
+else
+{
+    @* Placeholder *@
+    <PhChartCard Status="StatusType.None" Title="@Loc["MethodQuality_Calibrators"]">
+        <div style="width: 500px; height: 180px"></div>
+    </PhChartCard>
+}

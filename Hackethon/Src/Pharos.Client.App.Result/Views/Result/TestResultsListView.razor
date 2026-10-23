@@ -1,0 +1,91 @@
+@using Pharos.Common.Web.Models.DataGrid
+
+<PhDockedButtonRow DockToBottom>
+    <ChildContent>
+        <PhDataGrid StateID="@(_stateId)"
+                    DefaultSortDirection="SortDirection.Descending"
+                    DefaultSortColumn="@nameof(AnalyticalRunTestResult.MeasurementDateTime)"
+                    ShowStatusSymbolInHeader="_statusSummary"
+                    TableTitle="@Loc["AnalyticalRunDetailsPage_Tests"]"
+                    TGridItem="AnalyticalRunTestResult"
+                    ItemsProvider="@(request => ViewModel.ProvideGridItems(request, AnalyticalRunId))"
+                    SelectionType="@(HasApproveRejectPermission || IsServiceRole ? SelectionTypeEnum.MultiSelectWithSelectAll: SelectionTypeEnum.Off)"
+                    OnSelectedItemsChanged="SelectedItemsChanged"
+                    HighlightOptions="@_highlightOptions"
+                    ItemStyleOptions="@_qcRowStyleOptions"
+                    ScrollToItemKey="@(TestOrderId?.ToString())"
+                    ScrollToItemIndexResolver="@(key => ViewModel.GetTestOrderIndexAsync(Guid.Parse(key), AnalyticalRunId))"
+                    @ref="_dataGrid">
+
+            <Actions>
+                @if (CanExpand)
+                {
+                    <PhIconButton IconType="@(Expanded ? IconType.Shrink : IconType.Enlarge)" OnClick="OnResize.InvokeAsync" IconSize="IconSize.Xl" />
+                }
+            </Actions>
+
+            <Columns>
+                <Column Title="@Loc["AnalyticalRunDetailsPage_RequestId"]" Property="@(item => item!.SampleId)" QuickFilter="true" Sortable="true">
+                    @if (context.RequestId != null)
+                    {
+                        <PhHrefLink Href="@($"{PageRoute.SampleDetails.Default}/{context.RequestId}")">@context.SampleIdDisplay</PhHrefLink>
+                    }
+                    else
+                    {
+                        @context.SampleIdDisplay
+                    }
+                </Column>
+                <Column Title="@Loc["AnalyticalRunDetailsPage_TestType"]" Property="@(item => item!.ResultType)" QuickFilter="true" Sortable="true" MultiSelectFilterItems="_resultTypeDict">
+                    @context.ResultType.ToLocalizedString("AnalyticalRunDetailsPage")
+                </Column>
+                <Column Title="@Loc["AnalyticalRunDetailsPage_TestName"]" Property="@(item => item!.TestName)" Sortable="true">
+                    <PhHrefLink OnClick="@(() => OpenDetailsView(context))">@context.TestName</PhHrefLink>
+                </Column>
+                <Column Title="@Loc["AnalyticalRunDetailsPage_Replicates"]" Property="@(item => item!.NumberOfReplicates)" />
+                <Column Title="@Loc["AnalyticalRunDetailsPage_Response"]" Property="@(item => item!.MeanResponseAsText)" Sortable="true" Align="ColumnAlignEnum.Right" />
+                <Column Title="@Loc["AnalyticalRunDetailsPage_Concentration"]" Property="@(item => item!.MeanConcentrationAsText)" Sortable="true" Align="ColumnAlignEnum.Right">
+                    @GetConcentrationText(context)
+                </Column>
+                <Column Title="@Loc["AnalyticalRunDetailsPage_Class"]" Property="@(item => item!.Class)" Sortable="true" />
+                <Column Title="@Loc["AnalyticalRunDetailsPage_CutOff"]" Property="@(item => item!.CutOff)" Sortable="true" />
+                <Column Title="@Loc["AnalyticalRunDetailsPage_Quotient"]" Property="@(item => item!.MeanQuotientAsText)" Sortable="true" Align="ColumnAlignEnum.Right">
+                    @context.MeanQuotientAsText.FormatDecimalForDisplay()
+                </Column>
+                <Column Title="@Loc["AnalyticalRunDetailsPage_Status"]" Property="@(item => item!.Status)" QuickFilter="true" Sortable="true" MultiSelectFilterItems="_statusDict">
+                    <PhStatus Text="@context.Status.ToLocalizedString("TestResultDetails")" Status="@GetStatusSymbol(context.Status)" OnClick="@GetStatusClickCallback(context)" />
+                </Column>
+                <Column Title="@Loc["AnalyticalRunDetailsPage_Measured"]" Property="@(item => item!.MeasurementDateTime)" Sortable="true">
+                    <PhDateTime DateToShow="@context.MeasurementDateTime" />
+                </Column>
+                <Column Title="@Loc["AnalyticalRunDetailsPage_Dilution"]" Property="@(item => item!.TotalDilution)" Sortable="true" />
+                <Column Title="@Loc["AnalyticalRunDetailsPage_Comment"]" Property="@(item => item.Comment)" />
+            </Columns>
+        </PhDataGrid>
+    </ChildContent>
+
+    <Buttons>
+        @if (HasApproveRejectPermission)
+        {
+            <PhButton Disabled="@(IsApproveDisable)" OnClick="HandleApproveResults">
+                @Loc["AnalyticalRunDetailsPage_Approve"]
+            </PhButton>
+            <PhButton Disabled="@(IsRejectDisable)" OnClick="HandleRejectResults">
+                @Loc["AnalyticalRunDetailsPage_Reject"]
+            </PhButton>
+        }
+
+        @if (ShowReflexButton && HasApproveRejectPermission)
+        {
+            <PhButton Disabled="@(IsPendingReflexDisable)" OnClick="AddPendingReflexTests">
+                @Loc["AnalyticalRunDetailsPage_AddPendingReflexTests"]
+            </PhButton>
+        }
+
+        @if (IsServiceRole || (HasApproveRejectPermission && IsRndMode))
+        {
+            <PhButton Disabled="!IsResetEnabled" OnClick="HandleResetResults">
+                @Loc["AnalyticalRunDetailsPage_ResetTests"]
+            </PhButton>
+        }
+    </Buttons>
+</PhDockedButtonRow>

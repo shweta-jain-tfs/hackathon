@@ -1,0 +1,31 @@
+@use '../abstracts/colors';
+@use '../abstracts/spacing';
+@use '../abstracts/size';
+@use '../abstracts/typography' as text;
+@use '../abstracts/rounded';
+
+.bottle-drawer-view {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 1528px;
+    padding: spacing.$padding-md spacing.$padding-xxl;
+    @include rounded.rounded;
+
+    &--open {
+        background: colors.$background-secondary;
+    }
+
+    &__drawer-front {
+        min-width: 1528px;
+        height: 16px;
+        background: colors.$drawer-front;
+        @include rounded.rounded;
+    }
+
+    &__bottom-text {
+        text-align: center;
+        color: colors.$text-hint;
+        @include text.body1;
+    }
+}

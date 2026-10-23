@@ -1,0 +1,460 @@
+﻿<div class="@CssClassItems" style="width:@(ChartWidth)px; height:@(ChartHeight)px" >
+    <svg viewBox="@_viewboxLeft.ToInvariantString()
+            @_viewboxTop.ToInvariantString()
+            @_viewboxWidth.ToInvariantString()
+            @_viewboxHeight.ToInvariantString()"
+        preserveAspectRatio="xMidYMid meet">
+
+        @* Compensate for SVG Y axis pointing downwards *@
+        <g transform="scale(1,-1)">
+
+            @* Area for capturing touch and mouse events (pan & zoom)*@
+            <g class="ph-chartbase-linear__touch-area" id="ChartTouchArea"
+                @ontouchstart="OnTouchStart"
+                @ontouchend="OnTouchEnd"
+                @ontouchmove="OnTouchMove"
+                @onmousemove="OnMouseMove"
+                @onmousewheel="OnMouseWheel">
+
+                @* Rectangle spanning the interactive area (in case nothing is drawn in part of the area)  *@
+                <rect x="0" y="0" width="@_chartInnerWidth.ToInvariantString()" height="@_chartInnerHeight.ToInvariantString()" />
+
+                @* Regions need to be receptive to pan & zoom events *@
+                @foreach (var region in Content.OfType<Regions>())
+                {
+                    RenderRegions(region);
+                }
+            </g>
+
+            @{
+                // Horizontal line positions used for preventing overlapping labels
+                var allLinePositions = Content.OfType<HorizontalLine>().Select(L => (L.Value - DataRangeYMin) * _scaleY).ToList();
+                var allPoints = Content.OfType<Points>().ToList();
+                var firstPoint = allPoints.FirstOrDefault();
+
+                foreach (var item in Content)
+                {
+                    switch (item)
+                    {
+                        case HorizontalAxis a:
+                            RenderHorizontalAxis(a, firstPoint);
+                            break;
+
+                        case VerticalAxis a:
+                            RenderVerticalAxis(a);
+                            break;
+
+                        case HorizontalLine l:
+                            RenderHorizontalLine(l, allLinePositions);
+                            break;
+
+                        case VerticalLine l:
+                            RenderVerticalLine(l);
+                            break;
+
+                        case Border b:
+                            RenderBorder(b);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
+                //Render points after all other elements to ensure they are on top
+                var firstRegion = Content.OfType<Regions>().FirstOrDefault();
+
+                foreach (var item in allPoints)
+                {
+                    RenderPoints(item, firstRegion);
+                }
+            }
+        </g>
+
+        <defs>
+            <marker id="arrow" viewBox="0 -5 15 10" refX="5" refY="0" markerWidth="10" markerHeight="10" orient="auto">
+                <path d="M0,-5L15,0L0,5" class="arrowHead"></path>
+            </marker>
+
+            @{
+                void RenderHorizontalAxis(HorizontalAxis axis, Points? points)
+                {
+                    // Axis line
+                    <line class="ph-chartbase-linear__axis-line--horizontal" 
+                    x1="0" 
+                    y1="0"
+                    x2="@_chartInnerWidth.ToInvariantString()"
+                    y2="0"/>   
+
+                    // Axis label
+                    <text>
+                        <text class="ph-chartbase-linear__axis-label--horizontal" 
+                        transform="scale(1,-1)"
+                        x="@_chartInnerWidth.ToInvariantString()"
+                        y="70">
+                            @axis.Label
+                        </text>
+                    </text>
+
+                    // Axis ticks and values (time)
+                    if (points == null)
+                    {
+                        return;    
+                    }
+
+                    var margin = 50;
+                    double latestPotentialDrawPos = double.MaxValue;
+
+                    for (var i = points.PointList.Count-1; i >= 0; i--)
+                    {
+                        double currentPos = (PointIndexToRatio(i) - _visibleRangeMin) * _scaleX;
+
+                        if (latestPotentialDrawPos - currentPos > 2 * margin)
+                        {
+                            latestPotentialDrawPos = currentPos;
+
+                            if (currentPos > _chartInnerWidth - margin)
+                            {
+                                continue;
+                            }
+
+                            if (currentPos < margin)
+                            {
+                                break;
+                            }
+
+                            <line class="ph-chartbase-linear__axis-tick"
+                            x1="@currentPos.ToInvariantString()"
+                            y1="0"
+                            x2="@currentPos.ToInvariantString()"
+                            y2="-10" />
+
+                            var currentTime = points.PointList.Values[i][0].X.DateTime;
+                            var dateText = string.Format("{0}", currentTime.ToShortDateString());
+                            var timeText = string.Format("{0}", currentTime.ToLongTimeString());
+
+                            <text>
+                                <text class="ph-chartbase-linear__axis-tick-value--horizontal"
+                                transform="scale(1,-1)"
+                                x="@currentPos.ToInvariantString()"
+                                y="26">
+                                    @dateText
+
+                                    <tspan x="@currentPos.ToInvariantString()" dy="1.5em">
+                                        @timeText
+                                    </tspan>
+                                </text>
+                            </text>
+                        }
+                    }
+                }
+
+                void RenderVerticalAxis(VerticalAxis axis)
+                {
+                    // Axis arrow
+                    <line class="ph-chartbase-linear__axis-line--vertical" 
+                    x1="0" 
+                    y1="0" 
+                    x2="0"
+                    y2="@_chartInnerHeight.ToInvariantString()"/>
+
+                    // Axis label
+                    <text>
+                        <text class="ph-chartbase-linear__axis-label--vertical" 
+                        transform="scale(1,-1)" 
+                        x="-40"
+                        y="-@((_chartInnerHeight + 20).ToInvariantString())">
+                            @axis.Label
+                        </text>
+                    </text>
+
+                    // Ticks
+                    double nextPos = 0;
+                    var tickNumber = 0;
+                    var totalTickNumber = 0;
+                    while (nextPos <= _chartInnerHeight)
+                    {
+                        var renderValue = axis.DrawValues && (nextPos == 0 || tickNumber == axis.ValueEveryNTicks);
+                        var markerPos = nextPos.ToInvariantString();
+
+                        if (axis.DrawTicks)
+                        {
+                            var tickStartX = renderValue ? -10 : 0;
+
+                            <line class="ph-chartbase-linear__axis-tick" 
+                            x1="@tickStartX" 
+                            y1="@markerPos" 
+                            x2="0" 
+                            y2="@markerPos"/>
+                        }
+
+                        // ...with labels
+                        if (renderValue)
+                        {
+                            var valueText = (DataRangeYMin + totalTickNumber * axis.TickDistance).ToString("#0.##");
+                            <text>
+                                <text class="ph-chartbase-linear__axis-tick-value--vertical" 
+                                transform="scale(1,-1)" 
+                                x="-8" y="-@markerPos">
+                                    @valueText
+                                </text>
+                            </text>
+                            tickNumber = 0;
+                        }
+                        tickNumber++;
+                        totalTickNumber++;
+
+                        nextPos += axis.TickDistance * _scaleY;
+                    }
+                }
+
+                void RenderBorder(Border border)
+                {
+                    <rect class="ph-chartbase-linear__border"
+                    x="0"
+                    y="0"
+                    width="@_chartInnerWidth.ToInvariantString()"
+                    height="@_chartInnerHeight.ToInvariantString()"/>
+                }
+
+                void RenderPoints(Points points, Regions? regions)
+                {
+                    var maxY = (DataRangeYMax - DataRangeYMin) * _scaleY;
+
+                    // store ready-to-draw points for prioritized rendering
+                    var drawablePoints = new List<(string className, PointState state, double x, double y, bool selected, bool active, bool small, Point p)>();
+
+                    foreach (var pList in points.PointList.Where(P => TimeToRatio(P.Value[0].X) >= _visibleRangeMin && TimeToRatio(P.Value[0].X) <= _visibleRangeMax))
+                    {
+                        foreach (var p in pList.Value)
+                        {
+                            var x = (TimeToRatio(p.X) - _visibleRangeMin) * _scaleX;
+                            var y = Math.Clamp((p.Y - DataRangeYMin) * _scaleY, 0, maxY);
+                            var className = "ph-chartbase-linear__point";
+                            PointState pointState;
+
+                            if (points.FastRendering)
+                            {
+                                pointState = PointState.fast;
+                            }
+                            else if (p.Y > DataRangeYMax)
+                            {
+                                pointState = PointState.above;
+                            }
+                            else if (p.Y < DataRangeYMin)
+                            {
+                                pointState = PointState.below;
+                            }
+                            else if (p.Status == PointStatus.normal)
+                            {
+                                pointState = PointState.normal;
+                            }
+                            else if (p.Status == PointStatus.warning)
+                            {
+                                pointState = PointState.warning;
+                            }
+                            else
+                            {
+                                pointState = PointState.alert;
+                            }
+
+                            drawablePoints.Add((className, pointState, x, y, p.Selected, p.Active, points.Small, p));
+                        }
+                    }
+
+                    // Prioritize drawing order depending on state
+                    foreach (var d in drawablePoints.Where(d => d.state == PointState.normal || d.state == PointState.fast))
+                    {
+                        <PhChartPoint ClassName="@d.className" PointState="@d.state" X="@d.x" Y="@d.y" Small="@d.small" Selected="@d.selected" Active="@d.active" ChartPointClicked="OnClickPoint" Point="@d.p" />
+                    }
+
+                    foreach (var d in drawablePoints.Where(d => d.state == PointState.warning))
+                    {
+                        <PhChartPoint ClassName="@d.className" PointState="@d.state" X="@d.x" Y="@d.y" Small="@d.small" Selected="@d.selected" Active="@d.active" ChartPointClicked="OnClickPoint" Point="@d.p" />
+                    }
+
+                    foreach (var d in drawablePoints.Where(d => d.state == PointState.alert || d.state == PointState.above || d.state == PointState.below))
+                    {
+                        <PhChartPoint ClassName="@d.className" PointState="@d.state" X="@d.x" Y="@d.y" Small="@d.small" Selected="@d.selected" Active="@d.active" ChartPointClicked="OnClickPoint" Point="@d.p" />
+                    }
+                }
+
+                void RenderHorizontalLine(HorizontalLine line, IEnumerable<double> allLinePos)
+                {
+                    var textHeight = 12;
+                    var y = (line.Value - DataRangeYMin) * _scaleY;
+
+                    if (y >= 0 && y <= _chartInnerHeight)
+                    {
+                        var xStart = line.StartX != null ? 
+                            Math.Max(0, (TimeToRatio(line.StartX.Value) - _visibleRangeMin) * _scaleX) 
+                            : line.DrawTick ? -10 : 0;
+
+                        var xEnd = line.EndX != null ? 
+                            Math.Min(_chartInnerWidth, (TimeToRatio(line.EndX.Value) - _visibleRangeMin) * _scaleX) 
+                            : _chartInnerWidth;
+
+                        var className = "ph-chartbase-linear__line--horizontal" + (line.Dashed ? "--dashed" : "");
+
+                        <line class="@className"
+                        x1="@xStart.ToInvariantString()"
+                        y1="@y.ToInvariantString()"
+                        x2="@xEnd.ToInvariantString()"
+                        y2="@y.ToInvariantString()"/>
+
+                        if (line.Label && !(allLinePos.Any(P => P > y && P - y < textHeight))) // prevent overlapping labels
+                        {
+                            var valueText = line.Value.ToString("F2");
+                            <text>
+                                <text class="ph-chartbase-linear__line-label--horizontal" 
+                                    transform="scale(1,-1)" 
+                                    x="-8"
+                                    y="-@y.ToInvariantString()">
+                                    @valueText
+                                </text>
+                            </text>
+                        }
+                    }
+                }
+
+                void RenderVerticalLine(VerticalLine line)
+                {
+                    if (TimeToRatio(line.Value) < _visibleRangeMin || TimeToRatio(line.Value) > _visibleRangeMax)
+                    {
+                        return;
+                    }
+
+                    var yStart = line.Label ? -10 : 0;
+                    var x = ((TimeToRatio(line.Value) - _visibleRangeMin) * _scaleX).ToInvariantString();
+
+                    var className = "ph-chartbase-linear__line--vertical" + (line.Dashed ? "--dashed" : "");
+
+                    <line class="@className"
+                        x1="@x" 
+                        y1="@yStart" 
+                        x2="@x" 
+                        y2="@_chartInnerHeight"/>
+
+                    if (line.Label) // Is this needed? In that case we must handle overlapping labels.
+                    {
+                        var valueText = line.Value.ToString("F2");
+                        <text>
+                            <text class="ph-chartbase-linear__line-label--vertical"
+                                transform="scale(1,-1)" 
+                                x="@x" 
+                                y="30">
+                                @valueText
+                            </text>
+                        </text>
+                    }
+                }
+
+                void RenderRegions(Regions regions)
+                {
+                    foreach (var r in regions.RegionList)
+                    {
+                        var startRatio = TimeToRatio(r.Start);
+                        var endRatio = TimeToRatio(r.End);
+
+                        if (endRatio < _visibleRangeMin || startRatio > _visibleRangeMax)
+                        {
+                            continue;
+                        }
+
+                        var start = startRatio < _visibleRangeMin ? _visibleRangeMin : startRatio;
+                        var end = endRatio > _visibleRangeMax ? _visibleRangeMax : endRatio;
+
+                        var left = ((start - _visibleRangeMin) * _scaleX).ToInvariantString();
+                        var width = ((end - start) * _scaleX).ToInvariantString();
+
+                        // upper alert
+                        var y = (r.UpperAlert - DataRangeYMin) * _scaleY;
+                        var height = _chartInnerHeight - y;
+                        if (y < _chartInnerHeight && y + height > 0)
+                        {
+                            y = Math.Clamp(y, 0, _chartInnerHeight); 
+                            height = Math.Clamp(height, 0, _chartInnerHeight - y);
+                            <rect class="ph-chartbase-linear__region--alert"
+                                x="@left"
+                                y="@y.ToInvariantString()"
+                                width="@width"
+                                height="@height.ToInvariantString()"/>
+                        }
+
+                        // upper warning
+                        y = (r.UpperWarning - DataRangeYMin) * _scaleY;
+                        height = (r.UpperAlert - r.UpperWarning) * _scaleY;
+                        if (y < _chartInnerHeight && y + height > 0)
+                        {
+                            if (y < 0)
+                            {
+                                height = Math.Clamp(height + y, 0, _chartInnerHeight - y);
+                                y = 0;
+                            }
+                            else
+                            {
+                                y = Math.Clamp(y, 0, _chartInnerHeight);
+                                height = Math.Clamp(height, 0, _chartInnerHeight - y);
+                            }
+                            <rect class="ph-chartbase-linear__region--warning"
+                                x="@left"
+                                y="@y.ToInvariantString()"
+                                width="@width"
+                                height="@height.ToInvariantString()"/>
+                        }
+
+                        // lower warning
+                        y = (r.LowerAlert - DataRangeYMin) * _scaleY;
+                        height = (r.LowerWarning - r.LowerAlert) * _scaleY;
+                        if (y < _chartInnerHeight && y + height > 0)
+                        {
+                            if (y < 0)
+                            {
+                                height = Math.Clamp(height + y, 0, _chartInnerHeight - y);
+                                y = 0;
+                            }
+                            else
+                            {
+                                y = Math.Clamp(y, 0, _chartInnerHeight);
+                                height = Math.Clamp(height, 0, _chartInnerHeight - y);
+                            }
+                            <rect class="ph-chartbase-linear__region--warning"
+                                x="@left"
+                                y="@y.ToInvariantString()"
+                                width="@width"
+                                height="@height.ToInvariantString()"/>
+                        }
+            
+                        // lower alert
+                        y = 0;
+                        height = (r.LowerAlert - DataRangeYMin) * _scaleY;
+                        if (r.LowerAlert > DataRangeYMin)
+                        {
+                            height = Math.Clamp(height, 0, _chartInnerHeight);
+                            <rect class="ph-chartbase-linear__region--alert"
+                                x="@left"
+                                y="@y.ToInvariantString()"
+                                width="@width"
+                                height="@height.ToInvariantString()"/>
+                        }
+                    }
+                }
+            }
+        </defs>
+    </svg>
+</div>
+
+<script>
+    // Helper function that gets element position, used for calculating click coordinates within the chart.
+    window.getElementCoordinates = (elementId) => {
+        var element = document.getElementById(elementId);
+        if (element) {
+            var rect = element.getBoundingClientRect();
+            return {
+                x: rect.left + window.scrollX,
+                y: rect.top + window.scrollY
+            };
+        }
+        return null;
+    };
+</script>

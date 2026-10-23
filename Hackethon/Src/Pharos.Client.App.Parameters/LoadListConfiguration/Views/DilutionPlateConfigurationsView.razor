@@ -1,0 +1,42 @@
+﻿@using Pharos.Client.Common.App.Views.ReagentShapeColor
+@using Pharos.Common.Web.Models.DataGrid
+@inherits LoadListConfigurationsView
+
+@if (!string.IsNullOrEmpty(SelectedInstrument))
+{
+    <PhDockedButtonRow>
+        <ChildContent>
+            <PhDataGrid @ref="DataGrid"
+                        ItemsProvider="@(request => ViewModel.ProvideGridItems(request, SelectedInstrument, LoadListItemType.DilutionPlate))"
+                        SelectionType="SelectionTypeEnum.MultiSelectWithSelectAll"
+                        TableTitle="@Loc["DilutionPlateConfigurationsView_Title"]"
+                        TGridItem="LoadListConfiguration"
+                        HeaderSize="HeaderSizeEnum.PartOfPage"
+                        RowType="RowTypeEnum.LinesBetweenRows"
+                        StateID=""
+                        DefaultSortDirection="SortDirection.Ascending"
+                        DefaultSortColumn="@nameof(LoadListConfiguration.FriendlyName)"
+                        OnSelectedItemsChanged="SelectedConfigurationsChanged">
+                <Columns>
+                    <Column Title="@Loc["LoadListLevels_DilutionPlateName"]" Property="@(x => x.FriendlyName)">
+                        <PhHrefLink OnClick="@(() => OpenEditRefillLevelsModal(context))">
+                            <ReagentShapeColorView Colors="context.Colors" Name="@context.FriendlyName" Shape="context.Shape"/>
+                        </PhHrefLink>
+                    </Column>
+                    <Column Title="@Loc["LoadListLevels_RefillLevel"]" Property="@(x => x.RefillLevel)" Align="ColumnAlignEnum.Left">
+                        @context.RefillLevel wells
+                    </Column>
+                    <Column Title="@Loc["LoadListLevels_TriggerLevel"]" Property="@(x => x.TriggerLevel)" Align="ColumnAlignEnum.Left">
+                        @context.TriggerLevel wells
+                    </Column>
+                </Columns>
+            </PhDataGrid>
+        </ChildContent>
+        <Buttons>
+            <PhButton Disabled="_selectedConfigurations is { Count: 0 }" Type="ButtonType.Secondary" OnClick="@(() => OpenEditRefillLevelsModal())">
+                @Loc["LoadListLevels_Edit"]
+            </PhButton>
+        </Buttons>
+
+    </PhDockedButtonRow>
+}

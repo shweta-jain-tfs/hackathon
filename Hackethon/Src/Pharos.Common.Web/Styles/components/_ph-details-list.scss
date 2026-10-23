@@ -1,0 +1,74 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-details-list {
+    $root: &;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    row-gap: spacing.$gap-sm;
+    column-gap: spacing.$gap-xl;
+
+    @include text.body1;
+
+    &__item {
+        grid-column: span 2;
+        min-width: fit-content;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: spacing.$gap-xs;
+    }
+
+    dt {
+        color: colors.$text-hint;
+        width: max-content;
+    }
+
+    dd {
+        color: colors.$text-secondary;
+    }
+
+    &--highlighted {
+        dd {
+            color: colors.$text-primary;
+        }
+    }
+
+    &--gap-md {
+        row-gap: spacing.$gap-md;
+    }
+
+    &--gap-lg {
+        row-gap: spacing.$gap-lg;
+    }
+
+    &--2-column {
+        grid-template-columns: repeat(3, auto) 1fr;
+
+        &#{$root}--space-evenly {
+            grid-template-columns: repeat(2, auto 1fr);
+        }
+    }
+
+    &--3-column {
+        grid-template-columns: repeat(5, auto) 1fr;
+
+        &#{$root}--space-evenly {
+            grid-template-columns: repeat(3, auto 1fr);
+        }
+    }
+
+    &--aligned-values {
+        #{$root}__item {
+            grid-template-columns: subgrid;
+        }
+    }
+
+    &--text-size-body2 {
+        @include text.body2;
+    }
+
+    &--text-size-helper {
+        @include text.helper-text;
+    }
+}

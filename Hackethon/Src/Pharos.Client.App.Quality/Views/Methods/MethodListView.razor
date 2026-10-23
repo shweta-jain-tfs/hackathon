@@ -1,0 +1,49 @@
+<PhDockedButtonRow>
+    <ChildContent>
+        <PhDataGrid 
+            TableTitle="@Loc["MethodQualityList_Title"]" 
+            StateID="methods"
+            TGridItem="MethodQuality" 
+            ItemsProvider="ViewModel.ProvideGridItems"
+            RowType="RowTypeEnum.LinesBetweenRows">
+            <Columns>
+                <Column Property="@(x => x.MethodInstrumentGroupKey)" Visible="false" Grouped="true" />
+                <Column Title="@Loc["MethodQualityList_Method"]" Property="@(x => x.MethodName)" QuickFilter="true" MultiSelectFilterItems="_methodNameDict" Grouped="true">
+                    <PhHrefLink Href="@($"{PageRoute.Quality.Default}/{context.InstrumentNumber}/{context.MethodName}")">@context.MethodName</PhHrefLink>
+                </Column>
+                <Column Title="@Loc["MethodQualityList_Instrument"]"
+                    Property="@(x => x.InstrumentName)"
+                    QuickFilter="true"
+                    QuickFilterDefault="@InstrumentFilterModel.DefaultFilterValueSerial"
+                    MultiSelectFilterItems="@InstrumentFilterModel.FilterDataSourceSerial"
+                    Grouped="true" />
+                <Column Title="@Loc["MethodQualityList_ConjugateLot"]" Property="@(x => x.ConjugateLotNumber)" />
+                <Column Title="@Loc["MethodQualityList_CalibratorsExpires"]" Property="@(x => x.MeasurementDateTime)">
+                    @if (string.IsNullOrEmpty(context.ConjugateLotNumber) ||
+                         context.CurveControlsFailed == true ||
+                         context.MeasurementDateTime is null)
+                    {
+                        @Loc["MethodQualityList_NoValidCurve"]
+                    }
+                    else
+                    {
+                        var statusSymbol = GetCalibratorsExpiresSymbol(context);
+
+                        var text = GetCalibratorsExpiresText(
+                            context.ConjugateLotNumber,
+                            context.CurveControlsFailed ?? false,
+                            context.MaxNumberOfDays,
+                            context.MeasurementDateTime.Value);
+
+                        <PhStatus Text="@text" Status="statusSymbol" />
+                    }
+                </Column>
+                <Column Title="@Loc["MethodQualityList_CurrentIssues"]" Property="@(x => x.CurrentIssue)">
+                    @GetQualityIssueText(context.CurrentIssue)
+                </Column>
+            </Columns>
+        </PhDataGrid>
+    </ChildContent>
+    <Buttons>
+    </Buttons>
+</PhDockedButtonRow>

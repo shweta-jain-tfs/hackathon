@@ -1,0 +1,11 @@
+﻿@using Pharos.Common.Web.Components.ChartCard
+
+@if (ViewModel.ChartHolders is { Count: > 0 })
+{
+    @foreach (var qc in ViewModel.ChartHolders)
+    {
+        <PhChartCard Narrow="@Narrow" Status="@qc.Status" Title="@($"{qc.QualityControlName} : {qc.TestName}")" Href="@NavigateToQualityControlDetails(qc.QualityControlName, qc.TestName)">
+            <QualityControlChartView Miniature="true" Interactive="false" NrOfPoints="5" ChartComponents="@qc.ChartComponents" OuterParameters="qc.OuterParameters"/>
+        </PhChartCard>
+    }
+}

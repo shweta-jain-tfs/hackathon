@@ -1,0 +1,67 @@
+@layout ParametersLayout
+@attribute [Route(PageRoute.Parameters.PhadiaQualityControlDetails.IdParameter)]
+@attribute [Authorize(Permissions.EditTestSettings)]
+@using Pharos.Client.App.Parameters.Layout
+@using Pharos.Common.Web.Components.NavigationLock
+@using Pharos.Contracts.Security
+@inherits DetailsPageBase<Pharos.Client.App.Parameters.QualityControl.ViewModels.PhadiaQualityControlDetailViewModel, PhadiaQualityControlDetail>
+
+@if (DetailViewModel is not null)
+{
+    <PhNavigationLock Modified="@DetailViewModel.IsModified" OnSave="() => SaveChanges(true)"/>
+
+    <SectionContent SectionName="page-header">
+        <Breadcrumb Items="@Breadcrumbs"/>
+        <div class="flex gap-md">
+            <PhButton Disabled="@(!DetailViewModel.IsModified)" OnClick="DiscardChanges">@Loc["PhadiaQualityControlDetailsPage_DiscardChanges"]</PhButton>
+            <PhButton Type="ButtonType.Primary" Disabled="@(!DetailViewModel.IsModified)" OnClick="() => SaveChanges(false)">@Loc["PhadiaQualityControlDetailsPage_Save"]</PhButton>
+        </div>
+    </SectionContent>
+    
+    <PhStack Gap="StackGap.Lg">
+        @if (DetailViewModel.IsQcInTube)
+        {
+            <PhPanel>
+                <PhGrid>
+                    <PhGridColumn Span="ColumnSpan.Half">
+                        <PhInputColumn Spacing="InputSpacing.Compact">
+                            <PhDropdown TValue="int" Size="DropdownSize.MediumInputWidth" Label="@Loc["PhadiaQualityControlDetailsPage_TubeType"]" Options="@DetailViewModel.TubeDefinitions" @bind-Value="@DetailViewModel.TubeTypeId" />
+                        </PhInputColumn>
+                    </PhGridColumn>
+                </PhGrid>
+            </PhPanel>
+        }
+        <PhPanel>
+            <PhDockedButtonRow Justified="false">
+                <ChildContent>
+                    <PhDataGrid TableTitle="@Loc["PhadiaQualityControlDetailsPage_TestListView_Header"]"
+                                StateID=""
+                                TGridItem="PhadiaQualityControlTest"
+                                Items="DetailViewModel.Tests.AsQueryable()"
+                                SelectionType="SelectionTypeEnum.Off"
+                                RowType="RowTypeEnum.LinesBetweenRows">
+                        <Columns>
+                            <Column Title="@Loc["PhadiaQualityControlDetailsPage_TestListView_Method"]" Property="@(item => item!.MethodName)"/>
+                            <Column Title="@Loc["PhadiaQualityControlDetailsPage_TestListView_Test"]" Property="@(item => item!.TestName)">
+                                <PhHrefLink OnClick="@(() => EditTest(context))">@context.TestName</PhHrefLink>
+                            </Column>
+                            <Column Title="@Loc["PhadiaQualityControlDetailsPage_TestListView_Replicates"]" Property="@(item => item!.Replicates)"/>
+                            <Column Title="@Loc["PhadiaQualityControlDetailsPage_TestListView_ReplicatesCvPercentage"]" Property="@(item => item!.ReplicateCvLimit)"/>
+                            <Column Title="@Loc["PhadiaQualityControlDetailsPage_TestListView_Qualification"]" Property="@(item => item!.UseLotQualification)">
+                                @if (context.UseLotQualification)
+                                {
+                                    <span>@Loc["PhadiaQualityControlDetailsPage_TestListView_Qualification_Yes"] - @context.NumberOfTests points</span>
+                                }
+                                else
+                                {
+                                    <span>@Loc["PhadiaQualityControlDetailsPage_TestListView_Qualification_No"]</span>
+                                }
+                            </Column>
+                        </Columns>
+                    </PhDataGrid>
+                </ChildContent>
+                <Buttons/>
+            </PhDockedButtonRow>
+        </PhPanel>
+    </PhStack>
+}

@@ -1,0 +1,61 @@
+﻿@* Remember to remove the folder tempimg and images inside it from wwwroot in Pharos.Common.Web project when the desktop version is ready for test. *@
+
+<PhModalContent>
+    <Body>
+        <div class="desktop-temp m-xxl flex flex-col gap-md">
+            <h1 class="t-h1">You are accessing the Desktop version. It is not ready yet...</h1>
+
+            <h2 class="t-h2">To access the instrument screen.</h2>
+
+            <h3 class="t-h3">Start the instrument simulator</h3>
+
+            <div>
+                <b>If you have Pharos on your computer.</b><br />
+                Click on add instrument. <br />
+                You do not need to keep reading. <a onclick="@(() => NavigationManager.Refresh(true))">Just Click here.</a>
+
+            </div>
+            <div style="height:20px"></div>
+            <div class=" flex flex-col gap-md">
+                <div>
+                    <b>If you are accessing Pharos on another computer.</b> <br />Copy the name from your browsers address bar. See example below.
+                </div>
+
+                <div>Copy the name of the server in the addressbar. Marked with a rectangle in the image below.</div>
+                <div>
+                    <ul>
+                        <li>Only copy the part up until the / (forward slash)</li>
+                        <li>Or if you like in the picture have a port (the number) only copy up to the :</li>
+                    </ul>
+                </div>
+                <div>Copy the name of the server in the addressbar. Marked with a rectangle in the image below.</div>
+                <img src="/_content/Pharos.Common.Web/tempimg/BrowserAddressBar.png" />
+
+                <div>When you start the instrument simulator the host textbox usually looks like the image below.</div>
+                <img src="/_content/Pharos.Common.Web/tempimg/instrument_host.png" />
+                <div>Paste it in to the host textbox in the instrument simulator. If the pasted text has http:// or https:// before the name. Remove that part.</div>
+                <div>
+                    The host textbox should now have the name that you pasted in the host textbox marked with a red rectangle on the image below. Click on add instrument.
+                    <br /> After that <a onclick="@(() => NavigationManager.Refresh(true))">click here</a>
+                </div>
+                <img src="/_content/Pharos.Common.Web/tempimg/instrument_host_fixed.png" />
+            </div>
+        </div>
+    </Body>
+    <Footer>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => Close(ModalResult.Ok(true)))">Ok</PhButton>
+    </Footer>
+</PhModalContent>
+@code {
+    /// <summary>
+    /// Gets or sets the modal instance.
+    /// </summary>
+    [CascadingParameter] public ModalInstance Modal { get; set; } = default!;
+
+    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+
+    private async Task Close(ModalResult result)
+    {
+        await Modal.CloseAsync(result);
+    }
+}

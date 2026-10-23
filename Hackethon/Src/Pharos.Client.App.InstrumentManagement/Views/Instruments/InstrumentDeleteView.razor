@@ -1,0 +1,24 @@
+@using Pharos.Common.Web.Components.FormElements.Enums
+<PhModalContent>
+    <Body>
+        <div class="t-h2 mb-md">
+            @DisplayName
+            @if (!string.IsNullOrWhiteSpace(SerialNumber))
+            {
+                <span>(@SerialNumber)</span>
+            }
+        </div>
+
+        <div>@Loc["InstrumentsPage_DeleteDialogBody"]</div>
+        <div>@ResultsExistsText</div>
+    </Body>
+
+    <Footer>
+
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["InstrumentsPage_DeleteDialogButtonSecondary"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok()))">@Loc["InstrumentsPage_DeleteDialogButtonPrimary"]</PhButton>
+
+    </Footer>
+</PhModalContent>
+
+

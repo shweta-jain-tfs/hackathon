@@ -1,0 +1,191 @@
+@use "../abstracts/colors";
+@use "../abstracts/typography" as text;
+@use "../abstracts/spacing";
+@use "../abstracts/rounded";
+
+.ph-legend {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: spacing.$gap-xs;
+
+    &__section {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    &__section-heading {
+        @include text.body2;
+        color: colors.$text-primary;
+        padding-bottom: spacing.$padding-xs;
+        padding-left: spacing.$padding-xs;
+    }
+
+    &__section-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: flex-start;
+        box-sizing: border-box;
+        padding: spacing.$padding-xs;
+        gap: spacing.$gap-xs;
+        background: transparent;
+        cursor: default;
+        @include rounded.rounded;
+
+        &--clikable:hover {
+            cursor: pointer;
+        }
+
+        &--clikable:not(.ph-legend__item--selected):active {
+            background: colors.$legend-item-selected;
+        }
+
+        &--selected {
+            background: colors.$legend-item-selected;
+        }
+
+        &--selected:active {
+            background: colors.$legend-item-selected-pressed;
+        }
+    }
+
+    &__item-icon {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+
+        &--unload-requested {
+            position: relative;
+            min-width: 32px;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 24px;
+                height: 24px;
+                border-radius: 8px;
+                background: colors.$reagent-carrier-not-identified;
+            }
+
+            > svg {
+                position: absolute;
+                inset: -4px;
+                width: 32px;
+                height: 32px;
+            }
+        }
+    }
+
+    &__item-text {
+        @include text.body2;
+        display: flex;
+        align-items: center;
+        color: colors.$text-hint;
+        overflow-wrap: break-word;
+        word-break: break-word;
+
+        &--clickable {
+            color: colors.$text-link;
+        }
+    }
+
+    &__reagent-item {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__reagent-item-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 8px;
+        position: relative;
+
+        &--identified {
+            background: colors.$status-info;
+        }
+
+        &--not-identified {
+            background: colors.$reagent-carrier-not-identified;
+        }
+
+        svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+    &__bottle-item {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__bottle-item-icon {
+        width: 24px;
+        height: 24px;
+        position: relative;
+
+        &--in-use {
+            border: 2px solid colors.$bottle-status-in-use-border;
+            @include rounded.rounded-full;
+            background: transparent;
+            box-sizing: border-box;
+        }
+
+        &--empty {
+            background: colors.$bottle-status-empty-fill;
+            border-radius: 8px;
+        }
+    }
+
+    &__liquid-item {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        @include rounded.rounded;
+        position: relative;
+    }
+
+    &__liquid-item-icon {
+        width: 24px;
+        height: 24px;
+        position: relative;
+
+        &--in-use {
+            border: 2px solid colors.$bottle-status-in-use-border;
+            @include rounded.rounded-full;
+            background: transparent;
+            box-sizing: border-box;
+        }
+
+        &--disabled {
+            color: colors.$text-secondary;
+        }
+
+        svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}

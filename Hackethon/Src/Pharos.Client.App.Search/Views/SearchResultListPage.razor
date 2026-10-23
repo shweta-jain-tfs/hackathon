@@ -1,0 +1,35 @@
+@using Pharos.Client.App.Search.Models
+@using Pharos.Common.Web.Models.DataGrid
+@attribute [Route(PageRoute.Search.Default)]
+@attribute [Route(PageRoute.Search.SearchParameter)]
+@attribute [Authorize]
+
+<PhPage>
+    <div class="sr-only" tabindex="-1" @ref="_focusElement">
+        @SearchPageTitle
+    </div>
+
+    <PhDataGrid TableTitle="@SearchPageTitle"
+                StateID="searchresults"
+                TGridItem="SearchResultItem"
+                DefaultSortColumn="Name"
+                DefaultSortDirection="SortDirection.Ascending"
+                ItemsProvider="PageViewModel.GetSearchResult"
+                SelectionType="SelectionTypeEnum.Off">
+
+        <Columns>
+            <Column Title="Match" Property="@(x => x.Match)">
+                <PhHrefLink Href="@GetSearchResultLink(context)">@Highlight(context.Match)</PhHrefLink>
+                @if (!string.IsNullOrWhiteSpace(context.DestinationHint))
+                {
+                    <div class="t-helper-text text-hint w-full">@context.DestinationHint</div>
+                }
+            </Column>
+            <Column Title="Type" Property="@(x => x.ResultType)">
+                @context.ResultType.ToLocalizedString("SearchListPage")
+            </Column>
+            <Column Title="Module" Property="@(x => x.Module)"/>
+        </Columns>
+
+    </PhDataGrid>
+</PhPage>

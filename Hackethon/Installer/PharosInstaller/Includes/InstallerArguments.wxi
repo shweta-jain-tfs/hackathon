@@ -1,0 +1,4 @@
+﻿<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<Property Id="SECUREENCLAVESENABLED" Value="true" Secure="true" Hidden="yes" />
+	<Property Id="TESTROLLBACK" Value="false" Secure="true" />
+</Include>

@@ -1,0 +1,48 @@
+@using Pharos.Client.App.InstrumentManagement.Views.Dashboard
+@using Pharos.Client.Common.Models
+@using Pharos.Common.Web.Components.DockedButtonRow
+@using Pharos.Common.Web.Components.TrailingEdge
+@attribute [Route(PageRoute.DashboardConnections)]
+@attribute [Authorize]
+
+<PhPage>
+    <PageHeader>
+        <Breadcrumb Items="@Breadcrumbs" />
+    </PageHeader>
+    <ChildContent>
+        <div class="ph-connections-page">
+            <PhTrailingEdge Mode="TrailingEdgeDisplayMode.VerticalOnly"
+                            Fill="@IsSingleLisConnection"
+                            ContentClassNames="ph-connections-page__content">
+                <LisConnectionView />
+                <PhPanel Grow="@IsSingleLisConnection">
+                    <div style="margin-top: 30px;">
+                        <h3 class="t-h3 mb-md">LabCommunity</h3>
+                    </div>
+                    @if (ViewModel.IsLabCommunityConnectionOk)
+                    {
+                        <p>Connected</p>
+                    }
+                    else
+                    {
+                        <p>Disconnected</p>
+                    }
+                </PhPanel>
+
+                <PhPanel Grow="@IsSingleLisConnection">
+                    <div style="margin-top: 30px;">
+                        <h3 class="t-h3 mb-md">LAS</h3>
+                    </div>
+                    @if (ViewModel.IsLasConnectionOk)
+                    {
+                        <p>Connected</p>
+                    }
+                    else
+                    {
+                        <p>Disconnected</p>
+                    }
+                </PhPanel>
+            </PhTrailingEdge>
+        </div>
+    </ChildContent>
+</PhPage>

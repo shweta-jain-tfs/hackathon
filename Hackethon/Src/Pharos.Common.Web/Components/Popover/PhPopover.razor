@@ -1,0 +1,7 @@
+﻿@inherits ComponentWithClientScriptBase
+<div class="@PopoverCss" style="@AnchorStyle" @onkeydown:stopPropagation="@PreventEscapeKeyPropagation">
+    @Anchor
+    <div @ref="_popoverElement" popover id="@Id" @ontoggle="ToggleOpen" style="@PopoverAnchorStyle">
+        @Panel
+    </div>
+</div>

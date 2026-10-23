@@ -1,0 +1,98 @@
+@use "../abstracts/typography" as text;
+@use "../abstracts/colors";
+
+// Utilities follow Tailwind-style naming.
+
+// --- Semantic typography (t-*) ---
+
+.t-display1 {
+    @include text.display1;
+}
+
+.t-display2 {
+    @include text.display2;
+}
+
+.t-display3 {
+    @include text.display3;
+}
+
+.t-h1 {
+    @include text.h1;
+}
+
+.t-h2 {
+    @include text.h2;
+}
+
+.t-h3 {
+    @include text.h3;
+}
+
+.t-body1 {
+    @include text.body1;
+}
+
+.t-body2 {
+    @include text.body2;
+}
+
+.t-helper-text {
+    @include text.helper-text;
+}
+
+// --- Text formatting utilities ---
+
+.font-bold {
+    font-weight: text.$font-bold;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+// --- Text color utilities ---
+
+.text-disabled {
+    color: colors.$text-disabled;
+}
+
+.text-hint {
+    color: colors.$text-hint;
+}
+
+.text-secondary {
+    color: colors.$text-secondary;
+}
+
+.text-primary {
+    color: colors.$text-primary;
+}
+
+.text-warning {
+    color: colors.$status-validation;
+}
+
+// --- Whitespace utilities ---
+
+.whitespace-normal {
+    white-space: normal;
+}
+
+.whitespace-nowrap {
+     white-space: nowrap;
+}
+
+// For text with line breaks.
+.whitespace-pre-line {
+    white-space: pre-line;
+}
+
+// Keep line breaks and whitespace.
+.whitespace-pre-wrap {
+    white-space: pre-wrap;
+}

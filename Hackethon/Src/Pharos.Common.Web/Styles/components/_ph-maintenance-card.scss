@@ -1,0 +1,73 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-maintenance-card {
+    position: relative;
+    display: inline-grid;
+    grid-row: span 2; // align top and bottom parts of cards
+    grid-template-rows: subgrid;
+    row-gap: 0; // no gap within card
+    background-color: colors.$maintenance-card-background;
+    @include rounded.rounded;
+
+    &__top {
+        grid-row: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: spacing.$padding-xxl;
+        background: colors.$maintenance-card-image-background;
+        @include rounded.rounded-top;
+
+        > img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+    }
+
+    &__bottom {
+        grid-row: 2;
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-sm;
+        padding: spacing.$padding-md;
+        color: colors.$text-primary;
+        @include text.helper-text;
+    }
+
+    &__title {
+        @include text.body1;
+        text-align: center;
+
+        &::after {
+            content: "";
+            display: block;
+            position: absolute;
+            inset: 0;
+        }
+    }
+
+    &__label {
+        color: colors.$text-hint;
+        @include text.helper-text;
+    }
+
+    &__date {
+        flex: 1;
+        @include text.body2;
+    }
+
+    &__time {
+        text-wrap: nowrap;
+    }
+
+    &__footer {
+        margin-top: auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: spacing.$gap-gutter;
+    }
+}

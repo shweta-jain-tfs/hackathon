@@ -1,0 +1,9 @@
+﻿@typeparam TGridItem
+@typeparam TProp
+@inherits PhQuickColumnFilter<Pharos.Common.Web.Components.DataGrid.Filters.Models.StringColumnFilter<TGridItem, TProp>, TGridItem, TProp>
+
+<PhFilterTextBox
+    Placeholder="@ColumnFilter.Column.EffectiveFilterTitle"
+    @bind-Value="ColumnValue"
+    UiName="@($"filter-{ColumnFilter.PropertyName}")"
+    MaxLength="@MaxLength" />

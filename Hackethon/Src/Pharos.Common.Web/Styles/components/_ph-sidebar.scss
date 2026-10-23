@@ -1,0 +1,45 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+
+.ph-sidebar {
+    $root: &;
+    --ph-sidebar-spacing: none;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-top: var(--ph-sidebar-spacing);
+    background-color: colors.$background-secondary;
+
+    &__header {
+        padding-block: spacing.$padding-sm;
+        padding-inline: spacing.$padding-md;
+    }
+
+    &__main {
+        position: relative; // for sub menu panel
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: spacing.$padding-sm;
+    }
+
+    &__footer {
+        border-top: var(--ph-sidebar-spacing);
+        padding-block: spacing.$padding-sm;
+    }
+
+    &--spaced {
+        --ph-sidebar-spacing: #{spacing.$gap-xs} solid #{colors.$background-primary};
+    }
+
+    &--scroll {
+        #{$root}__main {
+            min-height: 0;
+        }
+
+        #{$root}__main-scroll {
+            overflow-y: auto;
+            overflow-x: clip;
+        }
+    }
+}

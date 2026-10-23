@@ -1,0 +1,11 @@
+@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhModalContent>
+    <Body>
+        <p class="text-center">@string.Format(Loc["ApproveRejectTestModal_ActionText"], SampleIdDisplay, TestName)</p>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok(ApproveRejectTestAction.Reject)))">@Loc["AnalyticalRunDetailsPage_Reject"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok(ApproveRejectTestAction.Approve)))">@Loc["AnalyticalRunDetailsPage_Approve"]</PhButton>
+    </Footer>
+</PhModalContent>

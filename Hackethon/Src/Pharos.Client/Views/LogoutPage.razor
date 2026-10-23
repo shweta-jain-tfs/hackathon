@@ -1,0 +1,9 @@
+@using Microsoft.AspNetCore.Authorization;
+
+@attribute [Route(PageRoute.Logout)]
+@attribute [Authorize]
+@layout EmptyLayout
+
+<PhLoaderContent IsLoading="true"
+                 ShowText="true"
+                 Text="Logging out" />

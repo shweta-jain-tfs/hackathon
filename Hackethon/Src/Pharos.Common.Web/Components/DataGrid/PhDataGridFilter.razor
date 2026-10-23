@@ -1,0 +1,16 @@
+﻿@typeparam TGridItem
+
+
+@if (Filters?.Any(c => c.SupportsFiltering) == true)
+{
+    foreach (var quickFilter in QuickFilterColumns)
+    {
+        <DynamicComponent Type="@quickFilter.QuickFilterComponentType"
+                            Parameters="@GenerateQuickFilterParameters(quickFilter.Filter!, new EventCallback(this, FilterChanged))" />
+    }
+
+    if (QuickFilterColumns.Count > 0)
+    {
+        <PhFilterActions OnClearAll="ClearFilter" OnResetToDefault="ResetToDefault" />
+    }
+}

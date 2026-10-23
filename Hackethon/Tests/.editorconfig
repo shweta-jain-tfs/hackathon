@@ -1,0 +1,11 @@
+# severity levels: error, warning, suggestion, silent, none, default
+
+# C# files
+[*.cs]
+dotnet_diagnostic.CA1515.severity = none
+
+# Analyzer 'Microsoft.CodeQuality.Analyzers.QualityGuidelines.DoNotPassDisposablesIntoUnawaitedTasksAnalyzer' 
+# threw an exception of type 'System.NullReferenceException' with message 'Object reference not set to an instance of an object.'.
+dotnet_diagnostic.CA2025.severity = none
+
+dotnet_diagnostic.CA1816.severity = none

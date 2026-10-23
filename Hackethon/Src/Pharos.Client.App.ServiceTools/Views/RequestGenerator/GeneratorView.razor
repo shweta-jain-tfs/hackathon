@@ -1,0 +1,33 @@
+@using Pharos.Client.App.ServiceTools.ViewModels.RequestGenerator
+@using Pharos.Common.Web.Components.Modal
+@using Pharos.Client.Common.App.Validation
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhModalContent>
+    <Body>
+        <div class="ph-request-generator">
+            <PhValidationContext @ref="_validationContext"
+                                 OnValidationStateChanged="OnValidationContextStateChanged">
+                <div class="ph-request-generator__layout">
+                    <ConfigurationView ViewModel="ViewModel" />
+
+                    <TraySettingsView ViewModel="ViewModel" />
+
+                    <TestListView TestsViewModel="ViewModel.Tests" />
+                </div>
+            </PhValidationContext>
+            <div class="ph-request-generator__action-section">
+                <PhButton Type="ButtonType.Primary"
+                          OnClick="GenerateClicked"
+                          Disabled="@(!CanGenerate)">
+                    @Loc["RequestGenerator_GenerateButton"]
+                </PhButton>
+                <PhCheckBox Label="@Loc["RequestGenerator_GenerateRealTests"]"
+                            @bind-Value="ViewModel.GenerateRealTests"
+                            Disabled="@ViewModel.IsGenerating" />
+            </div>
+            <PreviewView ViewModel="ViewModel" />
+        </div>
+    </Body>
+</PhModalContent>

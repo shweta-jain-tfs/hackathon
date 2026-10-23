@@ -1,0 +1,12 @@
+﻿<div class="@CssClass">
+    @if (ShowProgressBar)
+    {
+        <PhLoaderProgressBar Text="@Text" Percentage="@ProgressPercentage" Cancel="@OnCancel" />
+    }
+    else
+    {
+        <PhLoadingIndicator />
+        <div class="@InnerCssClass">@Text</div>
+    }
+    
+</div>

@@ -1,0 +1,117 @@
+@using Pharos.Common.Web.Components.ChartPanel
+
+@attribute [Route(PageRoute.QualityControlDetails.IdParameter)]
+@attribute [Route(PageRoute.QualityControlDetails.Default)]
+
+<PhPage>
+    <PageHeader>
+        <Breadcrumb Items="Breadcrumbs"></Breadcrumb>
+    </PageHeader>
+
+    <ChildContent>
+        @if (ShowTitleAsDropdown)
+        {
+            <PhCheckBox Label="@Loc["QualityControlDetailsPage_SideBySideView"]" @bind-Value="SideBySide"></PhCheckBox>
+        }
+
+        <PhGrid FillHeight>
+            @if (QualityControlViewModel.ChartHolders != null && QualityControlViewModel.ChartHolders.Any())
+            {
+                var leftQc = QualityControlViewModel.ChartHolders.Single(x => x.QualityControlName == QualityControlViewModel.SelectedLeftTestResult.Item1 
+                                                                              && x.TestName == QualityControlViewModel.SelectedLeftTestResult.Item2);
+                
+                if (SideBySide)
+                {
+                    var rightQc = QualityControlViewModel.ChartHolders.Single(x => x.QualityControlName == QualityControlViewModel.SelectedRightTestResult.Item1
+                                                                                   && x.TestName == QualityControlViewModel.SelectedRightTestResult.Item2);
+
+                    <PhGridColumn Span="ColumnSpan.Half">
+
+                        <PhChartPanel>
+
+                            <Title>
+                                <PhDropdown TValue="(string, string)" Options="@_dropdownValues" @bind-Value="@QualityControlViewModel.SelectedLeftTestResult"/>
+                            </Title>
+
+                            <Action>
+                                <PhIconButton IconType="IconType.More" IconSize="IconSize.Md"></PhIconButton>
+                            </Action>
+
+                            <Chart>
+                                <QualityControlChartView Miniature="false" Interactive="true" NrOfPoints="20"
+                                                         OuterParameters="leftQc.OuterParameters"
+                                                         ChartComponents="leftQc.ChartComponents"/>
+                            </Chart>
+
+                            <Footer>
+                                <QualityControlDetailsTableView QcTestResults="leftQc.TestResults"/>
+                            </Footer>
+
+                        </PhChartPanel>
+                    </PhGridColumn>
+
+                    <PhGridColumn Span="ColumnSpan.Half">
+
+                        <PhChartPanel>
+
+                            <Title>
+                                <PhDropdown TValue="(string, string)" Options="@_dropdownValues" @bind-Value="@QualityControlViewModel.SelectedRightTestResult"/>
+                            </Title>
+
+                            <Action>
+                                <PhIconButton IconType="IconType.More" IconSize="IconSize.Md"></PhIconButton>
+                            </Action>
+
+                            <Chart>
+
+                                <QualityControlChartView Miniature="false" Interactive="true" NrOfPoints="20"
+                                                         OuterParameters="rightQc.OuterParameters"
+                                                         ChartComponents="rightQc.ChartComponents"/>
+                            </Chart>
+
+                            <Footer>
+                                <QualityControlDetailsTableView QcTestResults="rightQc.TestResults" />
+                            </Footer>
+
+                        </PhChartPanel>
+                    </PhGridColumn>
+                }
+                else
+                {
+                    <PhGridColumn Span="ColumnSpan.Full">
+                        <PhChartPanel Status=@(ShowTitleAsDropdown ? StatusType.None : leftQc.Status)>
+
+                            <Title>
+
+                                @if (ShowTitleAsDropdown)
+                                {
+                                    <PhDropdown TValue="(string, string)" Options="@_dropdownValues" @bind-Value="@QualityControlViewModel.SelectedLeftTestResult"/>
+                                }
+                                else
+                                {
+                                    @($"{leftQc.QualityControlName} : {leftQc.TestName}")
+                                }
+
+                            </Title>
+
+                            <Action>
+                                <PhIconButton IconType="IconType.More" IconSize="IconSize.Md"></PhIconButton>
+                            </Action>
+
+                            <Chart>
+                                <QualityControlChartView Miniature="false" Interactive="true" NrOfPoints="20" SingleChart="true"
+                                                         OuterParameters="leftQc.OuterParameters"
+                                                         ChartComponents="leftQc.ChartComponents"/>
+                            </Chart>
+
+                            <Footer>
+                                <QualityControlDetailsTableView QcTestResults="leftQc.TestResults"/>
+                            </Footer>
+
+                        </PhChartPanel>
+                    </PhGridColumn>
+                }
+            }
+        </PhGrid>
+    </ChildContent>
+</PhPage>

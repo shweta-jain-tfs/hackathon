@@ -1,0 +1,8 @@
+<PhPanel>
+    <div class="flex flex-col gap-md">
+        <h3 class="t-h3">@Loc["ServiceToolsPage_LoadCmrView_Header"]</h3>
+        <PhButton Disabled="@(!ViewModel.CanLoadCmr)" OnClick="OpenFileDialog">@Loc["ServiceToolsPage_LoadCmrView_LoadButton"]</PhButton>
+
+        <PhUploadFiles @ref="_uploadFiles" Accept=".csv" AllowMultipleFiles="false" OnFileUploaded="OnCmrFileSelected" />
+    </div>
+</PhPanel>

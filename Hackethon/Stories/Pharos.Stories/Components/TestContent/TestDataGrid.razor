@@ -1,0 +1,38 @@
+﻿@using Pharos.Common.Web.Components.DataGrid
+@using Pharos.Common.Web.Components.DataGrid.Columns
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Stories.MoqClasses
+@inject HttpClient httpClient
+
+<MockedUiContext>
+    <PhDataGrid StateID="" DefaultSortColumn="Firstname" TableTitle="Test data grid" TGridItem="DefaultDataGridItem" Items="_data.AsQueryable().Take(MaxItems)">
+        <Columns>
+            <Column Property="@(x => x.Id)">
+                @context.Id
+                <PhIcon IconType="IconType.Bell" Size="IconSize.Md" />
+            </Column>
+            <Column Title="Firstname" Property="@(x => x.Firstname)" />
+            <Column Title="Lastname" Property="@(x => x.Lastname)" />
+            <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" />
+        </Columns>
+    </PhDataGrid>
+</MockedUiContext>
+
+@code {
+    [Parameter] public int MaxItems { get; set; } = 9999;
+
+    private List<DefaultDataGridItem> _data = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _data = await LoadData();
+    }
+
+    private async ValueTask<List<DefaultDataGridItem>> LoadData()
+    {
+        var result = await httpClient.GetFromJsonAsync<List<DefaultDataGridItem>>("/FakeApiData/DefaultDataGrid.json");
+
+        return result!;
+    }
+
+}

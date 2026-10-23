@@ -1,0 +1,9 @@
+﻿@if (ValidationErrors.Any())
+{
+    <ul class="ph-validation-error-list">
+        @foreach (var error in ValidationErrors)
+        {
+            <li>@error</li>
+        }
+    </ul>
+}

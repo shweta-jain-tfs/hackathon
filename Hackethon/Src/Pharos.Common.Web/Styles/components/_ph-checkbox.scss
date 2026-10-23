@@ -1,0 +1,159 @@
+@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use '../abstracts/typography' as text;
+
+.ph-checkbox {
+    $root: &;
+    position: relative;
+    --_border: #{colors.$border-active};
+    --_indent: calc(#{size.$icon-sm} + #{spacing.$gap-xs});
+    --_bg: transparent;
+    --_hover-bg: #{colors.$layer-hover-01};
+    --_icon-color: #{colors.$icon-on-color-selected};
+    --_text-color: #{colors.$text-secondary};
+
+    &__label {
+        min-height: size.$hit-area-sm;
+        display: inline-flex;
+        align-items: center;
+        gap: spacing.$gap-xs;
+        color: var(--_text-color);
+        @include text.body2;
+        cursor: pointer;
+        user-select: none;
+
+        &:hover {
+            #{$root}__box {
+                background-color: var(--_hover-bg);
+            }
+        }
+
+        &:active #{$root}__box {
+            background-color: #{colors.$layer-selected-01};
+        }
+    }
+
+    input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+
+        &:focus-visible + #{$root}__box {
+            outline: 2px solid currentColor;
+            outline-offset: -2px;
+        }
+    }
+
+    &__box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+        border: 2px solid var(--_border);
+        border-radius: 4px;
+        color: var(--_icon-color);
+        background-color: var(--_bg);
+    }
+
+    &__radio-indicator {
+        width: size.$icon-xs;
+        height: size.$icon-xs;
+        border-radius: 50%;
+        background-color: colors.$icon-on-color-selected;
+    }
+
+    &__help-text,
+    &__error-text {
+        color: colors.$text-hint;
+        padding-left: var(--_indent);
+        @include text.helper-text;
+    }
+
+    &__error-text {
+        color: colors.$status-validation;
+    }
+
+    &--size-large {
+        --_indent: calc(#{size.$icon-md} + #{spacing.$gap-xs});
+
+        #{$root}__label {
+            min-height: size.$hit-area-md;
+            @include text.body1;
+        }
+
+        #{$root}__box {
+            width: size.$hit-area-xs;
+            height: size.$hit-area-xs;
+        }
+    }
+
+    &--checked {
+        --_bg: #{colors.$layer-selected-01};
+        --_hover-bg: #{colors.$layer-selected-hover};
+    }
+
+    &--radio {
+        #{$root}__box {
+            border-radius: 50%;
+        }
+    }
+
+    &--muted-border {
+        --_border: #{colors.$border-heavy-01};
+    }
+
+    &--error {
+        --_border: #{colors.$status-validation};
+    }
+
+    &--disabled {
+        --_border: #{colors.$border-disabled};
+        --_bg: transparent;
+        --_hover-bg: var(--_bg);
+        --_icon-color: #{colors.$icon-disabled-02};
+        --_text-color: #{colors.$text-disabled};
+    }
+
+    &--display-only {
+        --_border: transparent;
+        --_bg: #{colors.$layer-subtle};
+        --_hover-bg: var(--_bg);
+        --_icon-color: #{colors.$icon-secondary};
+        // label text color from disabled state is allowed to bleed through
+
+        &#{$root}--disabled {
+            --_icon-color: #{colors.$icon-disabled-02};
+        }
+
+        #{$root}__label {
+            user-select: text;
+        }
+    }
+
+    &--disabled,
+    &--display-only {
+        #{$root}__label {
+            cursor: default;
+
+            &:active #{$root}__box {
+                background-color: var(--_bg);
+            }
+        }
+    }
+
+    &--css-icon {
+        input[type="checkbox"]:checked + #{$root}__box {
+            background-image: url('data:image/svg+xml,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M22 3.14L20.36 2L8.74005 18.75L3.51001 12.7L2 14L8.91003 22L9.29004 21.46L22 3.14Z" fill="%23CCCCCC"/></svg>');
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: center center;
+        }
+
+        &:has(input:checked:not(:disabled)) {
+            --_bg: #{colors.$layer-selected-01};
+            --_hover-bg: #{colors.$layer-selected-hover};
+        }
+    }
+}

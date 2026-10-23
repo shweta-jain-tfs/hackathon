@@ -1,0 +1,35 @@
+@using Pharos.Client.Common.App.Validation
+@using Pharos.Client.App.ServiceTools.ViewModels.RequestGenerator
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.FormElements.Enums
+@attribute [Authorize]
+
+<PhModalContent>
+    <Body>
+        <PhSimpleValidationContext @ref="_validation" Model="ViewModel.EditableTest">
+            <div class="flex flex-col gap-lg">
+                <PhLabel Text="@Loc["TestEditView_TestName"]">
+                    <PhValueBox>@ViewModel.EditableTest.TestName</PhValueBox>
+                </PhLabel>
+
+                <PhLabel Text="@Loc["TestEditView_Method"]">
+                    <PhValueBox>@ViewModel.EditableTest.MethodName</PhValueBox>
+                </PhLabel>
+
+                <PhLabel Text="@Loc["TestEditView_Replicates"]" ValidationFor="() => ViewModel.EditableTest.Replicates">
+                    <PhNumberField @bind-Value="@ViewModel.EditableTest.Replicates" MaxNumberOfDigits="GeneratorViewModel.ReplicatesMaxNumberOfDigits" Size="TextBoxSize.Small" />
+                </PhLabel>
+
+                <div class="max-w-xs">
+                    <PhLabel Text="@Loc["TestEditView_InstrumentDilution"]">
+                        <PhDropdown Size="DropdownSize.SmallInputWidth" TValue="int" Options="ViewModel.InstrumentDilutionValues" @bind-Value="ViewModel.EditableTest.InstrumentDilutionFactor" />
+                    </PhLabel>
+                </div>
+            </div>
+        </PhSimpleValidationContext>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => OnClose(ModalResult.Cancel()))">@Loc["TestEditView_Button_Cancel"]</PhButton>
+        <PhButton OnClick="ValidateAndSave" Disabled="@(!IsValid())">@Loc["TestEditView_Button_Done"]</PhButton>
+    </Footer>
+</PhModalContent>

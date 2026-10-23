@@ -1,0 +1,31 @@
+<PhDockedButtonRow>
+    <ChildContent>
+        <PhDataGrid TableTitle="@Loc["LabQualityControlListView_Title"]"
+                    SelectionType="SelectionTypeEnum.MultiSelect"
+                    StateID="labQualitycontrols"
+                    TGridItem="LabQualityControl"
+                    ItemsProvider="ViewModel.ProvideGridItems"
+                    RowType="RowTypeEnum.LinesBetweenRows"
+                    OnSelectedItemsChanged="SelectedItemsChanged"
+                    @ref="_dataGrid">
+            <Columns>
+                <Column Title="Name" Property="@(x => x.Name)" Grouped="true">
+                    <PhHrefLink Href="@($"{PageRoute.Parameters.LabQualityControlDetails.Default}/{context!.Id}")">@context!.Name</PhHrefLink>
+                </Column>
+
+                <Column Title="@Loc["LabQualityControlListView_IdOnBarcode"]" Property="@(x => x.IdOnBarcode)" Grouped="true" />
+                <Column Title="@Loc["LabQualityControlListView_BarcodeFormat"]" Property="@(x => x.BarcodeFormatName)" Grouped="true" />
+                <Column Title="@Loc["LabQualityControlListView_Method"]" Property="@(x => x.MethodName)" Grouped="true" QuickFilter="true" MultiSelectFilterItems="_methodNameDict" />
+                <Column Title="@Loc["LabQualityControlListView_Test"]" Property="@(x => x.TestName)" />
+                <Column Title="@Loc["LabQualityControlListView_Enabled"]" Property="@(x => x.Enabled)" QuickFilter="true" QuickFilterDefault="true" FilterTitle="@Loc["LabQualityControlListView_EnabledOnly"]">
+                    <PhCheckBox Value="context.Enabled" ValueChanged="@(async isChecked => await ViewModel.UpdateEnabled(context.TestId, isChecked))" />
+                </Column>
+            </Columns>
+        </PhDataGrid>
+    </ChildContent>
+    
+    <Buttons>
+        <PhButton OnClick="@(Create)">@Loc["LabQualityControlListView_Add"]</PhButton>
+        <PhButton OnClick="@(DeleteSelectedItems)">@Loc["LabQualityControlListView_Delete"]</PhButton>
+    </Buttons>
+</PhDockedButtonRow>

@@ -1,0 +1,17 @@
+﻿@using Pharos.Client.Common.Localization
+@using Pharos.Common.Web.Components.Label
+
+<PhModalContent>
+    <Body>
+        <PhInputColumn Spacing="InputSpacing.Loose">
+            <PhLabel Direction="LabelDirection.Horizontal" Size="LabelSize.Body1" Text="@Loc["RolePage_DeleteDialog_Roles"]">
+                <PhValueBox Size="TextBoxSize.Medium"> @RoleNames </PhValueBox>
+			</PhLabel>
+            <p>@Loc["RolePage_DeleteDialog_DeleteInformation"]</p>
+		</PhInputColumn>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["RolePage_DeleteDialog_ButtonSecondary"]</PhButton>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok()))">@Loc["RolePage_DeleteDialog_ButtonPrimary"]</PhButton>
+    </Footer>
+</PhModalContent>

@@ -1,0 +1,64 @@
+﻿@using Pharos.Common.Web.Components.Breadcrumb
+@attribute [Stories("Components/Breadcrumbs")]
+
+<Stories TComponent="Breadcrumb">
+    <Story Name="Single item">
+        <Template>
+            <NavigationLock OnBeforeInternalNavigation="HandleBeforeInternalNavigation" />
+            <Breadcrumb Items="@breadcrumbItems.Take(1).ToList()" @attributes="context.Args" />
+        </Template>
+    </Story>
+
+    <Story Name="Two items">
+        <Template>
+            <NavigationLock OnBeforeInternalNavigation="HandleBeforeInternalNavigation" />
+            <Breadcrumb Items="@breadcrumbItems.Take(2).ToList()" @attributes="context.Args" />
+        </Template>
+    </Story>
+
+    <Story Name="More than two items">
+        <Template>
+            <NavigationLock OnBeforeInternalNavigation="HandleBeforeInternalNavigation" />
+            <Breadcrumb Items="@breadcrumbItems.Take(3).ToList()" @attributes="context.Args" />
+        </Template>
+    </Story>
+
+    <Story Name="Many items">
+        <Template>
+            <NavigationLock OnBeforeInternalNavigation="HandleBeforeInternalNavigation" />
+            <Breadcrumb Items="@breadcrumbItems" @attributes="context.Args" />
+        </Template>
+    </Story>
+
+    <Story Name="Overflow">
+        <Template>
+            <NavigationLock OnBeforeInternalNavigation="HandleBeforeInternalNavigation" />
+            <div style="border: 1px dashed; width: 400px; max-width: 100vw">
+                <Breadcrumb Items="@overflowBreadcrumbItems" @attributes="context.Args" />
+            </div>
+        </Template>
+    </Story>
+
+</Stories>
+
+@code
+{
+    List<BreadcrumbItem> breadcrumbItems = [
+        new("First page", "#first" ),
+        new("Second page", "#second"),
+        new("Third page", "#third"),
+        new("Fourth page", "#fourth"),
+        new("Fifth page", "#fifth"),
+    ];
+
+    List<BreadcrumbItem> overflowBreadcrumbItems = [
+        new("Ågyjq", "#sixth"),
+        new("ÅÄÖgyjq Overflowing item with tall and low characters that's long enough for ellipsis", "#seventh"),
+    ];
+    
+    private Task HandleBeforeInternalNavigation(LocationChangingContext args)
+    {
+        args.PreventNavigation();
+        return Task.CompletedTask;
+    }
+}

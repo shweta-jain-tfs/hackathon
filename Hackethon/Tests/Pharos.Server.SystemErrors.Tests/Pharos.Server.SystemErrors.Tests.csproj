@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Src\Pharos.Server.SystemErrors\Pharos.Server.SystemErrors.csproj" />
+    <ProjectReference Include="..\..\Src\Pharos.Server.Application.Modules\Pharos.Server.Application.Modules.csproj" />
+  </ItemGroup>
+
+</Project>

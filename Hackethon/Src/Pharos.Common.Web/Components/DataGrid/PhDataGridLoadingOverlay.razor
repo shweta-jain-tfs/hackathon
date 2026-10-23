@@ -1,0 +1,27 @@
+﻿@if (ShowOverlay)
+{
+    <div class="ph-datagrid__overlay"></div>
+}
+
+@code
+{
+    /// <summary>
+    /// Render an element indicating that the grid should be faded.
+    /// The rest is handled by CSS.
+    /// </summary>
+    /// <remarks>
+    /// On by default. Hide it when data is loaded.
+    /// </remarks>
+    private bool ShowOverlay { get; set; } = true;
+
+    public async Task Hide()
+    {
+        if (!ShowOverlay)
+        {
+            return;
+        }
+
+        ShowOverlay = false;
+        await InvokeAsync(StateHasChanged);
+    }
+}

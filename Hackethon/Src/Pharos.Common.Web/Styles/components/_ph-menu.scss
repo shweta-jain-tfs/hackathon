@@ -1,0 +1,153 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/transition";
+@use "../abstracts/typography" as text;
+
+.ph-menu {
+    --_item-hover-bg: var(--ph-menu-item-hover-bg, #{colors.$layer-hover-01});
+    --_item-padding-left: var(--ph-menu-item-padding-left, #{spacing.$padding-md});
+    $root: &;
+    display: flex;
+    flex-direction: column;
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: spacing.$gap-sm;
+        width: 100%;
+        min-height: size.$hit-area-lg;
+        padding: spacing.$padding-xs spacing.$padding-md;
+        padding-left: var(--_item-padding-left);
+        border-left: 2px solid transparent;
+        text-decoration: none;
+        color: colors.$text-secondary;
+        text-align: left;
+        @include text.body1;
+        @include transition.transition-colors;
+
+        &:hover {
+            background-color: var(--_item-hover-bg);
+        }
+
+        &:active {
+            background-color: colors.$layer-selected-01;
+        }
+
+        &:has(+ :popover-open),
+        #{$root}:not(:has(:popover-open)) &--active {
+            background-color: colors.$layer-selected-01;
+            border-color: colors.$layer-selected-03;
+
+            &:hover {
+                background-color: colors.$layer-selected-hover;
+            }
+
+            &:active {
+                background-color: colors.$layer-selected-pressed;
+            }
+        }
+
+        &:disabled,
+        &--disabled {
+            background-color: transparent;
+            color: colors.$text-disabled;
+            cursor: default;
+        }
+    }
+
+    &__notification {
+        display: flex;
+        justify-content: center;
+        padding: 2px 10px;
+        margin-left: auto;
+        background: colors.$status-info;
+        color: colors.$text-primary;
+        @include text.helper-text;
+        @include rounded.rounded-full;
+
+        &--warning {
+            background: colors.$status-warning;
+            color: colors.$text-inverse;
+        }
+
+        &--error {
+            background: colors.$status-alarm;
+        }
+    }
+
+    &__label {
+        flex-grow: 1;
+        display: flex;
+        gap: spacing.$gap-xs;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    &__label-text {
+        text-wrap: balance;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__separator {
+        display: flex;
+        align-items: center;
+        padding: 4px spacing.$padding-xs;
+        list-style: none;
+
+        // Hide invalid separators: first, last, or consecutive.
+        &:first-child,
+        &:last-child,
+        & + & {
+            display: none;
+        }
+
+        &::before {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: colors.$border-subtle-02;
+        }
+    }
+
+    &__current-submenu-item-box {
+        // Has all sub-menu items hidden. The sub-menu item that is active will be displayed.
+        &:not(:has(#{$root}__item--active)) {
+            display: none;
+        }
+
+        li {
+            display: none;
+        }
+
+        li:has(#{$root}__item--active) {
+            display: block;
+        }
+
+        #{$root}__item {
+            padding-left: spacing.$indent-single;
+        }
+    }
+
+    &--submenu {
+        #{$root}__item {
+            padding-left: spacing.$indent-single;
+        }
+
+        &:not(#{$root}--open) {
+            display: none;
+        }
+    }
+
+    &--floating {
+        min-width: size.$more-menu-width;
+
+        #{$root}__item {
+            min-height: size.$hit-area-md;
+            padding: 0 spacing.$padding-sm;
+            border: none;
+        }
+    }
+}

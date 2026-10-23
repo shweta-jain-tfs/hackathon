@@ -1,0 +1,41 @@
+﻿@using Pharos.Client.Common.App.Validation
+@using Pharos.Contracts.Security
+@using Pharos.Common.Web.Components.Label
+
+<PhModalContent>
+    <Body>
+        <PhSimpleValidationContext @ref="_validation" Model="ViewModel" OnValidationStateChanged="StateHasChanged">
+            <PhInputColumn Spacing="InputSpacing.Default">
+                <PhLabel Text="@Loc["ApplicationUsersPage_AddDialog_UserName"]"
+                         ValidationFor="@(() => ViewModel.UserName)">
+                    <PhTextBox Label="@Loc["ApplicationUsersPage_AddDialog_UserName"]" @bind-Value="ViewModel.UserName"
+                               PlaceHolder="@Loc["ApplicationUsersPage_AddDialog_UserNamePlaceholder"]"
+                               Size="TextBoxSize.Medium"
+                               MaxLength="UserContract.MaximumNameLength" />
+                </PhLabel>
+                <PhTextBox Label="@Loc["ApplicationUsersPage_AddDialog_Password"]" 
+                           @bind-Value="ViewModel.Password" 
+                           PlaceHolder="@Loc["ApplicationUsersPage_AddDialog_PasswordPlaceholder"]" 
+                           Size="TextBoxSize.Medium" 
+                           Type="TextBoxType.Password" />
+                @if (_passwordComplexityList != null && _passwordComplexityList.Any())
+                {
+                    <PhValueBox Size="TextBoxSize.Default">
+                        @foreach (var complexityString in _passwordComplexityList)
+                        {
+                            @complexityString
+                            @if (complexityString != _passwordComplexityList.Last())
+                            {
+                                <br />
+                            }
+                        }
+                    </PhValueBox>
+                }
+            </PhInputColumn>
+        </PhSimpleValidationContext>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["ApplicationUsersPage_AddDialog_ButtonSecondary"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="CloseWithResult" Disabled="@(!IsValid())">@Loc["ApplicationUsersPage_AddDialog_ButtonPrimary"]</PhButton>
+    </Footer>
+</PhModalContent>

@@ -1,0 +1,77 @@
+﻿@using Pharos.Common.Web.Contexts
+<PhButtonRow Justified="@Justified">
+    <LeftContent>
+        @if (_selectedCount > 0)
+        {
+            @($"{Strings.SelectedText} {_selectedCount}")
+        }
+        else
+        {
+            @LeftContent
+        }
+    </LeftContent>
+    <Buttons>
+        @Buttons
+    </Buttons>
+</PhButtonRow>
+
+@code {
+    /// <summary>
+    /// Cascading parameter for the parent PhDockedButtonRow component.
+    /// </summary>
+    [CascadingParameter(Name = "DockedButtonRow")]
+    public PhDockedButtonRow? DockedButtonRow { get; set; }
+    [CascadingParameter(Name = "UiContext")] public UiContext? UiContext { get; set; }
+
+    [Parameter] public string? SelectedText { get; set; }
+    [Parameter] public bool Justified { get; set; }
+    [Parameter] public RenderFragment? LeftContent { get; set; }
+    [Parameter] public RenderFragment? Buttons { get; set; }
+
+    private int _selectedCount;
+
+
+    public DataGridStrings Strings { get; set; } = DataGridStrings.Default;
+
+    protected override void OnParametersSet()
+    {
+        Strings = UiContext?.ComponentStrings.DataGrid ?? DataGridStrings.Default;
+        if (!string.IsNullOrEmpty(SelectedText))
+        {
+            Strings = Strings with
+            {
+                SelectedText = SelectedText
+            };
+        }
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && DockedButtonRow is not null)
+        {
+            // Register lightweight delegate (no EventCallback overhead)
+            DockedButtonRow.SelectedCountChanged = SelectedCountUpdate;
+        }
+    }
+
+    private void SelectedCountUpdate(int count)
+    {
+        if (_selectedCount == count)
+        {
+            return;
+        }
+        _selectedCount = count;
+        InvokeAsync(StateHasChanged); // Only this component re-renders
+    }
+
+    /// <summary>
+    /// Disposes the component and unregisters from the parent.
+    /// </summary>
+    public void Dispose()
+    {
+        if (DockedButtonRow is not null && DockedButtonRow.SelectedCountChanged == SelectedCountUpdate)
+        {
+            DockedButtonRow.SelectedCountChanged = null;
+        }
+    }
+}

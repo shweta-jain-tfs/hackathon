@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Pharos.Server.Reflex</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Src\Pharos.Server.Reflex\Pharos.Server.Reflex.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,23 @@
+@using Pharos.Client.App.Reagents.Views.Drawer
+@using Pharos.Client.App.Reagents.Views.Drawer.LoaderDetail
+
+@attribute [Route(PageRoute.Reagent)]
+@attribute [Authorize]
+
+<PhPage>
+    <ChildContent>
+        @if (!ViewModel.IsBusy)
+        {
+            <div class="reagent-page">
+                <div class="reagent-page__reagent-container">
+                    <ReagentDrawerView ViewModel="ViewModel.ReagentDrawerViewModel" LoaderSelected="OnLoaderSelected" />
+                    @if (_isReagentLoaderPanelSelected)
+                    {
+                        <ReagentLoaderPanelView Loader="ViewModel.ReagentDrawerViewModel.LoaderPanelViewModel" OnCloseClick="OnCloseClicked" />
+                    }
+                </div>
+                <ReagentLegendView ViewModel="ViewModel.ReagentLegendViewModel"></ReagentLegendView>
+            </div>
+        }
+    </ChildContent>
+</PhPage>

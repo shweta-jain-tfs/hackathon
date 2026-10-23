@@ -1,0 +1,31 @@
+﻿@using Pharos.Common.Web.Components.DetailsList
+@using Pharos.Common.Web.Components.RichText
+@using Pharos.Common.Web.Utilities
+
+<PhStack>
+    <PhRichText>
+        @if(!string.IsNullOrEmpty(ViewModel.Title))
+        {
+            <h2>@ViewModel.Title</h2>
+        }
+        @HtmlCleaner.ToCleanRichText(ViewModel.Text)
+    </PhRichText>
+
+    @if (ViewModel.NamedMessages.Count > 0)
+    {
+        <PhDetailsList Columns="2" HighlightedValues="true">
+            @foreach (var message in ViewModel.NamedMessages)
+            {
+                <PhDetailsListItem Label="@message.Name">
+                    @message.Value
+                </PhDetailsListItem>
+            }
+        </PhDetailsList>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(ViewModel.Message))
+    {
+        <p class="t-body1 mb-xl text-warning">@ViewModel.Message</p>
+    }
+
+</PhStack>

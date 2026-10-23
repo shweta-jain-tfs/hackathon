@@ -1,0 +1,62 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-reagent-shapes {
+    --_box-shadow-color: var(--ph-reagent-shape-outline, #{colors.$border-primary});
+    --_box-shadow: none;
+    display: flex;
+    align-items: center;
+    gap: spacing.$gap-xs;
+    color: inherit;
+    @include text.body2;
+
+    &--gap-sm {
+        gap: spacing.$gap-sm;
+    }
+
+    &__container {
+        display: flex;
+        width: 40px;
+        border-radius: rounded.$rounded-default;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__text-container {
+        max-width: 272px;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    &__slanted-group {
+        display: flex;
+        flex: 0 0 30px; // becomes wider after skewing
+        gap: 1.4px;
+        transform: skewX(-22.62deg);
+    }
+
+    &__shape {
+        height: 24px;
+        box-shadow: var(--_box-shadow);
+
+        &--rectangle {
+            width: 100%;
+        }
+
+        &--slanted {
+            flex: 1;
+        }
+
+        &--circle {
+            width: 24px;
+            border-radius: 50%;
+        }
+    }
+
+    &--contrast-outline {
+        --_box-shadow: inset 0 0 0 1px var(--_box-shadow-color);
+    }
+}

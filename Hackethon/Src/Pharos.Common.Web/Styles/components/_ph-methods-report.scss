@@ -1,0 +1,15 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+
+.ph-methods-report {
+    &__field-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: spacing.$gap-xl;
+    }
+
+    &__divider {
+        width: 100%;
+        border-top: 2px solid colors.$border-subtle-02;
+    }
+}

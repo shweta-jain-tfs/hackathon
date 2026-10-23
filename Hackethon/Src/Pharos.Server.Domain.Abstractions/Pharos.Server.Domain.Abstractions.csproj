@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Pharos.Server.Domain</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Pharos.Server.Mediator.Abstractions\Pharos.Server.Mediator.Abstractions.csproj" />
+	</ItemGroup>
+
+</Project>

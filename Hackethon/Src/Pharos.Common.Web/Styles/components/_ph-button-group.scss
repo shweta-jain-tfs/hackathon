@@ -1,0 +1,17 @@
+@use "../abstracts/spacing";
+
+.ph-button-group {
+    display: inline-grid;
+    grid-auto-columns: auto;
+    grid-auto-flow: column;
+    gap: spacing.$gap-gutter;
+    
+    // Allow horizontal scrolling as a last resort if buttons overflow container
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-width: 100%;
+
+    &--justified {
+        grid-auto-columns: minmax(auto, 1fr);
+    }
+}

@@ -1,0 +1,188 @@
+﻿@using Bogus
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/Dropdown")]
+
+<Stories TComponent="PhDropdown<int>">
+
+    <Story Name="InsideLabel">
+
+        <Arguments>
+            <Arg For="_ => _!.Title" Value="@_title" />
+        </Arguments>
+
+
+        <Template>
+            <PhStack>
+                <PhLabel Text="@($"Selected value: {_nullableValue}")" HelpText="Click for dropdown information">
+                    <PhDropdown @attributes="context.Args" TValue="int?" Options="_nullableDdValues" @bind-Value="@_nullableValue" />
+                </PhLabel>
+
+                <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e0e0e0;">
+                    <PhLabel Text="Status - Error State Example" 
+                             HelpText="Select a status option"
+                             ErrorText="@(_showDropdownError ? "Please select a valid status" : null)">
+                        <PhDropdown Error="_showDropdownError" @attributes="context.Args" TValue="int?" Options="_nullableDdValues" @bind-Value="@_errorDropdownValue" />
+                    </PhLabel>
+                    
+                    <div class="flex gap-md" style="margin-top: 8px;">
+                        <PhButton OnClick="() => _showDropdownError = !_showDropdownError">
+                            @(_showDropdownError ? "Clear Error State" : "Show Error State")
+                        </PhButton>
+                    </div>
+                </div>
+            </PhStack>
+        </Template>
+
+    </Story>
+
+    <Story Name="Standalone">
+
+        <Template>
+            <PhDropdown @attributes="context.Args" TValue="int" Options="_ddValues" ValueChanged="@((int v) => OnValueChanged(v))" />
+        </Template>
+
+    </Story>
+
+    <Story Name="With status symbols">
+
+        <Template>
+            <PhDropdown @attributes="context.Args" TValue="int" Options="_ddValuesWithSymbol" ValueChanged="@((int v) => OnValueChanged(v))" />
+        </Template>
+
+    </Story>
+
+    <Story Name="Sizes">
+        <Template>
+            <PhStack>
+                @foreach (DropdownSize size in Enum.GetValues(typeof(DropdownSize)))
+                {
+                    <PhLabel Text="@size.ToString()">
+                        <PhDropdown @attributes="context.Args" Options="_nullableDdValues" @bind-Value="@_nullableValue" Size="size" />
+                    </PhLabel>
+                }
+            </PhStack>
+        </Template>
+    </Story>
+
+    <Story Name="Validation">
+
+        <Template>
+            <EditForm Model="@ViewModel" Context="form" @ref="_form">
+                <pre>OnChange Value: [@ViewModel.PropertyOne]</pre>
+                <MockValidator @ref="_validator" />
+                <ValidationSummary />
+                <PhDropdown @attributes="context.Args" Options="_ddValues" @bind-Value="@ViewModel.PropertyOne" />
+                <PhLabel Text="Dropdown with a label" ValidationFor="() => ViewModel.PropertyTwo">
+                    <PhDropdown @attributes="context.Args" Options="_ddValues" @bind-Value="@ViewModel.PropertyTwo" />
+                </PhLabel>
+            </EditForm>
+            <PhButton OnClick="() => _form?.EditContext?.Validate()">Validate</PhButton>
+            <PhButton OnClick="() => _validator?.ClearErrors()">Clear errors</PhButton>
+        </Template>
+
+    </Story>
+
+    <Story Name="Help Text and Error States">
+        <Template>
+            <PhStack>
+                <PhLabel Text="Category Selection" HelpText="Choose your preferred category from the list">
+                    <PhDropdown @attributes="context.Args" TValue="int?" Options="_nullableDdValues" @bind-Value="@_categoryValue" />
+                </PhLabel>
+
+                <PhLabel Text="Priority Level" HelpText="Select the priority level for this item">
+                    <PhDropdown @attributes="context.Args" TValue="int?" Options="_nullableDdValues" @bind-Value="@_priorityValue" />
+                </PhLabel>
+
+                <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e0e0e0;">
+                    <PhLabel Text="Status - Error State Example" 
+                             HelpText="Select a status from the dropdown"
+                             ErrorText="@(_showDropdownError ? "Please select a valid status option" : null)">
+                        <PhDropdown @attributes="context.Args" 
+                                   TValue="int?" 
+                                   Options="_nullableDdValues" 
+                                   Error="_showDropdownError"
+                                   @bind-Value="@_statusValue" />
+                    </PhLabel>
+                    
+                    <div class="flex gap-md" style="margin-top: 8px;">
+                        <PhButton OnClick="() => _showDropdownError = !_showDropdownError">
+                            @(_showDropdownError ? "Clear Error State" : "Show Error State")
+                        </PhButton>
+                    </div>
+                </div>
+            </PhStack>
+        </Template>
+    </Story>
+</Stories>
+
+@code
+{
+    private List<DropDownOption<int>> _ddValues = new();
+    private List<DropDownOption<int>> _ddValuesWithSymbol = new();
+    private List<DropDownOption<int?>> _nullableDdValues = new();
+    private int _value;
+    private int? _nullableValue;
+    private int? _errorDropdownValue;
+    private int? _categoryValue;
+    private int? _priorityValue;
+    private int? _statusValue;
+    private bool _showDropdownError = false;
+    private string _title = "Pharos dropdown";
+    private Model ViewModel { get; set; } = new Model();
+    private LabelModel LabelViewModel { get; set; } = new LabelModel();
+    private EditForm? _form;
+    private MockValidator? _validator;
+
+    public class Model
+    {
+        public int PropertyOne { get; set; }
+        public int PropertyTwo { get; set; }
+    }
+
+    public class LabelModel
+    {
+        public int CategoryId { get; set; } = 1;
+    }
+
+    protected override void OnInitialized()
+    {
+        var faker = new Faker();
+
+        for (int i = 0; i < 10; i++)
+        {
+            var statusType = StatusType.None;
+            var statusTypeMax = (int)Enum.GetValues(typeof(StatusType)).Cast<StatusType>().Max();
+            if (i <= statusTypeMax)
+            {
+                statusType = (StatusType)i;
+            }
+
+            _ddValues.Add(new DropDownOption<int>()
+                {
+                    Value = i,
+                    Text = faker.Lorem.Word()
+                });
+            _ddValuesWithSymbol.Add(new DropDownOption<int>()
+            {
+                StatusType = statusType,
+                Value = i,
+                Text = faker.Lorem.Word()
+            });
+            _nullableDdValues.Add(new DropDownOption<int?>()
+            {
+                Value = i,
+                Text = faker.Lorem.Word()
+            });
+        }
+    }
+
+    private void OnValueChanged(int val)
+    {
+        _value = val;
+    }
+}

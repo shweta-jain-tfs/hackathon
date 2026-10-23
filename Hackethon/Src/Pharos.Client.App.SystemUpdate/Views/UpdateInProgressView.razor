@@ -1,0 +1,18 @@
+@using Pharos.Common.Web.Components.Modal
+@using Pharos.Common.Web.Components.Spinners
+
+<PhModalContent>
+    <Body>
+        <div class="d-flex flex-column align-items-center gap-3 text-center">
+            <div>@Loc["UpdateInProgressView_Updating"]</div>
+            <div style="margin: 1rem 0;">
+                <PhLoadingIndicator />
+            </div>
+            <ul class="text-start mb-0">
+                <li>@Loc["UpdateInProgressView_Note_InstrumentsUnavailable"]</li>
+                <li>@Loc["UpdateInProgressView_Note_InstrumentsMightRestart"]</li>
+                <li>@Loc["UpdateInProgressView_Note_Duration"]</li>
+            </ul>
+        </div>
+    </Body>
+</PhModalContent>

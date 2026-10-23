@@ -1,0 +1,8 @@
+﻿<PhPanel>
+    <div class="flex flex-col gap-md">
+        <h3 class="t-h3">@Loc["ServiceToolsPage_FlrImportView_Header"]</h3>
+        <PhButton Disabled="@ViewModel.IsImporting" OnClick="OpenFileDialog">@Loc["ServiceToolsPage_FlrImportView_ImportFlrFileButton"]</PhButton>
+			
+        <PhUploadFiles @ref="_uploadFiles" Accept=".log" OnFileUploaded="OnFlrFileChange" />
+    </div>
+</PhPanel>

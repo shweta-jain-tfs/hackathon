@@ -1,0 +1,6 @@
+@using Pharos.Common.Web.Utilities.Redirect
+
+@attribute [Route(PageRoute.UsersAndRoles.Default)]
+@attribute [Authorize(Permissions.ManageUsersAndRoles)]
+
+<RedirectTo Uri="@PageRoute.UsersAndRoles.Users" Replace />

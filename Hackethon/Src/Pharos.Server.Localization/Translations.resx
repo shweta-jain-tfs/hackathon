@@ -1,0 +1,1873 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+  <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+  <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+  <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+  </data>
+  <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+  </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ApplicationRole_administrator" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="ApplicationRole_lab_assistant" xml:space="preserve">
+    <value>Lab Assistant</value>
+  </data>
+  <data name="ApplicationRole_operator" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  <data name="ApplicationRole_RndUser" xml:space="preserve">
+    <value>R&amp;D User</value>
+  </data>
+  <data name="ApplicationRole_senior_operator" xml:space="preserve">
+    <value>Senior Operator</value>
+  </data>
+  <data name="ApplicationRole_ServiceEngineer" xml:space="preserve">
+    <value>Service Engineer</value>
+  </data>
+  <data name="AstmCommunicationRs232Settings_ConverterCommandTcpPort" xml:space="preserve">
+    <value>Converter command TCP port</value>
+  </data>
+  <data name="AstmCommunicationRs232Settings_ConverterDataTcpPort" xml:space="preserve">
+    <value>Converter data TCP port</value>
+  </data>
+  <data name="AstmCommunicationRs232Settings_ConverterIpAddress" xml:space="preserve">
+    <value>Converter IP address</value>
+  </data>
+  <data name="AstmCommunicationSettings_AstmCommunicationMode_Rs232" xml:space="preserve">
+    <value>RS-232</value>
+  </data>
+  <data name="AstmCommunicationSettings_AstmCommunicationMode_Tcp" xml:space="preserve">
+    <value>TCP/IP</value>
+  </data>
+  <data name="AstmCommunicationSettings_CommunicationMode" xml:space="preserve">
+    <value>Communication mode</value>
+  </data>
+  <data name="AstmCommunicationSettings_DelayBetweenRequestInformationRecords" xml:space="preserve">
+    <value>Delay between Request information records (seconds)</value>
+  </data>
+  <data name="AstmCommunicationSettings_EnqCompetitionTimeout" xml:space="preserve">
+    <value>ENQ competition timeout (seconds)</value>
+  </data>
+  <data name="AstmCommunicationSettings_EtxOnlyNormalFrameBlockSize" xml:space="preserve">
+    <value>ETX only normal frameblock size</value>
+  </data>
+  <data name="AstmCommunicationSettings_EtxOnlySplitLargeRecords" xml:space="preserve">
+    <value>ETX only split large records</value>
+  </data>
+  <data name="AstmCommunicationSettings_Rs232Settings" xml:space="preserve">
+    <value>RS232</value>
+  </data>
+  <data name="AstmCommunicationSettings_SendCheckInterval" xml:space="preserve">
+    <value>Send check interval (milliseconds)</value>
+  </data>
+  <data name="AstmCommunicationSettings_TcpSettings" xml:space="preserve">
+    <value>TCP-IP</value>
+  </data>
+  <data name="AstmCommunicationSettings_UseLegacyChecksumCalculation" xml:space="preserve">
+    <value>Use legacy checksum calculation</value>
+  </data>
+  <data name="AstmCommunicationSettings_UseOnlyEtx" xml:space="preserve">
+    <value>Use only ETX</value>
+  </data>
+  <data name="AstmCommunicationTcpIpSettings_HostName" xml:space="preserve">
+    <value>Host name</value>
+  </data>
+  <data name="AstmCommunicationTcpIpSettings_HostNameForSeparateExportPort" xml:space="preserve">
+    <value>Host name for separate export port</value>
+  </data>
+  <data name="AstmCommunicationTcpIpSettings_IpAddress" xml:space="preserve">
+    <value>Remote name/IP address</value>
+  </data>
+  <data name="AstmCommunicationTcpIpSettings_IpAddressForSeparateExportPort" xml:space="preserve">
+    <value>Remote name/IP address for separate export port</value>
+  </data>
+  <data name="AstmCommunicationTcpIpSettings_SocketType" xml:space="preserve">
+    <value>Socket type</value>
+  </data>
+  <data name="AstmCommunicationTcpIpSettings_SocketTypeForSeparateExportPort" xml:space="preserve">
+    <value>Socket type for separate export port</value>
+  </data>
+  <data name="AstmCommunicationTcpIpSettings_TcpPort" xml:space="preserve">
+    <value>TCP port</value>
+  </data>
+  <data name="AstmCommunicationTcpIpSettings_TcpPortForSeparateExportPort" xml:space="preserve">
+    <value>TCP port for separate export port</value>
+  </data>
+  <data name="AstmCommunicationTcpIpSettings_TcpReconnectionInterval" xml:space="preserve">
+    <value>TCP reconnection interval (milliseconds)</value>
+  </data>
+  <data name="AstmCommunicationTcpIpSettings_TcpReconnectionIntervalForSeparateExportPort" xml:space="preserve">
+    <value>TCP reconnection interval for separate export port (milliseconds)</value>
+  </data>
+  <data name="AstmCommunicationTcpIpSettings_UseSeparateExportPort" xml:space="preserve">
+    <value>Use separate export port</value>
+  </data>
+  <data name="AstmConnection_IllegalReportTypeMessage" xml:space="preserve">
+    <value>Illegal Report Types field in ASTM Test Order record.</value>
+  </data>
+  <data name="AstmConnection_InvalidOrderFieldsMessage" xml:space="preserve">
+    <value>ASTM Test Order record contains invalid fields.</value>
+  </data>
+  <data name="AstmConnection_RepeatedHeadersDiscardedMessage" xml:space="preserve">
+    <value>ASTM message contains a duplicated Header Record; previous patients/orders were discarded.</value>
+  </data>
+  <data name="AstmConnection_RepeatedHeadersKeptMessage" xml:space="preserve">
+    <value>ASTM message contains a duplicated Header Record; previous patients/orders were kept.</value>
+  </data>
+  <data name="AstmExportSettings_ExportPanelNameInOrderRecord" xml:space="preserve">
+    <value>Export panel name in order record</value>
+  </data>
+  <data name="AstmExportSettings_ExportPanelNameInOrderRecord_NotUsed" xml:space="preserve">
+    <value>Not used</value>
+  </data>
+  <data name="AstmExportSettings_ExportPanelNameInOrderRecord_Used" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="AstmExportSettings_ExportPanelNameInOrderRecord_UsedWithResultsForAllPanels" xml:space="preserve">
+    <value>Used, with results for all panels</value>
+  </data>
+  <data name="AstmExportSettings_ExportResultInOneOrderRecord" xml:space="preserve">
+    <value>Export result in one order record</value>
+  </data>
+  <data name="AstmExportSettings_IncludeLotNumbersInCommentRecord" xml:space="preserve">
+    <value>Include lot numbers in comment record</value>
+  </data>
+  <data name="AstmExportSettings_IncludeLotNumbersInCommentRecord_NotUsed" xml:space="preserve">
+    <value>Not used</value>
+  </data>
+  <data name="AstmExportSettings_IncludeLotNumbersInCommentRecord_UsedExcludingEmptyLotNumbers" xml:space="preserve">
+    <value>Used, excluding empty lot numbers</value>
+  </data>
+  <data name="AstmExportSettings_IncludeLotNumbersInCommentRecord_UsedIncludingEmptyLotNumbers" xml:space="preserve">
+    <value>Used, including empty lot numbers</value>
+  </data>
+  <data name="AstmExportSettings_IncludePendingStatusInResultRecord" xml:space="preserve">
+    <value>Include pending status in result record</value>
+  </data>
+  <data name="AstmExportSettings_IncludePendingStatusInResultRecord_NotUsed" xml:space="preserve">
+    <value>Not used</value>
+  </data>
+  <data name="AstmExportSettings_IncludePendingStatusInResultRecord_Used" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="AstmExportSettings_IncludePendingStatusInResultRecord_UsedExportSampleWhenPendingStatusChanges" xml:space="preserve">
+    <value>Used, export sample when pending status changes</value>
+  </data>
+  <data name="AstmExportSettings_IncludeProcessingErrorStatusInResultRecord" xml:space="preserve">
+    <value>Include processing error status in result record</value>
+  </data>
+  <data name="AstmExportSettings_IncludeRawDataInCommentRecord" xml:space="preserve">
+    <value>Include raw data in comment record</value>
+  </data>
+  <data name="AstmExportSettings_IncludeUserIdInCommentRecord" xml:space="preserve">
+    <value>Include user ID in comment record</value>
+  </data>
+  <data name="AstmExportSettings_IncludeUserIdInResultsRecord" xml:space="preserve">
+    <value>Include user ID in results record</value>
+  </data>
+  <data name="AstmExportSettings_OverrideInstrumentName" xml:space="preserve">
+    <value>Override instrument name</value>
+  </data>
+  <data name="AstmExportSettings_SkipExportOfPatientInformation" xml:space="preserve">
+    <value>Skip export of Patient information</value>
+  </data>
+  <data name="AstmExportSettings_SkipExportOfRequestorInformation" xml:space="preserve">
+    <value>Skip export of Requestor information</value>
+  </data>
+  <data name="AstmExportSettings_UseFourFieldsInResultReporting" xml:space="preserve">
+    <value>Use 4 fields in result reporting</value>
+  </data>
+  <data name="AstmExportSettings_UseLocalSampleIdAsLisSampleId" xml:space="preserve">
+    <value>Use local sample ID as LIS sample ID</value>
+  </data>
+  <data name="AstmImportSettings_IgnoreImportedInstrumentDilutionFactor" xml:space="preserve">
+    <value>Ignore imported instrument dilution factor</value>
+  </data>
+  <data name="AstmImportSettings_IgnoreImportedNumberOfReplicates" xml:space="preserve">
+    <value>Ignore imported number of replicates</value>
+  </data>
+  <data name="AstmImportSettings_IgnoreImportedPreDilutionFactor" xml:space="preserve">
+    <value>Ignore imported pre-dilution factor</value>
+  </data>
+  <data name="AstmImportSettings_IgnoreNonCriticalImportErrors" xml:space="preserve">
+    <value>Ignore non-critical import errors</value>
+  </data>
+  <data name="AstmImportSettings_SkipImportOfRequestorInformation" xml:space="preserve">
+    <value>Skip import of requestor information</value>
+  </data>
+  <data name="AstmImportSettings_UseLaboratoryPidAsPatientId" xml:space="preserve">
+    <value>Use laboratory PID as patient ID</value>
+  </data>
+  <data name="AstmOtherSettings_AllowExtraLongPatientComments" xml:space="preserve">
+    <value>Allow extra-long patient comments</value>
+  </data>
+  <data name="AstmOtherSettings_AskLisForQcIdentifier" xml:space="preserve">
+    <value>Ask LIS for QC identifier</value>
+  </data>
+  <data name="AstmOtherSettings_CombineRequestorAddressLinesOneToThree" xml:space="preserve">
+    <value>Combine requestor address line 1 to 3</value>
+  </data>
+  <data name="AstmOtherSettings_EncodingName" xml:space="preserve">
+    <value>Encoding name</value>
+  </data>
+  <data name="AstmOtherSettings_ExtendedLogging" xml:space="preserve">
+    <value>Extended logging</value>
+  </data>
+  <data name="AstmOtherSettings_NonUniqueOrderingPhysicianCode" xml:space="preserve">
+    <value>Non-unique ordering physician code</value>
+  </data>
+  <data name="AstmOtherSettings_PatientNameInTwoFields" xml:space="preserve">
+    <value>Patient name in 2 fields</value>
+  </data>
+  <data name="AstmSettings_CommunicationSettings" xml:space="preserve">
+    <value>Communication</value>
+  </data>
+  <data name="AstmSettings_ExportSettings" xml:space="preserve">
+    <value>Export settings</value>
+  </data>
+  <data name="AstmSettings_ImportSettings" xml:space="preserve">
+    <value>Import settings</value>
+  </data>
+  <data name="AstmSettings_Other" xml:space="preserve">
+    <value>Other settings</value>
+  </data>
+  <data name="AuditTrail_PasswordReset" xml:space="preserve">
+    <value>Password was reset</value>
+  </data>
+  <data name="AuditTrail_RequestsImported" xml:space="preserve">
+    <value>Requests imported</value>
+  </data>
+  <data name="AuditTrail_SettingsChanged" xml:space="preserve">
+    <value>System settings have changed</value>
+  </data>
+  <data name="AuditTrail_SettingsExported" xml:space="preserve">
+    <value>System settings exported by {Username}</value>
+  </data>
+  <data name="AuditTrail_SettingsImported" xml:space="preserve">
+    <value>System settings imported by {Username}</value>
+  </data>
+  <data name="AuditTrail_UserLoggedIntoPharos" xml:space="preserve">
+    <value>User {Username} logged into Pharos</value>
+  </data>
+  <data name="AuditTrail_UserLoggedOutPharos" xml:space="preserve">
+    <value>User {Username} logged out of Pharos</value>
+  </data>
+  <data name="BottleLocation_StopSolution" xml:space="preserve">
+    <value>Stop solution</value>
+  </data>
+  <data name="BottleLocation_WashAdditive" xml:space="preserve">
+    <value>Wash additive</value>
+  </data>
+  <data name="BottleLocation_WashConcentrate" xml:space="preserve">
+    <value>Wash concentrate</value>
+  </data>
+  <data name="BottomShapeType_Flat" xml:space="preserve">
+    <value>Flat</value>
+  </data>
+  <data name="BottomShapeType_UShaped" xml:space="preserve">
+    <value>U-Shaped</value>
+  </data>
+  <data name="BottomShapeType_VShaped" xml:space="preserve">
+    <value>V-Shaped</value>
+  </data>
+  <data name="CannotDeleteCurrentUser" xml:space="preserve">
+    <value>You cannot delete your user account.</value>
+  </data>
+  <data name="CannotEditBuiltInRole" xml:space="preserve">
+    <value>You cannot edit a built-in role.</value>
+  </data>
+  <data name="CannotEditStartedTest" xml:space="preserve">
+    <value>Cannot update a test that is in progress or completed.</value>
+  </data>
+  <data name="CannotRevokeManageUsers" xml:space="preserve">
+    <value>"You cannot revoke the permission to manage users from your current role."</value>
+  </data>
+  <data name="CarrierUnit" xml:space="preserve">
+    <value>tests</value>
+  </data>
+  <data name="ChangePassword_ConfirmPassword" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="ChangePassword_CurrentPassword" xml:space="preserve">
+    <value>Old password</value>
+  </data>
+  <data name="ChangePassword_NewPassword" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="ChangePassword_PasswordComplexityError" xml:space="preserve">
+    <value>Password does not fulfill password rules</value>
+  </data>
+  <data name="ChangePassword_PasswordComplexityViolation" xml:space="preserve">
+    <value>Password does not meet complexity requirements</value>
+  </data>
+  <data name="ChangePassword_PasswordDefaultMaximumLength" xml:space="preserve">
+    <value>Maximum length</value>
+  </data>
+  <data name="ChangePassword_PasswordDefaultMinimumLength" xml:space="preserve">
+    <value>Minimum length</value>
+  </data>
+  <data name="ChangePassword_PasswordDefaultRequireDigit" xml:space="preserve">
+    <value>Digit required</value>
+  </data>
+  <data name="ChangePassword_PasswordDefaultRequireLowercase" xml:space="preserve">
+    <value>Lowercase required</value>
+  </data>
+  <data name="ChangePassword_PasswordDefaultRequireNonAlphanumeric" xml:space="preserve">
+    <value>Special character required</value>
+  </data>
+  <data name="ChangePassword_PasswordDefaultRequireUppercase" xml:space="preserve">
+    <value>Uppercase require</value>
+  </data>
+  <data name="ChangePassword_PasswordRequireNoUsername" xml:space="preserve">
+    <value>Password can't contain username</value>
+  </data>
+  <data name="ChangePassword_PasswordsAreTheSame" xml:space="preserve">
+    <value>You are not allowed to use your old password.</value>
+  </data>
+  <data name="ChangePassword_PasswordsDoNotMatch" xml:space="preserve">
+    <value>Passwords do not match</value>
+  </data>
+  <data name="ChangePassword_Title" xml:space="preserve">
+    <value>Password change required</value>
+  </data>
+  <data name="CombinedDilutionFactorBelowMinimum" xml:space="preserve">
+    <value>The combined dilution factor for the test is below the allowed minimum.</value>
+  </data>
+  <data name="ConfigurationSettings" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="ConfigurationSettings_Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ConfigurationSettings_ExportSettingsToFile" xml:space="preserve">
+    <value>Export settings to file</value>
+  </data>
+  <data name="ConfigurationSettings_Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="ConfigurationSettings_ImportAndExportSettings" xml:space="preserve">
+    <value>Import and export settings</value>
+  </data>
+  <data name="ConfigurationSettings_ImportSettingsFromFile" xml:space="preserve">
+    <value>Import settings from file</value>
+  </data>
+  <data name="ConflictingEdits" xml:space="preserve">
+    <value>Found conflicting changes made outside the editor, please discard your changes and redo editing.</value>
+  </data>
+  <data name="Culture_en-US" xml:space="preserve">
+    <value>English (United States)</value>
+  </data>
+  <data name="Culture_ja-JP" xml:space="preserve">
+    <value>Japanese</value>
+  </data>
+  <data name="Culture_sv-SE" xml:space="preserve">
+    <value>Swedish</value>
+  </data>
+  <data name="DatabaseSettings" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="DatabaseSettings_AutomaticDelete" xml:space="preserve">
+    <value>Automatic data cleanup</value>
+  </data>
+  <data name="DatabaseSettings_AutomaticDelete_DeleteQualityAutomatically" xml:space="preserve">
+    <value>Delete quality data automatically</value>
+  </data>
+  <data name="DatabaseSettings_AutomaticDelete_DeleteQualityOlderThan" xml:space="preserve">
+    <value>Delete quality data older than (days)</value>
+  </data>
+  <data name="DatabaseSettings_AutomaticDelete_DeleteRequestsAutomatically" xml:space="preserve">
+    <value>Delete requests automatically</value>
+  </data>
+  <data name="DatabaseSettings_AutomaticDelete_DeleteRequestsOlderThan" xml:space="preserve">
+    <value>Delete requests not modified in the last (days)</value>
+  </data>
+  <data name="DatabaseSettings_AutomaticDelete_DeleteResultsAutomatically" xml:space="preserve">
+    <value>Delete results automatically</value>
+  </data>
+  <data name="DatabaseSettings_AutomaticDelete_DeleteResultsOlderThan" xml:space="preserve">
+    <value>Delete results older than (days)</value>
+  </data>
+  <data name="DataCapFtpSettings_AsciiMode" xml:space="preserve">
+    <value>DataCapFtpSettings_AsciiMode; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapFtpSettings_ConnectionMode" xml:space="preserve">
+    <value>DataCapFtpSettings_ConnectionMode; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapFtpSettings_ExportSubFolder" xml:space="preserve">
+    <value>DataCapFtpSettings_ExportSubFolder; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapFtpSettings_FtpDirectory" xml:space="preserve">
+    <value>DataCapFtpSettings_FtpDirectory; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapFtpSettings_LisIpAddress" xml:space="preserve">
+    <value>DataCapFtpSettings_LisIpAddress; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapFtpSettings_Password" xml:space="preserve">
+    <value>DataCapFtpSettings_Password; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapFtpSettings_SendConfirmationFile" xml:space="preserve">
+    <value>DataCapFtpSettings_SendConfirmationFile; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapFtpSettings_UserName" xml:space="preserve">
+    <value>DataCapFtpSettings_UserName; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_Code" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_Code; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_CustomFieldFlag" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_CustomFieldFlag; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_ExportLength" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_ExportLength; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_ExportParameterNumber" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_ExportParameterNumber; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_ImportLength" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_ImportLength; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_ImportParameterNumber" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_ImportParameterNumber; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_LisChannel" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_LisChannel; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_MaxLength" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_MaxLength; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_MinLength" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_MinLength; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_Name" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_Name; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_PaddingCharacter" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_PaddingCharacter; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_ParameterType" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_ParameterType; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_RequiredFlag" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_RequiredFlag; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_RightAlignedInExportFlag" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_RightAlignedInExportFlag; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataCapParameterFormatItem_VisibleInPharosFlag" xml:space="preserve">
+    <value>DataCapMessageSettings_DataCapParameterFormatItem_VisibleInPharosFlag; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_DataSectionDelimiter" xml:space="preserve">
+    <value>DataCapMessageSettings_DataSectionDelimiter; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_FixedSizeFields" xml:space="preserve">
+    <value>DataCapMessageSettings_FixedSizeFields; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_FormatDefinitions" xml:space="preserve">
+    <value>DataCapMessageSettings_FormatDefinitions; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_HeaderDelimiter" xml:space="preserve">
+    <value>DataCapMessageSettings_HeaderDelimiter; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapMessageSettings_HeaderFixedSizeFields" xml:space="preserve">
+    <value>DataCapMessageSettings_HeaderFixedSizeFields; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapOffLineSettings_ConnectionMode" xml:space="preserve">
+    <value>DataCapOffLineSettings_ConnectionMode; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapOffLineSettings_ExportDirectory" xml:space="preserve">
+    <value>DataCapOffLineSettings_ExportDirectory; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapOffLineSettings_ImportDirectory" xml:space="preserve">
+    <value>DataCapOffLineSettings_ImportDirectory; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapOffLineSettings_RootFolder" xml:space="preserve">
+    <value>DataCapOffLineSettings_RootFolder; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapOffLineSettings_UseStandardFileNaming" xml:space="preserve">
+    <value>DataCapOffLineSettings_UseStandardFileNaming; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapSettings_ExportedDirectory" xml:space="preserve">
+    <value>DataCapSettings_ExportedDirectory; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapSettings_ImportedDirectory" xml:space="preserve">
+    <value>DataCapSettings_ImportedDirectory; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapSettings_LisDataCapFtpSettings" xml:space="preserve">
+    <value>DataCapSettings_LisDataCapFtpSettings; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapSettings_LisDataCapMessageSettings" xml:space="preserve">
+    <value>DataCapSettings_LisDataCapMessageSettings; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapSettings_LisDataCapOffLineSettings" xml:space="preserve">
+    <value>DataCapSettings_LisDataCapOffLineSettings; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapSettings_OnlyResultsForApprovedTests" xml:space="preserve">
+    <value>DataCapSettings_OnlyResultsForApprovedTests; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapSettings_UseFileHeaderSection" xml:space="preserve">
+    <value>DataCapSettings_UseFileHeaderSection; UNTRANSLATED</value>
+  </data>
+  <data name="DataCapVariant_OnlineAutomatic" xml:space="preserve">
+    <value>Online Automatic</value>
+  </data>
+  <data name="DataCapVariant_OnlineManual" xml:space="preserve">
+    <value>Online Manual</value>
+  </data>
+  <data name="DataCapVariant_TcpIpFtp" xml:space="preserve">
+    <value>TCP/IP (FTP)</value>
+  </data>
+  <data name="DeletedRequest" xml:space="preserve">
+    <value>The request no longer exists.</value>
+  </data>
+  <data name="DeletedRequests" xml:space="preserve">
+    <value>The specified requests no longer exist.</value>
+  </data>
+  <data name="DeletedSetting" xml:space="preserve">
+    <value>The setting no longer exists.</value>
+  </data>
+  <data name="Drawer_LeftSampleDrawer" xml:space="preserve">
+    <value>Drawer A</value>
+  </data>
+  <data name="Drawer_RightSampleDrawer" xml:space="preserve">
+    <value>Drawer B</value>
+  </data>
+  <data name="DuplicateTubeBarcode" xml:space="preserve">
+    <value>Duplicate Tube Barcode. The Tube ID {0} already exists in a tray within a closed and locked drawer.</value>
+  </data>
+  <data name="EditingSampleIdNotAllowed" xml:space="preserve">
+    <value>Editing of Sample ID is not allowed</value>
+  </data>
+  <data name="ErrorMissingReagentsCmr" xml:space="preserve">
+    <value>Some reagents/samples needed for a custom-made run are missing.</value>
+  </data>
+  <data name="ErrorSendingRequestLimitedCompatibility" xml:space="preserve">
+    <value>Sending this request to an instrument with limited compatibility is not allowed.</value>
+  </data>
+  <data name="ErrorSendingRequestToDisconnectedInstrument" xml:space="preserve">
+    <value>Sending requests to a disconnected instrument is not allowed.</value>
+  </data>
+  <data name="ErrorStateUnreachable" xml:space="preserve">
+    <value>The instrument state is unreachable.</value>
+  </data>
+  <data name="ErrorUnexpected" xml:space="preserve">
+    <value>An unexpected error occurred.</value>
+  </data>
+  <data name="FlrImportFailed" xml:space="preserve">
+    <value>FLR file import failed.</value>
+  </data>
+  <data name="FlrImportSucceded" xml:space="preserve">
+    <value>FLR file "{0}" has been successfully imported.</value>
+  </data>
+  <data name="GelSeparationLayerDetection_Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="GelSeparationLayerDetection_OnError" xml:space="preserve">
+    <value>On, error</value>
+  </data>
+  <data name="GelSeparationLayerDetection_OnNoError" xml:space="preserve">
+    <value>On, no error</value>
+  </data>
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="GeneralSettings_ProductsSettings" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="GeneralSettings_ProductsSettings_Market" xml:space="preserve">
+    <value>Market</value>
+  </data>
+  <data name="GeneralSettings_RegionalSettings" xml:space="preserve">
+    <value>Language &amp; Formats</value>
+  </data>
+  <data name="GeneralSettings_RegionalSettings_Culture" xml:space="preserve">
+    <value>Language and region</value>
+  </data>
+  <data name="GeneralSettings_RegionalSettings_Culture_NeedsLogin" xml:space="preserve">
+    <value>Regional changes will take effect the next time you login again.</value>
+  </data>
+  <data name="GeneralSettings_RegionalSettings_TemperatureUnit" xml:space="preserve">
+    <value>Temperature unit</value>
+  </data>
+  <data name="GeneralSettings_RegionalSettings_TimeZone" xml:space="preserve">
+    <value>Time Zone</value>
+  </data>
+  <data name="HL7CommunicationSettings_DelayBetweenRequestInformationRecords" xml:space="preserve">
+    <value>Delay between request information records (seconds)</value>
+  </data>
+  <data name="HL7CommunicationSettings_SendCheckInterval" xml:space="preserve">
+    <value>Send check interval (milliseconds)</value>
+  </data>
+  <data name="HL7CommunicationSettings_TcpSettings" xml:space="preserve">
+    <value>TCP-IP Settings</value>
+  </data>
+  <data name="HL7ExportResultFormat_ORM" xml:space="preserve">
+    <value>ORM^O01</value>
+  </data>
+  <data name="HL7ExportResultFormat_ORU" xml:space="preserve">
+    <value>ORU^R01</value>
+  </data>
+  <data name="HL7ExportResultFormat_OUL" xml:space="preserve">
+    <value>OUL^R23</value>
+  </data>
+  <data name="HL7ExportSettings_ExportPanelNameInOrderRecord" xml:space="preserve">
+    <value>Export panel name in order record</value>
+  </data>
+  <data name="HL7ExportSettings_ExportResultInOneOBR" xml:space="preserve">
+    <value>Export result in one OBR</value>
+  </data>
+  <data name="HL7ExportSettings_IncludeLotNumbersInCommentRecord" xml:space="preserve">
+    <value>Include lot numbers in comment record</value>
+  </data>
+  <data name="HL7ExportSettings_IncludeRawDataInCommentRecord" xml:space="preserve">
+    <value>Include raw data in comment record</value>
+  </data>
+  <data name="HL7ExportSettings_IncludeUserIdInCommentRecord" xml:space="preserve">
+    <value>Include user ID in comment record</value>
+  </data>
+  <data name="HL7ExportSettings_ResultFormat" xml:space="preserve">
+    <value>Result format</value>
+  </data>
+  <data name="HL7ExportSettings_SkipExportOfRequestorInformation" xml:space="preserve">
+    <value>Skip export of requestor information</value>
+  </data>
+  <data name="HL7ExportSettings_UseLegacyValueForGenderAndTubeType" xml:space="preserve">
+    <value>Use legacy value for gender and tube type</value>
+  </data>
+  <data name="HL7ExportSettings_UseLocalSampleIdAsLisSampleId" xml:space="preserve">
+    <value>Use local sample ID as LIS sample ID</value>
+  </data>
+  <data name="HL7ImportSettings_SampleIdInOBX" xml:space="preserve">
+    <value>Sample ID in OBX</value>
+  </data>
+  <data name="HL7ImportSettings_SkipImportOfRequestorInformation" xml:space="preserve">
+    <value>Skip import of requestor information</value>
+  </data>
+  <data name="HL7ImportSettings_UseRequestIdAsSampleId" xml:space="preserve">
+    <value>Use request ID as Sample ID</value>
+  </data>
+  <data name="HL7OtherSettings_AllowExtraLongPatientComments" xml:space="preserve">
+    <value>Allow extra-long patient comments</value>
+  </data>
+  <data name="HL7OtherSettings_NonUniqueOrderingPhysicianCode" xml:space="preserve">
+    <value>Non-unique ordering physician code</value>
+  </data>
+  <data name="HL7Settings_CommunicationSettings" xml:space="preserve">
+    <value>Communication</value>
+  </data>
+  <data name="HL7Settings_ExportSettings" xml:space="preserve">
+    <value>Export settings</value>
+  </data>
+  <data name="HL7Settings_ImportSettings" xml:space="preserve">
+    <value>Import settings</value>
+  </data>
+  <data name="HL7Settings_Other" xml:space="preserve">
+    <value>Other settings</value>
+  </data>
+  <data name="HL7TcpSettings_RemoteNameOrIpAddress" xml:space="preserve">
+    <value>Remote name/IP address</value>
+  </data>
+  <data name="HL7TcpSettings_RemoteNameOrIpAddressForSeparateExportPort" xml:space="preserve">
+    <value>Remote name/IP address for separate export port</value>
+  </data>
+  <data name="HL7TcpSettings_SendAcknowledgeOnImportPort" xml:space="preserve">
+    <value>Send acknowledge on import port</value>
+  </data>
+  <data name="HL7TcpSettings_SocketType" xml:space="preserve">
+    <value>Socket type</value>
+  </data>
+  <data name="HL7TcpSettings_SocketTypeForSeparateExportPort" xml:space="preserve">
+    <value>Socket type for separate export port</value>
+  </data>
+  <data name="HL7TcpSettings_TcpPort" xml:space="preserve">
+    <value>TCP port</value>
+  </data>
+  <data name="HL7TcpSettings_TcpPortForSeparateExportPort" xml:space="preserve">
+    <value>TCP port for separate export port</value>
+  </data>
+  <data name="HL7TcpSettings_TcpReconnectionInterval" xml:space="preserve">
+    <value>TCP reconnection interval (milliseconds)</value>
+  </data>
+  <data name="HL7TcpSettings_TcpReconnectionIntervalForSeparateExportPort" xml:space="preserve">
+    <value>TCP reconnection interval for separate export port (milliseconds)</value>
+  </data>
+  <data name="HL7TcpSettings_UseSeparateExportPort" xml:space="preserve">
+    <value>Use separate export port</value>
+  </data>
+  <data name="InstrumentConnectedCannotBeDeleted" xml:space="preserve">
+    <value>Instrument is connected and cannot be deleted.</value>
+  </data>
+  <data name="InstrumentDeleted" xml:space="preserve">
+    <value>The instrument has been deleted.</value>
+  </data>
+  <data name="InstrumentFilter_System" xml:space="preserve">
+    <value>System</value>
+  </data>
+  <data name="InstrumentMethodNotFound" xml:space="preserve">
+    <value>The specified method is not found for the instrument.</value>
+  </data>
+  <data name="InstrumentSettings" xml:space="preserve">
+    <value>Instrument</value>
+  </data>
+  <data name="InstrumentSettings_DrawerLock" xml:space="preserve">
+    <value>Drawer lock</value>
+  </data>
+  <data name="InstrumentSettings_DrawerLock_AutoLockCompartmentTimeout" xml:space="preserve">
+    <value>Drawer lock timeout</value>
+  </data>
+  <data name="InstrumentSettings_EnableAutomaticPowerSave" xml:space="preserve">
+    <value>Enable automatic power save</value>
+  </data>
+  <data name="InstrumentSettings_MaximumWasteVolume" xml:space="preserve">
+    <value>Maximum liquid Waste filling volume</value>
+  </data>
+  <data name="InstrumentSettings_PowerSaveTimeoutMinutes" xml:space="preserve">
+    <value>Power save timeout (minutes)</value>
+  </data>
+  <data name="InstrumentSettings_Reagents" xml:space="preserve">
+    <value>Reagents</value>
+  </data>
+  <data name="InstrumentSettings_Reagents_KeepEmptyReagentsOnBoard" xml:space="preserve">
+    <value>Keep empty reagents onboard</value>
+  </data>
+  <data name="InstrumentSettings_Reagents_KeepExpiredReagentsOnBoard" xml:space="preserve">
+    <value>Keep expired reagents onboard</value>
+  </data>
+  <data name="InstrumentSettings_Rinse" xml:space="preserve">
+    <value>Rinse</value>
+  </data>
+  <data name="InstrumentSettings_Rinse_PipedInActive" xml:space="preserve">
+    <value>Piped in Rinse active now</value>
+  </data>
+  <data name="InstrumentSettings_Rinse_PipedInInstalled" xml:space="preserve">
+    <value>Piped in Rinse installed</value>
+  </data>
+  <data name="InstrumentSettings_Waste" xml:space="preserve">
+    <value>Waste</value>
+  </data>
+  <data name="InstrumentSettings_Waste_PipedOutActive" xml:space="preserve">
+    <value>Piped out Waste active now</value>
+  </data>
+  <data name="InstrumentSettings_Waste_PipedOutInstalled" xml:space="preserve">
+    <value>Piped out Waste installed</value>
+  </data>
+  <data name="IntendedMarket_China" xml:space="preserve">
+    <value>China</value>
+  </data>
+  <data name="IntendedMarket_Japan" xml:space="preserve">
+    <value>Japan</value>
+  </data>
+  <data name="IntendedMarket_Taiwan" xml:space="preserve">
+    <value>Taiwan</value>
+  </data>
+  <data name="IntendedMarket_US" xml:space="preserve">
+    <value>US</value>
+  </data>
+  <data name="IntendedMarket_Worldwide" xml:space="preserve">
+    <value>Worldwide</value>
+  </data>
+  <data name="InvalidInstrumentDilutionFactor" xml:space="preserve">
+    <value>Invalid instrument dilution factor specified for one of the tests.</value>
+  </data>
+  <data name="InvalidTestName" xml:space="preserve">
+    <value>Invalid test name specified. Check that all needed methods and tests are enabled in parameters.</value>
+  </data>
+  <data name="InvalidUsername" xml:space="preserve">
+    <value>Invalid username.</value>
+  </data>
+  <data name="Inventory_ErrorFilter" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="LabCommunitySettings" xml:space="preserve">
+    <value>LabCommunity</value>
+  </data>
+  <data name="LabCommunitySettings_Enable" xml:space="preserve">
+    <value>Enable LabCommunity</value>
+  </data>
+  <data name="LabCommunitySettings_LaboratoryCode" xml:space="preserve">
+    <value>Laboratory code</value>
+  </data>
+  <data name="LabCommunitySettings_Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="LabCommunitySettings_SendInstrumentStatus" xml:space="preserve">
+    <value>Send instrument status</value>
+  </data>
+  <data name="LabCommunitySettings_ServerAddress" xml:space="preserve">
+    <value>Server address</value>
+  </data>
+  <data name="LabCommunitySettings_UserName" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="LabNameAlreadyExists" xml:space="preserve">
+    <value>Laboratory name '{0}' already exists.</value>
+  </data>
+  <data name="LisComProtocolType_Ftp" xml:space="preserve">
+    <value>LisComProtocolType_Ftp; UNTRANSLATED</value>
+  </data>
+  <data name="LisComProtocolType_OfflineFile" xml:space="preserve">
+    <value>LisComProtocolType_OfflineFile; UNTRANSLATED</value>
+  </data>
+  <data name="LisComProtocolType_Rs232" xml:space="preserve">
+    <value>LisComProtocolType_Rs232; UNTRANSLATED</value>
+  </data>
+  <data name="LisComProtocolType_Tcp" xml:space="preserve">
+    <value>LisComProtocolType_Tcp; UNTRANSLATED</value>
+  </data>
+  <data name="LisComProtocolType_Unknown" xml:space="preserve">
+    <value>LisComProtocolType_Unknown; UNTRANSLATED</value>
+  </data>
+  <data name="LisConnectionMode_Client" xml:space="preserve">
+    <value>LisConnectionMode_Client; UNTRANSLATED</value>
+  </data>
+  <data name="LisConnectionMode_Server" xml:space="preserve">
+    <value>LisConnectionMode_Server; UNTRANSLATED</value>
+  </data>
+  <data name="LisExportCurveControlSettings_AutomaticallyWhenCCMeasured" xml:space="preserve">
+    <value>Automatically when CC measured</value>
+  </data>
+  <data name="LisExportCurveControlSettings_AutomaticallyWhenRunApprovedOrRejected" xml:space="preserve">
+    <value>Automatically when run approved or rejected</value>
+  </data>
+  <data name="LisExportCurveControlSettings_CheckWhenManuallyExportingSamples" xml:space="preserve">
+    <value>Check when manually exporting samples</value>
+  </data>
+  <data name="LisExportCurveControlSettings_ExportCurveControls" xml:space="preserve">
+    <value>Export curve controls</value>
+  </data>
+  <data name="LisExportQualityControlSettings_AutomaticallyWhenQCMeasured" xml:space="preserve">
+    <value>Automatically when QC measured</value>
+  </data>
+  <data name="LisExportQualityControlSettings_AutomaticallyWhenRunApprovedOrRejected" xml:space="preserve">
+    <value>Automatically when run approved or rejected</value>
+  </data>
+  <data name="LisExportQualityControlSettings_CheckWhenManuallyExportingSamples" xml:space="preserve">
+    <value>Check when manually exporting samples</value>
+  </data>
+  <data name="LisExportQualityControlSettings_ExportQualityControls" xml:space="preserve">
+    <value>Export quality controls</value>
+  </data>
+  <data name="LisExportSampleSettings_AutomaticSampleExport" xml:space="preserve">
+    <value>Automatic sample export</value>
+  </data>
+  <data name="LisExportSampleSettings_AutomaticSampleExport_NotUsed" xml:space="preserve">
+    <value>Not used</value>
+  </data>
+  <data name="LisExportSampleSettings_AutomaticSampleExport_WhenSampleIsApprovedOrRejected" xml:space="preserve">
+    <value>When sample is approved/rejected</value>
+  </data>
+  <data name="LisExportSampleSettings_AutomaticSampleExport_WhenTestIsApprovedOrRejected" xml:space="preserve">
+    <value>When test is approved/rejected</value>
+  </data>
+  <data name="LisExportSampleSettings_DeleteSamplesAfterExport" xml:space="preserve">
+    <value>Delete samples after export</value>
+  </data>
+  <data name="LisExportSampleSettings_DuringRetestIncludeNewResults" xml:space="preserve">
+    <value>During retest, include new results</value>
+  </data>
+  <data name="LisExportSampleSettings_DuringRetestIncludeRejectedResults" xml:space="preserve">
+    <value>During retest, include rejected results</value>
+  </data>
+  <data name="LisExportSampleSettings_ExportTestsInAlphabeticalOrder" xml:space="preserve">
+    <value>Export tests in alphabetical order</value>
+  </data>
+  <data name="LisExportSampleSettings_IncludeLocallyEnteredSamples" xml:space="preserve">
+    <value>Include locally entered samples</value>
+  </data>
+  <data name="LisExportSampleSettings_IncludeOtherTestsInAutomaticExports" xml:space="preserve">
+    <value>Include other tests in automatic exports</value>
+  </data>
+  <data name="LisExportSampleSettings_IncludeOtherTestsInAutomaticExports_AllTestsForSample" xml:space="preserve">
+    <value>All tests for sample</value>
+  </data>
+  <data name="LisExportSampleSettings_IncludeOtherTestsInAutomaticExports_AllTestsForSampleExceptAlreadyReported" xml:space="preserve">
+    <value>All tests for sample except already Reported</value>
+  </data>
+  <data name="LisExportSampleSettings_IncludeOtherTestsInAutomaticExports_NotUsed" xml:space="preserve">
+    <value>Not used</value>
+  </data>
+  <data name="LisExportSampleSettings_WhatToExport" xml:space="preserve">
+    <value>What to export</value>
+  </data>
+  <data name="LisExportSampleSettings_WhatToExport_AllStatuses" xml:space="preserve">
+    <value>All statuses</value>
+  </data>
+  <data name="LisExportSampleSettings_WhatToExport_OnlyApprovedAndRejectedResults" xml:space="preserve">
+    <value>Only approved and rejected results</value>
+  </data>
+  <data name="LisExportSampleSettings_WhatToExport_OnlyApprovedResults" xml:space="preserve">
+    <value>Only approved results</value>
+  </data>
+  <data name="LisExportSettings_CurveControl" xml:space="preserve">
+    <value>Curve control</value>
+  </data>
+  <data name="LisExportSettings_Interval" xml:space="preserve">
+    <value>Interval (minutes)</value>
+  </data>
+  <data name="LisExportSettings_PeriodicExport" xml:space="preserve">
+    <value>Periodic export</value>
+  </data>
+  <data name="LisExportSettings_QualityControl" xml:space="preserve">
+    <value>Quality control</value>
+  </data>
+  <data name="LisExportSettings_Sample" xml:space="preserve">
+    <value>Sample</value>
+  </data>
+  <data name="LisExportSettings_TimeoutForExports" xml:space="preserve">
+    <value>Timeout for exports (minutes)</value>
+  </data>
+  <data name="LisImportSettings_AskForMissingRequestsInstrumentScan" xml:space="preserve">
+    <value>Ask for missing requests (instrument scan)</value>
+  </data>
+  <data name="LisImportSettings_AskForMissingRequestsManualScan" xml:space="preserve">
+    <value>Ask for missing requests (manual scan)</value>
+  </data>
+  <data name="LisImportSettings_AutomaticPanelRecognition" xml:space="preserve">
+    <value>Automatic panel recognition</value>
+  </data>
+  <data name="LisImportSettings_AutomaticPanelRecognition_FromMultipleMessages" xml:space="preserve">
+    <value>From multiple messages</value>
+  </data>
+  <data name="LisImportSettings_AutomaticPanelRecognition_NotUsed" xml:space="preserve">
+    <value>Not used</value>
+  </data>
+  <data name="LisImportSettings_AutomaticPanelRecognition_OnlyFromOneMessage" xml:space="preserve">
+    <value>Only from one message</value>
+  </data>
+  <data name="LisImportSettings_CalculatePatientAge" xml:space="preserve">
+    <value>Calculate patient age</value>
+  </data>
+  <data name="LisImportSettings_ForceUniqueLaboratoryTestNames" xml:space="preserve">
+    <value>Force unique laboratory test names</value>
+  </data>
+  <data name="LisImportSettings_Frequency" xml:space="preserve">
+    <value>Frequency (minutes)</value>
+  </data>
+  <data name="LisImportSettings_ManualQueryForAll" xml:space="preserve">
+    <value>Manual query for ALL</value>
+  </data>
+  <data name="LisImportSettings_ManualRefreshExistingRequests" xml:space="preserve">
+    <value>Manual refresh existing requests</value>
+  </data>
+  <data name="LisImportSettings_PanelExpansion" xml:space="preserve">
+    <value>Panel expansion</value>
+  </data>
+  <data name="LisImportSettings_PollForRequests" xml:space="preserve">
+    <value>Poll for requests</value>
+  </data>
+  <data name="LisImportSettings_RefreshExistingRequestsInstrumentScan" xml:space="preserve">
+    <value>Refresh existing requests (instrument scan)</value>
+  </data>
+  <data name="LisImportSettings_RefreshExistingRequestsManualScan" xml:space="preserve">
+    <value>Refresh existing requests (manual scan)</value>
+  </data>
+  <data name="LisImportSettings_RequestPriorityOrder" xml:space="preserve">
+    <value>Request priority order</value>
+  </data>
+  <data name="LisImportSettings_RequestPriorityOrder_NotUsed" xml:space="preserve">
+    <value>Not used</value>
+  </data>
+  <data name="LisImportSettings_RequestPriorityOrder_UseOrderNumberA" xml:space="preserve">
+    <value>Use order numbers A</value>
+  </data>
+  <data name="LisImportSettings_RequestPriorityOrder_UseOrderNumberB" xml:space="preserve">
+    <value>Use order numbers B</value>
+  </data>
+  <data name="LisImportSettings_Timeout" xml:space="preserve">
+    <value>Timeout (min)</value>
+  </data>
+  <data name="LisProtocolSettings_ComProtocolType" xml:space="preserve">
+    <value>Com protocol type</value>
+  </data>
+  <data name="LisProtocolType_Astm" xml:space="preserve">
+    <value>ASTM</value>
+  </data>
+  <data name="LisProtocolType_DataCap" xml:space="preserve">
+    <value>DataCAP</value>
+  </data>
+  <data name="LisProtocolType_HL7" xml:space="preserve">
+    <value>HL7</value>
+  </data>
+  <data name="LisRs232Settings_BaudRate" xml:space="preserve">
+    <value>Baud rate</value>
+  </data>
+  <data name="LisRs232Settings_DataBits" xml:space="preserve">
+    <value>Data bits</value>
+  </data>
+  <data name="LisRs232Settings_DataBits7" xml:space="preserve">
+    <value>LisRs232Settings_DataBits7; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_DataBits8" xml:space="preserve">
+    <value>LisRs232Settings_DataBits8; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_EnableDtr" xml:space="preserve">
+    <value>Enable Dtr</value>
+  </data>
+  <data name="LisRs232Settings_EnableRts" xml:space="preserve">
+    <value>Enable Rts</value>
+  </data>
+  <data name="LisRs232Settings_Handshake" xml:space="preserve">
+    <value>Handshake</value>
+  </data>
+  <data name="LisRs232Settings_HandshakeNone" xml:space="preserve">
+    <value>LisRs232Settings_HandshakeNone; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_HandshakeRequestToSend" xml:space="preserve">
+    <value>LisRs232Settings_HandshakeRequestToSend; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_HandshakeRequestToSendXOnXOff" xml:space="preserve">
+    <value>LisRs232Settings_HandshakeRequestToSendXOnXOff; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_HandshakeXOnXOff" xml:space="preserve">
+    <value>LisRs232Settings_HandshakeXOnXOff; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_Parity" xml:space="preserve">
+    <value>Parity</value>
+  </data>
+  <data name="LisRs232Settings_ParityEven" xml:space="preserve">
+    <value>LisRs232Settings_ParityEven; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_ParityMark" xml:space="preserve">
+    <value>LisRs232Settings_ParityMark; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_ParityNone" xml:space="preserve">
+    <value>LisRs232Settings_ParityNone; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_ParityOdd" xml:space="preserve">
+    <value>LisRs232Settings_ParityOdd; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_ParitySpace" xml:space="preserve">
+    <value>LisRs232Settings_ParitySpace; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_Port" xml:space="preserve">
+    <value>Port number</value>
+  </data>
+  <data name="LisRs232Settings_StopBits" xml:space="preserve">
+    <value>Stop bits</value>
+  </data>
+  <data name="LisRs232Settings_StopBitsNone" xml:space="preserve">
+    <value>LisRs232Settings_StopBitsNone; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_StopBitsOne" xml:space="preserve">
+    <value>LisRs232Settings_StopBitsOne; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_StopBitsOnePointFive" xml:space="preserve">
+    <value>LisRs232Settings_StopBitsOnePointFive; UNTRANSLATED</value>
+  </data>
+  <data name="LisRs232Settings_StopBitsTwo" xml:space="preserve">
+    <value>LisRs232Settings_StopBitsTwo; UNTRANSLATED</value>
+  </data>
+  <data name="LisSettings_LIS" xml:space="preserve">
+    <value>LIS</value>
+  </data>
+  <data name="LisSettings_LisChannel_DataCapVariant" xml:space="preserve">
+    <value>DataCAP Variant</value>
+  </data>
+  <data name="LisSettings_LisChannel_ExportSettings" xml:space="preserve">
+    <value>Export settings</value>
+  </data>
+  <data name="LisSettings_LisChannel_ImportSettings" xml:space="preserve">
+    <value>Import settings</value>
+  </data>
+  <data name="LisSettings_LisChannel_IsEnabled" xml:space="preserve">
+    <value>Enabled</value>
+  </data>
+  <data name="LisSettings_LisChannel_LisAstmSettings" xml:space="preserve">
+    <value>ASTM settings</value>
+  </data>
+  <data name="LisSettings_LisChannel_LisColumnHeaderProtocolType" xml:space="preserve">
+    <value>Protocol Type</value>
+  </data>
+  <data name="LisSettings_LisChannel_LisDataCapSettings" xml:space="preserve">
+    <value>DataCAP</value>
+  </data>
+  <data name="LisSettings_LisChannel_LisHL7Settings" xml:space="preserve">
+    <value>HL7 settings</value>
+  </data>
+  <data name="LisSettings_LisChannel_LisNameColumnHeader" xml:space="preserve">
+    <value>Channel Name</value>
+  </data>
+  <data name="LisSettings_LisChannel_Other" xml:space="preserve">
+    <value>Other settings</value>
+  </data>
+  <data name="LisSettings_LisChannel_ResetStatisticsAtMidnight" xml:space="preserve">
+    <value>Reset statistics at midnight</value>
+  </data>
+  <data name="LisSettings_LisChannels" xml:space="preserve">
+    <value>LIS channels</value>
+  </data>
+  <data name="LoaderLocation_NotLoaded" xml:space="preserve">
+    <value>Not Loaded</value>
+  </data>
+  <data name="LoaderPosition" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="LogDumpCollectionFailed" xml:space="preserve">
+    <value>Log file collection failed. Start a new collection to try again.</value>
+  </data>
+  <data name="LogDumpCollectionSucceeded" xml:space="preserve">
+    <value>Log file collection completed. The log dump is ready to download.</value>
+  </data>
+  <data name="Login_CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Login_InvalidUserNameOrPassword" xml:space="preserve">
+    <value>Invalid username or password</value>
+  </data>
+  <data name="Login_LoginButton" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="Login_LoginWithPinLink" xml:space="preserve">
+    <value>Login with PIN</value>
+  </data>
+  <data name="Login_LoginWithPinLink_Disabled" xml:space="preserve">
+    <value>Login with PIN - Temporarily disabled</value>
+  </data>
+  <data name="Login_RememberMe" xml:space="preserve">
+    <value>Remember me</value>
+  </data>
+  <data name="Login_RequiredFieldEmpty" xml:space="preserve">
+    <value>Highlighted fields are required.</value>
+  </data>
+  <data name="Login_Title" xml:space="preserve">
+    <value>Welcome!</value>
+  </data>
+  <data name="Login_Title_Text" xml:space="preserve">
+    <value>Enter credentials to log in</value>
+  </data>
+  <data name="Login_UserIsInactive" xml:space="preserve">
+    <value>This user account is inactive.</value>
+  </data>
+  <data name="Login_UserLockedout" xml:space="preserve">
+    <value>This account has been locked out, please try again later.</value>
+  </data>
+  <data name="LoginWithPin_EnterButton" xml:space="preserve">
+    <value>Enter</value>
+  </data>
+  <data name="LoginWithPin_LoginFailed" xml:space="preserve">
+    <value>Invalid PIN</value>
+  </data>
+  <data name="LoginWithPin_LoginWithPasswordLink" xml:space="preserve">
+    <value>Login with Username &amp; Password</value>
+  </data>
+  <data name="LoginWithPin_PinCodeLabel" xml:space="preserve">
+    <value>PIN Code</value>
+  </data>
+  <data name="LoginWithPin_Title" xml:space="preserve">
+    <value>PIN Login</value>
+  </data>
+  <data name="MissingPanelIdForTest" xml:space="preserve">
+    <value>Test '{0}' is missing panel id '{1}'</value>
+  </data>
+  <data name="NotAllTestsFromPanel" xml:space="preserve">
+    <value>Panel '{0}' contains test '{1}' which cannot be found in the list of tests</value>
+  </data>
+  <data name="ObjectGone" xml:space="preserve">
+    <value>The object no longer exists.</value>
+  </data>
+  <data name="PanelAlreadyExists" xml:space="preserve">
+    <value>Panel name '{0}' already exists.</value>
+  </data>
+  <data name="PanelNotFound" xml:space="preserve">
+    <value>Panel with id '{0}' cannot be found</value>
+  </data>
+  <data name="PanelTestDuplicate" xml:space="preserve">
+    <value>Duplicate tests are not allowed in a panel.</value>
+  </data>
+  <data name="ParameterImport_Failure" xml:space="preserve">
+    <value>Error importing parameter update package.</value>
+  </data>
+  <data name="ParameterImport_Failure_Details" xml:space="preserve">
+    <value>Parameter import failed for file '{0}': {1}</value>
+  </data>
+  <data name="ParameterImport_Success" xml:space="preserve">
+    <value>The parameter update package has been successfully imported</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PasswordComplexitySettings_RequireBothUpperAndLowerCase" xml:space="preserve">
+    <value>Both upper and lower case required</value>
+  </data>
+  <data name="PasswordComplexitySettings_RequireDigit" xml:space="preserve">
+    <value>Digits required</value>
+  </data>
+  <data name="PasswordComplexitySettings_RequiredLength" xml:space="preserve">
+    <value>Minimum length</value>
+  </data>
+  <data name="PasswordComplexitySettings_RequireNonAlphanumeric" xml:space="preserve">
+    <value>Special characters required</value>
+  </data>
+  <data name="PasswordComplexitySettings_RequireNoUsernameInPassword" xml:space="preserve">
+    <value>Password can't contain username</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>The password is required.</value>
+  </data>
+  <data name="Pharos" xml:space="preserve">
+    <value>Pharos</value>
+  </data>
+  <data name="ReagentsSettings" xml:space="preserve">
+    <value>Reagents</value>
+  </data>
+  <data name="ReagentsSettings_Calibrator" xml:space="preserve">
+    <value>Calibrator cartridge</value>
+  </data>
+  <data name="ReagentsSettings_Conjugate" xml:space="preserve">
+    <value>Conjugate cartridge</value>
+  </data>
+  <data name="ReagentsSettings_CurveControl" xml:space="preserve">
+    <value>Curve control cartridge</value>
+  </data>
+  <data name="ReagentsSettings_DevelopmentSolution" xml:space="preserve">
+    <value>Development solution</value>
+  </data>
+  <data name="ReagentsSettings_Diluent" xml:space="preserve">
+    <value>Diluent cartridge</value>
+  </data>
+  <data name="ReagentsSettings_DilutionWell" xml:space="preserve">
+    <value>Dilution well carrier</value>
+  </data>
+  <data name="ReagentsSettings_EliaCalibratorWell" xml:space="preserve">
+    <value>EliA calibrator well carrier</value>
+  </data>
+  <data name="ReagentsSettings_EliaWell" xml:space="preserve">
+    <value>EliA well carrier</value>
+  </data>
+  <data name="ReagentsSettings_FluoroC" xml:space="preserve">
+    <value>FluoroC cartridge</value>
+  </data>
+  <data name="ReagentsSettings_ImmunoCap" xml:space="preserve">
+    <value>ImmunoCAP carrier</value>
+  </data>
+  <data name="ReagentsSettings_MaintenanceConcentrate" xml:space="preserve">
+    <value>Maintenance concentrate bottle</value>
+  </data>
+  <data name="ReagentsSettings_QualityControl" xml:space="preserve">
+    <value>Quality control cartridge</value>
+  </data>
+  <data name="ReagentsSettings_QualityControlTube" xml:space="preserve">
+    <value>Quality control tube</value>
+  </data>
+  <data name="ReagentsSettings_StopSolution" xml:space="preserve">
+    <value>Stop solution bottle</value>
+  </data>
+  <data name="ReagentsSettings_WashAdditive" xml:space="preserve">
+    <value>Wash additive bottle</value>
+  </data>
+  <data name="ReagentsSettings_WashConcentrate" xml:space="preserve">
+    <value>Wash concentrate bottle</value>
+  </data>
+  <data name="ReagentTypeRndSettings_UseExpiredReagents" xml:space="preserve">
+    <value>Use expired reagents</value>
+  </data>
+  <data name="ReagentTypeSettings_UseExpiredReagents" xml:space="preserve">
+    <value>Use expired items</value>
+  </data>
+  <data name="ReagentTypeSettings_WasteTypeEmpty" xml:space="preserve">
+    <value>Waste type when empty</value>
+  </data>
+  <data name="ReagentTypeSettings_WasteTypeNonEmpty" xml:space="preserve">
+    <value>Waste type when non-empty</value>
+  </data>
+  <data name="ReflexAlreadyExists" xml:space="preserve">
+    <value>Reflex definition with Name {0} already exists.</value>
+  </data>
+  <data name="ReflexConditionDuplicate" xml:space="preserve">
+    <value>One or more of the added Reflex Conditions is a duplicate.</value>
+  </data>
+  <data name="ReflexTestDuplicate" xml:space="preserve">
+    <value>One or more of the added Reflex Tests is a duplicate.</value>
+  </data>
+  <data name="Register_ConfirmPassword" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="Register_PasswordLengthIncorrect" xml:space="preserve">
+    <value>The password must be at least {2} and at max {1} characters long.</value>
+  </data>
+  <data name="Register_PasswordsDoNotMatch" xml:space="preserve">
+    <value>The password and confirmation password do not match.</value>
+  </data>
+  <data name="Register_RegisterButton" xml:space="preserve">
+    <value>Create account</value>
+  </data>
+  <data name="Register_Title" xml:space="preserve">
+    <value>Create a service account</value>
+  </data>
+  <data name="RequestGenerator_AmountToGenerate" xml:space="preserve">
+    <value>Amount to generate must be between {0} and {1}.</value>
+  </data>
+  <data name="RequestGenerator_AtLeastOneTest" xml:space="preserve">
+    <value>At least one test must be provided.</value>
+  </data>
+  <data name="RequestGenerator_GenerationAlreadyInProgress" xml:space="preserve">
+    <value>Request generation is already in progress. Wait for the current job to complete.</value>
+  </data>
+  <data name="RequestGenerator_GenerationCompletedSuccessfully" xml:space="preserve">
+    <value>Request generation completed successfully.</value>
+  </data>
+  <data name="RequestGenerator_GenerationFailed" xml:space="preserve">
+    <value>Request generation failed.</value>
+  </data>
+  <data name="RequestGenerator_InvalidInstrumentDilutionFactor" xml:space="preserve">
+    <value>Invalid instrument dilution factor specified in one of the tests.</value>
+  </data>
+  <data name="RequestGenerator_InvalidMethodName" xml:space="preserve">
+    <value>Invalid method name specified. Check that all needed methods are enabled in parameters.</value>
+  </data>
+  <data name="RequestGenerator_InvalidTestName" xml:space="preserve">
+    <value>Invalid test name specified. Check that all needed tests are enabled in parameters.</value>
+  </data>
+  <data name="RequestGenerator_MethodNameRequired" xml:space="preserve">
+    <value>Method name is required.</value>
+  </data>
+  <data name="RequestGenerator_NumberOfDigits" xml:space="preserve">
+    <value>Number of digits must be between {0} and {1}.</value>
+  </data>
+  <data name="RequestGenerator_PreDilutionFactor" xml:space="preserve">
+    <value>Pre-dilution factor must be between {0} and {1}.</value>
+  </data>
+  <data name="RequestGenerator_Replicates" xml:space="preserve">
+    <value>Replicates must be between {0} and {1}.</value>
+  </data>
+  <data name="RequestGenerator_RequestPayloadMissingOrInvalid" xml:space="preserve">
+    <value>Request generation request payload is missing or invalid.</value>
+  </data>
+  <data name="RequestGenerator_SampleIdsExceedConfiguredDigits" xml:space="preserve">
+    <value>The generated sample IDs exceed the configured number of digits.</value>
+  </data>
+  <data name="RequestGenerator_SampleIdsMustBeUnique" xml:space="preserve">
+    <value>The generated sample IDs must be unique.</value>
+  </data>
+  <data name="RequestGenerator_SampleIdStartOffset" xml:space="preserve">
+    <value>Start offset must be between {0} and {1}.</value>
+  </data>
+  <data name="RequestGenerator_SamplesPerTray" xml:space="preserve">
+    <value>Samples per tray must be between {0} and {1}.</value>
+  </data>
+  <data name="RequestGenerator_TestNameRequired" xml:space="preserve">
+    <value>Test name is required.</value>
+  </data>
+  <data name="RequestGenerator_TotalDilutionFactorTooLow" xml:space="preserve">
+    <value>Too low total dilution factors specified for one of the tests.</value>
+  </data>
+  <data name="RequestGenerator_TrayIdsExceedSupportedRange" xml:space="preserve">
+    <value>The generated tray IDs exceed the supported tray range.</value>
+  </data>
+  <data name="RequestGenerator_TrayPositionsExceedCapacity" xml:space="preserve">
+    <value>The generated tray positions exceed tray capacity.</value>
+  </data>
+  <data name="RequestGenerator_TrayStartOffset" xml:space="preserve">
+    <value>Tray start offset must be between {0} and {1}.</value>
+  </data>
+  <data name="RequestSettings" xml:space="preserve">
+    <value>Requests</value>
+  </data>
+  <data name="RequestSettings_AllowEditingOfPredilutionFactor" xml:space="preserve">
+    <value>Allow editing of pre-dilution factor</value>
+    <comment>Allows user to manually enter pre-dilution factor for requests. If enabled, use with caution. </comment>
+  </data>
+  <data name="RequestSettings_DaysBeforeReuseOfSampleId" xml:space="preserve">
+    <value>Number of days that has to pass until the sample id can be reused</value>
+  </data>
+  <data name="RequestSettings_IsPatientInformationEnabled" xml:space="preserve">
+    <value>Enable patient information</value>
+  </data>
+  <data name="RequestSettings_IsRequestorInformationEnabled" xml:space="preserve">
+    <value>Enable requestor information</value>
+  </data>
+  <data name="RequestSettings_PreventDuplicateReflexTests" xml:space="preserve">
+    <value>Prevent addition of duplicate reflex tests</value>
+  </data>
+  <data name="RequestSettings_ReflexTestingEnabled" xml:space="preserve">
+    <value>Reflex testing enabled</value>
+  </data>
+  <data name="RequestSettings_ReuseSampleId" xml:space="preserve">
+    <value>Reuse sample id</value>
+  </data>
+  <data name="RequestSettings_SampleVolumeCheck" xml:space="preserve">
+    <value>Sample volume check</value>
+  </data>
+  <data name="RequestSettings_TubeType_BottomDiameter" xml:space="preserve">
+    <value>Bottom diameter</value>
+  </data>
+  <data name="RequestSettings_TubeType_BottomShape" xml:space="preserve">
+    <value>Bottom shape</value>
+  </data>
+  <data name="RequestSettings_TubeType_ConicalDiameter" xml:space="preserve">
+    <value>Conical diameter</value>
+  </data>
+  <data name="RequestSettings_TubeType_ConicalLength" xml:space="preserve">
+    <value>Conical length</value>
+  </data>
+  <data name="RequestSettings_TubeType_GelSeparationLayerDetection" xml:space="preserve">
+    <value>Gel separation layer detection</value>
+  </data>
+  <data name="RequestSettings_TubeType_InnerBottomLevel" xml:space="preserve">
+    <value>Bottom height</value>
+  </data>
+  <data name="RequestSettings_TubeType_InnerDiameter" xml:space="preserve">
+    <value>Inner diameter</value>
+  </data>
+  <data name="RequestSettings_TubeType_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="RequestSettings_TubeType_StraightPartLength" xml:space="preserve">
+    <value>Straight part length</value>
+  </data>
+  <data name="RequestSettings_TubeType_TubeDefinitionId" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="RequestSettings_TubeType_VolumeCalculation" xml:space="preserve">
+    <value>Volume calculation</value>
+  </data>
+  <data name="RequestSettings_TubeTypesSettings" xml:space="preserve">
+    <value>Tube types</value>
+  </data>
+  <data name="RequestSettings_UseLaboratoryTestNames" xml:space="preserve">
+    <value>Use laboratory test names</value>
+  </data>
+  <data name="ResultSettings" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="ResultSettings_Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ResultSettings_Export_ExportOnAnalyticalRunEnd" xml:space="preserve">
+    <value>Automatically export results on analytical run end</value>
+  </data>
+  <data name="ResultSettings_Export_ExportOnCustomRunEnd" xml:space="preserve">
+    <value>Automatically export results on custom run end</value>
+  </data>
+  <data name="ResultSettings_Export_Path" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="ResultSettings_TextSubstitution_LowResponseText" xml:space="preserve">
+    <value>Text to use for reporting Low RU</value>
+  </data>
+  <data name="ResultSettings_TextSubstitution_MissingResultText" xml:space="preserve">
+    <value>Text for missing results</value>
+  </data>
+  <data name="ResultSettings_TextSubstitutionSettingsGroup" xml:space="preserve">
+    <value>Text substitution</value>
+  </data>
+  <data name="RndSettings" xml:space="preserve">
+    <value>RnD settings</value>
+  </data>
+  <data name="RndSettings_RndModel" xml:space="preserve">
+    <value>Enable R&amp;D</value>
+  </data>
+  <data name="RndSettings_RuoMode" xml:space="preserve">
+    <value>Enable RUO</value>
+  </data>
+  <data name="RoleNameRequired" xml:space="preserve">
+    <value>Role name is required.</value>
+  </data>
+  <data name="SampleAlreadyExists" xml:space="preserve">
+    <value>Sample with ID {0} already exists.</value>
+  </data>
+  <data name="SamplesSettings" xml:space="preserve">
+    <value>Samples</value>
+  </data>
+  <data name="SamplesSettings_CaseInsensitiveSampleId" xml:space="preserve">
+    <value>Ignore uppercase and lowercase in Sample IDs</value>
+  </data>
+  <data name="SamplesSettings_CaseInsensitiveSampleId_HelpText" xml:space="preserve">
+    <value>When checked, “sid01” and “SID01” are treated as the same Sample ID. The first created Sample ID is kept.</value>
+  </data>
+  <data name="SamplesSettings_Drawer" xml:space="preserve">
+    <value>Drawer</value>
+  </data>
+  <data name="SamplesSettings_Drawer_DrawerMode" xml:space="preserve">
+    <value>Drawer mode</value>
+  </data>
+  <data name="SamplesSettings_DrawerMode_BothDrawersAsInputAndOutput" xml:space="preserve">
+    <value>Both drawers as input and output</value>
+  </data>
+  <data name="SamplesSettings_DrawerMode_LeftDrawerAsInputAndRightDrawerAsOutput" xml:space="preserve">
+    <value>Left drawer as input and right drawer as output</value>
+  </data>
+  <data name="SamplesSettings_Tray" xml:space="preserve">
+    <value>Tray</value>
+  </data>
+  <data name="SamplesSettings_Tray_EnableEditingOfSampleId" xml:space="preserve">
+    <value>Enable editing of Sample ID</value>
+  </data>
+  <data name="SamplesSettings_Tray_EnableEditingOfSampleId_HelpText" xml:space="preserve">
+    <value>Enable editing of Sample ID for a tray position. If enabled, use with caution.</value>
+  </data>
+  <data name="SampleTrayAlreadyExists" xml:space="preserve">
+    <value>Tray ID already exists</value>
+  </data>
+  <data name="SampleVolumeCheckSettings_Age" xml:space="preserve">
+    <value>Patient age limit</value>
+  </data>
+  <data name="SampleVolumeCheckSettings_OnlyForImmunoCap" xml:space="preserve">
+    <value>Only for ImmunoCAP</value>
+  </data>
+  <data name="SampleVolumeCheckSettings_SelectedSampleVolumeCheck" xml:space="preserve">
+    <value>Default value</value>
+  </data>
+  <data name="SampleVolumeCheckSettings_UseSampleVolumeCheck" xml:space="preserve">
+    <value>Use sample volume check</value>
+  </data>
+  <data name="SampleVolumeCheckSettings_UseSampleVolumeCheckPediatric" xml:space="preserve">
+    <value>Use sample volume check - pediatric</value>
+  </data>
+  <data name="SecuritySettings" xml:space="preserve">
+    <value>Authentication</value>
+  </data>
+  <data name="SecuritySettings_AutoLogoutEnabled" xml:space="preserve">
+    <value>Use auto-logout</value>
+  </data>
+  <data name="SecuritySettings_AutoLogoutSettings" xml:space="preserve">
+    <value>Auto-logout</value>
+  </data>
+  <data name="SecuritySettings_AutoLogoutTimeoutMinutes" xml:space="preserve">
+    <value>Auto-logout interval</value>
+  </data>
+  <data name="SecuritySettings_EnablePasswordLoginLockout" xml:space="preserve">
+    <value>Suspend password login after several consecutive failed login attempts</value>
+  </data>
+  <data name="SecuritySettings_EnablePinLogin" xml:space="preserve">
+    <value>Enable PIN login</value>
+  </data>
+  <data name="SecuritySettings_EnablePinLoginLockout" xml:space="preserve">
+    <value>Suspend PIN login mode after several consecutive failed login attempts</value>
+  </data>
+  <data name="SecuritySettings_PasswordComplexitySettings" xml:space="preserve">
+    <value>Password policy</value>
+  </data>
+  <data name="SecuritySettings_PasswordExpirationDays" xml:space="preserve">
+    <value>Password lifetime</value>
+  </data>
+  <data name="SecuritySettings_PasswordExpirationEnabled" xml:space="preserve">
+    <value>Enable password expiration</value>
+  </data>
+  <data name="SecuritySettings_PasswordLoginLockoutDurationMinutes" xml:space="preserve">
+    <value>Suspension duration for password login</value>
+  </data>
+  <data name="SecuritySettings_PasswordLoginLockoutMaxFailedAttempts" xml:space="preserve">
+    <value>Number of failed password login attempts that triggers suspension</value>
+  </data>
+  <data name="SecuritySettings_PinLoginLockoutDurationMinutes" xml:space="preserve">
+    <value>Suspension duration for the PIN login mode</value>
+  </data>
+  <data name="SecuritySettings_PinLoginLockoutMaxFailedAttempts" xml:space="preserve">
+    <value>Number of failed login attempts that triggers suspension</value>
+  </data>
+  <data name="SetPin_InvalidPin" xml:space="preserve">
+    <value>PIN must be between 4 and 8 digits</value>
+  </data>
+  <data name="SetPin_ServiceEngineerPinNotAllowed" xml:space="preserve">
+    <value>PIN cannot be set for users with the Service Engineer role</value>
+  </data>
+  <data name="Settings_General_Group_Header" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="SettingsSampleVolumeCheck_Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="SettingsSampleVolumeCheck_OnRunAccordingToTestOrder" xml:space="preserve">
+    <value>On - Test order</value>
+  </data>
+  <data name="SettingsSampleVolumeCheck_OnRunNoTestsWhenVolumeTooLow" xml:space="preserve">
+    <value>On - No Tests</value>
+  </data>
+  <data name="SetupPin_Description" xml:space="preserve">
+    <value>You have been given a PIN code that you can use to log in.</value>
+  </data>
+  <data name="SetupPin_Instructions" xml:space="preserve">
+    <value>Once logged in, you can see it in your user profile (accessed from your name in the top of the screen).</value>
+  </data>
+  <data name="SetupPin_OkButton" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="SetupPin_PinCodeLabel" xml:space="preserve">
+    <value>PIN code:</value>
+  </data>
+  <data name="SetupPin_Title" xml:space="preserve">
+    <value>New PIN code</value>
+  </data>
+  <data name="SocketType_Client" xml:space="preserve">
+    <value>Client</value>
+  </data>
+  <data name="SocketType_Server" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="SpecialSampleHandlingSettings_ExtractSampleIdFromBarcode" xml:space="preserve">
+    <value>Extract sample id from tube barcode</value>
+  </data>
+  <data name="SpecialSampleHandlingSettings_ExtractSampleIdSuffixFromBarcode" xml:space="preserve">
+    <value>Extract sample id suffix from tube barcode</value>
+  </data>
+  <data name="SpecialSampleHandlingSettings_SampleIdLength" xml:space="preserve">
+    <value>Length</value>
+  </data>
+  <data name="SpecialSampleHandlingSettings_SampleIdStartPosition" xml:space="preserve">
+    <value>Start position</value>
+  </data>
+  <data name="SpecialSampleHandlingSettings_SampleIdSuffixLength" xml:space="preserve">
+    <value>Length</value>
+  </data>
+  <data name="SpecialSampleHandlingSettings_SampleIdSuffixStartPosition" xml:space="preserve">
+    <value>Start position</value>
+  </data>
+  <data name="SpecialSampleHandlingSettings_SampleTubesWithSameSampleId" xml:space="preserve">
+    <value>Allow sample tubes with same sample id</value>
+  </data>
+  <data name="SpecialSampleHandlingSettings_Title" xml:space="preserve">
+    <value>Special sample handling</value>
+  </data>
+  <data name="TaskCardSettings" xml:space="preserve">
+    <value>Task Cards</value>
+  </data>
+  <data name="TaskCardSettings_Sound" xml:space="preserve">
+    <value>Sound</value>
+  </data>
+  <data name="TemperatureUnit_Celcius" xml:space="preserve">
+    <value>Celsius</value>
+  </data>
+  <data name="TemperatureUnit_Fahrenheit" xml:space="preserve">
+    <value>Fahrenheit</value>
+  </data>
+  <data name="TestOrderDuplicate" xml:space="preserve">
+    <value>Cannot add duplicate tests to the request.</value>
+  </data>
+  <data name="TooManyLaboratoryNames" xml:space="preserve">
+    <value>Cannot add more than {0} laboratory names for a method test.</value>
+  </data>
+  <data name="TrayIdLengthValidation" xml:space="preserve">
+    <value>Tray ID must be a 4-digit number</value>
+  </data>
+  <data name="TrayIdRequired" xml:space="preserve">
+    <value>Tray ID is required</value>
+  </data>
+  <data name="TrayLocation_NotLoaded" xml:space="preserve">
+    <value>Not loaded</value>
+  </data>
+  <data name="TrayPosition" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="TubeBarcodeSettings_CodaBar" xml:space="preserve">
+    <value>Codabar</value>
+  </data>
+  <data name="TubeBarcodeSettings_Code128" xml:space="preserve">
+    <value>Code 128</value>
+  </data>
+  <data name="TubeBarcodeSettings_Code39" xml:space="preserve">
+    <value>Code 39</value>
+  </data>
+  <data name="TubeBarcodeSettings_Code39Checksum" xml:space="preserve">
+    <value>Checksum</value>
+  </data>
+  <data name="TubeBarcodeSettings_Code93" xml:space="preserve">
+    <value>Code 93</value>
+  </data>
+  <data name="TubeBarcodeSettings_Coop2Of5" xml:space="preserve">
+    <value>Coop 2 of 5</value>
+  </data>
+  <data name="TubeBarcodeSettings_DataMatrix" xml:space="preserve">
+    <value>Data matrix</value>
+  </data>
+  <data name="TubeBarcodeSettings_Ean8" xml:space="preserve">
+    <value>EAN-8</value>
+  </data>
+  <data name="TubeBarcodeSettings_Industrial2Of5" xml:space="preserve">
+    <value>Industrial 2 of 5</value>
+  </data>
+  <data name="TubeBarcodeSettings_Interleaved2Of5" xml:space="preserve">
+    <value>Interleaved 2 of 5</value>
+  </data>
+  <data name="TubeBarcodeSettings_Interleaved2Of5Checksum" xml:space="preserve">
+    <value>Checksum</value>
+  </data>
+  <data name="TubeBarcodeSettings_Prefix1" xml:space="preserve">
+    <value>Prefix 1</value>
+  </data>
+  <data name="TubeBarcodeSettings_Prefix2" xml:space="preserve">
+    <value>Prefix 2</value>
+  </data>
+  <data name="TubeBarcodeSettings_Prefix3" xml:space="preserve">
+    <value>Prefix 3</value>
+  </data>
+  <data name="TubeBarcodeSettings_Prefix4" xml:space="preserve">
+    <value>Prefix 4</value>
+  </data>
+  <data name="TubeBarcodeSettings_Prefix5" xml:space="preserve">
+    <value>Prefix 5</value>
+  </data>
+  <data name="TubeBarcodeSettings_QrCode" xml:space="preserve">
+    <value>QR code</value>
+  </data>
+  <data name="TubeBarcodeSettings_Title" xml:space="preserve">
+    <value>Tube barcode settings</value>
+  </data>
+  <data name="TubeTypesSettings_TubeDefinitionNormal" xml:space="preserve">
+    <value>Tube type normal default</value>
+  </data>
+  <data name="TubeTypesSettings_TubeDefinitionPediatric" xml:space="preserve">
+    <value>Tube type pediatric default</value>
+  </data>
+  <data name="TubeTypesSettings_TubeTypes" xml:space="preserve">
+    <value>TubeTypesSettings_TubeTypes; UNTRANSLATED</value>
+  </data>
+  <data name="UpdateApplicationUser_CannotDeactivateUser" xml:space="preserve">
+    <value>You cannot deactivate this user.</value>
+  </data>
+  <data name="UpdateApplicationUser_CannotUpdateOwnRole" xml:space="preserve">
+    <value>You cannot update your own role.</value>
+  </data>
+  <data name="UpdateApplicationUser_FailedToAssignRole" xml:space="preserve">
+    <value>Failed to assign role to the user.</value>
+  </data>
+  <data name="UpdateApplicationUser_FailedToRemoveRole" xml:space="preserve">
+    <value>Failed to remove role from the user.</value>
+  </data>
+  <data name="UpdateApplicationUser_FailedToUpdateUserProperties" xml:space="preserve">
+    <value>Failed to update user properties.</value>
+  </data>
+  <data name="UpdateApplicationUser_RndRoleRequiresRndMode" xml:space="preserve">
+    <value>R&amp;D role cannot be assigned when the R&amp;D mode is not active.</value>
+  </data>
+  <data name="UpdateApplicationUser_RoleDoesNotExist" xml:space="preserve">
+    <value>The specified role does not exist.</value>
+  </data>
+  <data name="UpdateApplicationUser_ServiceEngineerRoleCannotBeAssignedDirectly" xml:space="preserve">
+    <value>The '{0}' role cannot be assigned directly, it requires a service login.</value>
+  </data>
+  <data name="UpdateApplicationUser_ServiceEngineerRoleCannotBeRevoked" xml:space="preserve">
+    <value>The '{0}' role cannot be revoked.</value>
+  </data>
+  <data name="UpdateApplicationUser_UserDeleted" xml:space="preserve">
+    <value>The user '{0}' has been deleted.</value>
+  </data>
+  <data name="UserName" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="UsernameExists" xml:space="preserve">
+    <value>Another user with this name already exists.</value>
+  </data>
+  <data name="UserNameRequired" xml:space="preserve">
+    <value>The username is required.</value>
+  </data>
+  <data name="Validation_PageListMaxItemsReached" xml:space="preserve">
+    <value>Maximum number of items ({0}) reached. Cannot add more items.</value>
+  </data>
+  <data name="WasteType_Biohazard" xml:space="preserve">
+    <value>Biohazard</value>
+  </data>
+  <data name="WasteType_Recyclable" xml:space="preserve">
+    <value>Recyclable</value>
+  </data>
+</root>

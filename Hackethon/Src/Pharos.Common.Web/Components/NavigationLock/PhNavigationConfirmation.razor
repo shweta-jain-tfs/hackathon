@@ -1,0 +1,13 @@
+﻿<PhModalContent>
+    <Body>
+        <p class="text-center">
+            @Strings.UnsavedChangesMessage
+        </p>
+    </Body>
+
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok(false)))">@Strings.DiscardChanges</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok(true)))">@Strings.Save</PhButton>
+    </Footer>
+
+</PhModalContent>

@@ -1,0 +1,5 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\Src\Pharos.Server.Lis.HL7\Pharos.Server.Lis.HL7.csproj" />
+  </ItemGroup>
+</Project>

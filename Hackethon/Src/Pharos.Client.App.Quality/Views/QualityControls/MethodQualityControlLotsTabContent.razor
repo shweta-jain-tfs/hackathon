@@ -1,0 +1,48 @@
+@namespace Pharos.Client.App.Quality.Views.QualityControls
+@using Pharos.Client.Common.App.Constants
+@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhDockedButtonRow>
+    <ChildContent>
+        <PhDataGrid TableTitle="@Loc["MethodQualityControlLotsTabContent_Lots"]"
+                    StateID="lots"
+                    TGridItem="QualityControlLot"
+                    ItemsProvider="ViewModel.LotsProvider"
+                    SelectionType="SelectionTypeEnum.MultiSelect"
+                    OnSelectedItemsChanged="OnSelectedItemsChanged">
+            <Columns>
+                <Column Title="@Loc["MethodQualityControlLotsTabContent_LotNumber"]" Property="@(x => x.LotNumber)">
+                    <PhHrefLink OnClick="@(() => EditLot(context?.Id ?? 0))">@context?.LotNumber</PhHrefLink>
+                </Column>
+
+                <Column Title="@Loc["MethodQualityControlLotsTabContent_RegistrationDate"]" Property="@(x => x.RegistrationDate)" Format="@FormatStrings.ShortDate" QuickFilter="true" />
+                
+                <Column Title="@Loc["MethodQualityControlLotsTabContent_ExpirationDate"]" Property="@(x => x.ExpirationDate)" Format="@FormatStrings.ShortDate" />
+
+                <Column Title="@Loc["MethodQualityControlLotsTabContent_LotType_LimitsDefinedBy"]" Property="@(x => x.LotType)">
+                    @AcceptanceCriteriaLot(context)
+                </Column>
+
+                <Column Title="@Loc["MethodQualityControlLotsTabContent_LotType_CurrentLotValue"]" Property="@(x => x.LotType)">
+                    @CurrentLotValue(context)
+                </Column>
+
+                <Column Title="@Loc["MethodQualityControlLotsTabContent_Issue"]" Property="@(x => x.Issue)"/>
+                
+                @* TODO, delete when we have external filters implemented *@
+                <Column Title="@Loc["MethodQualityControlLotsTabContent_HideExpired"]" Property="@(x => x.HideExpired)" Visible="false" QuickFilter="true" />
+            </Columns>
+        </PhDataGrid>
+    </ChildContent>
+    <Buttons>
+        @if (ViewModel.Model.IsUserDefined)
+        {
+            <PhButton Type="ButtonType.Secondary" OnClick="AddNewLot">
+                @Loc["MethodQualityControlLotsTabContent_AddLot"]
+            </PhButton>
+        }
+        <PhButton Type="ButtonType.Secondary" Disabled="@(!IsDeleteAvailable)" OnClick="DeleteSelectedLots">
+            @Loc["MethodQualityControlLotsTabContent_Delete"]
+        </PhButton>
+    </Buttons>
+</PhDockedButtonRow>

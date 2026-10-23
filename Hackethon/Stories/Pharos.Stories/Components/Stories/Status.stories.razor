@@ -1,0 +1,47 @@
+@using Pharos.Common.Web.Components.Status
+@attribute [Stories("Components/Status")]
+
+<Stories TComponent="PhStatus">
+    <Story Name="Symbols with text">
+        <Template>
+            <div style="overflow: auto; height: 100vh">
+                @foreach (StatusType status in Enum.GetValues(typeof(StatusType)))
+                {
+                    <h5><b>@status</b></h5>
+                    <div class="flex gap-xxl">
+                        @foreach (StatusSize size in Enum.GetValues(typeof(StatusSize)))
+                        {
+                            <div>
+                                <h5>@size</h5>
+                                <PhStatus Status="status" Text="A text for the status" Size="size" Href="./?path=/story/components-datagrid--datagrid-with-phdatetime"></PhStatus>
+                            </div>
+                        }
+                    </div>
+                    <br />
+                }
+            </div>
+        </Template>
+    </Story>
+    <Story Name="Auto size">
+        <Template>
+            <div style="overflow: auto; height: 100vh">
+                @foreach (StatusType status in Enum.GetValues(typeof(StatusType)))
+                {
+                    <h5><b>@status</b></h5>
+                    <div class="flex gap-xxl">
+                        @foreach (StatusFontSize size in Enum.GetValues(typeof(StatusFontSize)))
+                        {
+                            <PhStatus Status="status" Text="@size.ToString()" FontSize="size"></PhStatus>
+                        }
+                    </div>
+                    <br />
+                }
+            </div>
+        </Template>
+    </Story>
+</Stories>
+
+
+@code
+{
+}

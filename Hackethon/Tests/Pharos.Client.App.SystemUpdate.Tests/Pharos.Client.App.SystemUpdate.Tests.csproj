@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Src\Pharos.Client.App.SystemUpdate\Pharos.Client.App.SystemUpdate.csproj" />
+  </ItemGroup>
+
+</Project>

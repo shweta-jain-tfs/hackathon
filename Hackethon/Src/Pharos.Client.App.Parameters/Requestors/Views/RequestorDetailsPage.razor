@@ -1,0 +1,103 @@
+@layout ParametersLayout
+@attribute [Route(PageRoute.Parameters.RequestorDetails.Default)]
+@attribute [Route(PageRoute.Parameters.RequestorDetails.IdParameter)]
+@attribute [Authorize(Permissions.ViewPersonalAndHealthData)]
+
+@using Pharos.Common.Web.Components.DatePicker
+@using Pharos.Common.Web.Components.NavigationLock
+@using Pharos.Client.App.Parameters.Layout
+@using Pharos.Common.Web.Components.TrailingEdge
+@using Pharos.Contracts.Security
+
+@inherits DetailsPageBase<Pharos.Client.App.Parameters.Requestors.ViewModels.RequestorDetailsViewModel, RequestorDetails>
+
+@if (DetailViewModel != null)
+{
+    <PhNavigationLock Modified="@DetailViewModel.IsModified" OnSave="() => SaveChanges(true)" IsValid="@IsValid()" />
+
+    <SectionContent SectionName="page-header">
+        <Breadcrumb Items="@Breadcrumbs" />
+        <div class="flex gap-md">
+            <PhButton Disabled="@(!DetailViewModel.IsModified)" OnClick="DiscardChanges">@Loc["Settings_Discard"]</PhButton>
+            <PhButton Type="ButtonType.Primary" Disabled="@(!DetailViewModel.IsModified || !IsValid())" OnClick="() => SaveChanges(false)">@Loc["Settings_Save"]</PhButton>
+        </div>
+    </SectionContent>
+
+    <PhTrailingEdge>
+        <PhInputColumn>
+
+            <PhTextBox Label="@Loc["RequestorDetailsPage_RequestorId"]"
+                       @bind-Value="DetailViewModel.RequestorId"
+                       MaxLength="32" />
+
+            <PhTextBox Label="@Loc["RequestorDetailsPage_Name"]"
+                       @bind-Value="DetailViewModel.Name"
+                       MaxLength="75"
+                       Disabled="IsEmptyRequestorId()" />
+
+            <PhTextArea Label="@Loc["RequestorDetailsPage_Address"]"
+                        @bind-Value="DetailViewModel.Address"
+                        MaxLength="150"
+                        Size="TextAreaSize.ExtraLarge"
+                        Disabled="IsEmptyRequestorId()" />
+
+            <PhTextBox Label="@Loc["RequestorDetailsPage_ZipCode"]"
+                       @bind-Value="DetailViewModel.ZipCode"
+                       MaxLength="12"
+                       Disabled="IsEmptyRequestorId()" />
+
+            <PhTextBox Label="@Loc["RequestorDetailsPage_PhoneNumber"]"
+                       @bind-Value="DetailViewModel.PhoneNumber"
+                       MaxLength="20"
+                       Disabled="IsEmptyRequestorId()" />
+
+            <PhTextBox Label="@Loc["RequestorDetailsPage_OrderingPhysicianCode"]"
+                       @bind-Value="DetailViewModel.OrderingPhysicianCode"
+                       MaxLength="32"
+                       Disabled="IsEmptyRequestorId()" />
+
+            <PhTextBox Label="@Loc["RequestorDetailsPage_ShortcutCode"]"
+                       @bind-Value="DetailViewModel.ShortcutCode"
+                       MaxLength="10"
+                       Disabled="IsEmptyRequestorId()" />
+
+            @if (DetailViewModel.UiSettings.RequestSettings.ReflexTestingEnabled)
+            {
+                <PhCheckBox Label="@Loc["RequestorDetailsPage_ReflexEnabled"]"
+                            @bind-Value="DetailViewModel.ReflexEnabled"
+                            Disabled="IsEmptyRequestorId()" />
+            }
+
+            <PhTextArea Label="@Loc["RequestorDetailsPage_Comment"]"
+                        @bind-Value="DetailViewModel.Comment"
+                        MaxLength="80"
+                        Size="TextAreaSize.ExtraLarge"
+                        Disabled="IsEmptyRequestorId()" />
+
+            @if (!DetailViewModel.IsNewEntity)
+            {
+                <PhDatePicker Label="@Loc["RequestorDetailsPage_LatestSampleDate"]"
+                              @bind-Value="DetailViewModel.LatestSampleDate"
+                              DisplayOnly="true" />
+
+
+                <PhNumberField Label="@Loc["RequestorDetailsPage_NumberOfReportedSamples"]"
+                               @bind-Value="DetailViewModel.NumberOfReportedSamples" 
+                               DisplayOnly="true"/>
+
+
+                <PhNumberField Label="@Loc["RequestorDetailsPage_NumberOfReportedTests"]"
+                               @bind-Value="DetailViewModel.NumberOfReportedTests"
+                               DisplayOnly="true" />
+
+
+                <div class="flex items-end gap-xl">
+                    <PhDatePicker Label="@Loc["RequestorDetailsPage_CounterResetDate"]"
+                                  @bind-Value="DetailViewModel.CounterResetDate"
+                                  DisplayOnly="true" />
+                    <PhButton Disabled="@DetailViewModel.IsModified" OnClick="ResetCounters">@Loc["RequestorDetailsPage_ResetCounters"]</PhButton>
+                </div>
+            }
+        </PhInputColumn>
+    </PhTrailingEdge>
+}

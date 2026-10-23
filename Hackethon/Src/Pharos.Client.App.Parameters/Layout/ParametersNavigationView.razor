@@ -1,0 +1,21 @@
+@using Pharos.Client.App.Parameters.Common.Views
+@inject IStringLocalizer<Translations> Loc
+
+<PhSubnavMenu ScrollActiveItemIntoView="true">
+    <ChildContent>
+        <PhSubnavItem Uri="@PageRoute.Parameters.Methods" Text="@Loc["NavMenu_Methods"]"/>
+        <PhSubnavItem Uri="@PageRoute.Parameters.Packages" Text="@Loc["NavMenu_Products"]" />
+        <PhSubnavItem Uri="@PageRoute.Parameters.TestPanels" Text="@Loc["NavMenu_TestPanels"]"/>
+        @if (_uiSettings != null && _uiSettings.RequestSettings.ReflexTestingEnabled)
+        {
+            <PhSubnavItem Uri="@PageRoute.Parameters.Reflex" Text="@Loc["NavMenu_Reflex"]"/>
+        }
+        <PhSubnavItem Uri="@PageRoute.Parameters.QualityControls" Text="@Loc["NavMenu_QualityControls"]" />
+        @if (_uiSettings != null && CanViewRequestorInfo)
+        {
+            <PhSubnavItem Uri="@PageRoute.Parameters.Requestors" Text="@Loc["NavMenu_Requestors"]" />
+        }
+        <PhSubnavItem Uri="@PageRoute.Parameters.LoadListLevels" Text="@Loc["NavMenu_LoadListLevels"]"/>
+        <PhSubnavItem Uri="@PageRoute.Parameters.Configuration" Text="@Loc["NavMenu_Configuration"]" />
+    </ChildContent>
+</PhSubnavMenu>

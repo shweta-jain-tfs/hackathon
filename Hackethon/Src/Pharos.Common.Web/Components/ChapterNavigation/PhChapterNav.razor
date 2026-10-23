@@ -1,0 +1,14 @@
+﻿<nav class="@CssClasses" aria-label="Manual navigation">
+    <ul>
+        @foreach (var node in Items)
+        {
+            <PhChapterNavNode @key="@node.Id"
+                              Node="@node"
+                              CurrentId="@CurrentChapterId"
+                              OnNavigate="@HandleNavigate"
+                              OnToggle="@HandleToggle"
+                              ExpandedState="@_expandedState"
+                              PreventNavigation="@PreventNavigation" />
+        }
+    </ul>
+</nav>

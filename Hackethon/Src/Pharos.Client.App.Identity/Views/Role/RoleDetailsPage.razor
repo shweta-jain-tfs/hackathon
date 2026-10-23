@@ -1,0 +1,41 @@
+@layout UsersAndRolesLayout
+@attribute [Route(PageRoute.UsersAndRoles.RoleDetails.IdRole)]
+@attribute [Authorize(Permissions.ManageUsersAndRoles)]
+@using Pharos.Common.Web.Components.NavigationLock
+@using Pharos.Client.Common.App.Validation
+
+@inherits DetailsPageBase<Pharos.Client.App.Identity.ViewModels.RoleDetailsViewModel, Common.Models.Role, Guid>
+
+@if (DetailViewModel is not null)
+{
+    <PhNavigationLock Modified="@DetailViewModel.IsModified" OnSave="() => SaveChanges(true)" IsValid="@IsValid()" InvalidEntryPrompt="ShowValidationMessage" />
+
+    <SectionContent SectionName="page-header">
+        <Breadcrumb Items="@Breadcrumbs" />
+        <div class="flex gap-md">
+            <PhButton Disabled="@(!DetailViewModel.IsModified)" OnClick="DiscardChanges">@Loc["UsersAndRolePage_Discard"]</PhButton>
+            <PhButton Type="ButtonType.Primary" Disabled="@(!DetailViewModel.IsModified || !IsValid())" OnClick="() => SaveChanges(false)">@Loc["UsersAndRolePage_Save"]</PhButton>
+        </div>
+    </SectionContent>
+
+    <PhStack>
+        <PhSimpleValidationContext @ref="_validation" Model="@DetailViewModel">
+            <PhTextBox Label=@Loc["Role_DisplayName"] @bind-Value="DetailViewModel.DisplayName"
+                       Size="TextBoxSize.Small"
+                       MaxLength="RolesContract.MaximumNameLength"
+                       Disabled="DetailViewModel.Model.IsBuiltInRole" />
+        </PhSimpleValidationContext>
+
+        @foreach (var (permission, translatedName) in SortedPermissions!)
+        {
+            @if ((permission.Name == _manageUsersAndRolesString && DetailViewModel.Model.IncludesCurrentUser) || permission.Name == _accessInstrumentServiceUi || DetailViewModel.Model.IsBuiltInRole)
+            {
+                <PhCheckBox @bind-Value="permission.IsSelected" Label="@translatedName" Disabled="true" />
+            }
+            else
+            {
+                <PhCheckBox @bind-Value="permission.IsSelected" Label="@translatedName" />
+            }
+        }
+    </PhStack>
+}

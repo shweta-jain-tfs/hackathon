@@ -1,0 +1,12 @@
+﻿@using Pharos.Client.Common.Localization
+
+<PhModalContent>
+    <Body>
+        <div class="ph-tray-page__dialog-content">
+            @Message
+        </div>
+    </Body>
+    <Footer>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Cancel()))">@CloseButtonText</PhButton>
+    </Footer>
+</PhModalContent>

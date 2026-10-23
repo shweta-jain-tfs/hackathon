@@ -1,0 +1,18 @@
+﻿@namespace Pharos.Client.App.Sample.Views
+@using Pharos.Client.App.Sample.ViewModels
+@using Pharos.Common.Web.Components.Legend
+
+<PhLegend TStatus="TubeStatus"
+          @ref="_phLegend"
+          StatusHeaderText="@Loc["Legend_State_Header"]"
+          LegendStatuses="ViewModel.LegendStatuses"
+          GetStatusText="@SampleLegendViewModel.GetSampleTubeStatusText"
+          SelectionChanged="@ViewModel.OnLegendSelectionChanged"
+          ErrorHeaderText="@Loc["Legend_Issue_Header"]"
+          LegendErrors="@ViewModel.LegendErrors"
+          IsAnyHighPriority="@ViewModel.IsAnyHighPriority"
+          HighPriorityText="@Loc["Legend_State_HighPriority"]"
+          IsAnyManualEntry="@ViewModel.IsAnyManualEntry"
+          ManualEntryText="@Loc["Legend_State_ManualEntry"]"
+          UnloadRequestedCount="@ViewModel.UnloadRequestedCount"
+          UnloadRequestedText="@Loc["Legend_Issue_UnloadRequested"]" />

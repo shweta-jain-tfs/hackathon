@@ -1,0 +1,47 @@
+﻿@using Pharos.Common.Web.Components.SearchBox
+@attribute [Stories("Components/SearchBox")]
+
+<Stories TComponent="PhSearchBox">
+    <Story Name="Search">
+        <Arguments>
+            <Arg For="_ => _!.PlaceholderText" Value="@("Placeholder text")" />
+        </Arguments>
+        <Template>
+            <div style="max-width:400px;margin:2rem auto;padding:2rem;background:#f8f9fa;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+                <PhSearchBox @attributes="context.Args" OnSearch="ShowToast" />
+            </div>
+
+            @if (_showToast)
+            {
+                <div style="position:fixed;top:2rem;right:2rem;z-index:1000;">
+                    <div style="background:#323232;color:#fff;padding:1rem 2rem;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.15);min-width:200px;">
+                        Search triggered!
+                        <button style="margin-left:1rem;background:none;border:none;color:#fff;cursor:pointer;" @onclick="HideToast">✕</button>
+                    </div>
+                </div>
+            }
+        </Template>
+    </Story>
+</Stories>
+
+@code {
+    private bool _showToast = false;
+
+    private void ShowToast()
+    {
+        _showToast = true;
+        _ = HideToastAfterDelay();
+    }
+
+    private async Task HideToastAfterDelay()
+    {
+        await Task.Delay(2000);
+        _showToast = false;
+        StateHasChanged();
+    }
+
+    private void HideToast()
+    {
+        _showToast = false;
+    }
+}

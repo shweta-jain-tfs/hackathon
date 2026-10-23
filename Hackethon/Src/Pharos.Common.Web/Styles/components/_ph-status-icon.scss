@@ -1,0 +1,103 @@
+@use "../abstracts/colors";
+
+.ph-status-icon {
+    display: block;
+    --ph-status-icon-accent: #{colors.$icon-primary};
+    --ph-status-icon-outline: transparent;
+    --ph-status-icon-progress: #{colors.$background-tertiary};
+    width: var(--ph-status-icon-size);
+    height: var(--ph-status-icon-size);
+    flex-shrink: 0;
+
+    > svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    &--ok {
+        color: colors.$status-success;
+    }
+
+    &--standby,
+    &--off {
+        color: colors.$status-off;
+    }
+
+    &--alarm {
+        color: colors.$status-alarm;
+    }
+
+    &--alert {
+        color: colors.$status-validation;
+    }
+
+    &--warning {
+        --ph-status-icon-accent: #{colors.$icon-inverse};
+        color: colors.$status-warning;
+    }
+
+    &--pending-action {
+        color: colors.$status-info;
+    }
+
+    &--progress {
+        color: colors.$status-progress;
+    }
+
+    &--no-accent {
+        --ph-status-icon-accent: currentColor;
+    }
+
+    &--outline {
+        --ph-status-icon-outline: #{colors.$background-primary};
+    }
+
+    &--size-xxs {
+        --ph-status-icon-size: 8px;
+    }
+
+    &--size-xs {
+        --ph-status-icon-size: 16px;
+    }
+
+    &--size-sm {
+        --ph-status-icon-size: 24px;
+    }
+
+    &--size-md {
+        --ph-status-icon-size: 32px;
+    }
+
+    &--size-lg {
+        --ph-status-icon-size: 40px;
+    }
+
+    &--size-xl {
+        --ph-status-icon-size: 48px;
+    }
+
+    &--size-2xl {
+        --ph-status-icon-size: 56px;
+    }
+
+    &--size-3xl {
+        --ph-status-icon-size: 64px;
+    }
+
+    &--size-4xl {
+        --ph-status-icon-size: 72px;
+    }
+
+    &--workflow-completed {
+        color: colors.$status-success;
+    }
+
+    &--workflow-in-progress {
+        color: colors.$status-info;
+    }
+
+    &--workflow-not-started {
+        color: colors.$icon-disabled-02;
+    }
+}

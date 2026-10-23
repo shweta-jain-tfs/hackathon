@@ -1,0 +1,12 @@
+﻿@using Pharos.Client.Common.Localization
+@inject IStringLocalizer<Translations> Loc
+
+<PhModalContent>
+    <Body>
+        <p>@Loc["SettingsPage_Delete_Settings_Body"]</p>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok(false)))">@Loc["Cancel"]</PhButton>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok(true)))">@Loc["Delete"]</PhButton>
+    </Footer>
+</PhModalContent>

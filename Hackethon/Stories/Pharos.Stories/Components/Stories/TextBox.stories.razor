@@ -1,0 +1,104 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/TextBox")]
+
+<Stories TComponent="PhTextBox">
+    <Story Name="TextBox">
+        <Template>
+            <PhTextBox @attributes="context.Args" @bind-Value="@TextValue" />
+        </Template>
+    </Story>
+
+    <Story Name="Sizes">
+        <Template>
+            <PhStack>
+                @foreach (TextBoxSize size in Enum.GetValues(typeof(TextBoxSize)))
+                {
+                    <PhTextBox @attributes="context.Args" Size="size" Label="@size.ToString()" @bind-Value="@TextValue" />
+                }
+            </PhStack>
+        </Template>
+    </Story>
+
+    <Story Name="Validation">
+        <Template>
+            <EditForm Model="@HelpViewModel" Context="form" @ref="_helpForm">
+                <MockValidator @ref="_helpValidator" Type="MockValidatorType.MinLength" />
+                <ValidationSummary />
+
+                <PhTextBox @attributes="context.Args"
+                           Label="Username"
+                           HelpText="Enter your unique username (min. 8 characters)"
+                           PlaceHolder="Enter username..."
+                           @bind-Value="@HelpViewModel.Username" />
+
+                <PhTextBox @attributes="context.Args"
+                           Label="Email Address"
+                           HelpText="We'll use this for important notifications"
+                           PlaceHolder="your.email@example.com"
+                           @bind-Value="@HelpViewModel.Email" />
+            </EditForm>
+
+            <div class="mt-sm">
+                <PhButton OnClick="ToggleHelpValidation">@(_isHelpValidated ? "Clear Validation" : "Validate Form")</PhButton>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Help Text and Error States">
+        <Template>
+            <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e0e0e0;">
+                <PhTextBox @attributes="context.Args"
+                           Label="Phone Number - Error State Example"
+                           HelpText="Format: +1 (555) 123-4567"
+                           Error="_showCustomError"
+                           ErrorText="Custom error: Invalid phone format"
+                           PlaceHolder="+1 (555) 123-4567"
+                           @bind-Value="@HelpTextValue3" />
+
+                <div class="flex gap-md" style="margin-top: 8px;">
+                    <PhButton OnClick="() => _showCustomError = !_showCustomError">
+                        @(_showCustomError ? "Clear Error State" : "Show Error State")
+                    </PhButton>
+                </div>
+            </div>
+        </Template>
+    </Story>
+</Stories>
+
+@code {
+    private string TextValue { get; set; } = "Text Value";
+    private string HelpTextValue3 { get; set; } = "+1 (555) 123-4567";
+    private bool _showCustomError = false;
+    private bool _isHelpValidated = false;
+    private HelpModel HelpViewModel { get; set; } = new HelpModel();
+    private EditForm? _helpForm;
+    private MockValidator? _helpValidator;
+
+    public class Model
+    {
+        public string? PropertyOne { get; set; } = "Change to validate";
+    }
+
+    public class HelpModel
+    {
+        public string? Username { get; set; } = "john_doe";
+        public string? Email { get; set; } = "john@example.com";
+    }
+
+    private void ToggleHelpValidation()
+    {
+        if (_isHelpValidated)
+        {
+            _helpValidator?.ClearErrors();
+            _isHelpValidated = false;
+        }
+        else
+        {
+            _helpForm?.EditContext?.Validate();
+            _isHelpValidated = true;
+        }
+    }
+}

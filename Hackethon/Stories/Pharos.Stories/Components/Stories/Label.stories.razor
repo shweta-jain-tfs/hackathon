@@ -1,0 +1,245 @@
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.DatePicker
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Stories.Components.TestContent
+@using Microsoft.AspNetCore.Components.Forms
+@attribute [Stories("Components/Label")]
+
+<Stories TComponent="PhLabel">
+    <Story Name="Default">
+        <Description>Default usage with core parameters as controls.</Description>
+        <Arguments>
+            <Arg For="_ => _!.ChildContent" Value="@_childContentDefault" />
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.RenderAsLabel" Value="true" />
+            <Arg For="_ => _!.Size" Value="@LabelSize.Body2" />
+            <Arg For="_ => _!.Style" Value="@LabelStyle.Default" />
+            <Arg For="_ => _!.SuppressAutoValidation" Value="false" />
+            <Arg For="_ => _!.Text" Value="@("Label text")" />
+        </Arguments>
+        <Template>
+            <PhLabel @attributes="context.Args" />
+        </Template>
+    </Story>
+    <Story Name="Labels">
+        <Template>
+            <div style="overflow: auto;">
+                @foreach (LabelDirection direction in Enum.GetValues(typeof(LabelDirection)))
+                {
+                    <div class="t-h1"><b>Direction: @direction</b></div>
+                    <br />
+
+                    // Styles.
+                    @foreach (var isDisabled in new[] { false, true })
+                    {
+                        <div class="flex gap-xxl" style="margin-bottom: 20px;">
+                            @if (isDisabled)
+                            {
+                                <div class="t-h5">Disabled:</div>
+                            }
+                            else
+                            {
+                                <div class="t-h3">Styles:</div>
+                            }
+                            @foreach (LabelStyle style in Enum.GetValues(typeof(LabelStyle)))
+                            {
+                                <div>
+                                    <PhLabel Direction="@direction" Style="@style" Disabled="@isDisabled" Text="@style.ToString()">
+                                        <PhButton Disabled="isDisabled">Any component</PhButton>
+                                    </PhLabel>
+                                </div>
+                            }
+                        </div>
+                    }
+                    <br />
+
+                    // Colors.
+                    @foreach (var isDisabled in new[] { false, true })
+                    {
+                        <div class="flex gap-xxl" style="margin-bottom: 20px;">
+                            @if (isDisabled)
+                            {
+                                <div class="t-h5">Disabled:</div>
+                            }
+                            else
+                            {
+                                <div class="t-h3">Colors:</div>
+                            }
+                            @foreach (LabelColor color in Enum.GetValues(typeof(LabelColor)))
+                            {
+                                <div>
+                                    <PhLabel Direction="@direction" Color="@color" Disabled="@isDisabled" Text="@color.ToString()">
+                                        <PhButton Disabled="@isDisabled">Any component</PhButton>
+                                    </PhLabel>
+                                </div>
+                            }
+                        </div>
+                    }
+                    <br />
+
+                    // Sizes.
+                    @foreach (var isDisabled in new[] { false, true })
+                    {
+                        <div class="flex gap-xxl" style="margin-bottom: 20px;">
+                            @if (isDisabled)
+                            {
+                                <div class="t-h5">Disabled:</div>
+                            }
+                            else
+                            {
+                                <div class="t-h3">Sizes:</div>
+                            }
+                            @foreach (LabelSize size in Enum.GetValues(typeof(LabelSize)))
+                            {
+                                <div>
+                                    <PhLabel Direction="@direction" Size="@size" Disabled="@isDisabled" Text="@size.ToString()">
+                                        <PhButton Disabled="@isDisabled">Any component</PhButton>
+                                    </PhLabel>
+                                </div>
+                            }
+                        </div>
+                    }
+                    <br />
+                    <br />
+                }
+            </div>
+        </Template>
+    </Story>
+    <Story Name="Label with TextBox Help Text and Validation">
+        <Template>
+            <EditForm Model="@LabelViewModel" Context="form" @ref="_labelForm">
+                <PhStack>
+                    <MockValidator @ref="_labelValidator" />
+                    <ValidationSummary />
+
+                    <PhLabel Text="User Information" HelpText="Click for user account guidelines" ValidationFor="() => LabelViewModel.Username">
+                        <PhTextBox @attributes="context.Args"
+                                   PlaceHolder="Enter username..."
+                                   @bind-Value="@LabelViewModel.Username" />
+                    </PhLabel>
+
+                    <PhLabel Text="Contact Details" HelpText="Required for account verification" ValidationFor="() => LabelViewModel.Email">
+                        <PhTextBox @attributes="context.Args"
+                                   PlaceHolder="your.email@example.com"
+                                   @bind-Value="@LabelViewModel.Email" />
+                    </PhLabel>
+                </PhStack>
+            </EditForm>
+            <div class="flex gap-md">
+                <PhButton OnClick="ToggleValidation">@(_isValidated ? "Clear Validation" : "Validate Form")</PhButton>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Label with ErrorText">
+        <Template>
+            <PhStack>
+                <PhLabel Text="Username"
+                         HelpText="@(_showErrorText ? null : "Enter your username")"
+                         ErrorText="@(_showErrorText ? "Username must be at least 3 characters" : null)">
+                    <PhTextBox @attributes="context.Args"
+                               PlaceHolder="Enter username..."
+                               @bind-Value="@_usernameValue" />
+                </PhLabel>
+
+                <PhLabel Text="Email Address"
+                         HelpText="@(_showErrorText ? null : "Enter a valid email address")"
+                         ErrorText="@(_showErrorText ? "Please enter a valid email format" : null)">
+                    <PhTextBox @attributes="context.Args"
+                               PlaceHolder="your.email@example.com"
+                               @bind-Value="@_emailValue" />
+                </PhLabel>
+            </PhStack>
+
+            <div class="flex gap-md" style="margin-top: 16px;">
+                <PhButton OnClick="() => _showErrorText = !_showErrorText">
+                    @(_showErrorText ? "Show Help Text" : "Show Error Text")
+                </PhButton>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Label Associated with DatePicker">
+        <Template>
+            <PhStack>
+                <div class="flex flex-col gap-md">
+                    <PhLabel Text="Birth Date"
+                             HelpText="Select your date of birth for age verification"
+                             For="birthdate-picker">
+                        <!-- Label is associated with DatePicker via For/Id relationship -->
+                    </PhLabel>
+                    <PhDatePicker Id="birthdate-picker"
+                                  @attributes="context.Args"
+                                  @bind-Value="@_birthDate" />
+                </div>
+
+                <div class="flex flex-col gap-md">
+                    <PhLabel Text="Event Date"
+                             HelpText="Choose the date for your scheduled event"
+                             For="event-date-picker">
+                        <!-- Another example of For/Id association -->
+                    </PhLabel>
+                    <PhDatePicker Id="event-date-picker"
+                                  @attributes="context.Args"
+                                  @bind-Value="@_eventDate" />
+                </div>
+
+                <div class="flex flex-col gap-md">
+                    <PhLabel Text="Deadline - With Error State"
+                             HelpText="@(_showForIdError ? null : "Select the project deadline")"
+                             ErrorText="@(_showForIdError ? "Please select a valid future date" : null)"
+                             For="deadline-picker">
+                        <!-- Label with error state and For/Id association -->
+                    </PhLabel>
+                    <PhDatePicker Id="deadline-picker"
+                                  Error="_showForIdError"
+                                  @attributes="context.Args"
+                                  @bind-Value="@_deadlineDate" />
+
+                    <div class="flex gap-md" style="margin-top: 8px;">
+                        <PhButton OnClick="() => _showForIdError = !_showForIdError">
+                            @(_showForIdError ? "Clear Error State" : "Show Error State")
+                        </PhButton>
+                    </div>
+                </div>
+            </PhStack>
+        </Template>
+    </Story>
+</Stories>
+
+@code
+{
+    RenderFragment _childContentDefault = @<text>[Child content]</text>;
+    private LabelTestModel LabelViewModel { get; set; } = new LabelTestModel();
+    private EditForm? _labelForm;
+    private MockValidator? _labelValidator;
+    private bool _isValidated = false;
+    private bool _showErrorText = false;
+    private bool _showForIdError = false;
+    private string _usernameValue = "jo";
+    private string _emailValue = "invalid-email";
+    private DateTimeOffset? _birthDate;
+    private DateTimeOffset? _eventDate;
+    private DateTimeOffset? _deadlineDate;
+
+    public class LabelTestModel
+    {
+        public string? Username { get; set; } = "john_doe";
+        public string? Email { get; set; } = "john@example.com";
+    }
+
+    private void ToggleValidation()
+    {
+        if (_isValidated)
+        {
+            _labelValidator?.ClearErrors();
+            _isValidated = false;
+        }
+        else
+        {
+            _labelForm?.EditContext?.Validate();
+            _isValidated = true;
+        }
+    }
+}

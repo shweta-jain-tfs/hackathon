@@ -1,0 +1,41 @@
+@startuml ScanOneSample
+skinparam BoxPadding 20
+
+actor User as user
+
+box "Instrument" #LightGrey
+	participant Client #LightSkyBlue
+	participant Client.ViewModels #LightSkyBlue
+	participant Client.Notifications.Services #LightSkyBlue
+	participant gRPC #LightGreen
+end box
+
+box "Pharos-Server" #LightSkyBlue
+	participant Application.Instrument.Grpc #LightGreen
+	participant Application.Instrument.Commands
+	participant Application.Instrument.EventHandlers
+	participant Application.Infrastructure.Notifications
+end box
+
+'Scan one Sample'
+user -> gRPC : Send operational state (Assay)
+
+'Send instrument storage'
+gRPC -> Application.Instrument.Grpc : grpc SendOperationalState
+note over Application.Instrument.Grpc: PharosServiceImplementation.cs
+Application.Instrument.Grpc -> Application.Instrument.Commands : Send UpdateInstrumentStatusCommand
+Application.Instrument.Commands -> Application.Instrument.EventHandlers : Publish InstrumentStateChangedEvent
+Application.Instrument.EventHandlers -> Application.Infrastructure.Notifications : _hub.StateChanged(instrument)
+note over Application.Infrastructure.Notifications: Hubs\\InstrumentHub.cs
+note over Application.Infrastructure.Notifications: Get group for this instrument, and send message.
+Application.Infrastructure.Notifications --> Client.Notifications.Services: GetClientGroup(instrumentId).SampleDrawerContentsChanged(instrumentId); 
+note over Client.Notifications.Services: InstrumentStateNotificationProvider.cs
+note over Client.Notifications.Services: Listening on\nIInstrumentStorageHub.SampleDrawerContentsChanged
+Client.Notifications.Services --> Client.Notifications.Services: OnNext(DataNotificationType.UpdatedObject, Instrument.FromDto(instrument))
+note over Client.Notifications.Services: NotificationProviderBase.cs
+Client.Notifications.Services --> Client.Notifications.Services: _observers.ForEach(o => o.OnNext(new DataNotification<TModel>(notificationType, model)))
+Client.Notifications.Services --> Client.ViewModels: Common\\SingletonViewModel.cs: OnNext()
+note over Client.ViewModels: Model = value.Data;\nOnPropertyChanged(null);
+
+
+@enduml

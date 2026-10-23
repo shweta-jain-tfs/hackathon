@@ -1,0 +1,63 @@
+@attribute [Route(PageRoute.SampleDetails.Default)]
+@attribute [Route(PageRoute.SampleDetails.IdParameter)]
+@attribute [Authorize]
+
+@using Pharos.Client.App.Request.Views.RequestDetail
+@using Pharos.Client.Common.App.Validation
+@using Pharos.Common.Web.Components.TabControl
+
+@inherits DetailsPageBase<RequestDetailsViewModel, RequestDetails>
+
+@if (DetailViewModel != null)
+{
+    <PhNavigationLock Modified="@DetailViewModel.IsModified" OnSave="() => SaveChanges(true)" IsValid="@IsValid()" />
+
+    <PhPage>
+        <PageHeader>
+            <Breadcrumb Items="@Breadcrumbs" />
+            @if (HasManageTestOrdersPermission)
+            {
+                <div class="flex gap-md">
+                    <PhButton Disabled="@(!DetailViewModel.IsModified || string.IsNullOrWhiteSpace(DetailViewModel.SampleId))" OnClick="DiscardChanges">Discard changes</PhButton>
+                    <PhButton Type="ButtonType.Primary" Disabled="@(!DetailViewModel.IsModified || string.IsNullOrWhiteSpace(DetailViewModel.SampleId) || !IsValid())" OnClick="() => SaveChanges(false)">Save</PhButton>
+                </div>
+            }
+        </PageHeader>
+
+        <ChildContent>
+            <PhValidationContext @ref="_validation" OnValidationStateChanged="OnValidationContextStateChanged">
+                <PhStack Gap="StackGap.Lg">
+                    <PhValidationSection Model="@DetailViewModel" SectionName="@HeaderViewName" RuleSets="@HeaderViewName">
+                        <HeaderView @ref="_headerViewReference" ViewModel="@DetailViewModel"/>
+                    </PhValidationSection>
+                    <PhTabControl DefaultTab="DefaultTab" Disabled="@DetailViewModel.IsEmptySampleId" StateID="@TabStateId">
+                        <PhTabPage TabId="@((int)TabItems.Tests)" Text="@TitleTests" HideTrailingEdge="true">
+                            <TestListView @ref="_testsViewReference" ViewModel="@DetailViewModel"/>
+                        </PhTabPage>
+                        <PhTabPage TabId="@((int)TabItems.Details)" Text="Details" HasValidationError="@HasTabValidationError(DetailsTabName)">
+                            <PhValidationSection Model="@DetailViewModel" SectionName="@DetailsTabName" RuleSets="@DetailsTabName">
+                                <DetailsView ViewModel="@DetailViewModel"/>
+                            </PhValidationSection>
+                        </PhTabPage>
+                        <PhTabPage TabId="@((int)TabItems.Tubes)" Text="Tubes" HideTrailingEdge="true" SymbolType="@GetTubesTabSymbolType()">
+                            <PhValidationSection Model="@DetailViewModel" SectionName="@TubesTabName" RuleSets="@TubesTabName">
+                                <TubesView ViewModel="@DetailViewModel"/>
+                            </PhValidationSection>
+                        </PhTabPage>
+                        @if (CanViewPatientInfo)
+                        {
+                            <PhTabPage TabId="@((int)TabItems.Patient)" Text="Patient" HasValidationError="@HasTabValidationError(PatientTabName)">
+                                <PhValidationSection Model="@DetailViewModel.PatientViewModel" SectionName="@PatientTabName">
+                                    <PatientView SampleId="@DetailViewModel.SampleId"
+                                                 PatientAgeAtSampling="@DetailViewModel.PatientAgeAtSampling"
+                                                 ViewModel="@DetailViewModel.PatientViewModel"
+                                                 ParentViewModel="@DetailViewModel"/>
+                                </PhValidationSection>
+                            </PhTabPage>
+                        }
+                    </PhTabControl>
+                </PhStack>
+            </PhValidationContext>
+        </ChildContent>
+    </PhPage>
+}

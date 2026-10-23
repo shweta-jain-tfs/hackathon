@@ -1,0 +1,133 @@
+@use "sass:map";
+
+$desktopHitAreas: (
+    "xs": 24px,
+    "sm": 32px,
+    "md": 32px,
+    "lg": 40px,
+);
+
+$instrumentHitAreas: (
+    "xs": 32px,
+    "sm": 40px,
+    "md": 48px,
+    "lg": 56px,
+);
+
+
+$hit-area-xs: var(--ph-hit-area-xs, map.get($desktopHitAreas, "xs"));
+$hit-area-sm: var(--ph-hit-area-sm, map.get($desktopHitAreas, "sm"));
+$hit-area-md: var(--ph-hit-area-md, map.get($desktopHitAreas, "md"));
+$hit-area-lg: var(--ph-hit-area-lg, map.get($desktopHitAreas, "lg"));
+
+$desktopIconSizes: (
+    "xs": 8px,
+    "sm": 16px,
+    "md": 24px,
+    "lg": 24px,
+    "xl": 32px,
+    "xxl": 40px,
+);
+
+$instrumentIconSizes: (
+    "xs": 16px,
+    "sm": 24px,
+    "md": 32px,
+    "lg": 40px,
+    "xl": 48px,
+    "xxl": 56px,
+);
+
+$icon-xs: var(--ph-icon-xs, map.get($desktopIconSizes, "xs"));
+$icon-sm: var(--ph-icon-sm, map.get($desktopIconSizes, "sm"));
+$icon-md: var(--ph-icon-md, map.get($desktopIconSizes, "md"));
+$icon-lg: var(--ph-icon-lg, map.get($desktopIconSizes, "lg"));
+$icon-xl: var(--ph-icon-xl, map.get($desktopIconSizes, "xl"));
+$icon-xxl: var(--ph-icon-xxl, map.get($desktopIconSizes, "xxl"));
+
+$fixedColSizes: (
+    "col1": 113px,
+    "col2": 246px,
+    "col3": 379px,
+    "col4": 512px,
+    "col5": 645px,
+    "col6": 778px,
+    "col7": 911px,
+    "col8": 1044px,
+    "col9": 1177px,
+    "col10": 1310px,
+    "col11": 1443px,
+    "col12": 1576px,
+);
+
+
+$fixedRowSizes: (
+    "row1": 60px,
+    "row2": 140px,
+    "row3": 220px,
+    "row4": 300px,
+    "row5": 380px,
+    "row6": 460px,
+    "row7": 540px,
+    "row8": 620px,
+    "row9": 700px,
+    "row10": 780px,
+    "row11": 860px,
+    "row12": 940px,
+);
+
+// todo: desktop sizes
+$tab-size: var(--ph-tab-size, map.get($fixedColSizes, "col1"));
+$button-size-default: var(--ph-button-size-default, map.get($fixedColSizes, "col2"));
+$button-size-max: var(--ph-button-size-max, map.get($fixedColSizes, "col3"));
+$sidebar-width-narrow: map.get($fixedColSizes, "col2");
+$sidebar-width-wide: map.get($fixedColSizes, "col3");
+$task-card-width: map.get($fixedColSizes, "col4");
+$maintenance-card-width: map.get($fixedColSizes, "col3");
+
+// standard sizes for text boxes, dropdowns, etc.
+$input-width-xsmall: map.get($fixedColSizes, "col1");
+$input-width-small: map.get($fixedColSizes, "col2");
+$input-width-medium: map.get($fixedColSizes, "col3");
+$input-width-large: map.get($fixedColSizes, "col4");
+$input-width-xlarge: map.get($fixedColSizes, "col6");
+
+// min-height for inputs and buttons
+$control-height: var(--ph-control-height, $hit-area-md);
+
+$modal-width-size-xsmall: map.get($fixedColSizes, "col4");
+$modal-width-size-small: map.get($fixedColSizes, "col6");
+$modal-width-size-medium: map.get($fixedColSizes, "col8");
+$modal-width-size-large: map.get($fixedColSizes, "col10");
+$modal-width-size-xlarge: map.get($fixedColSizes, "col12");
+
+$modal-height-size-xsmall: map.get($fixedRowSizes, "row4");
+$modal-height-size-small: map.get($fixedRowSizes, "row6");
+$modal-height-size-medium: map.get($fixedRowSizes, "row8");
+$modal-height-size-large: map.get($fixedRowSizes, "row10");
+$modal-height-size-xlarge: map.get($fixedRowSizes, "row12");
+
+$table-max-column-width: 58ch; // ~ 5 cols on instrument screen with relaxed row height
+$filter-wide-width: map.get($fixedColSizes, "col5");
+
+$instrument-card-width: map.get($fixedColSizes, "col5");
+
+$scrollbar-width: var(--ph-scrollbar-width, 16px);
+$main-navigation-width: var(--ph-main-navigation-width, 224px);
+$more-menu-width: map.get($fixedColSizes, "col2");
+
+$trailing-edge-default: 24px;
+$trailing-edge-wide: 48px;
+$trailing-edge-extra-wide: 64px;
+
+// Theme mixin
+@mixin instrument-size-variables {
+    @each $sizeName, $sizeValue in $instrumentHitAreas {
+        --ph-hit-area-#{$sizeName}: #{$sizeValue};
+    }
+    @each $sizeName, $sizeValue in $instrumentIconSizes {
+        --ph-icon-#{$sizeName}: #{$sizeValue};
+    }
+    --ph-scrollbar-width: 20px; // 8px thumb inside a 20px track
+    --ph-main-navigation-width: 296px;
+}

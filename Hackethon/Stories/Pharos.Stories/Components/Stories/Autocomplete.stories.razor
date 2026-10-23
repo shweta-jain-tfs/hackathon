@@ -1,0 +1,167 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@attribute [Stories("Components/Autocomplete")]
+
+<Stories TComponent="PhAutocomplete<Article>">
+    <Story Name="Autocomplete">
+        <Arguments>
+            <Arg For="_ => _!.MaximumSuggestions" Value="3" />
+            <Arg For="_ => _!.SelectedText" Value="@(article => $"{article.ArticleIdentity}, {article.ArticleLongName}")" />
+            <Arg For="_ => _!.Row1Text" Value="@(article => article.ArticleIdentity)" />
+            <Arg For="_ => _!.Row2Text" Value="@(article => article.ArticleLongName)" />
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.Error" Value="false" />
+            <Arg For="_ => _!.PlaceHolder" Value="@("Search by typing letter a...")" />
+            <Arg For="_ => _!.FooterTextFormat" Value="@("{0} of {1} matches")" />
+            <Arg For="_ => _!.NoResultsText" Value="@("No results found")" />
+        </Arguments>
+        <Template>
+            <div class="mb-md">
+                Current: @_article?.ArticleIdentity
+            </div>
+            <PhAutocomplete @attributes="context.Args" TValue="Article" Result="LoadArticleData" @bind-Value="_article" />
+        </Template>
+    </Story>
+    <Story Name="Many results">
+        <Arguments>
+            <Arg For="_ => _!.MaximumSuggestions" Value="15" />
+            <Arg For="_ => _!.SelectedText" Value="@(article => $"{article.ArticleIdentity}, {article.ArticleLongName}")" />
+            <Arg For="_ => _!.Row1Text" Value="@(article => article.ArticleIdentity)" />
+            <Arg For="_ => _!.Row2Text" Value="@(article => article.ArticleLongName)" />
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.Error" Value="false" />
+            <Arg For="_ => _!.PlaceHolder" Value="@("Search by typing letter a...")" />
+            <Arg For="_ => _!.FooterTextFormat" Value="@("{0} of {1} matches")" />
+            <Arg For="_ => _!.NoResultsText" Value="@("No results found")" />
+        </Arguments>
+        <Template>
+            <PhAutocomplete @attributes="context.Args" TValue="Article" Result="LoadArticleData" @bind-Value="_article" />
+        </Template>
+    </Story>
+    <Story Name="External reset while editing">
+        <Arguments>
+            <Arg For="_ => _!.MaximumSuggestions" Value="3" />
+            <Arg For="_ => _!.SelectedText" Value="@(article => $"{article.ArticleIdentity}, {article.ArticleLongName}")" />
+            <Arg For="_ => _!.Row1Text" Value="@(article => article.ArticleIdentity)" />
+            <Arg For="_ => _!.Row2Text" Value="@(article => article.ArticleLongName)" />
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.Error" Value="false" />
+            <Arg For="_ => _!.PlaceHolder" Value="@("Search by typing letter a...")" />
+            <Arg For="_ => _!.FooterTextFormat" Value="@("{0} of {1} matches")" />
+            <Arg For="_ => _!.NoResultsText" Value="@("No results found")" />
+        </Arguments>
+        <Template>
+            <div class="mb-md">
+                Current: @_article?.ArticleIdentity
+            </div>
+            <PhAutocomplete @attributes="context.Args" TValue="Article" Result="LoadArticleData" @bind-Value="_article" />
+            <p class="my-md">
+                Pressing the buttons (simulating external updates) should replace only replace the text when the value changed or when focus is not in the textbox.
+            </p>
+            <div class="flex gap-md">
+                <button type="button"
+                        class="ph-button ph-button--secondary"
+                        @onmousedown:preventDefault
+                        @onclick="SetArticleFromOutside">
+                    Set to B01 without moving focus
+                </button>
+                <button type="button"
+                        class="ph-button ph-button--secondary"
+                        @onmousedown:preventDefault
+                        @onclick="ClearArticle">
+                    Clear without moving focus
+                </button>
+            </div>
+        </Template>
+    </Story>
+</Stories>
+
+@code {
+    private Article? _article;
+
+    private void SetArticleFromOutside()
+    {
+        _article = new Article
+        {
+            ArticleIdentity = "B01",
+            ArticleLongName = "This was set from outside"
+        };
+    }
+
+    private void ClearArticle()
+    {
+        _article = null;
+    }
+
+    private static Task<Tuple<IEnumerable<Article>, int>> LoadArticleData(string searchText)
+    {
+        var articles = new List<Article>
+        {
+            new() {ArticleIdentity = "A00", ArticleLongName = "This is an Article of type A00"},
+            new() {ArticleIdentity = "A01", ArticleLongName = "This is an Article of type A01"},
+            new() {ArticleIdentity = "A02", ArticleLongName = "This is an Article of type A02"},
+            new() {ArticleIdentity = "A11", ArticleLongName = "This is an Article of type A11"},
+            new() {ArticleIdentity = "A12", ArticleLongName = "This is an Article of type A12"},
+            new() {ArticleIdentity = "A13", ArticleLongName = "This is an Article of type A13"},
+            new() {ArticleIdentity = "A21", ArticleLongName = "This is an Article of type A21"},
+            new() {ArticleIdentity = "A22", ArticleLongName = "This is an Article of type A22"},
+            new() {ArticleIdentity = "A23", ArticleLongName = "This is an Article of type A23"},
+            new() {ArticleIdentity = "A24", ArticleLongName = "This is an Article of type A24"},
+            new() {ArticleIdentity = "Ö25", ArticleLongName = "This has special characters like Å, Ä & Ö"},
+        };
+
+        var term = searchText?.Trim() ?? string.Empty;
+        var articlesFiltered = articles
+            .Where(x =>
+                x.ArticleIdentity.Contains(term, StringComparison.OrdinalIgnoreCase) ||
+                (x.ArticleLongName?.Contains(term, StringComparison.OrdinalIgnoreCase) == true))
+            .ToList();
+
+        return Task.FromResult(new Tuple<IEnumerable<Article>, int>(articlesFiltered, articlesFiltered.Count));
+    }
+
+    /// <summary>
+    /// Something to show in auto complete.
+    /// </summary>
+    public class Article
+    {
+        /// <summary>
+        /// Selectable item.
+        /// </summary>
+        public required string ArticleIdentity { get; set; }
+
+        /// <summary>
+        /// For the detail row.
+        /// </summary>
+        public string? ArticleLongName { get; set; }
+    }
+
+    // ----------------------------------------------------------------
+    // Example of how to search and filter for MethodTest from real DB:
+    // ----------------------------------------------------------------
+    // <PhAutocomplete placeholder="Search by typing any letter..."
+    //                 Result="ViewModel.LoadMethodTestData"
+    //                 MaximumSuggestions="6"
+    //                 PropertyToShow="TestName">
+    //     <ResultTemplateRow1 Context="methodTest">
+    //         @methodTest.TestName
+    //     </ResultTemplateRow1>
+    //     <ResultTemplateRow2 Context="methodTest">
+    //         @methodTest.LongTestName
+    //     </ResultTemplateRow2>
+    // </PhAutocomplete>
+
+    // public async Task<Tuple<IEnumerable<MethodTest>, int>> LoadMethodTestData(string searchText)
+    // {
+    //     var filters = new List<DataSourceFilter>();
+    //     var filter = new DataSourceFilter("TestName", FilterOperator.Contains, searchText);
+    //     filters.Add(filter);
+    //     var dataSourceRequest = new DataSourceRequest
+    //         {
+    //             Count = 20,
+    //             Filters = filters,
+    //         };
+    //     var result = await _articleDataSource?.GetAsync(dataSourceRequest)!;
+
+    //     return new Tuple<IEnumerable<MethodTest>, int>(result.Items, result.TotalItemCount);
+    // }
+}

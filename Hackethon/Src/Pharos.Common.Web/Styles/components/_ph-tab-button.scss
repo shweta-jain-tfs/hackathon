@@ -1,0 +1,79 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-tab-button {
+    $root: &;
+    color: colors.$text-secondary;
+    min-width: calc(size.$tab-size + spacing.$gap-gutter);
+    min-height: size.$hit-area-md;
+    padding-block: 2px 4px;
+    @include text.body2;
+    $inline-padding: spacing.$padding-sm;
+
+    &__label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: spacing.$gap-xs;
+        padding: 5px $inline-padding;
+        border-left: 2px solid var(--ph-tab-button-border-color, transparent);
+    }
+
+    &__label-placeholder {
+        // reserve width for bold text when the tab becomes selected
+        display: block;
+        padding-inline: $inline-padding;
+        height: 0;
+        overflow: hidden;
+        visibility: hidden;
+        font-weight: text.$font-bold;
+        border-left: 2px solid transparent;
+    }
+
+    &--style-primary {
+        background-color: colors.$layer-subtle;
+        border-top: 2px solid transparent;
+
+        &#{$root}--selected {
+            background-color: colors.$background-secondary;
+            color: colors.$text-primary;
+            border-color: colors.$layer-selected-03;
+            font-weight: text.$font-bold;
+        }
+
+        &:last-child {
+            border-right: none;
+        }
+
+        &:not(#{$root}--selected) + &:not(#{$root}--selected) {
+            --ph-tab-button-border-color: #{colors.$border-subtle-01};
+        }
+    }
+
+    &--style-secondary {
+        border-bottom: 2px solid transparent;
+
+        &#{$root}--selected {
+            color: colors.$text-primary;
+            border-color: colors.$layer-selected-03;
+            font-weight: text.$font-bold;
+        }
+    }
+
+    &:hover,
+    &:focus-visible {
+        background-color: colors.$layer-hover-01;
+    }
+
+    &:active {
+        background-color: colors.$layer-selected-01;
+    }
+
+    &:disabled {
+        cursor: default;
+        color: colors.$text-disabled;
+    }
+}

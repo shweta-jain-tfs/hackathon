@@ -1,0 +1,23 @@
+# Root file can be found in the root of this repository
+root = false
+
+# C# files
+[*.cs]
+
+# Overriding a few rules for the converted PIE / PUF code
+# These rules applies to all files in this folder
+
+dotnet_diagnostic.CS8600.severity = none
+dotnet_diagnostic.CS8602.severity = none
+dotnet_diagnostic.CS8604.severity = none
+dotnet_diagnostic.CS8618.severity = none
+dotnet_diagnostic.CS8625.severity = none
+
+dotnet_diagnostic.IDE0059.severity = none
+dotnet_diagnostic.IDE0060.severity = none
+dotnet_diagnostic.IDE1006.severity = none
+dotnet_diagnostic.IDE1051.severity = none
+
+dotnet_diagnostic.CA1814.severity = none
+dotnet_diagnostic.CA1815.severity = none
+dotnet_diagnostic.CA2201.severity = none

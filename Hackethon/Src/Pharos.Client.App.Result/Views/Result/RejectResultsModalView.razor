@@ -1,0 +1,33 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+<PhModalContent>
+    <Body>
+
+    @if (CanReject)
+    {
+        @Loc["RejectTestsModal_ActionText", TestsToRejectCount, TestsSelectedCount]
+        @if (ShowNotRejectableText)
+        {
+            <br/>
+            @Loc["RejectTestsModal_IncorrectStatusText", NotRejectableCount]
+        }
+        <PhCheckBox Label="@Loc["RejectTestsModal_AddNewTests"]" LabelHelpText="@Loc["RejectTestsModal_UseSameInstrumentDilution"]" @bind-Value="AddNewTests" />
+    }
+    else
+    {
+        @Loc["RejectTestsModal_NoTestsToReject"]
+    }
+    </Body>
+    <Footer>
+
+        @if (CanReject)
+        {
+            <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["RejectTestsModal_Cancel"]</PhButton>
+            <PhButton Disabled="!CanReject" Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok(AddNewTests)))">@Loc["RejectTestsModal_Reject", TestsToRejectCount]</PhButton>
+        }
+        else
+        {
+            <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["RejectTestsModal_Ok"]</PhButton>
+        }
+
+    </Footer>
+</PhModalContent>

@@ -1,0 +1,33 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Layout
+@attribute [Stories("Components/ValueBox")]
+
+<Stories TComponent="PhValueBox">
+    <Story Name="ValueBox">
+        <Arguments>
+            <Arg For="_ => _.ChildContent" Value="_childContent" />
+        </Arguments>
+        <Template>
+            <PhValueBox @attributes="context.Args" />
+        </Template>
+
+    </Story>
+    <Story Name="Sizes">
+        <Template>
+            <PhStack>
+                @foreach (TextBoxSize size in Enum.GetValues(typeof(TextBoxSize)))
+                {
+                    <PhValueBox @attributes="context.Args" Size="size">
+                        @size
+                    </PhValueBox>
+                }
+            </PhStack>
+        </Template>
+    </Story>
+</Stories>
+
+
+@code {
+    RenderFragment _childContent = @<text>Child content</text>;
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Pharos.Common.Web",
+  "version": "1.0.0",
+  "description": "Pharos CSS build tooling using Dart Sass with Gulp integration for Visual Studio",
+  "author": "Thermo Fisher Scientific AB",
+  "scripts": {
+    "build": "npm run build-css",
+    "build-css": "sass --style=compressed Styles/main.scss wwwroot/css/main.min.css",
+    "build-css-unminified": "sass --no-source-map Styles/main.scss wwwroot/css/main.css",
+    "watch": "sass --watch --style=compressed Styles/main.scss:wwwroot/css/main.min.css",
+    "watch-unminified": "sass --watch --no-source-map Styles/main.scss:wwwroot/css/main.css"
+  },
+  "devDependencies": {
+    "gulp": "^5.0.1",
+    "sass": "1.99.0"
+  }
+}

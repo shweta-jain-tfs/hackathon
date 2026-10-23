@@ -1,0 +1,43 @@
+@using Pharos.Client.App.Parameters.Layout
+@using Pharos.Client.App.Parameters.LoadListConfiguration.Views
+@layout ParametersLayout
+@attribute [Route(PageRoute.Parameters.LoadListLevels)]
+@attribute [Authorize]
+
+<SectionContent SectionName="page-header">
+    <Breadcrumb Items="@Breadcrumbs"/>
+</SectionContent>
+
+<PhStack>
+
+    <PhGrid>
+        <PhGridColumn Span="ColumnSpan.Half">
+            <PhDropdown Options="@Instruments" @bind-Value="@SelectedInstrument" TValue="string"/>
+        </PhGridColumn>
+        
+        <PhGridColumn Span="ColumnSpan.Half">
+            <div class="text-right">
+                <PhButton Type="ButtonType.Secondary" OnClick="@(() => OpenCopyModal())">
+                    @Loc["LoadListLevels_Copy"]
+                </PhButton>
+            </div>
+        </PhGridColumn>
+    </PhGrid>
+
+    <PhTabControl DefaultTab="(int)LoadListItemType.Carrier">
+
+        <PhTabPage Text="@Loc["LoadListLevels_BottlesTab"]" HideTrailingEdge TabId="(int)LoadListItemType.Bottle">
+            <BottlesConfigurationsView SelectedInstrument="@SelectedInstrument" SelectedInstrumentDisplayName="@GetDisplayName(SelectedInstrument)" ViewModel="@ViewModel"/>
+        </PhTabPage>
+        <PhTabPage Text="@Loc["LoadListLevels_CarriersTab"]" HideTrailingEdge TabId="(int)LoadListItemType.Carrier">
+            <CarrierConfigurationsView SelectedInstrument="@SelectedInstrument" SelectedInstrumentDisplayName="@GetDisplayName(SelectedInstrument)" ViewModel="@ViewModel"/>
+        </PhTabPage>
+        <PhTabPage Text="@Loc["LoadListLevels_CartridgesTab"]" HideTrailingEdge TabId="(int)LoadListItemType.Cartridge">
+            <CartridgeConfigurationsView SelectedInstrument="@SelectedInstrument" SelectedInstrumentDisplayName="@GetDisplayName(SelectedInstrument)" ViewModel="@ViewModel"/>
+        </PhTabPage>
+        <PhTabPage Text="@Loc["LoadListLevels_DilutionPlatesTab"]" HideTrailingEdge TabId="(int)LoadListItemType.DilutionPlate">
+            <DilutionPlateConfigurationsView SelectedInstrument="@SelectedInstrument" SelectedInstrumentDisplayName="@GetDisplayName(SelectedInstrument)" ViewModel="@ViewModel"/>
+        </PhTabPage>
+
+    </PhTabControl>
+</PhStack>

@@ -1,0 +1,146 @@
+@using Pharos.Common.Web.Components.DetailsList
+@using Pharos.Common.Web.Components.Status
+@attribute [Route(PageRoute.About)]
+@attribute [Authorize]
+
+<PhPage>
+
+    @if (ViewModel.HasAvailableUpdates)
+    {
+        <section class="ph-update-banner">
+            <div class="ph-update-banner__media">
+                <img src="Images/Information_Instrument.svg"
+                     alt="" loading="lazy" />
+            </div>
+
+            <div class="ph-update-banner__content">
+                
+                <PhStatus Status="StatusType.Info" Text="@Loc["AboutPage_UpdateBanner_UpdateAvailable"]" Size="StatusSize.Lg" FontSize="StatusFontSize.H3" />
+
+                <p class="ph-update-banner__note">
+                    @Loc["AboutPage_UpdateBanner_UpdateAvailable_Note"]
+                </p>
+
+                <div class="ph-update-banner__actions">
+                    <PhButton Disabled="true">
+                        @Loc["AboutPage_UpdateBanner_ScheduleUpdate"]
+                    </PhButton>
+
+                    <PhButton Disabled="@(!ViewModel.HasAvailableUpdates)" OnClick="ViewModel.ApplyUpdatesAsync">
+                        @Loc["AboutPage_UpdateBanner_UpdateNow"]
+                    </PhButton>
+                    
+                    <a class="ph-link ph-update-banner__changelog"
+                       href="@ViewModel.ChangeLogUrl" target="_blank" rel="noopener">
+                        @Loc["AboutPage_UpdateBanner_ChangeLog"]
+                    </a>
+                </div>
+
+            </div>
+        </section>
+    }
+    else
+    {
+        <div class="mb-md flex items-center gap-md justify-center">
+            <img src="Images/Information_Instrument.svg"
+                 alt=""
+                 loading="lazy" />
+        </div>
+    }
+
+
+    @* Overview: Software & Instrument *@
+    <div class="ph-about-panels-grid">
+        @* SOFTWARE *@
+        <section class="ph-panel">
+            <h3 class="t-h3 mb-md">@Loc["AboutPage_Software_Header"]</h3>
+
+            <div class="ph-about-software-layout">
+                <div class="ph-about-software-layout__details">
+                    <PhDetailsList>
+                        <PhDetailsListItem Label="@Loc["AboutPage_Software_PharosVersion"]">@ViewModel.PharosVersion</PhDetailsListItem>
+
+                        @if (!string.IsNullOrEmpty(ViewModel.GitVersionHash))
+                        {
+                            <PhDetailsListItem Label="Git Hash">
+                                <span class="ph-about-software-layout__git-hash">@ViewModel.GitVersionHash</span>
+                            </PhDetailsListItem>
+                        }
+
+                        @if (!string.IsNullOrEmpty(ViewModel.ProtocolVersion))
+                        {
+                            <PhDetailsListItem Label="@Loc["AboutPage_Software_ProtocolVersion"]">@ViewModel.ProtocolVersion</PhDetailsListItem>
+                        }
+                    </PhDetailsList>
+                </div>
+
+                <div class="ph-about-software-layout__label">
+                    <SoftwareIdentificationLabel Lot="@ViewModel.PharosVersion"
+                                                 UdiVersion="@ViewModel.SoftwareUdiVersion"
+                                                 DeviceIdentifier="@ViewModel.SoftwareDeviceIdentifier"
+                                                 ManufactureDate="@ViewModel.SoftwareManufactureDate" />
+                </div>
+            </div>
+        </section>
+
+        @* INSTRUMENT *@
+        @if (!string.IsNullOrEmpty(ViewModel.SerialNumber))
+        {
+            <section class="ph-panel">
+                <h3 class="t-h3 mb-md">@Loc["AboutPage_Instrument_Header"]</h3>
+                <PhDetailsList>
+                    <PhDetailsListItem Label="@Loc["AboutPage_Instrument_SerialNumber"]">@ViewModel.SerialNumber</PhDetailsListItem>
+                    <PhDetailsListItem Label="@Loc["AboutPage_Instrument_InstallationDate"]">@ViewModel.InstallationDate</PhDetailsListItem>
+
+                    @if (!string.IsNullOrEmpty(ViewModel.InstrumentType))
+                    {
+                        <PhDetailsListItem Label="@Loc["AboutPage_Instrument_InstrumentType"]">@ViewModel.InstrumentType</PhDetailsListItem>
+                    }
+                </PhDetailsList>
+            </section>
+        }
+    </div>
+
+    @* MODULES *@
+    <section class="mt-xl ph-panel--no-background">
+        <h3 class="t-h3 mb-md">@Loc["AboutPage_Modules_Header"]</h3>
+
+        <div class="ph-about-modules-grid">
+            @if (ViewModel.Modules is not null && ViewModel.Modules.Count > 0)
+            {
+                @foreach (var module in ViewModel.Modules)
+                {
+                    <div>
+                        <PhDetailsList>
+                            <PhDetailsListItem Label="Module type">@module.ModuleType</PhDetailsListItem>
+                            <PhDetailsListItem Label="Serial number">@module.SerialNumber</PhDetailsListItem>
+                            <PhDetailsListItem Label="Article number">@module.ArticleNumber</PhDetailsListItem>
+                            <PhDetailsListItem Label="Model">@module.Model</PhDetailsListItem>
+                            <PhDetailsListItem Label="Version">@module.Version</PhDetailsListItem>
+                            <PhDetailsListItem Label="Installation date">@module.InstallationDate</PhDetailsListItem>
+                        </PhDetailsList>
+                    </div>
+                }
+            }
+            else
+            {
+                <div>
+                    <em>@Loc["AboutPage_Modules_NoneInstalled"]</em>
+                </div>
+            }
+        </div>
+    </section>
+
+    @* EULA *@
+    <section class="mt-xl ph-panel--no-background">
+        <h3 class="t-h3 mb-sm">@Loc["AboutPage_Eula_Header"]</h3>
+        @if (!string.IsNullOrEmpty(ViewModel.EulaUrl))
+        {
+            <a class="ph-link" href="@ViewModel.EulaUrl" target="_blank" rel="noopener">@Loc["AboutPage_Eula_ViewLink"]</a>
+        }
+        else
+        {
+            <span>@Loc["AboutPage_Eula_NoLink"]</span>
+        }
+    </section>
+</PhPage>

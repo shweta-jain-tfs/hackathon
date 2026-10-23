@@ -1,0 +1,126 @@
+﻿@using Bogus
+@using Pharos.Common.Web.Components.DatePicker
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.FormElements.RadioButton
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.Layout
+@attribute [Stories("Components/InputColumn")]
+
+<Stories TComponent="PhInputColumn">
+    <Story Name="Input column">
+        <Template>
+            <div style="height: 100vh; overflow: auto">
+                <PhInputColumn @attributes="context.Args">
+                    <PhTextBox Label="First name super super super super super super long label" @bind-Value="FirstName" />
+                    <PhTextBox Label="Last name" @bind-Value="LastName" />
+                    <PhCheckBox Label="Is checked" />
+                    <PhDropdown Options="@_ddValues" />
+                    <PhDatePicker TValue="DateTimeOffset" />
+                    <PhLabel Text="Dropdown label">
+                        <PhDropdown Options="@_ddValues" />
+                    </PhLabel>
+                    <PhLabel Text="Date picker label">
+                        <PhDatePicker TValue="DateTimeOffset" />
+                    </PhLabel>
+                    <PhLabel Text="Age">
+                        <PhNumberField @bind-Value="@Age" />
+                    </PhLabel>
+                    <PhLabel Text="Read-only value">
+                        <PhValueBox Size="TextBoxSize.Medium">
+                            A read-only value
+                        </PhValueBox>
+                    </PhLabel>
+                    <PhRadioGroup T="int">
+                        <PhRadioButton Value="1" Label="Blue" />
+                        <PhRadioButton Value="2" Label="Red" />
+                        <PhRadioButton Value="3" Label="Green" />
+                        <PhRadioButton Value="4" Label="Yellow" />
+                    </PhRadioGroup>
+                    <PhLabel Text="Radio button label">
+                        <PhRadioGroup T="int">
+                            <PhRadioButton Value="1" Label="Blue" />
+                            <PhRadioButton Value="2" Label="Red" />
+                            <PhRadioButton Value="3" Label="Green" />
+                            <PhRadioButton Value="4" Label="Yellow" />
+                        </PhRadioGroup>
+                    </PhLabel>
+
+                </PhInputColumn>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Two columns">
+        <Template>
+            <div style="height: 100vh; overflow: auto">
+                <PhGrid>
+                    <PhGridColumn Span="ColumnSpan.Half">
+                        <PhInputColumn @attributes="context.Args">
+                            <PhTextBox Label="First name" @bind-Value="FirstName" />
+                            <PhTextBox Label="Last name" @bind-Value="LastName" />
+                            <PhCheckBox Label="Is checked" />
+                            <PhDropdown Options="@_ddValues" />
+                        </PhInputColumn>
+                    </PhGridColumn>
+                    <PhGridColumn Span="ColumnSpan.Half">
+                        <PhInputColumn @attributes="context.Args">
+                            <PhTextBox Label="First name" @bind-Value="FirstName" />
+                            <PhTextBox Label="Last name" @bind-Value="LastName" />
+                            <PhCheckBox Label="Is checked" />
+                            <PhDropdown Options="@_ddValues" />
+                        </PhInputColumn>
+                    </PhGridColumn>
+                </PhGrid>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Two columns alt.">
+        <Template>
+            <div style="height: 100vh; overflow: auto">
+                <div class="flex gap-gutter">
+                    <div class="flex-1">
+                        <PhInputColumn @attributes="context.Args">
+                            <PhTextBox Label="First name" @bind-Value="FirstName" />
+                            <PhTextBox Label="Last name" @bind-Value="LastName" />
+                            <PhCheckBox Label="Is checked" />
+                            <PhDropdown Options="@_ddValues" />
+                        </PhInputColumn>
+                    </div>
+                    <div class="flex-1">
+                        <PhInputColumn @attributes="context.Args">
+                            <PhTextBox Label="First name" @bind-Value="FirstName" />
+                            <PhTextBox Label="Last name" @bind-Value="LastName" />
+                            <PhCheckBox Label="Is checked" />
+                            <PhDropdown Options="@_ddValues" />
+                        </PhInputColumn>
+                    </div>
+                </div>
+            </div>
+        </Template>
+    </Story>
+</Stories>
+
+@code
+{
+    private List<DropDownOption<int>> _ddValues = new();
+    private string? FirstName { get; set; }
+    private string? LastName { get; set; }
+    private int? Age { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var faker = new Faker();
+
+        for (int i = 0; i < 10; i++)
+        {
+            _ddValues.Add(new DropDownOption<int>()
+                {
+                    Value = i,
+                    Text = faker.Lorem.Word()
+                });
+        }
+    }
+
+}

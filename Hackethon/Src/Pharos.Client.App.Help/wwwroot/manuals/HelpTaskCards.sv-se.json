@@ -1,0 +1,47 @@
+[
+  {
+    "id": 0,
+    "content": "Provlådan är öppen. {0}",
+    "chapterId": 1
+  },
+  {
+    "id": 1,
+    "content": "<a href='{{HelpLink-509}}'>Hej världen!</a> <p>Felhantering är processen att förutse, upptäcka och hantera fel i en applikation för att säkerställa stabilitet.<p>",
+    "chapterId": 501
+  },
+  {
+    "id": 2,
+    "content": "Provrör känns inte igen. {0}",
+    "chapterId": 1
+  },
+  {
+    "id": 3,
+    "content": "Det finns ett problem med resultatet. {0}",
+    "chapterId": 1
+  },
+  {
+    "id": 4,
+    "content": "Reagenslådan är öppen. {0}",
+    "chapterId": 1
+  },
+  {
+    "id": 5,
+    "content": "Det finns ett fel med reagenslådan. {0}",
+    "chapterId": 1
+  },
+  {
+    "id": 6,
+    "content": "Den interna lagringen för reagenser är full. {0}",
+    "chapterId": 1
+  },
+  {
+    "id": 7,
+    "content": "Det finns ett fel med provbrickan. {0}",
+    "chapterId": 1
+  },
+  {
+    "id": 8,
+    "content": "{0} har delvis slutförts.",
+    "chapterId": 1
+  }
+]

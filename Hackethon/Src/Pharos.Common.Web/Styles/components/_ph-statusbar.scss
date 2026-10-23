@@ -1,0 +1,83 @@
+@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+
+.ph-statusbar {
+    --ph-statusbar-left-width: #{size.$main-navigation-width};
+    display: grid;
+    position: relative;
+    grid-template-columns: var(--ph-statusbar-left-width) minmax(0, 1fr);
+    min-height: 92px; // instrument status bar height
+    background: colors.$background-secondary;
+    color: colors.$text-secondary;
+
+    &__left {
+        display: flex;
+        color: colors.$text-primary;
+    }
+
+    &__right {
+        position: relative;
+        border-left: spacing.$gap-xs solid colors.$background-primary;
+        display: grid;
+        grid-template-columns: minmax(max-content, 1fr) minmax(size.$input-width-small, 1fr) minmax(size.$input-width-small, 1fr);
+        grid-template-rows: 100%;
+        align-items: center;
+        justify-content: space-between;
+        gap: spacing.$gap-gutter;
+        padding-inline: spacing.$gap-sm spacing.$gap-md;
+    }
+
+    &__statusmenu {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        gap: spacing.$gap-md;
+
+        > * {
+            min-width: 0;
+        }
+    }
+
+    &__lockscreen-center {
+        grid-column: 2;
+    }
+
+    &__lockscreen-actions {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    &--lockscreen-ok,
+    &--lockscreen-warning,
+    &--lockscreen-alarm,
+    &--lockscreen-off,
+    &--lockscreen-standby {
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        padding: spacing.$padding-sm spacing.$padding-md;
+        align-items: center;
+        color: colors.$text-primary;
+        min-height: 104px;
+    }
+
+    &--lockscreen-ok {
+        background-color: colors.$status-success;
+    }
+
+    &--lockscreen-warning {
+        background-color: colors.$status-warning;
+        color: colors.$text-inverse;
+    }
+
+    &--lockscreen-alarm {
+        background-color: colors.$status-alarm;
+    }
+
+    &--lockscreen-off {
+        background-color: transparent;
+    }
+
+    &--lockscreen-standby {
+        background-color: colors.$status-off;
+    }
+}

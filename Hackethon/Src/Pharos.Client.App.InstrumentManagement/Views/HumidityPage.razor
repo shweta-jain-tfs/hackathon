@@ -1,0 +1,57 @@
+@attribute [Route(PageRoute.DashboardHumidity)]
+@attribute [Authorize]
+@using System.Linq
+@using Pharos.Client.Common.Localization
+@using Pharos.Client.Common.Models
+@using Pharos.Common.Web.Components.QuickFilter
+
+<PhPage>
+    <PageHeader>
+        <Breadcrumb Items="@Breadcrumbs" />
+    </PageHeader>
+    <ChildContent>
+        <PhDataGrid TGridItem="SensorValue"
+                    StateID="humidity"
+                    Items="FilteredSensorList.AsQueryable()"
+                    TableTitle="@Loc["HumidityPage_Title"]">
+            <HeaderContent>
+                <PhToggleFilter Label="@Loc["HumidityPage_ShowAll"]"
+                                Value="@(!Overview)"
+                                ValueChanged="@(value => Overview = !value)" />
+                <PhFilterActions OnClearAll="() => Overview = true" OnResetToDefault="() => Overview = true" />
+            </HeaderContent>
+            <Columns>
+                <Column Property="x => x.OutsideLimit">
+                    @if (context.OutsideLimit)
+                    {
+                        <div class="ph-instrument-sensors__status-col">
+                            <PhStatusIcon Icon="StatusIconType.Alarm"></PhStatusIcon>
+                        </div>
+                    }
+                </Column>
+                <Column Property="x => x.Sensor" Title="@Loc["HumidityPage_Sensor"]">
+                    @context.Sensor.ToLocalizedString("DashboardPage")
+                </Column>
+                <Column Property="x => x.LowerLimit" Title="@Loc["HumidityPage_Range"]"
+                        Align="ColumnAlignEnum.Right">
+                    @if (context.LowerLimit != null || context.UpperLimit != null)
+                    {
+                        @($"{context.LowerLimit} - {context.UpperLimit}")
+                    }
+
+                </Column>
+                <Column Property="x => x.Value" Title="@Loc["HumidityPage_Value"]"
+                        Align="ColumnAlignEnum.Right">
+                    @if (context.Value.HasValue)
+                    {
+                        @context.Value
+                    }
+                    else
+                    {
+                        @("-")
+                    }
+                </Column>
+            </Columns>
+        </PhDataGrid>
+    </ChildContent>
+</PhPage>

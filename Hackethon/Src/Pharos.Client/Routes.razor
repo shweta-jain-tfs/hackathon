@@ -1,0 +1,31 @@
+﻿@using Pharos.Client.Views
+@using Pharos.Common.Web.Contexts
+
+
+@if (OperatingSystem.IsBrowser() && ClientDeviceType == ClientDeviceType.Instrument)
+{
+    <GlobalMessageSection />
+}
+
+<Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="@(Modules.GetAdditionalAssemblies(ClientDeviceType))">
+	<Found Context="routeData">
+		<CascadingValue Name="UiContext" Value="@_uiContext" TValue="UiContext">
+			<AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+				<NotAuthorized>
+					<h2 class="t-h2 m-lg">You are not authorized to access this resource.</h2>
+				</NotAuthorized>
+			</AuthorizeRouteView>
+		</CascadingValue>
+	</Found>
+	@* Don't  use NotFound. It will cause the first page load to show a brief white screen. *@
+</Router>
+
+@if (OperatingSystem.IsBrowser())
+{
+    <AuthorizeView>
+        <Authorized>
+            <UpdateOutcomeCheckTrigger />
+        </Authorized>
+    </AuthorizeView>
+}
+

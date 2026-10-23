@@ -1,0 +1,36 @@
+﻿<PhModalContent>
+    <Body>
+    <div>
+        @Loc[IsUnrecognizedSettings ? "SettingsImport_IgnoredSettings" : "SettingsImport_Failed"]
+    </div>
+    @if (IsUnrecognizedSettings)
+    {
+        <PhDataGrid TGridItem="UnrecognizedSettingImportInfo" StateID="" Items="UnrecognizedSettings.AsQueryable()">
+            <Columns>
+                <Column Title="@Loc["SettingImport_IgnoredOrInvalidColumn_Key"]" Property="@(item => item.Key)">
+                    @(context.Key.Length < 50 ? context.Key : $"{context.Key.Substring(0, 50)}...")
+                </Column>
+                <Column Title="@Loc["SettingImport_IgnoredOrInvalidColumn_Value"]" Property="@(item => item.Value)" />
+            </Columns>
+        </PhDataGrid>
+    }
+    else
+    {
+        <PhDataGrid TGridItem="FailedSettingImportError" StateID="" Items="InvalidSettings.AsQueryable()">
+            <Columns>
+                @if (!IsErrorInvalidFile)
+                {
+                    <Column Title="@Loc["SettingImport_IgnoredOrInvalidColumn_Key"]" Property="@(item => item.Key)" />
+                    <Column Title="@Loc["SettingImport_IgnoredOrInvalidColumn_Value"]" Property="@(item => item.Value)" />
+                }
+                <Column Title="@Loc["SettingImport_InvalidColumn_Error"]" Property="@(item => item.Error)">
+                    @Loc[$"SettingImportError_{context.Error.ToString()}"]
+                </Column>
+            </Columns>
+        </PhDataGrid>
+    }
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok()))">@Loc["SettingsSaveModal_Close"]</PhButton>
+    </Footer>
+</PhModalContent>

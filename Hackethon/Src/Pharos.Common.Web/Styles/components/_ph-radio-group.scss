@@ -1,0 +1,26 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-radio-group {
+    $root: &;
+
+    &__fields {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-md;
+    }
+
+    &__error {
+        color: colors.$status-validation;
+        @include text.helper-text;
+        width: 100%;
+    }
+
+    &--horizontal {
+        #{$root}__fields {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+    }
+}

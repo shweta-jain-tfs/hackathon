@@ -1,0 +1,93 @@
+﻿@using Pharos.Client.App.Maintenance.Models
+@using Pharos.Common.Web.Components.StepGuide
+<PhModalContent>
+    <Body>
+    <div class="flex gap-md">
+        <div class="flex" style="min-width: 30%">
+        @if (ViewModel.Groups.Count == 1)
+        {
+            <PhStepGuide Mode="StepGuideMode.Navigation">
+                @foreach (var step in ViewModel.Steps)
+                {
+                    var isCurrentStep = ViewModel.SelectedStep == step;
+                    <PhStepGuideNavStep Filled="step.Done" Current="isCurrentStep" Disabled="@(!step.MenuNavigationEnabled)" OnClick="() => SelectStep(step)">
+                        @step.NavigationName
+                    </PhStepGuideNavStep>
+                }
+            </PhStepGuide>
+        }
+        else
+        {
+            <div class="flex flex-col gap-md">
+                @foreach (var group in ViewModel.Groups)
+                {
+                    <div>
+
+                        @if (group is StepGroup stepGroup)
+                        {
+                            <h1 style="font-weight:bold;">
+                                @if (stepGroup.Done)
+                                {
+                                    <span>✓ @group.NavigationName</span>
+                                }
+                                else
+                                {
+                                    <span>@group.NavigationName</span>
+                                }
+                            </h1>
+
+                            <ul style="margin-left: 20px; list-style-type: disc;">
+                                @foreach (var step in stepGroup.Steps)
+                                {
+                                    var isCurrentStep = ViewModel.SelectedStep == step;
+                                    var isDisabled = !step.MenuNavigationEnabled;
+
+                                    <li style="margin-left: 10px; @(isCurrentStep ? "font-style: italic;" : "") @(isDisabled ? "color: #81828C; cursor: default;" : "cursor: pointer;")" @onclick="@(isDisabled ? () => {} : () => SelectStep(step))">
+                                        @if (step.Done)
+                                        {
+                                            <span>✓ @step.NavigationName</span>
+                                        }
+                                        else
+                                        {
+                                            <span>@step.NavigationName</span>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        else if (group is ActivityStep activityStep)
+                        {
+                            <ul style="margin-left: 20px; list-style-type: disc;">
+                                @{
+                                    var isCurrentStep = ViewModel.SelectedStep == activityStep;
+                                    var isDisabled = !activityStep.MenuNavigationEnabled;
+                                }
+
+                                <li style="margin-left: 10px; @(isCurrentStep ? "font-style: italic;" : "") @(isDisabled ? "color: #81828C; cursor: default;" : "cursor: pointer;")" @onclick="@(isDisabled ? () => {} : () => SelectStep(activityStep))">
+                                    @if (activityStep.Done)
+                                    {
+                                        <span>✓ @activityStep.NavigationName</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@activityStep.NavigationName</span>
+                                    }
+                                </li>
+
+                            </ul>
+                        }
+                    </div>
+                }
+            </div>
+        }
+        </div>
+        <StepDetailsView ViewModel="@ViewModel.SelectedStep"/>
+    </div>
+    </Body>
+    <Footer>
+        @foreach (var action in ViewModel.SelectedStep.Actions)
+        {
+            <PhButton Disabled="@(!action.Enabled)" OnClick="@(() => HandleAction(action))" IgnoreMaxWidth="true">@action.Text</PhButton>
+        }
+    </Footer>
+</PhModalContent>

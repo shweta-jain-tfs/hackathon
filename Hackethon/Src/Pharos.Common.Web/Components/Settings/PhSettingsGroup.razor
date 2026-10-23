@@ -1,0 +1,22 @@
+﻿@typeparam TItem
+
+@if (Items != null && CreateItem != null && IsDependencyEnabled)
+{
+    <div id="@Id">
+        <div class="ph-settings-group">
+            <div class="ph-settings-group__label">
+                @Label
+                <PhDropdownButton DropdownButtonType="DropdownButtonType.Icon" IconType="IconType.More">
+                    <PhDropdownButtonItem Text="Explanation" ></PhDropdownButtonItem>
+                    <PhDropdownButtonItem Text="Reset default" OnClick="ResetViewOpen"></PhDropdownButtonItem>
+                </PhDropdownButton>
+            </div>
+            <div class="ph-settings-group__panel">
+                @foreach (var child in Items)
+                {
+                    @CreateItem(child)
+                }
+            </div>
+        </div>
+    </div>
+}

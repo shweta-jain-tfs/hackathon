@@ -1,0 +1,29 @@
+﻿@attribute [Authorize]
+
+<PhModalContent SelectedText="@Loc["RequestDetail_TestListView_TestAddView_Selected"]">
+    <Body>
+        <PhDataGrid TableTitle="@Loc["RequestDetail_TestListView_TestAddView_GridTitle"]" TGridItem="MethodTest"
+                    StateID=""
+                    ItemsProvider="ViewModel.ProvideGridItems"
+                    SelectionType="SelectionTypeEnum.MultiSelect"
+                    RowType="RowTypeEnum.LinesBetweenRows"
+                    OnSelectedItemsChanged="SelectedTestsChanged"
+                    ItemStyleOptions="@(new() {
+                        Style = ItemStyleFlags.Checked | ItemStyleFlags.Disabled,
+                        Match = MatchesTestOrderTest,
+                        Items = CurrentTestOrders
+                    })"
+                    DefaultSortColumn="MethodName"
+                    DefaultSortDirection="SortDirection.Ascending">
+            <Columns>
+                <Column Title="@Loc["RequestDetail_TestListView_TestAddView_Method"]" Property="@(item => item!.MethodName)" QuickFilter="true" Sortable="true" MultiSelectFilterItems="_methodList" />
+                <Column Title="@Loc["RequestDetail_TestListView_TestAddView_Test"]" Property="@(item => item!.LabTestName)" QuickFilter="true" />
+                <Column Title="@Loc["RequestDetail_TestListView_TestAddView_TestFullName"]" Property="@(item => item!.FullTestName)" QuickFilter="true" />
+            </Columns>
+        </PhDataGrid>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["RequestDetail_TestListView_TestAddView_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" Disabled="!(_selectedItems?.Count > 0)" OnClick="@(() => CloseModal(ModalResult.Ok(_selectedItems)))">@Loc["RequestDetail_TestListView_TestAddView_Add"]</PhButton>
+    </Footer>
+</PhModalContent>

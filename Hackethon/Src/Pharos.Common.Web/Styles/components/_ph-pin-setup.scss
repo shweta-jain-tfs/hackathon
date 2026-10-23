@@ -1,0 +1,44 @@
+﻿@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-pin-setup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 778px;
+        gap: spacing.$gap-md;
+    }
+
+    &__title {
+        text-align: center;
+    }
+
+    &__description {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-sm;
+        text-align: left;
+        @include text.body1;
+    }
+
+    &__code-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: spacing.$gap-xs;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+        padding-top: spacing.$gap-xxl;
+    }
+}

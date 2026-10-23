@@ -1,0 +1,15 @@
+@use "../abstracts/size";
+
+.ph-inventory {
+    display: flex;
+
+    &__label {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        font-weight: 400;
+        font-size: size.$icon-md;
+        margin-bottom: 30px;
+    }
+
+}

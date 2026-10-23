@@ -1,0 +1,19 @@
+.ph-modal-overlay {
+    position: fixed;
+    inset: 0;
+    max-width: 100vw;
+    max-height: 100vh;
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+
+    &__content-area{
+        padding: 120px;
+        max-height: 100%;
+        max-width: 100%;
+        display: flex;
+        overflow: hidden;
+    }
+}

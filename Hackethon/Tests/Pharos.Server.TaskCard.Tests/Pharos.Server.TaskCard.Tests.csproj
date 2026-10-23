@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Src\Pharos.Server.TaskCard\Pharos.Server.TaskCard.csproj" />
+	</ItemGroup>
+
+</Project>

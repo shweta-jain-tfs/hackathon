@@ -1,0 +1,12 @@
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+
+.ph-maintenance-card-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(auto, size.$maintenance-card-width));
+    gap: spacing.$gap-xxl;
+    padding: spacing.$padding-lg;
+    justify-content: center;
+    align-content: center; // vertical alignment
+    flex-grow: 1; // fill flex container
+}

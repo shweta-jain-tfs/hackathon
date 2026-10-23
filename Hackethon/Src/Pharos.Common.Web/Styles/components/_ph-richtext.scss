@@ -1,0 +1,332 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/size";
+@use "../abstracts/typography" as text;
+
+@property --ph-richtext-img-width {
+    syntax: "<length-percentage>";
+    inherits: false;
+    initial-value: 100%;
+}
+
+// Styles for rich text content. Wrap around rich text markup from CMS or other sources.
+//
+// Available classes in markup:
+// img.image-left - float image to left (max 50% width)
+// img.image-right - float image to right
+//
+// Pending (might not be used):
+// figure.image-left - image to the left, caption to the right
+// figure.image-right - image to the right, caption to the left
+// ---------------
+// Variants:
+// .ph-richtext--context-help - for context help content (smaller text)
+// .ph-richtext--heading-numbers - automatic heading numbering for h2, h3, h4
+//
+// Notes:
+// - If we need side-scrolling tables that fill the width of the container, we need to wrap tables in a div.
+.ph-richtext {
+    $headings: ":is(h1, h2, h3, h4, h5, h6)";
+    --ph-richtext-block-gap: #{spacing.$gap-lg};
+
+    // Establish a new block formatting context so floated images don't escape
+    display: flow-root;
+    max-width: 90ch;
+
+    @include text.body1;
+    color: colors.$text-primary;
+
+    > * {
+        margin-block: var(--ph-richtext-block-gap);
+        &:first-child { margin-top: 0; }
+    }
+
+    // Using :where() keeps specificity at .ph-richtext only, so heading-specific rules can override.
+    > :where(:last-child) { margin-bottom: 0; }
+
+    // -------- Headings -------- 
+    
+    #{$headings} {
+        font-weight: text.$font-bold;
+    }
+
+    > #{$headings} {
+        color: colors.$text-primary;
+        text-wrap: balance;
+        margin-bottom: var(--ph-richtext-block-gap);
+    }
+
+    > h1 {
+        @include text.display2;
+    }
+
+    > h2 {
+        @include text.h1;
+    }
+
+    > h3 {
+        @include text.h2;
+    }
+
+    > h4 {
+        @include text.h3;
+    }
+
+    // -------- Lists -------- 
+
+    ul {
+        padding-inline-start: 1.5em;
+        list-style: disc;
+        ul { list-style: circle; }
+        ul ul { list-style: square; }
+    }
+
+    ol {
+        padding-inline-start: 2em;
+        list-style: decimal;
+        ol {
+            padding-inline-start: 1.5em;
+            list-style: lower-alpha;
+        }
+        ol ol { list-style: lower-roman; }
+    }
+
+    // -------- Links and text -------- 
+
+    a {
+        &, &:visited {
+            font-weight: text.$font-bold;
+            text-decoration: none;
+            color: colors.$text-link;
+            cursor: pointer;
+        }
+
+        &:hover {
+            color: colors.$text-link-hover;
+        }
+
+        &:active {
+            color: colors.$text-link-pressed;
+        }
+    }
+    
+    strong,
+    b {
+        font-weight: text.$font-bold;
+    }
+
+    em,
+    i {
+        font-style: italic;
+    }
+
+    // -------- Tables -------- 
+
+    div:has(> table:only-child) {
+        // allow side-scrolling in tables wrapped in a div
+        overflow-x: auto;
+    }
+    
+    table {
+        --_row-border: #{colors.$layer-secondary};
+
+        border-collapse: collapse;
+        @include text.body2;
+        color: colors.$text-secondary;
+        width: 100%;
+        table-layout: auto; // allow natural sizing of early columns
+
+        th {
+            border-bottom: 1px solid colors.$border-heavy-01;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #{colors.$layer-secondary};
+            --_row-border: var(--ph-bg-color);
+        }
+
+        th,
+        td {
+            padding: 4px spacing.$padding-sm;
+            text-align: start;
+        }
+
+        td {
+            height: 2.5em;
+
+            &[rowspan]:not([rowspan="1"]) {
+                border-right: 1px solid var(--_row-border);
+                border-bottom: 1px solid var(--_row-border);
+            }
+        }
+
+        &:not(:has(col[style*="width"])) {
+            // Fallback wrapping rules for tables that don't have column widths
+
+            // Wrapping: first & second columns stay on one line (nowrap).
+            // Last column wraps & breaks long tokens.
+            th:first-child,
+            td:first-child,
+            th:nth-child(2),
+            td:nth-child(2) {
+                white-space: nowrap;
+            }
+
+            // Allow aggressive wrapping & breaking in last column for large content blocks
+            th:last-child,
+            td:last-child {
+                min-width: 15ch;
+                white-space: normal;
+                overflow-wrap: anywhere;  // prefer breaking very long tokens here  
+                word-break: break-word;
+            }
+        }
+
+        td > :is(p, ul, ol, img, figure, picture, div) {
+            margin-block: 0.5em;
+        }
+    }
+
+    // -------- Images -------- 
+
+    img {
+        --ph-richtext-img-width: var(--img-width, 100%);
+
+        // Large images shrink to fit container; small images keep intrinsic size.
+        display: block;
+        height: auto;
+        max-width: min(var(--ph-richtext-img-width), 100%);
+        object-fit: contain;
+    }
+    
+    > img,
+    > picture > img,
+    > figure > img {
+        margin-inline: auto; // center images that are narrower than container
+    }
+
+    > img,
+    > picture > img {
+        &.image-left,
+        &.image-right {
+            max-width: 50%;
+            margin-top: 0;
+            margin-bottom: var(--ph-richtext-block-gap);
+        }
+        
+        &.image-left {
+            float: inline-start;
+            margin-inline-end: var(--ph-richtext-block-gap);
+        }
+
+        &.image-right {
+            float: inline-end;
+            margin-inline-start: var(--ph-richtext-block-gap);
+        }
+    }
+
+    > :is(table, img, figure, picture, div),
+    > #{$headings} {
+        clear: both;
+    }
+
+    // -------- Figures (image + caption) --------
+
+    // Figure now acts as a layout for image + caption where the caption is a block below or beside the image.
+    // This is a demo implementation of how left/right images could work if the text shouldn't wrap around the image.
+    figure {
+        display: flex;
+        flex-direction: column;
+        gap: var(--ph-richtext-block-gap);
+
+        // if the figure contains a left/right image or if the figure itself is left/right aligned
+        &:has(.image-left, .image-right),
+        &:is(.image-left, .image-right) {
+            flex-direction: row;
+            > img {
+                max-width: 50%;
+                order: 0;
+                object-position: top;
+            }
+        }
+
+        &:has(> .image-right),
+        &:is(.image-right) {
+            > img {
+                order: 1;
+            }
+        }
+
+        > figcaption {
+            flex: 1;
+        }
+    }
+
+    // -------- Variants -------- 
+
+    &--context-help {
+        --ph-richtext-block-gap: #{spacing.$gap-sm};
+        @include text.body2;
+        color: colors.$text-secondary;
+
+        > * + #{$headings} {
+            margin-top: spacing.$gap-md;
+        }
+
+        > #{$headings} {
+            @include text.body1;
+
+            &::before {
+                // no heading numbering in context help
+                content: "";
+            }
+        }
+
+        table {
+            display: block;
+            overflow-x: auto;
+            @include text.helper-text;
+        }
+    }
+
+    &--heading-numbers {
+        // Counter setup for automatic heading numbering
+        // h1 acts as the document title (no number)
+        // h2 => 1.
+        // h3 => 1.1
+        // h4 => 1.1.1
+        // h5/h6 unnumbered
+        counter-reset: ph-h2 ph-h3 ph-h4; // initialize all counters at container start
+
+        > #{$headings} {
+            display: flex; // let heading numbering indent the heading text if it wraps
+
+            &::before {
+                white-space: pre;
+            }
+        }
+
+        > h2 {
+            counter-increment: ph-h2; // increase top-level section
+            counter-set: ph-h3 ph-h4; // reset lower levels when new h2 starts
+            &::before {
+                content: counter(ph-h2) " ";
+            }
+        }
+
+        > h3 {
+            counter-increment: ph-h3;
+            counter-set: ph-h4; // reset h4 sequence within a new h3
+            &::before {
+                content: counter(ph-h2) "." counter(ph-h3) " ";
+            }
+        }
+
+        > h4 {
+            counter-increment: ph-h4;
+            &::before {
+                content: counter(ph-h2) "." counter(ph-h3) "." counter(ph-h4) " ";
+            }
+        }
+    }
+}

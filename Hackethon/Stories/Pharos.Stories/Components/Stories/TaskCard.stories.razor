@@ -1,0 +1,42 @@
+﻿@using Pharos.Common.Web.Components.TaskCard
+@attribute [Stories("Components/TaskCard")]
+
+<Stories TComponent="PhTaskCard">
+    <Story Name="Default">
+
+        <Arguments>
+            <Arg For="_ => _!.Title" Value="@("Sample Task")" />
+            <Arg For="_ => _!.Description" Value="@("This is a task description")" />
+            <Arg For="_ => _!.State" Value="TaskCardState.Information" />
+            <Arg For="_ => _!.ImageType" Value="TaskCardImageType.CheckWasteDrawer" />
+            <Arg For="_ => _!.DisplayTime" Value="true" />
+            <Arg For="_ => _!.Time" Value="@DateTime.Now.ToLongTimeString()" />
+            <Arg For="_ => _!.NavigationUrlForCard" Value="@string.Empty" />
+            <Arg For="_ => _!.NavigationForceLoad" Value="false" />
+            <Arg For="_ => _!.HasHelpInformation" Value="true" />
+        </Arguments>
+
+        <Template>
+            <PhTaskCard @attributes="context.Args" />
+        </Template>
+    </Story>
+    <Story Name="Overflow">
+
+        <Arguments>
+            <Arg For="_ => _!.Title" Value="@("A title that's long enough to not fit in two rows and will cause the header to overflow")" />
+            <Arg For="_ => _!.Description" Value="@("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")" />
+            <Arg For="_ => _!.State" Value="TaskCardState.Information" />
+            <Arg For="_ => _!.ImageType" Value="TaskCardImageType.CheckWasteDrawer" />
+            <Arg For="_ => _!.DisplayTime" Value="true" />
+            <Arg For="_ => _!.Time" Value="@DateTime.Now.ToLongTimeString()" />
+            <Arg For="_ => _!.NavigationUrlForCard" Value="@string.Empty" />
+            <Arg For="_ => _!.NavigationForceLoad" Value="false" />
+            <Arg For="_ => _!.HasHelpInformation" Value="true" />
+        </Arguments>
+
+        <Template>
+            <PhTaskCard @attributes="context.Args" />
+        </Template>
+    </Story>
+
+</Stories>

@@ -1,0 +1,6 @@
+﻿<button class="@ButtonCssClasses"
+        @onclick="Toggle"
+        aria-pressed="@(Value ? "true" : "false")">
+    <PhIcon CssClasses="ph-filter-button__toggle-icon" IconType="IconType.CheckmarkCompact" Size="@null" />
+    <span class="ph-filter-button__text">@Label</span>
+</button>

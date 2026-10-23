@@ -1,0 +1,32 @@
+﻿@using Pharos.Client.Common.App.Constants
+@using Pharos.Common.Web.Components.DataGrid.Filters.Constraints
+@using Pharos.Common.Web.Components.DateFilter
+@using Pharos.Common.Web.Models.DataGrid
+@inherits ComponentWithClientScriptBase
+
+<PhDockedButtonRow>
+    <ChildContent>
+        <PhDataGrid TableTitle="Audit Trail" StateID="records"
+                    TGridItem="AuditTrailRecord" ItemsProvider="@ProvideGridItems"
+                    DefaultSortColumn="@nameof(AuditTrailRecord.Created)" DefaultSortDirection="SortDirection.Descending"
+                    SelectionType="SelectionTypeEnum.Off"
+                    RowType="RowTypeEnum.LinesBetweenRows">
+            <Columns>
+                <Column Title="@Loc["AuditTrailView_GridColumn_Search"]" Property="@(item => item.SearchText)" QuickFilter="true" Visible="false"/>
+                <Column Title="@Loc["AuditTrailView_GridColumn_Date"]" Property="@(item => item.Created)" QuickFilter="true" FilterConstraints="@(new DateFilterConstraints(options: DateFilterOptions.All))" Format="@FormatStrings.ShortDateTime" Sortable="true"/>
+                <Column Title="@Loc["AuditTrailView_GridColumn_User"]" Property="@(item => item.CreatedBy)" QuickFilter="true" MultiSelectFilterItems="_userNamesDict" />
+                <Column Title="@Loc["AuditTrailView_GridColumn_Description"]" Property="@(item => item.Description)" TGridItem="AuditTrailRecord" TProp="string">
+                    <ChildContent Context="item">
+                        <PhHrefLink OnClick="() => ShowEventDetails(item.Id)">
+                            @item.Description
+                        </PhHrefLink>
+                    </ChildContent>
+                </Column>
+                <Column Title="@Loc["AuditTrailView_GridColumn_Comment"]" Property="@(item => item.Comment)" />
+            </Columns>
+        </PhDataGrid>
+    </ChildContent>
+    <Buttons>
+        <PhButton OnClick="ExportAuditTrail" Disabled="CannotExport">@Loc["AuditTrailView_Export_Records"]</PhButton>
+    </Buttons>
+</PhDockedButtonRow>

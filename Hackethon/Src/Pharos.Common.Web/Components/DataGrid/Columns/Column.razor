@@ -1,0 +1,11 @@
+﻿@typeparam TGridItem
+@typeparam TProp
+@inherits ColumnBase<TGridItem>
+
+@{
+    @if (!_hasRegisteredColumnInGrid)
+    {
+        InternalGridContext.Grid.AddColumn(this);
+        _hasRegisteredColumnInGrid = true;
+    }
+}

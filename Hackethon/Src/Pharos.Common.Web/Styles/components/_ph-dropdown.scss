@@ -1,0 +1,208 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/size";
+@use "../abstracts/rounded";
+@use "../abstracts/typography" as text;
+
+.ph-dropdown {
+    $root: &;
+    $dropdown-height: size.$control-height;
+    $icon-width: size.$hit-area-lg;
+    $option-height: size.$hit-area-md;
+    max-width: 100%;
+    display: inline-block;
+    @include text.body1;
+
+    label:has(&) {
+        // prevent label from clicking the dropdown button. stops it from interfering during soft dismiss of the popover
+        pointer-events: none;
+
+        * {
+            // texts inside the label
+            pointer-events: none;
+        }
+
+        #{$root},
+        #{$root} * {
+            pointer-events: auto; // re-enable pointer events for the dropdown and its content
+        }
+    }
+
+    &__btn {
+        --ph-border-color: #{colors.$border-active};
+        min-height: $dropdown-height;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        @include rounded.rounded;
+        border-width: 2px;
+        text-align: left;
+        background-color: colors.$layer-secondary;
+
+        &:hover {
+            background-color: colors.$layer-hover-01;
+        }
+
+        &:active,
+        &:focus-visible {
+            background-color: colors.$layer-selected-01;
+        }
+
+        &:disabled {
+            --ph-border-color: #{colors.$border-disabled};
+            background-color: colors.$layer-secondary;
+            cursor: default;
+
+            #{$root}__text {
+                color: colors.$text-disabled;
+            }
+
+            #{$root}__icon {
+                color: colors.$icon-disabled-02;
+            }
+        }
+    }
+
+    &__text {
+        padding: 4px spacing.$padding-sm;
+        flex-grow: 1;
+        min-width: 0;
+    }
+
+    &__status-row {
+        display: flex;
+        align-items: center;
+        gap: spacing.$gap-xs;
+    }
+    
+    &__status-symbol {
+        width: 32px;
+        flex-shrink: 0;
+    }
+
+    &__text-label {
+        display: block;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    &__error-icon {
+        display: none;
+        margin-right: spacing.$padding-xs;
+        color: colors.$status-validation;
+    }
+
+    &__icon {
+        width: $icon-width;
+        height: calc(#{$dropdown-height} - 6px);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-left-width: 2px;
+        color: colors.$icon-link;
+    }
+
+    &__hidden-options {
+        visibility: hidden;
+        height: 0;
+        overflow-y: hidden;
+        padding-right: $icon-width;
+        border-inline-width: 2px;
+    }
+
+    &__content {
+        flex-direction: column;
+        justify-content: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+    }
+
+    &__option-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 0;
+    }
+
+    &__option {
+        display: flex;
+        align-items: center;
+        padding-inline: spacing.$padding-sm;
+        cursor: pointer;
+        min-height: $option-height;
+
+        &:hover {
+            background: colors.$layer-hover-01;
+        }
+
+        &:active {
+            background: colors.$layer-selected-01;
+        }
+
+        &[aria-hidden] {
+            height: 0;
+            min-height: 0;
+            visibility: hidden;
+            padding-block: 0;
+        }
+
+        &--disabled {
+            color: colors.$text-disabled;
+            cursor: default;
+            pointer-events: none;
+        }
+    }
+
+    &--open {
+        #{$root}__btn {
+            background-color: colors.$layer-selected-01;
+        }
+    }
+
+    &--placeholder {
+        #{$root}__text {
+            color: colors.$text-hint;
+        }
+    }
+
+    &--size-small {
+        width: size.$input-width-small;
+    }
+
+    &--size-medium {
+        width: size.$input-width-medium;
+    }
+
+    &--size-large {
+        width: size.$input-width-large;
+    }
+
+    &--size-fit-content {
+        width: max-content;
+    }
+
+    &--error {
+        #{$root}__btn {
+            --ph-border-color: #{colors.$status-validation};
+        }
+
+        #{$root}__error-icon {
+            display: flex;
+        }
+    }
+
+    &--many-options {
+        #{$root}__scroll {
+            // 8 items fit in the default popover without scrolling.
+            // If the list scrolls, reduce the height slightly to avoid tiny scroll ranges.
+            max-height: calc(#{$option-height} * 7.5);
+            overflow-y: auto;
+        }
+    }
+   
+}

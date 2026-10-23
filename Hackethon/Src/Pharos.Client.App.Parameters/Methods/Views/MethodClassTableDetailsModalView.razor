@@ -1,0 +1,44 @@
+@using Pharos.Client.App.Parameters.Methods.ViewModels
+@using Pharos.Client.Common.App.Validation
+@using Pharos.Client.Common.App.Auth
+@using Pharos.Contracts.Security
+
+<PhModalContent>
+    <Body>
+        <PhSimpleValidationContext @ref="_validationContext" Model="ViewModel" OnValidationStateChanged="ValidationChanged">
+            <PhInputColumn Spacing="InputSpacing.Compact">
+                <PhLabel Text="@Loc["MethodDetailsClassTableDetails_ClassTable"]" Direction="LabelDirection.Horizontal">
+                    <PhValueBox Size="TextBoxSize.Small">@ViewModel.ClassTableId</PhValueBox>
+                </PhLabel>
+
+                <PhDataGrid StateID="method-class-table-details"
+                            TGridItem="MethodClassTableDetailsRowViewModel"
+                            Items="ViewModel.Rows.AsQueryable()"
+                            HideTrailingEdge="true"
+                            RowType="RowTypeEnum.LinesBetweenRows">
+                    <Columns>
+                        <Column Title="@Loc["MethodDetailsClassTableDetails_Concentration"]"
+                                Property="@(x => x.ConcentrationRange)"
+                                Align="ColumnAlignEnum.Right" />
+                        <Column Title="@Loc["MethodDetailsClassTableDetails_Text"]"
+                                Property="@(x => x.Text)">
+                            <PhTextBox Value="@context.Text" ValueChanged="@(value => OnTextChanged(context, value))"
+                                       ValueExpression="() => ViewModel.Rows[context.RowIndex].Text" MaxLength="8" Disabled="@IsEditingDisabled" />
+                        </Column>
+                    </Columns>
+                </PhDataGrid>
+            </PhInputColumn>
+        </PhSimpleValidationContext>
+    </Body>
+
+    <Footer>
+        <PhAuthorize Permission="@Permissions.EditSystemSettings">
+            <PhButton Type="ButtonType.Secondary" OnClick="@(() => CloseModal(ModalResult.Cancel()))">
+                @Loc["MethodDetailsClassTableDetails_Cancel"]
+            </PhButton>
+            <PhButton Type="ButtonType.Primary" Disabled="@(!_isValid)" OnClick="ValidateAndApply">
+                @Loc["MethodDetailsClassTableDetails_Done"]
+            </PhButton>
+        </PhAuthorize>
+    </Footer>
+</PhModalContent>

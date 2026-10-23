@@ -1,0 +1,80 @@
+﻿@using Pharos.Client.App.Reagents.Views.Drawer.Carrier
+@using Pharos.Client.App.Reagents.Views.Drawer.Cartridge
+@using Pharos.Client.Common.App.Helpers
+@using Pharos.Common.Web.Components.Reagent
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.Label
+
+<div class="reagent-page__reagent-loader-panel-container">
+    <div class="reagent-loader-panel">
+        <div class="reagent-loader-panel__header">
+            <PhIconButton IconType="IconType.X" IconSize="IconSize.Lg" OnClick="@CloseButtonClicked" />
+        </div>
+        <div class="reagent-loader-panel__content">
+            <div class="reagent-loader-panel__location-input">
+                <ReagentFieldView Text="@Loc["ReagentPage_Location"]" Value="@Loader.Location" />
+            </div>
+            <div class="reagent-loader-panel__loader-expanded ">
+                @if (Loader?.SelectedReagentLoader?.Compartments != null)
+                {
+                    @foreach (var compartment in Loader.SelectedReagentLoader.Compartments)
+                    {
+                        <div class="reagent-loader-panel__loader-slot ">
+                            @foreach (var cellContent in compartment.CellContent)
+                            {
+                                <div @onclick="() => SelectedCellContent(cellContent, compartment.Type)">
+                                    @if (compartment.Type == CompartmentReagentType.Cartridge)
+                                    {
+                                        <ReagentCartridgeView CellContent="cellContent" Size="ReagentIconSize.Large"
+                                                              IsReagentSelected="@(cellContent == Loader.SelectedCellContent)"
+                                                              LegendSelectedStatus="@Loader.SelectedLegendStatus" />
+                                    }
+                                    else if (compartment.Type == CompartmentReagentType.Carrier)
+                                    {
+                                        <ReagentCarrierView CellContent="cellContent" Size="ReagentIconSize.Large"
+                                                            IsReagentSelected="@(cellContent == Loader.SelectedCellContent)"
+                                                            LegendSelectedStatus="@Loader.SelectedLegendStatus" />
+                                    }
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+            </div>
+            <div class="reagent-loader-panel__details">
+                <div class="reagent-loader-panel__details-container">
+                    <PhLabel Direction="LabelDirection.Vertical" Text="@DisplayLabel" Disabled="@IsCellContentNull" />
+                    <div class="reagent-loader-panel__shape-wrapper">
+                        @if (Loader?.ReagentContentDetail != null)
+                        {
+                            <ReagentShapeView Colors="@Loader.ReagentContentDetail.Colors" Texts="@Loader.ReagentContentDetail.Texts"
+                                              IsCarrierTypeReagent="@Loader.SelectedReagentType"
+                                              Shape="@ReagentHelper.GetShape(Loader.ReagentContentDetail.Shape)" Test="@Loader.ReagentContentDetail.Test" />
+                        }
+                        else
+                        {
+                            <ReagentShapeView />
+                        }
+                    </div>
+                </div>
+                @if (Loader!.SelectedReagentType)
+                {
+                    <ReagentFieldView IsDisabled="@IsCellContentNull" Text="@Loc["ReagentPage_Type"]" Value="@Loader.Type" />
+                }
+                else
+                {
+                    <ReagentFieldView IsDisabled="@IsCellContentNull" Text="@Loc["ReagentPage_Name"]" Value="@Loader.Name" />
+                }
+            </div>
+            <div class="reagent-loader-panel__details">
+                <ReagentFieldView IsDisabled="@IsCellContentNull" Text="@Loc["ReagentPage_Status"]" Value="@Loader.Status" />
+                <ReagentFieldView IsDisabled="@IsCellContentNull" Text="@Loc["ReagentPage_Quantity"]" Value="@Loader.Quantity" />
+            </div>
+            <div class="reagent-loader-panel__details">
+                <ReagentFieldView IsDisabled="@IsCellContentNull" Text="@Loc["ReagentPage_Lot"]" Value="@Loader.LotNumber" />
+                <ReagentFieldView IsDisabled="@IsCellContentNull" Text="@Loc["ReagentPage_ExpiryDate"]" Value="@Loader.ExpiryDate" />
+            </div>
+        </div>
+    </div>
+</div>

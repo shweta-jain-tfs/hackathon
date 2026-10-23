@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Src\Pharos.Client.App.Parameters\Pharos.Client.App.Parameters.csproj" />
+	</ItemGroup>
+
+</Project>

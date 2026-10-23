@@ -1,0 +1,61 @@
+@using Pharos.Common.Web.Components.Health
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.InstrumentName
+@attribute [Stories("Components/InstrumentName")]
+
+<Stories TComponent="PhInstrumentName">
+    <Story Name="Logged in">
+        <Arguments>
+            <Arg For="_ => _!.Name" Value="@("Billy")" />
+            <Arg For="_ => _!.Href" Value="@("#link")" />
+        </Arguments>
+        <Template>
+            <PhInstrumentName @attributes="context.Args" />
+        </Template>
+    </Story>
+    <Story Name="Active link">
+        <Arguments>
+            <Arg For="_ => _!.Name" Value="@("Billy")" />
+            <Arg For="_ => _!.Href" Value="@("/")" />
+        </Arguments>
+        <Template>
+            <PhInstrumentName @attributes="context.Args" />
+        </Template>
+    </Story>
+    <Story Name="Lock screen mode">
+        <Arguments>
+            <Arg For="_ => _!.Name" Value="@("Billy")" />
+            <Arg For="_ => _!.Href" Value="@null" />
+        </Arguments>
+        <Template>
+            <div class="flex" style="background: gray; height: 110px">
+                <PhInstrumentName @attributes="context.Args" LockScreenMode="true" />
+            </div>
+        </Template>
+    </Story>
+    <Story Name="Too long name">
+        <Arguments>
+            <Arg For="_ => _!.Name" Value="@("Kallax Linnmon Malm 2")" />
+            <Arg For="_ => _!.Href" Value="@("#link")" />
+        </Arguments>
+        <Template>
+            <PhInstrumentName @attributes="context.Args" />
+        </Template>
+    </Story>
+    <Story Name="All statuses">
+        <Arguments>
+            <Arg For="_ => _!.Name" Value="@("Billy")" />
+            <Arg For="_ => _!.Href" Value="@("#link")" />
+        </Arguments>
+        <Template>
+            @foreach (HealthStatus status in Enum.GetValues(typeof(HealthStatus)))
+            {
+                <PhInstrumentName @attributes="context.Args" Status="@status" />
+            }
+        </Template>
+    </Story>
+</Stories>
+
+@code
+{
+}

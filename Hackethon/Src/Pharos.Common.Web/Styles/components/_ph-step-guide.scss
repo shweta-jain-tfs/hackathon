@@ -1,0 +1,139 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-step-guide {
+    $root: &;
+    $symbol-size: 16px;
+    $input-field-height: size.$hit-area-lg;
+    --ph-step-guide-item-center: 50%;
+    --ph-step-guide-item-height: 100%;
+    --ph-step-guide-item-bg: var(--ph-bg-color, transparent);
+    --ph-step-guide-gap: #{spacing.$gap-xl};
+    --ph-step-guide-color: #{colors.$border-selected};
+   
+    @include text.body1;
+    color: colors.$text-secondary;
+
+    &__step {
+        position: relative;
+        padding-bottom: var(--ph-step-guide-gap); // padding acts as gap
+
+        &:first-child {
+            $item-height: calc(100% - var(--ph-step-guide-gap));
+            $item-center: calc($item-height / 2);
+            --ph-step-guide-top-offset: #{calc($item-height - min(var(--ph-step-guide-item-center), $item-center))};
+        }
+
+        &:last-child {
+            --ph-step-guide-bottom-offset: min(50%, var(--ph-step-guide-item-center));
+            padding-bottom: 0;
+        }
+
+        &:only-child {
+            --ph-step-guide-top-offset: calc(100% - min(var(--ph-step-guide-item-height), 100%) / 2);
+        }
+
+        &:has(~ &--filled),
+        &--filled {
+            --ph-step-guide-symbol-fill: var(--ph-step-guide-color);
+        }
+
+        &--disabled {
+            cursor: default;
+            pointer-events: none;
+            color: colors.$text-disabled;
+        }
+    }
+
+    &__step-button,
+    &__step-content {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        column-gap: spacing.$gap-xl;
+        align-items: end;
+        background-color: var(--ph-step-guide-item-bg, transparent);
+    }
+
+    &__step-button {
+        width: 100%;
+        padding: spacing.$padding-xs spacing.$padding-sm;
+        text-align: left;
+        &:focus-visible,
+        &:hover {
+            --ph-step-guide-item-bg: #{colors.$layer-tertiary};
+        }
+    }
+
+    &__step-symbol {
+        display: flex;
+        align-items: center;
+        height: min(100%, var(--ph-step-guide-item-height));
+
+        // line cutting under the dot symbol
+        &::before {
+            content: "";
+            display: block;
+            position: absolute;
+            translate: calc($symbol-size / 2 - 2px);
+            top: var(--ph-step-guide-top-offset, -1px); // -1 to overlap with the line from the previous step to avoid half pixel gaps in certain situations when scrolling
+            bottom: var(--ph-step-guide-bottom-offset, 0);
+            border: 2px solid var(--ph-step-guide-color);
+        }
+
+        // dot
+        &::after {
+            content: "";
+            display: block;
+            position: relative;
+            width: $symbol-size;
+            aspect-ratio: 1;
+            border: 3px solid var(--ph-step-guide-color);
+            @include rounded.rounded-full;
+            background-color: var(--ph-step-guide-symbol-fill, var(--ph-step-guide-item-bg));
+        }
+    }
+
+    &--align-to-input-field {
+        // align the symbol to bottom centered over a standard input field height
+        --ph-step-guide-item-height: #{$input-field-height};
+        --ph-step-guide-item-center: #{calc($input-field-height / 2)};
+    }
+
+    &--navigation {
+        color: colors.$text-primary;
+
+        #{$root}__step {
+            --ph-step-guide-gap: #{spacing.$gap-gutter};
+
+            // highlight the current step in navigation mode
+            &[aria-current=step] {
+                --ph-step-guide-item-bg: #{colors.$layer-tertiary};
+            }
+        }
+
+        #{$root}__step-content {
+            gap: spacing.$gap-gutter;
+            padding-block: spacing.$padding-xs;
+            padding-inline: spacing.$padding-sm spacing.$padding-md;
+        }
+    }
+
+    &--wizard {
+        // unfilled steps are gray by default in wizard mode
+        color: colors.$text-disabled;
+
+        #{$root}__step {
+            &:has(~ #{$root}__step--filled),
+            &--filled {
+                color: colors.$text-secondary;
+            }
+        }
+    }
+
+    &--disabled {
+        --ph-step-guide-color: #{colors.$text-disabled};
+    }
+}

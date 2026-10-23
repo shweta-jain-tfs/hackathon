@@ -1,0 +1,118 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-datepicker {
+    $root: &;
+    position: relative;
+    min-width: min-content;
+    max-width: 100%;
+
+    &__input {
+        --ph-datepicker-icon-color: #{colors.$icon-link};
+        display: flex;
+        gap: spacing.$gap-xs;
+        min-height: size.$control-height;
+        @include rounded.rounded;
+        border-width: 2px;
+        background: colors.$layer-secondary;
+
+        &:hover {
+            background-color: colors.$layer-hover-01;
+            --ph-datepicker-icon-color: #{colors.$icon-link-hover};
+        }
+    
+        &:has(:focus-visible) {
+            background-color: colors.$layer-selected-01;
+            --ph-datepicker-icon-color: #{colors.$icon-link-pressed};
+        }
+    }
+
+    &__error-icon {
+        display: none;
+        align-self: center;
+        color: colors.$status-validation;
+    }
+
+    &__btn {
+        display: flex;
+        align-items: center;
+        color: var(--ph-datepicker-icon-color);
+        padding: 0 spacing.$padding-lg;
+        border-left-width: 2px;
+
+        &::after {
+            // make the whole datepicker clickable until we enable text input
+            content: "";
+            display: block;
+            position: absolute;
+            inset: 0;
+        }
+    }
+
+    &__textbox {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        min-width: 200px;
+        padding-block: 4px;
+        padding-inline: spacing.$padding-sm spacing.$padding-xs;
+        background: transparent;
+        @include text.body1;
+
+        &::placeholder {
+            color: colors.$text-hint;
+        }
+    }
+
+    &--open {
+        #{$root}__input {
+            background-color: colors.$layer-selected-01;
+            --ph-datepicker-icon-color: #{colors.$icon-link};
+        }
+    }
+
+    &--disabled {
+        #{$root}__input {
+            --ph-border-color: #{colors.$border-disabled};
+            --ph-datepicker-icon-color: #{colors.$icon-disabled-02};
+            background-color: colors.$layer-secondary;
+        }
+
+        #{$root}__textbox {
+            color: colors.$text-disabled;
+
+            &::placeholder {
+                color: currentColor;
+            }
+        }
+
+        #{$root}__btn {
+            cursor: default;
+        }
+    }
+
+    &--error {
+        #{$root}__input {
+            --ph-border-color: #{colors.$status-validation};
+        }
+
+        #{$root}__textbox {
+            padding-right: 0;
+        }
+
+        #{$root}__error-icon {
+            display: flex;
+        }
+    }
+
+    &--size-medium {
+        width: size.$input-width-medium;
+    }
+
+    &--size-large {
+        width: size.$input-width-large;
+    }
+}

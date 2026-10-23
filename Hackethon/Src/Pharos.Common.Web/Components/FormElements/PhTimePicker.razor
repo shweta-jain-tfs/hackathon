@@ -1,0 +1,101 @@
+﻿@inherits Base.ComponentWithClientScriptBase
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.TrailingEdge
+
+<PhLabel Text="@Label"
+         HelpText="@HelpText"
+         ErrorText="@(HasErrorText ? ErrorText : null)"
+         Disabled="@Disabled"
+         RenderAsLabel="@(!DisplayOnly)"
+         SuppressAutoValidation="@DisplayOnly"
+         ValidationFor="@(DisplayOnly ? null : ValidationForExpression)">
+    <div class="@ClassNames" uiname="@AutomatedTestId">
+        @if (DisplayOnly)
+        {
+            <PhValueBox Disabled="@Disabled" Overflow="ValueBoxOverflow.Ellipsis">
+                @Value?.ToString(FullTimeFormat, _culture)
+            </PhValueBox>
+        }
+        else
+        {
+            <PhPopover @ref="_popoverRef" Appearance="PopoverStyle.Dropdown" FillWidth AutoHide OnToggle="SetOpenState">
+                <Anchor>
+                    <div class="ph-time-picker__box">
+                        <div class="ph-time-picker__input" @onkeydown:preventDefault="_preventEnterKey">
+                            <input @ref="_inputHourRef"
+                                type="text"
+                                maxlength="2"
+                                inputmode="numeric"
+                                @bind-value="@Hour"
+                                @bind-value:event="oninput"
+                                @onkeydown="HourNumKeyPress"
+                                @onkeyup="HourKeyPress"
+                                @onblur="FieldBlur"
+                                placeholder="--"
+                                id="@Id"
+                                disabled="@Disabled" />
+
+                            @TimeSeparator
+
+                            <input @ref="_inputMinuteRef"
+                                type="text"
+                                maxlength="2"
+                                inputmode="numeric"
+                                @bind-value="@Minute"
+                                @bind-value:event="oninput"
+                                @onkeydown="MinuteNumKeyPress"
+                                @onkeyup="MinuteKeyPress"
+                                @onblur="FieldBlur"
+                                placeholder="--"
+                                disabled="@Disabled" />
+
+                            @if (!_use24HourClock)
+                            {
+                                <text>&nbsp;</text>
+                                <button @onclick="TogglePm" disabled="@Disabled" type="button">@(PostMeridian ? Pm : Am)</button>
+                            }
+                        </div>
+
+                        @if (_error)
+                        {
+                            <span class="ph-time-picker__error-icon">
+                                <PhIcon IconType="IconType.Alert" Size="IconSize.Md" />
+                            </span>
+                        }
+
+                        <button class="ph-time-picker__btn" popovertarget="@(_popoverRef?.Id)" disabled="@(Disabled || _isOpen)" type="button">
+                            <PhIcon IconType="@(_isOpen ? IconType.ChevronUp : IconType.ChevronDown)" Size="IconSize.Sm"></PhIcon>
+                        </button>
+                    </div>
+                </Anchor>
+                <Panel>
+                    <div class="ph-time-picker__scroll">
+                        <PhTrailingEdge Mode="TrailingEdgeDisplayMode.VerticalOnly">
+                            <ul class="ph-time-picker__panel">
+                                @foreach(TimeOnly? time in TimeOptions)
+                                {
+                                    var selected = time == _editedTime ? "true" : "false";
+                                    var timeString = time?.ToString(FullTimeFormat, _culture);
+                                    <li @key="@time">
+                                        <button class="ph-time-picker__option" type="button" role="option" @onclick="() => SelectTime(time)" aria-selected="@selected">
+                                            @if (timeString is null)
+                                            {
+                                                <span class="ph-time-picker__clear-option">
+                                                    <span>--</span><span>@TimeSeparator--</span>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                @timeString
+                                            }
+                                        </button>
+                                    </li>
+                                }
+                            </ul>
+                        </PhTrailingEdge>
+                    </div>
+                </Panel>
+            </PhPopover>
+        }
+    </div>
+</PhLabel>

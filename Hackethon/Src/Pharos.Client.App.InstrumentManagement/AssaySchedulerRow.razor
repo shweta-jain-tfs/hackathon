@@ -1,0 +1,14 @@
+<div class="assay-scheduler-row">
+    <PhHrefLink Href="@($"{PageRoute.InstrumentsAssayScheduler}")" LinkSize="LinkSize.Body1">
+        <div class="assay-scheduler-row__left">
+            <PhIcon IconType="IconType.DatePicker" Size="IconSize.Sm" />
+            <span>@Name</span>
+        </div>
+    </PhHrefLink>
+    <div>
+        @if (VisibleSwitch)
+        {
+            <PhSwitchButton Value="IsActive" ValueChanged="IsActiveChanged" Disabled="!IsAuthorized"/>
+        }
+    </div>
+</div>

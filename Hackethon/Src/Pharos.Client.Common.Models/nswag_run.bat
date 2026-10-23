@@ -1,0 +1,2 @@
+dotnet build %cd%..\..\Pharos.Server\Pharos.Server.csproj /p:Configuration=NSWAG /p:NuGetRestorePackages=false /p:TreatWarningsAsErrors=false /p:CodeAnalysisTreatWarningsAsErrors=false
+nswag run /runtime:Net100

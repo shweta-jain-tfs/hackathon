@@ -1,0 +1,22 @@
+@using Pharos.Client.App.Parameters.Layout
+@using Pharos.Client.App.Parameters.QualityControl.Views
+@using Pharos.Contracts.Security
+@layout ParametersLayout
+@attribute [Route(PageRoute.Parameters.QualityControls)]
+@attribute [Authorize(Permissions.EditTestSettings)]
+
+<SectionContent SectionName="page-header">
+    <Breadcrumb Items="@Breadcrumbs"/>
+</SectionContent>
+
+<PhTabControl>
+    <PhTabPage TabId="@((int)TabItems.PhadiaQc)" Text="@Loc["QualityControlPage_PhadiaQc"]" HideTrailingEdge>
+        <PhadiaQualityControlListView />
+    </PhTabPage>
+    <PhTabPage TabId="@((int)TabItems.LabQc)" Text="@Loc["QualityControlPage_LabQc"]" HideTrailingEdge>
+        <LabQualityControlListView />
+    </PhTabPage>
+    <PhTabPage TabId="@((int)TabItems.Scheduling)" Text="@Loc["QualityControlPage_QcSchedule"]" HideTrailingEdge>
+        <QualityControlScheduleListView />
+    </PhTabPage>
+</PhTabControl>

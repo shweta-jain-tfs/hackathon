@@ -1,0 +1,59 @@
+@layout ParametersLayout
+@using Pharos.Client.App.Parameters.Layout
+@using Pharos.Common.Web.Models.DataGrid
+@using Pharos.Common.Web.Components.DataGrid.Filters.Constraints
+@attribute [Route(PageRoute.Parameters.Reflex)]
+@attribute [Authorize]
+
+<SectionContent SectionName="page-header">
+    <Breadcrumb Items="@Breadcrumbs" />
+</SectionContent>
+
+<PhDockedButtonRow EnableButtons="CanEditReflex">
+    <ChildContent>
+        @if (_uiSettings != null)
+        {
+            <PhDataGrid @ref="_dataGrid"
+                        TableTitle="@Loc["ReflexListPage_Title"]"
+                        StateID="reflexdefinitions"
+                        TGridItem="ReflexDefinitionSummary"
+                        DefaultSortColumn="Name"
+                        DefaultSortDirection="SortDirection.Ascending"
+                        ItemsProvider="PageViewModel.ProvideGridItems"
+                        SelectionType="@(CanEditReflex ? SelectionTypeEnum.MultiSelect : SelectionTypeEnum.Off)"
+                        OnSelectedItemsChanged="SelectedItemsChanged">
+
+                <Columns>
+                    <Column Title="@Loc["ReflexListPage_ReflexDefinition"]" Property="@(x => x.Name)" QuickFilter="true" FilterConstraints="@(new StringFilterConstraints(64))" Sortable="true">
+                        <PhHrefLink Href="@($"{PageRoute.Parameters.ReflexDefinitionDetails.Default}/{context?.Id}")">@context?.Name</PhHrefLink>
+                    </Column>
+                    <Column Title="@Loc["ReflexListPage_Active"]" Property="@(x => x.Active)">
+                        @if (CanEditReflex)
+                        {
+                            <PhCheckBox Value="context.Active" ValueChanged="@(async isChecked => await SetIsActive(context.Id, isChecked))" />
+                        }
+                        else
+                        {
+                            @(context.Active ? Loc["ReflexListPage_Active_Yes"] : Loc["ReflexListPage_Active_No"])
+                        }
+                    </Column>
+                    <Column Title="@Loc["ReflexListPage_Automatic"]" Property="@(x => x.Automatic)">
+                        @if (context.Automatic)
+                        {
+                            @Loc["ReflexListPage_Automatic_Yes"]
+                        }
+                        else
+                        {
+                            @Loc["ReflexListPage_Automatic_No"]
+                        }
+                    </Column>
+                    <Column Title="@Loc["ReflexListPage_RequestorId"]" Property="@(x => x.RequestorId)" Sortable="true" HasPermission="@DisplayRequestor"/>
+                </Columns>
+            </PhDataGrid>
+        }
+    </ChildContent>
+    <Buttons>
+        <PhButton Type="ButtonType.Secondary" Disabled="!CanEditReflex" OnClick="AddReflexDefinition">@Loc["ReflexListPage_Add"]</PhButton>
+        <PhButton Type="ButtonType.Secondary" Disabled="!CanEditReflex || !HasSelectedItems" OnClick="DeleteSelectedRows">@Loc["ReflexListPage_Delete"]</PhButton>
+    </Buttons>
+</PhDockedButtonRow>

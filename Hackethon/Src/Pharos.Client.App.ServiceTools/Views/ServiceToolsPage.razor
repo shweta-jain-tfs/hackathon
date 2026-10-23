@@ -1,0 +1,30 @@
+@using Pharos.Client.App.ServiceTools.Views.FlrImport
+@using Pharos.Client.App.ServiceTools.Views.LoadCmr
+@using Pharos.Client.App.ServiceTools.Views.Pairing
+@using Pharos.Client.App.ServiceTools.Views.LogDump
+
+@attribute [Route(PageRoute.Tools)]
+@attribute [Authorize(Permissions.RunServiceTools)]
+
+<PhPage>
+    <div class="flex justify-between items-center mb-md">
+        <h2 class="t-h3">@Loc["ServiceToolsPage_Title"]</h2>
+    </div>
+    <div class="flex flex-col gap-md">
+        <PhStack Gap="StackGap.Lg">
+            <PairingView />
+            <FlrImportView />
+            <LoadCmrView />
+            <PhPanel>
+                <div class="flex flex-col gap-md">
+                    <h3 class="t-h3">@Loc["RequestGenerator_Title"]</h3>
+                    <p class="t-body2">@Loc["ServiceToolsPage_RequestGenerator_Description"]</p>
+                    <PhButton OnClick="OpenRequestGenerator">
+                        @Loc["ServiceToolsPage_RequestGenerator_OpenButton"]
+                    </PhButton>
+                </div>
+            </PhPanel>
+            <LogDumpView />
+        </PhStack>
+    </div>
+</PhPage>

@@ -1,0 +1,25 @@
+@use "../abstracts/scrollbar";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography";
+
+.ph-theme-instrument {
+    // larger spacing
+    @include spacing.instrument-spacing-variables;
+
+    // larger text
+    @include typography.instrument-font-size-variables;
+
+    // larger touch area and icons
+    @include size.instrument-size-variables;
+
+    @include scrollbar.customScrollbar;
+
+    // prevent pinch zoom (outside of charts)
+    touch-action: none;
+
+    html:has(&) {
+        // prevent history navigation and rubber band effect by swiping the screen
+        overscroll-behavior: none;
+    }
+}

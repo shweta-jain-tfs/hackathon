@@ -1,0 +1,15 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/typography";
+
+.ph-bottle-drawer-instruction {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    color: colors.$text-primary;
+    @include typography.h1;
+    background-color: colors.$drawer-filled-container-background;
+    padding: spacing.$gap-sm;
+}

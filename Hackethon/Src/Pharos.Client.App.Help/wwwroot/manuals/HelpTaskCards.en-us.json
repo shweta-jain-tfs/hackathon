@@ -1,0 +1,212 @@
+[
+  {
+    "id": 0,
+    "content": "<p>The drawer has been open for too long and needs to be closed to continue operation.</p><p>You can view the current drawer status or consult the <a href=\"{{HelpLink-1}}\">sample handling section in the manual</a> for proper procedures.</p><ul><li>Use the drawers button to view current status and controls</li><li>Use the manual button for detailed sample handling procedures</li></ul>",
+    "chapterId": 1
+  },
+  {
+    "id": 1,
+    "content": "<h2>Error Handling Information</h2><p><em>This content is for illustration purposes only.</em></p><p>An error has occurred during system operation. You can view detailed error information on the errors page, or consult the <a href=\"{{HelpLink-501}}\">error handling section in the manual</a> for comprehensive guidance.</p><p>Error handling is the process of anticipating, detecting, and managing errors in an application to ensure stability and continued operation.</p><ul><li>Use the errors page button to view current error details and status</li><li>Use the manual button to access comprehensive error handling documentation</li><li>Review system logs for additional diagnostic data</li><li>Contact technical support if errors persist after following recommended procedures</li></ul>",
+    "chapterId": 501
+  },
+  {
+    "id": 2,
+    "content": "<p>The sample tube is not recognized.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 3,
+    "content": "<p>A calibration (or curve control) has failed, need to review/rerun.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 4,
+    "content": "<p>The reagent drawer is open.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 5,
+    "content": "<p>There is an error with the reagent drawer.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 6,
+    "content": "<p>The internal storage for reagents is full.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 7,
+    "content": "<p>There is an error with the sample tray.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 8,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 9,
+    "content": "<p>The task has been partially completed.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 10,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 11,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 12,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 13,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 14,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 15,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 16,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 17,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 18,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 19,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 20,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 21,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 22,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 23,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 24,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 25,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 26,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 27,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 28,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 29,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 30,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 31,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 32,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 33,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 34,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 35,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 36,
+    "content": "<p>Please review the task details and follow the recommended instructions before proceeding. Ensure all required components are properly loaded, closed, cleaned, or verified as applicable. If the issue persists after completing the recommended actions, contact your system administrator or technical support for further assistance.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 37,
+    "content": "<p>A quality control has failed, need to review/rerun.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 38,
+    "content": "<p>A sample result has issue(s), remove issue(s) by approving/rejecting the result.</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 39,
+    "content": "<p>One or more samples have issue(s).</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 40,
+    "content": "<p>One or more samples have unreported test result(s).</p>",
+    "chapterId": 1
+  },
+  {
+    "id": 41,
+    "content": "<p>There are pending results that need to be reviewed.</p>",
+    "chapterId": 1
+  }
+]

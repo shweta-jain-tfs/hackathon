@@ -1,0 +1,8 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pharos.Client.Common.Models\Pharos.Client.Common.Models.csproj" />
+		<ProjectReference Include="..\Pharos.Common.Web\Pharos.Common.Web.csproj" />
+	</ItemGroup>
+
+</Project>

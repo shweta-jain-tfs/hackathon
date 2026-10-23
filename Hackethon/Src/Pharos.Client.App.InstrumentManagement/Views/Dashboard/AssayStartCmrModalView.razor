@@ -1,0 +1,10 @@
+@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhModalContent>
+    <Body>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => @CloseModal(ModalResult.Cancel()))">@Loc["DashboardPage_AssayStartModal_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => @CloseModal(ModalResult.Ok()))">@Loc["DashboardPage_AssayStartModal_Ok"]</PhButton>
+    </Footer>
+</PhModalContent>

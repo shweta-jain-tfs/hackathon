@@ -1,0 +1,15 @@
+<div class="@BottleDrawerCss">
+    @foreach(var bottlePosition in ViewModel.BottlePositions)
+    {
+        <BottleReagentView BottlePosition="bottlePosition"
+                           OnBottleSelected="BottleSelected"
+                           SelectedBottleId="@ViewModel.GetSelectedBottleId()"
+                           FlashingBottleId="@ViewModel.FlashingBottleId"
+                           SelectedLegendStatus="@ViewModel.SelectedLegendStatus" />
+    }
+</div>
+@if (ViewModel.IsDoorOpen)
+{
+    <div class="bottle-drawer-view__drawer-front"></div>
+    <div class="bottle-drawer-view__bottom-text">@Loc["Bottle_DrawerOpen"]</div>
+}

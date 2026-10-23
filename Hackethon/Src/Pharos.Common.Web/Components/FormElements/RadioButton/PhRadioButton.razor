@@ -1,0 +1,44 @@
+﻿@typeparam T
+
+<div class="@Classname">
+    <div class="ph-radio-button__radio">
+        @if (IsDisplayOnly)
+        {
+            <div class="ph-radio-button__label">
+                <span class="@(IsChecked
+                            ? "ph-radio-button__circle ph-radio-button__circle--checked"
+                            : "ph-radio-button__circle")"></span>
+                <span>@Label</span>
+            </div>
+        }
+        else
+        {
+            <label class="ph-radio-button__label">
+                <InputRadio class="ph-radio-button__input" Value="@Value" @onclick="() => OnSelected()" disabled="@Disabled" />
+                <span class="ph-radio-button__circle"></span>
+                @if (LabelContent is not null)
+                {
+                    @LabelContent
+                }
+                else
+                {
+                    <span>@Label</span>
+                }
+            </label>
+        }
+
+        @if (!string.IsNullOrEmpty(LabelHelpText))
+        {
+            <div class="ph-radio-button__help-text">
+                @LabelHelpText
+            </div>
+        }
+    </div>
+
+    @if (IsChecked && ChildContent != null)
+    {
+        <div class="ph-radio-button__child-content">
+            @ChildContent
+        </div>
+    }
+</div>

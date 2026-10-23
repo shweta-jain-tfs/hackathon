@@ -1,0 +1,98 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-textbox {
+    $root: &;
+    max-width: 100%;
+    min-width: size.$input-width-xsmall;
+    position: relative;
+
+    input {
+        display: block;
+        width: 100%;
+        min-height: size.$control-height;
+        padding: 4px spacing.$padding-sm;
+        border: 2px solid colors.$border-active;
+        background-color: colors.$layer-secondary;
+        color: colors.$text-secondary;
+        @include rounded.rounded;
+        @include text.body1;
+
+        &::placeholder {
+            color: colors.$text-hint;
+        }
+
+        &::selection {
+            background-color: colors.$layer-accent;
+        }
+
+        &:hover {
+            background-color: colors.$layer-hover-01;
+        }
+
+        &:focus-visible {
+            outline: none;
+            background-color: colors.$layer-selected-01;
+        }
+
+        &:disabled {
+            border-color: colors.$border-disabled;
+            background-color: colors.$layer-secondary;
+            color: colors.$text-disabled;
+            cursor: default;
+
+            &::placeholder {
+                color: currentColor;
+            }
+        }
+    }
+
+    &__error-icon {
+        position: absolute;
+        right: spacing.$padding-xs;
+        top: 50%;
+        transform: translateY(-50%);
+        display: none;
+        color: colors.$status-validation;
+    }
+
+    &--size-xsmall {
+        width: size.$input-width-xsmall;
+    }
+
+    &--size-small {
+        width: size.$input-width-small;
+    }
+
+    &--size-medium {
+        width: size.$input-width-medium;
+    }
+
+    &--size-large {
+        width: size.$input-width-large;
+    }
+
+    &--size-xlarge {
+        width: size.$input-width-xlarge;
+        max-width: 100%;
+    }
+
+    &--error {
+        input {
+            border-color: colors.$status-validation;
+        }
+
+        &:not(:focus-within) {
+            input {
+                padding-right: calc(size.$icon-md + (spacing.$padding-xs * 2));
+            }
+
+            #{$root}__error-icon {
+                display: flex;
+            }
+        }
+    }
+}

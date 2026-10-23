@@ -1,0 +1,27 @@
+﻿<PhPopover @ref="_popover" Appearance="PopoverStyle.Dropdown" CssClasses="@PopoverCssClasses" Position="PopoverPosition.Auto" FillWidth AutoHide OnToggle="SetOpenState">
+    <Anchor>
+        @if (_isIconButton)
+        {
+            if (IconType != null)
+            {
+                <PhIconButton Type="IconButtonType.Menu" IconType="@IconType.Value" IconSize="@IconSize.Md" PopoverTarget="@_popover?.Id" Disabled="@Disabled" Selected="@_isOpen"></PhIconButton>
+            }
+        }
+        else
+        {
+            IconType? toggleIcon = null;
+            if (!IconType.HasValue)
+            {
+                toggleIcon = _isOpen ? Icons.IconType.ChevronUp : Icons.IconType.ChevronDown;
+            }
+            <PhButton Type="ButtonType" StartIconType="IconType" EndIconType="toggleIcon" PopoverTarget="@(_popover?.Id)" Disabled="Disabled" Selected="_isOpen">
+                @Text
+            </PhButton>
+        }
+    </Anchor>
+    <Panel>
+        <ul @onclick="ClosePanel">
+            @ChildContent
+        </ul>
+    </Panel>
+</PhPopover>

@@ -1,0 +1,80 @@
+@use '../abstracts/colors';
+@use '../abstracts/rounded';
+
+.bottle-content {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    &__liquid-fill {
+        width: 100%;
+        height: var(--bottle-content-level-fill, 0%);
+        border-radius: 2px;
+
+        &--bright {
+            background: colors.$reagent-bottle-content-bright;
+        }
+
+        &--dim {
+            background: colors.$reagent-bottle-content-dim;
+        }
+    }
+
+    &__warning-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+
+    &__shape {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        position: absolute;
+
+        &--rect {
+            position: relative;
+            border-radius: rounded.$drawer-rounded;
+            width: 128px;
+            height: 248px;
+        }
+
+        &--circle {
+            overflow: hidden;
+            width: 112px;
+            height: 112px;
+            @include rounded.rounded-full;
+        }
+
+        &--content {
+            border: 8px solid colors.$drawer-border;
+        }
+
+        &--empty {
+            border: 2px dashed colors.$reagent-bottle-content-bright;
+            background: transparent;
+        }
+
+        &--highlight {
+            animation: bottle-content-flash 0.3s infinite;
+        }
+
+        &--error {
+            border: 4px solid colors.$loader-error-border;
+            background: colors.$background-tertiary;
+        }
+    }
+}
+
+
+@keyframes bottle-content-flash {
+    0%, 50% {
+        border: 6px dashed colors.$highlighted-bottle-slot;
+    }
+
+    51%, 100% {
+        border: 2px dashed colors.$reagent-bottle-content-bright
+    }
+}

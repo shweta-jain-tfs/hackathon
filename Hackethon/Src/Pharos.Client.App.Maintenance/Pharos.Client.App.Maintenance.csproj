@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" />
+		<PackageReference Include="Microsoft.Extensions.Localization" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pharos.Client.Common.App\Pharos.Client.Common.App.csproj" />
+		<ProjectReference Include="..\Pharos.Client.Common.Models\Pharos.Client.Common.Models.csproj" />
+		<ProjectReference Include="..\Pharos.Client.Common.ViewModels\Pharos.Client.Common.ViewModels.csproj" />
+		<ProjectReference Include="..\Pharos.Common.Web\Pharos.Common.Web.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,147 @@
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-numberpad {
+    display: flex;
+    justify-content: center;
+    margin: 2rem auto 1rem;
+    max-width: 400px;
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: spacing.$gap-md;
+        width: 100%;
+    }
+
+    &__button {
+        // Position & Box model
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 70px;
+        padding: 1.5rem;
+        border: none;
+        border-radius: 8px;
+
+        // Other
+        background: #64748b;
+        color: white;
+        @include text.h3;
+        font-weight: 500;
+        cursor: pointer;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+        transition: background-color 0.2s ease, transform 0.1s ease;
+
+        &:hover {
+            background: #475569;
+            transform: translateY(-2px);
+        }
+
+        &:active {
+            background: #334155;
+            transform: translateY(0);
+        }
+
+        &:focus {
+            outline: 2px solid #0ea5e9;
+            outline-offset: 2px;
+        }
+
+        &:disabled {
+            background: #94a3b8;
+            color: #cbd5e1;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+
+            &:hover {
+                background: #94a3b8;
+                transform: none;
+            }
+        }
+
+        &--enter {
+            background: #0ea5e9;
+
+            &:hover {
+                background: #0284c7;
+            }
+
+            &:active {
+                background: #0369a1;
+            }
+
+            &:disabled {
+                background: #7dd3fc;
+                color: #e0f2fe;
+
+                &:hover {
+                    background: #7dd3fc;
+                }
+            }
+        }
+
+        &--backspace {
+            background: #64748b;
+
+            &:hover {
+                background: #475569;
+            }
+
+            &:disabled {
+                background: #94a3b8;
+
+                &:hover {
+                    background: #94a3b8;
+                }
+            }
+        }
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .ph-numberpad {
+        max-width: 100%;
+        padding: 0 1rem;
+
+        &__grid {
+            gap: 0.75rem;
+        }
+
+        &__button {
+            padding: 1.25rem;
+            @include text.body1;
+            min-height: 60px;
+        }
+    }
+}
+
+// Mobile-first touch optimization
+@media (hover: none) {
+    .ph-numberpad__button {
+        &:hover {
+            background: #64748b;
+            transform: none;
+        }
+
+        &:active {
+            background: #334155;
+            transform: scale(0.98);
+        }
+
+        &--enter {
+            &:hover {
+                background: #0ea5e9;
+            }
+
+            &:active {
+                background: #0369a1;
+                transform: scale(0.98);
+            }
+        }
+    }
+}

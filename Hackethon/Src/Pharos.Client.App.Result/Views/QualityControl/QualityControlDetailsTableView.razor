@@ -1,0 +1,23 @@
+﻿@using Pharos.Common.Web.Models.DataGrid
+<PhDataGrid TGridItem="QualityControlTestResult" StateID="qctestresults" Items="QcTestResults?.AsQueryable()" RowHeight="RowHeightEnum.Compact" RowType="RowTypeEnum.LinesBetweenRows"
+            DefaultSortColumn="@nameof(QualityControlTestResult.MeasurementDateTime)" DefaultSortDirection="SortDirection.Descending">
+    <Columns>
+        <Column Property="@(x => x.Judgment)">
+            <PhStatus Status="@GetStatusSymbol(context.Judgment)"></PhStatus>
+        </Column>
+
+        <Column Title="@Loc["QualityControlDetailsTablePage_Measured"]" Property="@(x => x.MeasurementDateTime)" Sortable="true">
+            <PhHrefLink OnClick="@(() => OpenDetailsView(context))">
+                <PhDateTime DateToShow="@(context.MeasurementDateTime)" />
+            </PhHrefLink>
+        </Column>
+        <Column Title="@Loc["QualityControlDetailsTablePage_Response"]" Property="@(x => x.MeanResponseAsText)" Align="ColumnAlignEnum.Right" />
+        <Column Title="@Loc["QualityControlDetailsTablePage_Concentration"]" Property="@(x => x.MeanConcentrationAsText)" Align="ColumnAlignEnum.Right">
+            @GetConcentrationText(context, context.MeanConcentrationAsText)
+        </Column>
+        <Column Title="@Loc["QualityControlDetailsTablePage_Expected"]" Property="@(x => x.ExpectedConcentration)">
+            @GetConcentrationText(context, context.ExpectedConcentration)
+        </Column>
+        <Column Title="@Loc["QualityControlDetailsTablePage_Comment"]" Property="@(x => x.Comment)" />
+    </Columns>
+</PhDataGrid>

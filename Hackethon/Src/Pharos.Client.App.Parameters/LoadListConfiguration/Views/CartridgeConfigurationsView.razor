@@ -1,0 +1,44 @@
+﻿@using Pharos.Client.Common.App.Views.ReagentShapeColor
+@using Pharos.Common.Web.Models.DataGrid
+@inherits LoadListTotalRefillLevelConfigurationView
+
+@if (!string.IsNullOrEmpty(SelectedInstrument))
+{
+    <PhDockedButtonRow>
+        <ChildContent>
+            <PhStack>
+
+                <TotalRefillLevelView RefillLevelInfo="@_refillLevelInfo"/>
+
+                <PhDataGrid @ref="DataGrid" ItemsProvider="@(request => ViewModel.ProvideGridItems(request, SelectedInstrument, LoadListItemType.Cartridge))" SelectionType="SelectionTypeEnum.MultiSelectWithSelectAll" TableTitle="@Loc["CartridgesConfigurationsView_Title"]"
+                            TGridItem="LoadListConfiguration" HeaderSize="HeaderSizeEnum.PartOfPage" RowType="RowTypeEnum.LinesBetweenRows" StateID=""
+                            DefaultSortDirection="SortDirection.Ascending" DefaultSortColumn="@nameof(LoadListConfiguration.FriendlyName)" OnSelectedItemsChanged="SelectedConfigurationsChanged">
+                    <Columns>
+                        <Column Title="@Loc["LoadListLevels_CartridgeMethod"]" Property="@(x => x.Texts)" Sortable="true">
+                            <PhHrefLink OnClick="@(() => OpenEditRefillLevelsModal(context))">
+                                <ReagentShapeColorView Colors="context.Colors" Methods="@context.Texts" Shape="context.Shape" />
+                            </PhHrefLink>
+                        </Column>
+                        <Column Title="@Loc["LoadListLevels_CartridgeName"]" Property="@(x => x.FriendlyName)" QuickFilter Sortable="true"/>
+                        <Column Title="@Loc["LoadListLevels_Type"]" Property="@(x => x.ArticleType)" Sortable="true">
+                            @context.ArticleType?.ToLocalizedString()
+                        </Column>
+                        <Column Title="@Loc["LoadListLevels_RefillLevel"]" Property="@(x => x.RefillLevel)" Align="ColumnAlignEnum.Left" Sortable="true">
+                            @context.RefillLevel @context.Unit.ToLocalizedString()
+                        </Column>
+                        <Column Title="@Loc["LoadListLevels_TriggerLevel"]" Property="@(x => x.TriggerLevel)" Align="ColumnAlignEnum.Left" Sortable="true">
+                            @context.TriggerLevel @context.Unit.ToLocalizedString()
+                        </Column>
+                    </Columns>
+                </PhDataGrid>
+
+            </PhStack>
+        </ChildContent>
+        <Buttons>
+            <PhButton Disabled="_selectedConfigurations is { Count: 0 }" Type="ButtonType.Secondary" OnClick="@(() => OpenEditRefillLevelsModal())">
+                @Loc["LoadListLevels_Edit"]
+            </PhButton>
+        </Buttons>
+
+    </PhDockedButtonRow>
+}

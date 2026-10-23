@@ -1,0 +1,140 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-assay-scheduler {
+    @include text.body2;
+
+    &__cell {
+        &--disabled {
+            cursor: default;
+            color: colors.$text-disabled;
+            pointer-events: none;
+        }
+    }
+
+    &__copy-day {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__copy-icon {
+        display: flex;
+        cursor: pointer;
+        color: colors.$icon-link;
+
+        &--disabled {
+            color: colors.$icon-disabled-02;
+            cursor: default;
+        }
+    }
+
+    &__copy-content {
+        margin-left: spacing.$padding-md;
+        margin-right: spacing.$padding-md;
+        font-weight: normal;
+    }
+
+    &__copy-content-day {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+    }
+
+    &__dot-help-row {
+        margin-top: spacing.$padding-xs;
+    }
+
+    &__dot-icon {
+        --ph-icon-size: 8px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    &__dot-icon-text {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        white-space: pre;
+    }
+
+    &__dot-icon-text-help {
+        gap: spacing.$gap-xs;
+    }
+
+    &__instrument-name {
+        font-weight: bold;
+    }
+
+    &__method-info {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 2px;
+        @include text.helper-text;
+    }
+
+    &__plus-link {
+        display: inline-flex;
+        padding: spacing.$padding-xs;
+        position: relative;
+        top: -3px;
+        z-index: 1;
+        @include text.h2;
+    }
+
+    &__table {
+        min-width: max-content;
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+
+        th {
+            width: 100%;
+            height: size.$hit-area-lg;
+            text-align: left;
+            padding-left: spacing.$padding-md;
+            padding-right: spacing.$padding-md;
+            position: sticky;
+            background-color: colors.$layer-primary;
+            z-index: 10;
+        }
+
+        td {
+            width: 100%;
+            height: 140px;
+            text-align: left;
+            align-content: center;
+            padding-left: spacing.$padding-md;
+            padding-right: spacing.$padding-md;
+            padding-top: spacing.$padding-xs;
+            padding-bottom: spacing.$padding-xs;
+        }
+
+        thead tr {
+            position: sticky;
+            top: 0;
+            z-index: 11;
+            // Add a border line under the header row
+            &::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 1px;
+                background: colors.$border-heavy-01;
+                z-index: 12;
+            }
+        }
+
+        tr:nth-child(even) {
+            background-color: colors.$background-secondary;
+        }
+    }
+
+    &__time-range-group {
+        white-space: nowrap;
+    }
+}

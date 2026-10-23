@@ -1,0 +1,19 @@
+@use "../abstracts/spacing";
+
+.ph-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    grid-auto-rows: minmax(0, auto);
+    gap: spacing.$gap-gutter;
+
+    &--fill-height {
+        height: 100%;
+    }
+
+    // Use .col-* utility classes for the columns inside the grid.
+
+    &--shrink-wrap {
+        // minimal row height. Aligned to the top.
+        grid-auto-rows: minmax(0, min-content);
+    }
+}

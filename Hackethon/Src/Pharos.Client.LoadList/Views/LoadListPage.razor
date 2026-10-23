@@ -1,0 +1,54 @@
+@using Microsoft.AspNetCore.Authorization
+@using Pharos.Client.Common.App.PageRouting
+@using Pharos.Common.Web.Components.AlignedTables
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Client.App.LoadList.Views.LoadListGrid
+@using Pharos.Client.App.LoadList.Views.LoadListHeaderView
+@using Pharos.Client.Common.Models
+@using Pharos.Common.Web.Components.TrailingEdge
+@using Pharos.Common.Web.Models.DataGrid
+
+@attribute [Route(PageRoute.LoadList)]
+@attribute [Authorize]
+
+<PhPage>
+    <ChildContent>
+        <PhStack Gap="StackGap.Lg">
+            <LoadListHeaderView OnFiltersChanged="ApplyFilters" ReagentLoadersCount="@_reagentLoaders" StatusLookup="@GetStatus" />
+            
+            <PhScroll>
+                <PhTrailingEdge Mode="TrailingEdgeDisplayMode.VerticalOnly">
+                    <div>
+                        <PhAlignedTables Columns="@ColumnCount.Six">
+                            @if (BottleRows is { Count: > 0 })
+                            {
+                                <LoadListGrid Title="@Loc["LoadListPage_Bottles"]" T="LoadListBottle" Rows="BottleRows" Columns="BottleColumns"
+                                              DefaultSortByAscending="SortDirection.Ascending" DefaultSortColumn="@nameof(LoadListItemBase.MinutesLeft)"/>
+                            }
+                            @if (CartridgeRows is { Count: > 0 })
+                            {
+                                <LoadListGrid Title="@Loc["LoadListPage_Cartridges"]" T="LoadListCartridge" Rows="CartridgeRows" Columns="CartridgeColumns"
+                                              DefaultSortByAscending="SortDirection.Ascending" DefaultSortColumn="@nameof(LoadListItemBase.MinutesLeft)"/>
+                            }
+                            @if (CarrierRows is { Count: > 0 })
+                            {
+                                <LoadListGrid Title="@Loc["LoadListPage_Carriers"]" T="LoadListCarrier" Rows="CarrierRows" Columns="CarriersColumns"
+                                              DefaultSortByAscending="SortDirection.Ascending" DefaultSortColumn="@nameof(LoadListItemBase.MinutesLeft)"/>
+                            }
+                            @if (DilutionPlateRows is { Count: > 0 })
+                            {
+                                <LoadListGrid Title="@Loc["LoadListPage_DilutionPlates"]" T="LoadListDilutionPlate" Rows="DilutionPlateRows"
+                                              Columns="DilutionPlateColumns" DefaultSortByAscending="SortDirection.Ascending" DefaultSortColumn="@nameof(LoadListItemBase.MinutesLeft)"/>
+                            }
+                            @if (SampleTubeRows is { Count: > 0 })
+                            {
+                                <LoadListGrid Title="@Loc["LoadListPage_SampleTubes"]" T="LoadListSampleTube" Rows="SampleTubeRows" Columns="SampleTubeColumns"
+                                              DefaultSortByAscending="SortDirection.Ascending" DefaultSortColumn="@nameof(LoadListItemBase.MinutesLeft)"/>
+                            }
+                        </PhAlignedTables>
+                    </div>
+                </PhTrailingEdge>
+            </PhScroll>
+        </PhStack>
+    </ChildContent>
+</PhPage>

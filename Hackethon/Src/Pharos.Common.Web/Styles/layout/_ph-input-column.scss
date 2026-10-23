@@ -1,0 +1,15 @@
+@use "../abstracts/spacing";
+
+.ph-input-column {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$gap-lg;
+
+    &--compact {
+        gap: spacing.$gap-md;
+    }
+
+    &--loose {
+        gap: spacing.$gap-xl;
+    }
+}

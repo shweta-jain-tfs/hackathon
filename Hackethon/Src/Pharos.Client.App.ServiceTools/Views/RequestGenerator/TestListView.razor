@@ -1,0 +1,39 @@
+@using Pharos.Client.App.ServiceTools.Services
+@using Pharos.Client.App.ServiceTools.ViewModels.RequestGenerator
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Links
+
+<div class="flex flex-col">
+    <div class="ph-request-generator__data-grid">
+        <PhDataGrid @ref="_testGrid"
+                    TGridItem="RequestGeneratorTest"
+                    StateID="request-generator-tests"
+                    Items="@TestsViewModel.Tests.AsQueryable()"
+                    SelectionType="SelectionTypeEnum.MultiSelect"
+                    OnSelectedItemsChanged="@TestsViewModel.UpdateSelectedTests"
+                    RowType="RowTypeEnum.LinesBetweenRows">
+            <Columns>
+                <Column Title="@Loc["RequestGenerator_Method"]" Property="@(x => x.MethodName)">
+                    <div class="flex gap-sm">
+                        <PhSwitchButton Value="context.IsActive"
+                                        ValueChanged="@((bool val) => TestsViewModel.SetTestActive(context, val))" />
+                        <PhHrefLink OnClick="@(() => EditTestViewOpen(context))">@context.MethodName</PhHrefLink>
+                    </div>
+                </Column>
+                <Column Title="@Loc["RequestGenerator_Test"]" Property="@(x => x.TestName)" />
+                <Column Title="@Loc["RequestGenerator_Repl"]" Property="@(x => x.Replicates)" />
+                <Column Title="@Loc["RequestGenerator_InstDil"]" Property="@(x => x.InstrumentDilutionFactor)" />
+            </Columns>
+        </PhDataGrid>
+
+        <div class="ph-request-generator__actions">
+            <PhButton Type="ButtonType.Primary" OnClick="TestsViewModel.AddTestAsync">
+                @Loc["RequestGenerator_AddTest"]
+            </PhButton>
+            <PhButton OnClick="DeleteSelectedTests"
+                      Disabled="@(!TestsViewModel.HasSelection)">
+                @Loc["RequestGenerator_DeleteTest"]
+            </PhButton>
+        </div>
+    </div>
+</div>

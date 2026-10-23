@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pharos.Server.Application.Abstractions\Pharos.Server.Application.Abstractions.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Application.Modules\Pharos.Server.Application.Modules.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Application.Settings\Pharos.Server.Application.Settings.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Identity\Pharos.Server.Identity.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Infrastructure.Abstractions\Pharos.Server.Infrastructure.Abstractions.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Infrastructure.Hubs\Pharos.Server.Infrastructure.Hubs.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Localization\Pharos.Server.Localization.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="$(AssemblyName).Tests" />
+		<InternalsVisibleTo Include="Pharos.Server.Integration.Tests" />
+		<InternalsVisibleTo Include="Pharos.Server.Integration.Tests.Common" />
+		<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+	</ItemGroup>
+
+</Project>

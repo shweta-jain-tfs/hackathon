@@ -1,0 +1,28 @@
+@using Pharos.Common.Web.Components.FormElements.Enums
+@inherits Pharos.Common.Web.Components.Base.ComponentWithClientScriptBase
+
+<PhPanel>
+    <div class="flex flex-col gap-md">
+        <h3 class="t-h3">@Loc["ServiceToolsPage_CollectLogFiles_Header"]</h3>
+
+        <div class="flex items-start gap-sm">
+            <div class="flex flex-col" style="width: var(--ph-button-size-max, 379px);">
+                <PhButton Disabled="@(!IsAuthorized || ViewModel.CollectionStarted)" OnClick="OpenCollectLogFilesAsync">
+                    @Loc["ServiceToolsPage_CollectLogFiles_Button"]
+                </PhButton>
+            </div>
+
+            @if (ViewModel.CanDownload)
+            {
+                <div class="flex flex-col gap-xs" style="width: var(--ph-button-size-max, 379px);">
+                    <PhButton Type="ButtonType.Secondary" OnClick="DownloadAsync">
+                        @Loc["ServiceToolsPage_CollectLogFiles_Download"]
+                    </PhButton>
+                    <div class="t-body2">
+                        @string.Format(Loc["ServiceToolsPage_CollectLogFiles_CollectedAt"], ViewModel.FileCreatedDate)
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</PhPanel>

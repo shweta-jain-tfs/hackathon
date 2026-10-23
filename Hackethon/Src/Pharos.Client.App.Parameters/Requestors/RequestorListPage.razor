@@ -1,0 +1,47 @@
+@using Pharos.Client.App.Parameters.Layout
+@using Pharos.Client.Common.App.Constants
+@using Pharos.Common.Web.Components.DataGrid.Filters.Constraints
+@using Pharos.Common.Web.Models.DataGrid
+@using Pharos.Contracts.Security
+@layout ParametersLayout
+@attribute [Route(PageRoute.Parameters.Requestors)]
+@attribute [Authorize(Permissions.ViewPersonalAndHealthData)]
+
+<SectionContent SectionName="page-header">
+    <Breadcrumb Items="@Breadcrumbs"/>
+</SectionContent>
+
+<PhDockedButtonRow>
+    <ChildContent>
+        <PhDataGrid TableTitle="@Loc["RequestorListPage_Title"]"
+                    StateID="requestors"
+                    TGridItem="RequestorSummary"
+                    DefaultSortColumn="RequestorId"
+                    DefaultSortDirection="SortDirection.Ascending"
+                    ItemsProvider="ViewModel.ProvideGridItems"
+                    SelectionType="SelectionTypeEnum.MultiSelectWithSelectAll"
+                    OnSelectedItemsChanged="SelectedItemsChanged"
+                    @ref="_dataGrid">
+
+            <Columns>
+                <Column Title="@Loc["RequestorListPage_RequestorId"]" Property="@(x => x.RequestorId)" QuickFilter="true" FilterConstraints="@(new StringFilterConstraints(32))">
+                    <PhHrefLink Href="@($"{PageRoute.Parameters.RequestorDetails.Default}/{context?.Id}")">@context?.RequestorId</PhHrefLink>
+                </Column>
+                <Column Title="@Loc["RequestorListPage_Name"]" Property="@(x => x.Name)" QuickFilter="true" FilterConstraints="@(new StringFilterConstraints(75))"/>
+                <Column Title="@Loc["RequestorListPage_ReflexEnabled"]" Property="@(x => x.ReflexEnabled)" Visible="ShowReflexColumn">
+                    @(context.ReflexEnabled ? Loc["RequestorListPage_Yes"] : Loc["RequestorListPage_No"])
+                </Column>
+                <Column Title="@Loc["RequestorListPage_LatestSampleDate"]" Property="@(x => x.LatestSampleDate)" Format="@FormatStrings.ShortDate" />
+                <Column Title="@Loc["RequestorListPage_ReportedRequests"]" Property="@(x => x.NumberOfReportedSamples)" />
+                <Column Title="@Loc["RequestorListPage_ReportedTests"]" Property="@(x => x.NumberOfReportedTests)" />
+                <Column Title="@Loc["RequestorListPage_ResetDate"]" Property="@(x => x.CounterResetDate)" Format="@FormatStrings.ShortDate" />
+            </Columns>
+
+        </PhDataGrid>
+    </ChildContent>
+
+    <Buttons>
+        <PhButton Type="ButtonType.Secondary" OnClick="AddRequestor">@Loc["RequestorListPage_AddNewRequestor"]</PhButton>
+        <PhButton Type="ButtonType.Secondary" Disabled="!HasSelectedItems" OnClick="DeleteRequestorsOrOpenDialog">@Loc["RequestorListPage_DeleteRequestors"]</PhButton>
+    </Buttons>
+</PhDockedButtonRow>

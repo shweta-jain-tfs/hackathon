@@ -1,0 +1,38 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Models.DataGrid
+<PhModalContent SelectedText="@Loc["SelectCurveModalView_Selected"]">
+    <Body>
+    @if (AvailableCurves.Count > 0)
+    {
+        @Loc["SelectCurveModalView_Text"]
+
+        <PhDataGrid DefaultSortDirection="SortDirection.Descending" DefaultSortColumn=@nameof(AvailableCurve.MeasurementDateTime) SelectionType="SelectionTypeEnum.SingleSelect" TGridItem="AvailableCurve" Items="AvailableCurves.AsQueryable()"
+                    StateID="" OnSelectedItemChanged="SelectedCurveChanged" RowType="RowTypeEnum.LinesBetweenRows">
+            <Columns>
+                <Column Title=@Loc["SelectCurveModalView_Measured"] Property="@(x => x.MeasurementDateTime)" Sortable="true">
+                    <PhDateTime DateToShow="context.MeasurementDateTime"/>
+                </Column>
+                <Column Title=@Loc["SelectCurveModalView_Judgment"] Property="@(x => x.Judgment)">
+                        @context.Judgment.ToLocalizedString("SelectCurveModalView")
+                </Column>
+                <Column Title=@Loc["SelectCurveModalView_ConjugateLot"] Property="@(x => x.ConjugateLotNr)"/>
+            </Columns>
+        </PhDataGrid>
+    }
+    else
+    {
+        @Loc["SelectCurveModalView_NoCurves"]
+    }
+    </Body>
+    <Footer>
+        @if (AvailableCurves.Count > 0)
+        {
+            <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))"> @Loc["SelectCurveModalView_Cancel"] </PhButton>
+            <PhButton OnClick="@(() => CloseModal(ModalResult.Ok(_selectedId)))" Type="ButtonType.Primary" Disabled="_selectedId == null"> @Loc["SelectCurveModalView_SelectCurve"] </PhButton>
+        }
+        else
+        {
+            <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Cancel()))"> @Loc["SelectCurveModalView_Close"] </PhButton>
+        }
+    </Footer>
+</PhModalContent>

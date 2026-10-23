@@ -1,0 +1,19 @@
+﻿@using Pharos.Client.Common.Localization
+@using Pharos.Contracts.Security
+
+<PhModalContent>
+    <Body>
+        <PhInputColumn Spacing="InputSpacing.Default">
+            <PhTextBox Label="@Loc["LaboratoryName_AddDialog_TestName"]" @bind-Value="_newLabName.TestName"
+                       LabelHelpText="@HelpText"
+                       PlaceHolder="@Loc["LaboratoryName_AddDialog_TestName"]"
+                       Size="TextBoxSize.Medium"
+                       MaxLength="LaboratoryTest.MaximumNameLength"
+                       Error="@(!string.IsNullOrEmpty(HelpText))" />
+        </PhInputColumn>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["LaboratoryName_AddDialog_ButtonSecondary"]</PhButton>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok(_newLabName)))" Disabled="@(IsLaboratoryNameInvalid())">@Loc["LaboratoryName_AddDialog_ButtonPrimary"]</PhButton>
+    </Footer>
+</PhModalContent>

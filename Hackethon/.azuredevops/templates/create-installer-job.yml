@@ -1,0 +1,104 @@
+parameters:
+- name: jobName
+  type: string
+- name: dependsOn
+  type: string
+  default: 'Build'
+- name: installerFlavor
+  type: string
+  values:
+  - Production
+  - TestEnvironment
+- name: publishPath
+  type: string
+- name: installerOutputDirectory
+  type: string
+- name: artifactName
+  type: string
+- name: parameterUpdatePackageVersion
+  type: string
+- name: fileNamePrefix
+  type: string
+  default: 'Pharos_'
+- name: preBuildSteps
+  type: stepList
+  default: []
+
+jobs:
+- job: ${{ parameters.jobName }}
+  dependsOn: ${{ parameters.dependsOn }}
+  variables:
+    installerOutputDirectory: ${{ parameters.installerOutputDirectory }}
+  steps:
+  - template: .azuredevops/templates/build-dot-net-prerequisite-step.yml@sharedPipeline
+    parameters:
+      nugetConfigPath: '$(Build.SourcesDirectory)\nuget.config'
+      nugetRestoreProjects: '$(Build.SourcesDirectory)\Pharos.sln'
+      sdkVersion: '$(dotNetVersion)'
+      toolsDirectory: '$(Agent.ToolsDirectory)'
+
+  # Cleanup / download / staging steps, unique per installer flavor
+  - ${{ parameters.preBuildSteps }}
+
+  # Run PowerShell script which makes the installer an upgrade
+  - task: PowerShell@2
+    displayName: 'Modify Package.wxs for Major Upgrade'
+    inputs:
+      targetType: 'filePath'
+      filePath: '$(Build.SourcesDirectory)\Installer\PipelineScripts\SetProductVersion.ps1'
+      arguments: '-newVersion $(branchSpecificVersion).$(Build.BuildId)'
+
+  - task: DownloadSecureFile@1
+    displayName: 'Fetch ParameterUpdatePackage ZIP'
+    name: parameterUpdatePackage
+    inputs:
+      secureFile: 'ParameterUpdatePackage-${{ parameters.parameterUpdatePackageVersion }}.zip'
+
+  - task: PowerShell@2
+    displayName: 'Copy ParameterUpdatePackage to drop folder'
+    inputs:
+      targetType: inline
+      script: |
+        $destDir = "$(Build.SourcesDirectory)\ParameterUpdatePackage"
+        New-Item -ItemType Directory -Force -Path $destDir
+        Copy-Item "$(parameterUpdatePackage.secureFilePath)" -Destination $destDir
+        Write-Host "Copied $(parameterUpdatePackage.secureFilePath) to $destDir"
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build Installer'
+    inputs:
+      command: 'build'
+      projects: '$(Build.SourcesDirectory)\Installer\PharosInstaller.sln'
+      arguments: '-c $(buildConfiguration) -p:Platform=x64 -p:PharosInstallerFlavor=${{ parameters.installerFlavor }} -p:PharosPublishPath=${{ parameters.publishPath }}'
+      publishWebProjects: false
+    continueOnError: false
+
+  # Rename the installer files to include the version number
+  - task: PowerShell@2
+    displayName: 'Add Pharos version to installer file names'
+    inputs:
+      targetType: 'filePath'
+      filePath: '$(Build.SourcesDirectory)\Installer\PipelineScripts\VersionedRename.ps1'
+      arguments: '-installerDir $(installerOutputDirectory) -pharosVersion $(branchSpecificVersion).$(Build.BuildId) -fileNamePrefix ${{ parameters.fileNamePrefix }}'
+
+  - task: PowerShell@2
+    displayName: 'Verify installer version'
+    inputs:
+      targetType: 'filePath'
+      filePath: '$(Build.SourcesDirectory)\Installer\PipelineScripts\AssertMsiProductVersion.ps1'
+      arguments: '-installerDir $(installerOutputDirectory) -expectedVersion $(branchSpecificVersion).$(Build.BuildId)'
+
+  # Remove PDB files from the installer output directory
+  - task: PowerShell@2
+    displayName: 'Remove WiX PDB files before publish'
+    inputs:
+      targetType: 'inline'
+      script: |
+        $dir = "$(installerOutputDirectory)\en-US\"
+        Get-ChildItem -Path $dir -Filter *.wixpdb -File -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Installer Artifact'
+    inputs:
+      pathToPublish: '$(installerOutputDirectory)\en-US\'
+      artifactName: ${{ parameters.artifactName }}

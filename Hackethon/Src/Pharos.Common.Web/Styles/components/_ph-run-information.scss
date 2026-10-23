@@ -1,0 +1,18 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-run-information {
+    --run-information-secondary-color: #{colors.$text-hint};
+    align-self: center;
+    @include text.body1;
+
+    &__status-row-2 {
+        @include text.helper-text;
+        color: var(--run-information-secondary-color)
+    }
+
+    &--uniform-text-color {
+        --run-information-secondary-color: inherit;
+    }
+}

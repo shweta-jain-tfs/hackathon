@@ -1,0 +1,208 @@
+[
+  {
+    "key": "Cleaning",
+    "title": "Cleaning",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "Overview",
+        "title": null,
+        "content": "<p>Run or schedule.</p>"
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "Remove bottle",
+        "title": "Step 1: Remove the maintenance solution bottle",
+        "content": "<p>Detach and remove the maintenance solution bottle from the bottled reagent drawer. After disconnecting the two tubes the bottle can be lifted out.</p>"
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "Clean the bottle",
+        "title": "Step 2: Clean the bottle",
+        "content": "<p>Remove the tube connector lid and make sure that tubes and the bottle are clean. If not, wash in warm water until solid residue has dissolved.</p>"
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "Add maintenance solution",
+        "title": "Step 3: Add maintenance solution",
+        "content": "<p>Pour the content from three 200 ml Phadia maintenance solution bottles, total 600 ml, into the maintenance solution bottle.</p>"
+      },
+      {
+        "key": "4",
+        "NavigationTitle": "Restore bottle",
+        "title": "Step 4: Restore bottle",
+        "content": "<p>Put the tubing lid on the maintenance solution bottle.</p><p>Place the bottle back in its position in the bottle drawer.</p><p>Attach the two tubing connectors to the bottle. The connectors are keyed and only fit one way. Follow the color markings.</p>"
+      },
+      {
+        "key": "5",
+        "NavigationTitle": "Start procedure",
+        "title": "Step 5: Start procedure",
+        "content": "<p>When the maintenance solution bottle is filled with Phadia maintenance solution, you can start the maintenance procedure by pressing the start button.</p><p>The procedure takes about 20 minutes. When finished, the instrument will automatically enter standby mode, and the green light on the signal tower will go out.</p>"
+      }
+    ]
+  },
+  {
+    "key": "ManualCleaning",
+    "title": "Manual Cleaning",
+    "steps": [
+      {
+        "key": "0",        
+        "NavigationTitle": "Finish",
+        "title": "Finish",
+        "content": "This is the confirmation step of Manual Cleaning"
+      }
+    ]
+  },
+  {
+    "key": "ExtendedRinse",
+    "title": "Extended Rinse",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "Overview",
+        "title": "",
+        "content": "Extended rinse"
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "One",
+        "title": "Step 1: Some text goes here",
+        "content": ""
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "Two",
+        "title": "Step 2: Another text",
+        "content": ""
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "Start procedure",
+        "title": "Step 3: Start procedure",
+        "content": ""
+      }
+    ]
+  },
+  {
+    "key": "PipetteCleaning",
+    "title": "Pipette Cleaning",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "Overview",
+        "title": "Overview",
+        "content": "Pipette Cleaning overview"
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "Step 1",
+        "title": "Step 1: Prepare the pipette",
+        "content": "Ensure the pipette is disconnected and ready for cleaning."
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "Step 2",
+        "title": "Step 2: Wipe the pipette",
+        "content": "Wipe the pipette with paper towel."
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "Confirm",
+        "title": "Confirm",
+        "content": "This is the confirmation step of Pipette Cleaning"
+      }
+    ]
+  },
+  {
+    "key": "CleanRinseContainer",
+    "title": "Clean Rinse Container",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "Overview",
+        "title": "Overview",
+        "content": "Clean rinse container overview"
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "Step 1",
+        "title": "Step 1: Open drawer",
+        "content": "Open the drawer for the rinse containers"
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "Step 2",
+        "title": "Step 2: Wipe drawer",
+        "content": "Wipe with paper towel."
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "Confirm",
+        "title": "Confirm",
+        "content": "This is the confirmation step of Clean rinse container"
+      }
+    ]
+  },
+  {
+    "key": "CleanSolidWasteBins",
+    "title": "Clean Solid Waste Bins",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "Overview",
+        "title": "Overview",
+        "content": "Clean Solid Waste Bins overview"
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "Step 1",
+        "title": "Step 1: Open drawer",
+        "content": "Open the drawer for the Solid Waste Bins"
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "Step 2",
+        "title": "Step 2: Wipe drawer",
+        "content": "Wipe with paper towel."
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "Confirm",
+        "title": "Confirm",
+        "content": "This is the confirmation step of Clean Solid Waste Bins"
+      }
+    ]
+  },
+  {
+    "key": "CleanWashStations",
+    "title": "Clean Wash Stations"
+  },
+  {
+    "key": "CleanTransferUnitTips",
+    "title": "Clean Transfer Unit Tips"
+  },
+  {
+    "key": "CleanEjectUnitTips",
+    "title": "Clean Eject Unit Tips"
+  },
+  {
+    "key": "InspectDispenseUnit",
+    "title": "Inspect Dispense Unit"
+  },
+  {
+    "key": "InspectCapWellRemovers",
+    "title": "Inspect Cap Well Removers"
+  },
+  {
+    "key": "CleanWasteChute",
+    "title": "Clean Waste Chute"
+  },
+  {
+    "key": "CleanLiquidWasteContainer",
+    "title": "Clean Liquid Waste Container"
+  },
+  {
+    "key": "Rinse",
+    "title": "Rinse"
+  }
+]

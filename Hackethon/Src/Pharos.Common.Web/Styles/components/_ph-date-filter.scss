@@ -1,0 +1,11 @@
+@use "../abstracts/spacing";
+
+.ph-date-filter {
+    &__range {
+        display: grid;
+        grid-template-columns: max-content 1fr;
+        column-gap: spacing.$gap-xs;
+        row-gap: spacing.$gap-md;
+        align-items: center;        
+    }
+}

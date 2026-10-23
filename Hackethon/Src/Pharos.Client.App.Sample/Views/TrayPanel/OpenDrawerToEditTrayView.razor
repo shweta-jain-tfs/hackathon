@@ -1,0 +1,12 @@
+﻿@using Pharos.Client.Common.Localization
+
+<PhModalContent>
+    <Body>
+        <div class="ph-tray-detail__dialog-content">
+            @Loc["TrayPanel_OpenDrawerToEditTrayDialog_Body"]
+        </div>
+    </Body>
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["TrayPanel_OpenDrawerToEditTrayDialog_ButtonSecondary"]</PhButton>
+    </Footer>
+</PhModalContent>

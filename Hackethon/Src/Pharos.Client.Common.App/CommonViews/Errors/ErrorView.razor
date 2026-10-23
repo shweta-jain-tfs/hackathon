@@ -1,0 +1,39 @@
+﻿<PhModalContent>
+    <Body>
+        @ErrorMessage
+        <PhCheckBox Label="Suppress Errors" @bind-Value="_suppressErrors"></PhCheckBox>
+    </Body>
+    <Footer>
+
+        <PhButton OnClick="@(() => Close(ModalResult.Cancel()))">Close</PhButton>
+        <PhButton OnClick="@(() => Reload(ModalResult.Ok(_suppressErrors)))">Reload</PhButton>
+    </Footer>
+</PhModalContent>
+
+@code
+{
+    [CascadingParameter] private ModalInstance Modal { get; set; } = default!;
+
+    /// <summary>
+    /// Gets or sets the error message to be displayed.
+    /// </summary>
+    [Parameter] public string? ErrorMessage { get; set; }
+
+    private bool _suppressErrors;
+
+    /// <summary>
+    /// Invokes the OnClose callback when the close button is clicked.
+    /// </summary>
+    private async Task Close(ModalResult result)
+    {
+        await Modal.CloseAsync(result);
+    }
+
+    /// <summary>
+    /// Invokes the OnReload callback with the current suppress errors state when the reload button is clicked.
+    /// </summary>
+    private async Task Reload(ModalResult result)
+    {
+        await Modal.CloseAsync(result);
+    }
+}

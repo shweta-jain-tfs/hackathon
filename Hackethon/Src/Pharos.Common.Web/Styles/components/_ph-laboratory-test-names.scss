@@ -1,0 +1,46 @@
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/colors";
+@use "../abstracts/typography" as text;
+
+.ph-laboratory-test-names {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    &__header {
+        color: colors.$icon-secondary;
+        @include text.helper-text;
+    }
+
+    .ph-datagrid__container {
+        max-height: 585px;
+    }
+
+    &__error-message,
+    &__error-icon {
+        display: inline-flex;
+        gap: spacing.$gap-xs;
+        color: colors.$status-validation;
+    }
+
+    &__editor {
+        display: block;
+        width: size.$input-width-xsmall;
+        max-width: 100%;
+
+        .ph-textbox {
+            width: 100%;
+            min-width: 0;
+
+            input {
+                min-height: var(--ph-datagrid-available-cell-height);
+            }
+        }
+    }
+
+    &__draft-row {
+        padding-inline-start: calc(size.$hit-area-lg + var(--ph-datagrid-cell-padding, #{spacing.$padding-sm}));
+        padding-block-start: spacing.$gap-xs;
+    }
+}

@@ -1,0 +1,93 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/TextArea")]
+
+<Stories TComponent="PhTextArea">
+    <Story Name="TextArea">
+        <Template>
+            <PhTextArea @attributes="context.Args" @bind-Value="@TextValue" />
+        </Template>
+    </Story>
+    
+    <Story Name="Sizes">
+        <Template>
+            <PhStack>
+                @foreach (TextAreaSize size in Enum.GetValues(typeof(TextAreaSize)))
+                {
+                    <PhTextArea @attributes="context.Args" Size="size" Label="@size.ToString()" @bind-Value="@TextValue" />
+                }
+            </PhStack>
+        </Template>
+    </Story>
+
+    <Story Name="Validation">
+        <Template>
+            <EditForm Model="@ViewModel" Context="form" @ref="_form">
+                <PhStack>
+                    <MockValidator @ref="_validator" Type="MockValidatorType.MinLength" />
+                    <ValidationSummary />
+                    
+                    <PhTextArea @attributes="context.Args"
+                                @bind-Value="@ViewModel.Biography"
+                                Label="Biography"
+                                HelpText="Tell us about yourself (min. 8 chars)"
+                                PlaceHolder="Write your biography here..." />
+                </PhStack>
+            </EditForm>
+            
+            <div class="flex mt-sm">
+                <PhButton OnClick="ToggleValidation">@(_isValidated ? "Clear Validation" : "Validate Form")</PhButton>
+            </div>
+        </Template>
+    </Story>
+    
+    <Story Name="Help Text and Error States">
+        <Template>
+            <PhTextArea @attributes="context.Args"
+                       Label="Notes - Error State Example"
+                       HelpText="Additional notes and information"
+                       Error="_showCustomError"
+                       ErrorText="Custom error: Please review your notes"
+                       PlaceHolder="Enter your notes..."
+                       @bind-Value="@NotesValue" />
+
+            <div class="flex mt-sm">
+                <PhButton OnClick="() => _showCustomError = !_showCustomError">
+                    @(_showCustomError ? "Clear Error State" : "Show Error State")
+                </PhButton>
+            </div>
+        </Template>
+    </Story>
+</Stories>
+
+
+@code {
+    private string TextValue { get; set; } = "Text Value";
+    private string NotesValue { get; set; } = "Some initial notes...";
+    private bool _showCustomError = false;
+    private bool _isValidated = false;
+    private Model ViewModel { get; set; } = new Model();
+    private EditForm? _form;
+    private MockValidator? _validator;
+
+    public class Model
+    {
+        public string? Biography { get; set; } = "";
+    }
+
+    private void ToggleValidation()
+    {
+        if (_isValidated)
+        {
+            _validator?.ClearErrors();
+            _isValidated = false;
+        }
+        else
+        {
+            _form?.EditContext?.Validate();
+            _isValidated = true;
+        }
+    }
+}

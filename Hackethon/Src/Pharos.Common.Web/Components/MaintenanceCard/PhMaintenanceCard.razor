@@ -1,0 +1,38 @@
+﻿@using Pharos.Common.Web.Components.Status
+<div class="ph-maintenance-card">
+    <div class="ph-maintenance-card__top">
+        @if (!string.IsNullOrWhiteSpace(ImageUrl))
+        {
+            <img alt="" src="@ImageUrl" />
+        }
+    </div>
+    <div class="ph-maintenance-card__bottom">
+        <button class="ph-maintenance-card__title ph-link" @onclick="OnClick">@Name</button>
+        <p>@Description</p>
+        @if (!string.IsNullOrEmpty(Duration))
+        {
+            <p>@DurationLabel @Duration</p>
+        }
+        @if (Status != MaintenanceCardStatus.None || !string.IsNullOrWhiteSpace(StatusText))
+        {
+            <PhStatus Text="@StatusText" Status="@StatusIcon" />
+        }
+        <div class="ph-maintenance-card__footer">
+            @if (LastCompleted != null || Next != null)
+            {
+                <div class="ph-maintenance-card__date">
+                    <div class="ph-maintenance-card__label">
+                        @LastCompletedLabel
+                    </div>
+                    @LastCompletedDate <span class="ph-maintenance-card__time">@LastCompletedTime</span>
+                </div>
+                <div class="ph-maintenance-card__date">
+                    <div class="ph-maintenance-card__label">
+                        @NextLabel
+                    </div>
+                    @NextDate <span class="ph-maintenance-card__time">@NextTime</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>

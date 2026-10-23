@@ -1,0 +1,18 @@
+﻿@using Pharos.Client.Common.Localization
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Contracts.Security
+
+<PhModalContent>
+    <Body>
+        <PhInputColumn Spacing="InputSpacing.Loose">
+            <PhLabel Direction="LabelDirection.Horizontal" Size="LabelSize.Body1" Text="@Loc["MethodQualityControlDetails_DeleteDialog_Lots"]">
+                <PhValueBox Size="TextBoxSize.Medium"> @LotNumbers </PhValueBox>
+            </PhLabel>
+            <p>@Loc["MethodQualityControlDetails_DeleteDialog_DeleteInformation"]</p>
+        </PhInputColumn>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["MethodQualityControlDetails_DeleteDialog_ButtonSecondary"]</PhButton>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok(true)))">@Loc["MethodQualityControlDetails_DeleteDialog_ButtonPrimary"]</PhButton>
+    </Footer>
+</PhModalContent>

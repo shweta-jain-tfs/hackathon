@@ -1,0 +1,96 @@
+﻿@using Pharos.Common.Web.Components.DetailsList
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Layout
+@attribute [Stories("Components/DetailsList")]
+
+<Stories TComponent="PhDetailsList">
+    <Story Name="Details list">
+        <Template>
+            <PhDetailsList @attributes="context.Args">
+                <PhDetailsListItem Label="Short">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+                </PhDetailsListItem>
+                <PhDetailsListItem Label="Longer label">
+                    Lorem ipsum dolor sit amet.
+                </PhDetailsListItem>
+                <PhDetailsListItem Label="Label 3">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
+                </PhDetailsListItem>
+            </PhDetailsList>
+        </Template>
+    </Story>
+    <Story Name="Unaligned">
+        <Arguments>
+            <Arg For="_ => _.AlignedValues" Value="false" />
+        </Arguments>
+        <Template>
+            <PhDetailsList @attributes="context.Args">
+                <PhDetailsListItem Label="Method">
+                    El-C
+                </PhDetailsListItem>
+                <PhDetailsListItem Label="Calibration validity">
+                    No valid curve available
+                </PhDetailsListItem>
+            </PhDetailsList>
+        </Template>
+    </Story>
+    <Story Name="Highlighted">
+        <Arguments>
+            <Arg For="_ => _.HighlightedValues" Value="true" />
+        </Arguments>
+        <Template>
+            <PhDetailsList @attributes="context.Args">
+                <PhDetailsListItem Label="Sample ID">
+                    0112335439
+                </PhDetailsListItem>
+                <PhDetailsListItem Label="Test name">
+                    Mrf
+                </PhDetailsListItem>
+                <PhDetailsListItem Label="Status">
+                    Aborted
+                </PhDetailsListItem>
+            </PhDetailsList>
+        </Template>
+    </Story>
+    <Story Name="Two columns">
+        <Arguments>
+            <Arg For="_ => _.Columns" Value="2" />
+        </Arguments>
+        <Template>
+            <PhDetailsList @attributes="context.Args">
+                <PhDetailsListItem Label="Instrument">
+                    Billy
+                </PhDetailsListItem>
+                <PhDetailsListItem Label="Day">
+                    Monday
+                </PhDetailsListItem>
+                <PhDetailsListItem Label="Method">
+                    sIgE
+                </PhDetailsListItem>
+            </PhDetailsList>
+        </Template>
+    </Story>
+    <Story Name="2/3 columns spaced evenly">
+        <Arguments>
+            <Arg For="_ => _.Columns" Value="3" />
+            <Arg For="_ => _.SpaceColumnsEvenly" Value="true" />
+            <Arg For="_ => _.AlignedValues" Value="false" />
+        </Arguments>
+        <Template>
+            <PhDetailsList @attributes="context.Args">
+                <PhDetailsListItem Label="Status">
+                    Processing
+                </PhDetailsListItem>
+                <PhDetailsListItem Label="Required volume">
+                    40
+                </PhDetailsListItem>
+            </PhDetailsList>
+        </Template>
+    </Story>
+</Stories>
+
+
+@code {
+    
+}

@@ -1,0 +1,27 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+<PhModalContent>
+    <Body>
+
+        @if (CanApprove)
+        {
+            @Loc["ApproveTestsModal_ActionText", TestToApproveCount, TestsSelectedCount]
+        }
+        else
+        {
+            @Loc["ApproveTestsModal_NoTestToApprove"]
+        }
+
+    </Body>
+    <Footer>
+        @if (CanApprove)
+        {
+            <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["ApproveTestsModal_Cancel"] </PhButton>
+            <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok()))">@Loc["ApproveTestsModal_Approve", TestToApproveCount]</PhButton>
+        }
+        else
+        {
+            <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["ApproveTestsModal_Ok"] </PhButton>
+        }
+
+    </Footer>
+</PhModalContent>

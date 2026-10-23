@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-labelledby="title desc">
+  <title id="title">System error 1001</title>
+  <desc id="desc">Disconnected icon.</desc>
+  <defs>
+    <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fafafa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e8e8e8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#grad3)"/>
+  <g fill="#fff5f5" stroke="#d0d0d0" stroke-width="2">
+    <rect x="15" y="45" width="65" height="65" rx="4"/>
+    <rect x="120" y="45" width="65" height="65" rx="4"/>
+  </g>
+  <g fill="none" stroke="#b8b8b8" stroke-width="6" stroke-linecap="round">
+    <rect x="20" y="50" width="55" height="55" rx="3"/>
+    <rect x="125" y="50" width="55" height="55" rx="3"/>
+  </g>
+  <line x1="72" y1="68" x2="128" y2="132" stroke="#d63031" stroke-width="9" stroke-linecap="round"/>
+  <line x1="128" y1="68" x2="72" y2="132" stroke="#d63031" stroke-width="9" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,29 @@
+@using System.Linq
+@using System.Collections.Generic
+@using Microsoft.AspNetCore.Components
+@using Pharos.Common.Web.Components.DataGrid
+@using Pharos.Common.Web.Components.DataGrid.Columns
+@namespace Pharos.Common.Web.Tests.DataGrid
+
+<PhDataGrid TGridItem="Person"
+            StateID="test-grid"
+            Items="Items"
+            SelectionType="SelectionType"
+            ItemStyleOptions="ItemStyleOptions"
+            OnSelectedItemsChanged="OnSelectedItemsChanged">
+    <Columns>
+        <Column Title="First name"
+                Property="@(person => person.FirstName)" />
+        <Column Title="Last name"
+                Property="@(person => person.LastName)" />
+        <Column Title="Full name"
+                Property="@(person => person.FullName)" />
+    </Columns>
+</PhDataGrid>
+
+@code {
+    [Parameter] public IQueryable<Person> Items { get; set; } = default!;
+    [Parameter] public SelectionTypeEnum SelectionType { get; set; } = SelectionTypeEnum.MultiSelect;
+    [Parameter] public ItemStyleOptions<Person>? ItemStyleOptions { get; set; }
+    [Parameter] public EventCallback<HashSet<Person>> OnSelectedItemsChanged { get; set; }
+}

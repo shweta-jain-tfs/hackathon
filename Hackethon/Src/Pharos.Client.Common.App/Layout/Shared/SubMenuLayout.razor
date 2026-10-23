@@ -1,0 +1,14 @@
+﻿@inherits LayoutComponentBase
+@layout MainLayout
+
+<PhPage>
+    <PageHeader>
+        <SectionOutlet SectionName="page-header" />
+    </PageHeader>
+    <Sidebar>
+        <SectionOutlet SectionName="sub-menu" />
+    </Sidebar>
+    <ChildContent>
+        @Body
+    </ChildContent>
+</PhPage>

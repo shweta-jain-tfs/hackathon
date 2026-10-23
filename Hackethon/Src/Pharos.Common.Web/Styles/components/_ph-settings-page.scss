@@ -1,0 +1,29 @@
+.ph-settings-page {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+
+    &--saving {
+        .ph-settings-page__scroll-area {
+            overflow: hidden;
+        }
+    }
+
+    &__scroll-area {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: auto;
+    }
+
+    &__content {
+        min-height: 100%;
+    }
+
+    &__saving-overlay {
+        position: absolute;
+        inset: 0;
+        z-index: 2000;
+    }
+}

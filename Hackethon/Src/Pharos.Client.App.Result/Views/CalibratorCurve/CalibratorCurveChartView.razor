@@ -1,0 +1,49 @@
+﻿@using Pharos.Common.Web.Components.ChartCard
+@if (CurveViewModel.IsLoaded)
+{
+    @if (CurveViewModel.HasCurveDetails)
+    {
+        <PhChartCard Narrow="Narrow" Status="@GetHealthStatus(CurveViewModel.Data!.IsAccepted ? CurveJudgment.OK : CurveViewModel.Data.Judgment)" Title="@Loc["CalibratorCurveChartView_Calibrators"]" Href="@NavigateToCalibratorDetails()">
+            <CalibratorCurveView Miniature="true" ViewModel="CurveViewModel"/>
+            @if (CurveViewModel.Data.IsManuallySelected)
+            {
+                <div class="flex justify-center">
+                    <span class="t-body2">@Loc["CalibratorPage_CurveSelectedByUser"]</span>
+                </div>
+            }
+            else if (CurveViewModel.Data is { Judgment: CurveJudgment.Flagged, IsAccepted: true })
+            {
+                <div class="flex justify-center">
+                    <span class="t-body2">@Loc["CalibratorPage_CurveAccepted"]</span>
+                </div>
+            }
+        </PhChartCard>
+    }
+
+    else if (CurveViewModel.IsWaitingForOrderedCurve)
+    {
+        <PhChartCard Narrow="Narrow" Status="StatusType.Processing" Title="@Loc["CalibratorCurveChartView_Calibrators"]" Href="@NavigateToCalibratorDetails()">
+            <div style="width: 192px; height: 140px">
+                <PhPlaceHolder Title="@Loc["CalibratorCurveChartView_WaitingForCurve"]" Text="" />
+            </div>
+        </PhChartCard>
+    }
+    else
+    {
+        <div @onclick="SelectCurveOpen" style="cursor: pointer;">
+            <PhChartCard Narrow="Narrow" Status="StatusType.Alarm" Title="@Loc["CalibratorCurveChartView_Calibrators"]">
+                <div style="width: 192px; height: 140px">
+                    <PhPlaceHolder Title="@Loc["CalibratorCurveChartView_SelectCurve"]" Text=""/> 
+                </div>
+            </PhChartCard>
+        </div>
+    }
+}
+else
+{
+    @* Placeholder *@
+    <PhChartCard Status="StatusType.None" Title="@Loc["CalibratorCurveChartView_Calibrators"]">
+        <div style="width: 192px; height: 140px"></div>
+    </PhChartCard>
+}
+

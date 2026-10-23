@@ -1,0 +1,21 @@
+@use "../abstracts/colors";
+
+/*
+Blazor specific styling only.
+*/
+
+#blazor-error-ui {
+    display: none;
+
+    .backdrop {
+        position: fixed;
+        inset: 0;
+        background-color: colors.$backdrop-primary;
+        z-index: 9999;
+    }
+
+    .modal {
+        position: fixed;
+        z-index: 10000;
+    }
+}

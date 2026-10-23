@@ -1,0 +1,49 @@
+@using Pharos.Client.App.Quality.ViewModels
+@using Pharos.Client.Common.App
+@using Pharos.Common.Web.Components.DetailsList
+@using Pharos.Common.Web.Components.TabControl
+
+@attribute [Authorize]
+@attribute [Route(PageRoute.Quality.MethodQualityControl.IdQualityControl)]
+
+@inherits DetailsPageBase<MethodQualityControlDetailsViewModel, QualityControl>
+
+@if (DetailViewModel is not null)
+{
+    <PhPage>
+        <PageHeader>
+            <Breadcrumb Items="@Breadcrumbs" />
+        </PageHeader>
+
+        <ChildContent>
+            <PhStack Gap="StackGap.Lg">
+                <PhDetailsList Columns="2" SpaceColumnsEvenly="true" AlignedValues="true">
+                    <PhDetailsListItem Label="@Loc["MethodQualityControlDetails_QCName"]">@DetailViewModel.Model.Name</PhDetailsListItem>
+                    <PhDetailsListItem Label="@Loc["MethodQualityControlDetails_MethodName"]">@DetailViewModel.Model.MethodName</PhDetailsListItem>
+                    <PhDetailsListItem Label="@Loc["MethodQualityControlDetails_Type"]">@QualityControlTypeString()</PhDetailsListItem>
+                    <PhDetailsListItem Label="@Loc["MethodQualityControlDetails_TestName"]">@DetailViewModel.Model.TestName</PhDetailsListItem>
+                </PhDetailsList>
+
+                <PhTabControl>
+                    <PhTabPage Text="@Loc["MethodQualityControlDetails_Tab_Lots"]">
+                        <MethodQualityControlLotsTabContent ViewModel="DetailViewModel" />
+                    </PhTabPage>
+                    
+                    @if(!DetailViewModel.IsQcInTube)
+                    {
+                        <PhTabPage Text="@Loc["MethodQualityControlDetails_Tab_Cartridges"]">
+                            <MethodQualityControlCartridgesTabContent ViewModel="DetailViewModel" />
+                        </PhTabPage>
+                    }
+                    
+                    @if (DetailViewModel.IsQcInTube)
+                    {
+                        <PhTabPage Text="@Loc["MethodQualityControlDetails_Tab_Tubes"]">
+                            <MethodQualityControlTubesTabContent ViewModel="DetailViewModel"/>
+                        </PhTabPage>
+                    }
+                </PhTabControl>
+            </PhStack>
+        </ChildContent>
+    </PhPage>
+}

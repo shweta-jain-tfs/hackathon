@@ -1,0 +1,3 @@
+@using Pharos.Client.App.InstrumentManagement.ViewModels.Dashboard
+@using Pharos.Common.Web.Components.Status
+<PhStatus Status="@(SensorStatusHelper.ToStatusType(ViewModel.Status))" FontSize="StatusFontSize.Body1" Href="@PageRoute.DashboardHumidity" Text="@Loc["DashboardPage_HumidityView_Header"]" Gap="StatusGap.Sm" />

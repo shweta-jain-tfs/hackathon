@@ -1,0 +1,177 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Common.Web.Components.PlaceHolder
+@using Pharos.Common.Web.Components.TabControl
+@attribute [Stories("Components/TabControl")]
+
+<Stories TComponent="PhTabControl">
+    <Story Name="Primary">
+        <Template>
+
+            <PhTabControl @attributes="@context.Args">
+                <PhTabPage Text="First tab" TabId="1">
+                    <div style="height: 85vh; flex-shrink: 0">
+                        <PhPlaceHolder />
+                    </div>
+                </PhTabPage>
+                <PhTabPage Disabled="true" Text="Disabled tab" TabId="2">
+                    <h1>This text should not be visible</h1>
+                </PhTabPage>
+                <PhTabPage Text="Third tab" TabId="3">
+                    <div style="height: 85vh; flex-shrink: 0">
+                        <PhPlaceHolder />
+                    </div>
+                </PhTabPage>
+                <PhTabPage Text="Fourth tab" TabId="4">
+                    <div style="height: 85vh; flex-shrink: 0">
+                        <PhPlaceHolder />
+                    </div>
+                </PhTabPage>
+            </PhTabControl>
+
+        </Template>
+    </Story>
+
+    <Story Name="Secondary">
+        <Template>
+
+            <PhTabControl @attributes="@context.Args" Style="TabControlStyle.Secondary">
+                <PhTabPage Text="First tab" TabId="1">
+                    <div style="height: 85vh; flex-shrink: 0">
+                        <PhPlaceHolder />
+                    </div>
+                </PhTabPage>
+                <PhTabPage Disabled="true" Text="Disabled tab" TabId="2">
+                    <h1>This text should not be visible</h1>
+                </PhTabPage>
+                <PhTabPage Text="Third tab" TabId="3">
+                    <div style="height: 85vh; flex-shrink: 0">
+                        <PhPlaceHolder />
+                    </div>
+                </PhTabPage>
+                <PhTabPage Text="Fourth tab" TabId="4">
+                    <div style="height: 85vh; flex-shrink: 0">
+                        <PhPlaceHolder />
+                    </div>
+                </PhTabPage>
+            </PhTabControl>
+
+        </Template>
+    </Story>
+
+    <Story Name="With symbols">
+        <Template>
+
+            <PhTabControl @attributes="@context.Args">
+                @{
+                    var tabId = 1;
+                    @foreach (TabControlSymbolType symbolType in Enum.GetValues(typeof(TabControlSymbolType)))
+                    {
+                        var text = symbolType.ToString();
+                        <PhTabPage SymbolType="symbolType" Text="@text" TabId="tabId">
+                            <div style="height: 85vh; flex-shrink: 0">
+                                <PhPlaceHolder />
+                            </div>
+                        </PhTabPage>
+                        tabId++;
+                    }
+                }
+            </PhTabControl>
+
+        </Template>
+    </Story>
+
+    <Story Name="Validation errors">
+        <Template>
+            <div style="height: 100vh">
+                <PhTabControl @attributes="@context.Args">
+                    <PhTabPage Text="First tab" TabId="1" HasValidationError="@_validationErrors[0]">
+                        <PhCheckBox Label="Show validation error in this tab" @bind-Value="_validationErrors[0]" />
+                        <PhCheckBox Label="Show validation error in tab 2" @bind-Value="_validationErrors[1]" />
+                        <PhCheckBox Label="Show validation error in tab 3" @bind-Value="_validationErrors[2]" />
+                    </PhTabPage>
+                    <PhTabPage Text="Second tab" TabId="2" HasValidationError="@_validationErrors[1]">
+                        <PhCheckBox Label="Show validation error in this tab" @bind-Value="_validationErrors[1]" />
+                    </PhTabPage>
+                    <PhTabPage SymbolType="TabControlSymbolType.Alarm" Text="Tab with symbol" TabId="3" HasValidationError="@_validationErrors[2]">
+                        <PhCheckBox Label="Show validation error in this tab" @bind-Value="_validationErrors[2]" />
+                    </PhTabPage>
+                    <PhTabPage HasValidationError="true" Text="Validation error" TabId="4">
+                        This tab always shows a validation error
+                    </PhTabPage>
+                </PhTabControl>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Default selected tab">
+        <Template>
+
+            <PhTabControl DefaultTab="3" @attributes="@context.Args">
+                <PhTabPage Text="First tab" TabId="1">
+                    <h1>The first page</h1>
+                </PhTabPage>
+                <PhTabPage Disabled="true" Text="Disabled tab" TabId="2">
+                    <h1>This text should not be visible</h1>
+                </PhTabPage>
+                <PhTabPage Text="Selected by default" TabId="3">
+                    <h1>This tab is selected by default unless @nameof(PhTabControl.DefaultTab) is changed.</h1>
+                </PhTabPage>
+            </PhTabControl>
+
+        </Template>
+    </Story>
+
+    <Story Name="Scroll content">
+        <Template>
+
+            <div style="height: 100vh">
+                <PhTabControl @attributes="@context.Args">
+                    <PhTabPage Text="Large content" TabId="1">
+                        <div style="height: 120vh; flex-shrink: 0">
+                            <PhPlaceHolder />
+                        </div>
+                    </PhTabPage>
+                    <PhTabPage Text="Data grid" TabId="2" HideTrailingEdge>
+                        <Pharos.Stories.Components.TestContent.TestDataGrid />
+                    </PhTabPage>
+                    <PhTabPage Text="A little content" TabId="3">
+                        A little content
+                    </PhTabPage>
+                </PhTabControl>
+            </div>
+
+        </Template>
+    </Story>
+
+    <Story Name="Inside stack layout">
+        <Template>
+
+            <div style="height: 100vh">
+                <PhStack>
+                    <PhPlaceHolder />
+                    <PhTabControl @attributes="@context.Args">
+                        <PhTabPage Text="Large content" TabId="1">
+                            <div style="height: 120vh; flex-shrink: 0">
+                                <PhPlaceHolder />
+                            </div>
+                        </PhTabPage>
+                        <PhTabPage Text="Data grid" TabId="2" HideTrailingEdge="true">
+                            <Pharos.Stories.Components.TestContent.TestDataGrid />
+                        </PhTabPage>
+                        <PhTabPage Text="A little content" TabId="3">
+                            A little content
+                        </PhTabPage>
+                    </PhTabControl>
+                </PhStack>
+            </div>
+
+        </Template>
+    </Story>
+
+</Stories>
+
+@code
+{
+    private bool[] _validationErrors = [false, false, false];
+}

@@ -1,0 +1,27 @@
+$rounded-default: var(--ph-rounded, 4px);
+$rounded-full: 9999px;
+$drawer-rounded: 8px;
+
+@mixin rounded {
+    border-radius: $rounded-default;
+}
+
+@mixin rounded-bottom {
+    border-radius: 0 0 $rounded-default $rounded-default;
+}
+
+@mixin rounded-top {
+    border-radius: $rounded-default $rounded-default 0 0;
+}
+
+@mixin rounded-left {
+    border-radius: $rounded-default 0 0 $rounded-default;
+}
+
+@mixin rounded-right {
+    border-radius: 0 $rounded-default $rounded-default 0;
+}
+
+@mixin rounded-full {
+    border-radius: 9999px;
+}

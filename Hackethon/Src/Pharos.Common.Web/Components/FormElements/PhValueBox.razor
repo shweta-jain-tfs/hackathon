@@ -1,0 +1,12 @@
+﻿<div @attributes="AdditionalAttributes" class="@Classname" style="@(Rows > 0 ? $"--ph-valuebox-rows: {Rows};" : null)">
+    @if (Overflow == ValueBoxOverflow.Ellipsis)
+    {
+        <span class="ph-valuebox__text">
+            @ChildContent
+        </span>
+    }
+    else
+    {
+        @ChildContent
+    }
+</div>

@@ -1,0 +1,27 @@
+@using Pharos.Common.Web.Components.Health
+@attribute [Stories("Components/Health")]
+
+<Stories TComponent="PhHealth">
+    <Story Name="Symbols">
+        <Template>
+            <div style="overflow: auto;">
+                @foreach (HealthStatus status in Enum.GetValues(typeof(HealthStatus)))
+                {
+                    <h5><b>@status</b></h5>
+                    <div class="flex gap-xxl">
+                        @foreach (HealthSize size in Enum.GetValues(typeof(HealthSize)))
+                        {
+                            <PhHealth Status="status" Size="size"></PhHealth>
+                        }
+                    </div>
+                    <br />
+                }
+            </div>
+        </Template>
+    </Story>
+</Stories>
+
+
+@code
+{
+}

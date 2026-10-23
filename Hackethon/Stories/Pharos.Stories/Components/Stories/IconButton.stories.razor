@@ -1,0 +1,31 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Icons
+@attribute [Stories("Components/IconButton")]
+
+<Stories TComponent="PhIconButton">
+    <Story Name="Standard">
+        <Template>
+            <PhIconButton IconType="IconType.Hamburger" IconSize="Common.Web.Components.Icons.IconSize.Xs" @attributes="context.Args" />
+            <PhIconButton IconType="IconType.Hamburger" IconSize="Common.Web.Components.Icons.IconSize.Sm" @attributes="context.Args" />
+            <PhIconButton IconType="IconType.Hamburger" IconSize="Common.Web.Components.Icons.IconSize.Md" @attributes="context.Args" />
+            <PhIconButton IconType="IconType.Hamburger" IconSize="Common.Web.Components.Icons.IconSize.Lg" @attributes="context.Args" />
+            <PhIconButton IconType="IconType.Hamburger" IconSize="Common.Web.Components.Icons.IconSize.Xl" @attributes="context.Args" />
+        </Template>
+    </Story>
+
+    <Story Name="Menu">
+        <Template>
+            <PhIconButton Type="IconButtonType.Menu" IconType="IconType.Hamburger" IconSize="Common.Web.Components.Icons.IconSize.Xs" @attributes="context.Args" />
+            <PhIconButton Type="IconButtonType.Menu" IconType="IconType.Hamburger" IconSize="Common.Web.Components.Icons.IconSize.Sm" @attributes="context.Args" />
+            <PhIconButton Type="IconButtonType.Menu" IconType="IconType.Hamburger" IconSize="Common.Web.Components.Icons.IconSize.Md" @attributes="context.Args" />
+            <PhIconButton Type="IconButtonType.Menu" IconType="IconType.Hamburger" IconSize="Common.Web.Components.Icons.IconSize.Lg" @attributes="context.Args" />
+            <PhIconButton Type="IconButtonType.Menu" IconType="IconType.Hamburger" IconSize="Common.Web.Components.Icons.IconSize.Xl" @attributes="context.Args" />
+        </Template>
+    </Story>
+
+</Stories>
+
+@code
+{
+}

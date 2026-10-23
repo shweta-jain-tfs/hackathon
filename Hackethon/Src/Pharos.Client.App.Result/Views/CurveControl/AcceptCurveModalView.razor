@@ -1,0 +1,12 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhModalContent>
+    <Body>
+        @Loc["AcceptCurveControlModalView_InfoText"]
+    </Body>
+
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))"> @Loc["AcceptCurveControlModalView_Cancel"] </PhButton>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok()))" Type="ButtonType.Primary"> @Loc["AcceptCurveControlModalView_Ok"] </PhButton>
+    </Footer>
+</PhModalContent>

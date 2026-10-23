@@ -1,0 +1,52 @@
+﻿@attribute [Stories("Components/Loader")]
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.Loader
+
+<Stories TComponent="PhLoader">
+    
+    <Story Name="Default">
+        
+        <Arguments>
+            <Arg For="_ => _!.IsLoading" Value="true" />
+            <Arg For="_ => _!.InitialText" Value="@("Loading")" />
+            <Arg For="_ => _!.AlternateText" Value="@("Still loading")" />
+        </Arguments>
+
+        <Template>
+            <div style="height: 100vh" class="ph-automatic-loader">
+                <p>The loader will show up in a second or so if @nameof(PhLoader.IsLoading) is true.</p>
+                <PhLoader @attributes="context.Args" />
+            </div>
+        </Template>
+
+    </Story>
+
+    <Story Name="Toggle loading">
+
+        <Arguments>
+            <Arg For="_ => _!.InitialText" Value="@("Loading")" />
+            <Arg For="_ => _!.AlternateText" Value="@("Still loading")" />
+        </Arguments>
+
+        <Template>
+            <div style="height: 100vh" class="ph-automatic-loader">
+                <p>The loader will show up in a second or so after pressing the button.</p>
+                <PhButton OnClick="Load">Load for 5 seconds</PhButton>
+                <PhLoader @attributes="context.Args" IsLoading="@_loading" />
+            </div>
+        </Template>
+
+    </Story>
+</Stories>
+
+@code
+{
+    private bool _loading;
+
+    protected async Task Load()
+    {
+        _loading = true;
+        await Task.Delay(5000);
+        _loading = false;
+    }
+}

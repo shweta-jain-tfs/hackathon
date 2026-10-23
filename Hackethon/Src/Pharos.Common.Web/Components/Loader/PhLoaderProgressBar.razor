@@ -1,0 +1,9 @@
+<div class="ph-loader-progressbar">
+    <div class="ph-loader-progressbar__container">
+        <div class="ph-loader-progressbar__fill" style="width: @($"{Percentage}%")"></div>
+        <div class="ph-loader-progressbar__text">@($"{Text} {Percentage}%")</div>
+    </div>
+    <div class="ph-loader-progressbar__cancel-progress">
+        <PhHrefLink OnClick="@(() => Cancel.InvokeAsync())" LinkSize="LinkSize.Body1">Cancel</PhHrefLink>
+    </div>
+</div>

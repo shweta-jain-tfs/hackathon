@@ -1,0 +1,25 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+
+.ph-subnav-menu {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-block: spacing.$padding-sm;
+    gap: spacing.$gap-sm;
+    background: colors.$layer-subtle;
+
+    > ul {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+    }
+
+    &__footer {
+        padding-inline: spacing.$padding-xs;
+        display: flex;
+        justify-content: center;
+    }
+}

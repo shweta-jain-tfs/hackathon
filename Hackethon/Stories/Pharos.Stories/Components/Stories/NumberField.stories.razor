@@ -1,0 +1,156 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/NumberField")]
+
+<Stories TComponent="PhNumberField<int>">
+    <Story Name="NumberField">
+
+        <Template>
+            <PhNumberField @attributes="context.Args" TValue="int" @bind-Value="@_number" />
+        </Template>
+
+    </Story>
+
+    <Story Name="Decimal">
+
+        <Template>
+            <PhNumberField @attributes="context.Args" @bind-Value="@_decimal" />
+        </Template>
+
+    </Story>
+
+    <Story Name="Nullable">
+
+        <Template>
+            <PhNumberField @attributes="context.Args" @bind-Value="@_nullable" />
+        </Template>
+
+    </Story>
+
+    <Story Name="Regional formats">
+        <Template>
+            <PhStack>
+                @foreach (var culture in new string[] { "en-US", "ja-JP", "sv-SE", "es-ES" })
+                {
+                    <PhLabel Text="@culture">
+                        <PhNumberField @attributes="context.Args" Culture="@culture" @bind-Value="@_decimal" />
+                    </PhLabel>
+                }
+            </PhStack>
+        </Template>
+    </Story>
+
+
+    <Story Name="Sizes">
+        <Template>
+            <PhStack>
+                @foreach (TextBoxSize size in Enum.GetValues(typeof(TextBoxSize)))
+                {
+                    <PhLabel Text="@size.ToString()">
+                        <PhNumberField @attributes="context.Args" @bind-Value="@_number" Size="size" />
+                    </PhLabel>
+                }
+            </PhStack>
+        </Template>
+    </Story>
+    <Story Name="Validation">
+        <Arguments>
+            <Arg For="_ => _!.AllowNegativeNumbers" Value="@true" />
+        </Arguments>
+
+        <Template>
+            <EditForm Model="@ViewModel" Context="form" @ref="_form">
+                <pre>[@ViewModel.PropertyOne]</pre>
+                <MockValidator @ref="_validator" Type="MockValidatorType.Range" />
+                <ValidationSummary />
+                <PhNumberField @attributes="context.Args" 
+                               Label="Not nullable" 
+                               HelpText="(0-100)"
+                               @bind-Value="@ViewModel.PropertyOne" />
+                <PhNumberField @attributes="context.Args" 
+                               Label="Nullable" 
+                               HelpText="(0-100)"
+                               @bind-Value="@ViewModel.PropertyTwo" />
+                <PhNumberField @attributes="context.Args" 
+                               Label="Double" 
+                               HelpText="(0-100)"
+                               @bind-Value="@ViewModel.PropertyThree" />
+            </EditForm>
+            <div class="flex mt-sm">
+                <PhButton OnClick="ToggleValidation">@(_isValidated ? "Clear Validation" : "Validate Form")</PhButton>
+            </div>
+        </Template>
+
+    </Story>
+    <Story Name="With Label and Help Text">
+        <Template>
+            <PhStack>
+                <PhNumberField @attributes="context.Args" 
+                               TValue="int" 
+                               Label="Age" 
+                               HelpText="Enter your age in years"
+                               PlaceHolder="Enter age..."
+                               @bind-Value="@_age" />
+
+                <PhNumberField @attributes="context.Args" 
+                               TValue="double" 
+                               Label="Price" 
+                               HelpText="Enter the price in USD"
+                               PlaceHolder="0.00"
+                               @bind-Value="@_price" />
+
+                <PhNumberField @attributes="context.Args" 
+                               TValue="int?" 
+                               Label="Quantity - Error State Example" 
+                               HelpText="Enter the quantity needed"
+                               ErrorText="@(_showNumberError ? "Quantity must be a positive number" : null)"
+                               PlaceHolder="Enter quantity..."
+                               @bind-Value="@_quantity" />
+                
+                <div class="flex gap-md" style="margin-top: 8px;">
+                    <PhButton OnClick="() => _showNumberError = !_showNumberError">
+                        @(_showNumberError ? "Clear Error State" : "Show Error State")
+                    </PhButton>
+                </div>
+            </PhStack>
+        </Template>
+    </Story>
+</Stories>
+
+@code {
+    private int _number = 2;
+    private double _decimal = 2.2;
+    private int? _nullable = null;
+    private int _age = 25;
+    private double _price = 99.99;
+    private int? _quantity = null;
+    private bool _showNumberError = false;
+    private bool _isValidated = false;
+    private Model ViewModel { get; set; } = new Model();
+    private EditForm? _form;
+    private MockValidator? _validator;
+
+    public class Model
+    {
+        public int PropertyOne { get; set; } = 123;
+        public int? PropertyTwo { get; set; }
+        public double PropertyThree { get; set; }
+    }
+
+    private void ToggleValidation()
+    {
+        if (_isValidated)
+        {
+            _validator?.ClearErrors();
+            _isValidated = false;
+        }
+        else
+        {
+            _form?.EditContext?.Validate();
+            _isValidated = true;
+        }
+    }
+}

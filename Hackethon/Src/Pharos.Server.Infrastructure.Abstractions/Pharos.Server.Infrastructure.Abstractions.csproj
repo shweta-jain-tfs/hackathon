@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Pharos.Server.Infrastructure</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+		<PackageReference Include="System.Security.Cryptography.Pkcs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pharos.Server.Application.Abstractions\Pharos.Server.Application.Abstractions.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Domain.Abstractions\Pharos.Server.Domain.Abstractions.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Mediator.Abstractions\Pharos.Server.Mediator.Abstractions.csproj" />
+	</ItemGroup>
+
+</Project>

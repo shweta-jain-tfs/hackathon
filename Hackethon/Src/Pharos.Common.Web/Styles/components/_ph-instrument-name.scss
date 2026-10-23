@@ -1,0 +1,59 @@
+@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/transition";
+@use "../abstracts/typography" as text;
+
+.ph-instrument-name {
+    $root: &;
+    display: flex;
+    align-items: center;
+    gap: spacing.$gap-xs;
+    padding-inline: spacing.$gap-md;
+    width: 100%;
+    position: relative; // for overlay link
+    border-left: 2px solid transparent;
+    @include text.h2;
+    color: inherit;
+
+    &:has(.ph-instrument-name__link--active) {
+        background-color: colors.$layer-selected-01;
+        border-color: colors.$layer-selected-03;
+        @include transition.transition-colors;
+    }
+
+    &__status {
+        flex-shrink: 0;
+
+        &--white-outline {
+            .ph-status-icon--outline {
+                --ph-status-icon-outline: #{colors.$text-primary};
+            }
+        }
+    }
+
+    &__title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: normal; // don't clip the text
+    }
+
+    &__link::after {
+        // make the whole component clickable
+        content: "";
+        display: block;
+        position: absolute;
+        inset: 0;
+    }
+
+    &--lock-screen {
+        gap: spacing.$gap-sm;
+        border: 0;
+        @include text.display2;
+    }
+
+    &--lock-screen #{$root}__title {
+        height: #{size.$hit-area-lg};
+    }
+}

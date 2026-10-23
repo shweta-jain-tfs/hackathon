@@ -1,0 +1,63 @@
+// Margin and gap utility classes.
+// Consider creating a layout component instead of using these.
+
+@use "../abstracts/spacing" as spacing;
+
+$sizes: (
+    "0": 0,
+    "auto": auto,
+    "xxs": 4px,
+    "xs": spacing.$gap-xs,
+    "sm": spacing.$gap-sm,
+    "md": spacing.$gap-md,
+    "lg": spacing.$gap-lg,
+    "xl": spacing.$gap-xl,
+    "xxl": spacing.$gap-xxl,
+    "gutter": spacing.$gap-gutter,
+);
+
+// .gap-md
+@each $sizeName, $sizeValue in $sizes {
+    .gap-#{$sizeName} {
+        gap: $sizeValue;
+    }
+}
+
+// .m-md = margin (all sides)
+// .mx-md = margin (inline, left + right)
+// .my-md = margin (block, top + bottom)
+// .mt-md = margin top
+// .mb-md = margin bottom
+// .ml-md = margin left
+// .mr-md = margin right
+@each $sizeName, $sizeValue in $sizes {
+    .m-#{$sizeName} {
+        margin: $sizeValue;
+    }
+
+    .mx-#{$sizeName} {
+        margin-left: $sizeValue;
+        margin-right: $sizeValue;
+    }
+
+    .my-#{$sizeName} {
+        margin-top: $sizeValue;
+        margin-bottom: $sizeValue;
+    }
+
+    .mt-#{$sizeName} {
+        margin-top: $sizeValue;
+    }
+
+    .mb-#{$sizeName} {
+        margin-bottom: $sizeValue;
+    }
+
+    .ml-#{$sizeName} {
+        margin-left: $sizeValue;
+    }
+
+    .mr-#{$sizeName} {
+        margin-right: $sizeValue;
+    }
+}

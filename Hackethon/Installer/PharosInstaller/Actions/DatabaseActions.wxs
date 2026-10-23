@@ -1,0 +1,20 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Fragment>
+        <CustomAction Id="SetParamsForBackupDatabase" Property="BackupDatabase"
+                      Value="ServiceAccount=[PharosServiceAccountName];AppSettingsPath=[APPSETTINGSPATH]" />
+
+        <CustomAction Id="SetParamsForAddWindowsServiceAccountAsSqlLogin" Property="AddWindowsServiceAccountAsSqlLogin"
+                      Value="ServiceAccount=[PharosServiceAccountName];AppSettingsPath=[APPSETTINGSPATH]" />
+      
+        <CustomAction Id="SetParamsForEnableSecureEnclaveIfDisabled" Property="EnableSecureEnclaveIfDisabled"
+                      Value="ServiceAccount=[PharosServiceAccountName];AppSettingsPath=[APPSETTINGSPATH]" />
+      
+        <CustomAction Id="SetParamsForRestoreDatabaseBackup" Property="RestoreDatabaseBackup"
+                      Value="ServiceAccount=[PharosServiceAccountName];AppSettingsPath=[APPSETTINGSPATH]" />
+		
+		<CustomAction Id="AddWindowsServiceAccountAsSqlLogin" DllEntry="AddWindowsServiceAccountAsSqlLogin" Return="check" BinaryRef="CustomAction.CA" Execute="deferred" />
+        <CustomAction Id="BackupDatabase" DllEntry="BackupDatabase" Return="check" BinaryRef="CustomAction.CA" Execute="deferred" />
+        <CustomAction Id="EnableSecureEnclaveIfDisabled" DllEntry="EnableSecureEnclaveIfDisabled" Return="check" BinaryRef="CustomAction.CA" Execute="deferred" />
+        <CustomAction Id="RestoreDatabaseBackup" DllEntry="RestoreDatabaseBackup" Return="ignore" BinaryRef="CustomAction.CA" Execute="rollback" />
+    </Fragment>
+</Wix>

@@ -1,0 +1,209 @@
+﻿@using Microsoft.AspNetCore.Components.Rendering
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Pharos.Common.Web.Components.DataGrid.Grouping
+@using Pharos.Common.Web.Components.DataGrid.Infrastructure
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Common.Web.Components.TrailingEdge
+@using Pharos.Common.Web.Models.DataGrid
+@inherits ComponentWithClientScriptBase
+@typeparam TGridItem
+@attribute [CascadingTypeParameter(nameof(TGridItem))]
+
+<CascadingValue TValue="InternalGridContext<TGridItem>" IsFixed="true" Value="_internalGridContext">
+    @Columns
+
+    <div class="@CssClassGrid">
+        <Defer>
+            @if (_columns.Any())
+            {
+                // Make sure column visibility is up to date after rendering @Columns
+                RebuildColumnCaches();
+
+                @if (ShowHeader)
+                {
+                    <div class="ph-datagrid__header">
+
+                        <PhStatus Status="@ShowStatusSymbolInHeader" Size="StatusSize.Md" />
+
+                        <div class="ph-datagrid__title">
+                            <PhDataGridTitle @ref="_titleRef"
+                                             TableTitle="@TableTitle" 
+                                             HideTotalCount="@HideTotalCount" 
+                                             HeaderSize="@HeaderSize" />
+                        </div>
+
+                        @if (HeaderContent != null)
+                        {
+                            @HeaderContent
+                        }
+
+                        <PhDataGridFilter TGridItem="TGridItem"
+                                          Filters="@FilterSources"
+                                          OnFilterChanged="FilterChanged" />
+
+                        <div class="ph-datagrid__actions">
+                            @Actions
+                        </div>
+                    </div>
+                }
+
+                <div @ref="_gridContainerRef" class="ph-datagrid__container">
+                    <PhTrailingEdge Mode="@GetTrailingEdgeDisplayMode()">
+                        <table class="ph-datagrid__content" aria-rowcount="@(_totalRowCount + 1)">
+                            <thead>
+                                <tr>
+                                    @if (SelectionType != SelectionTypeEnum.Off)
+                                    {
+                                        <th class="ph-datagrid__checkbox-column">
+                                            @if (SelectionType == SelectionTypeEnum.MultiSelectWithSelectAll)
+                                            {
+                                                <PhCheckBox Indeterminate="IsSelectAllIndeterminate"
+                                                            Value="IsSelectAllChecked"
+                                                            OnCheckChanged="ToggleSelectAll"
+                                                            Size="SelectCheckboxSize"
+                                                            MutedBorder />
+                                            }
+                                        </th>
+                                    }
+
+                                    @foreach (var column in _visibleOrderedColumns)
+                                    {
+                                        var thClass = column.Size == ColumnSizeEnum.Fill ? "ph-datagrid__fill-cell" : null;
+                                        var breakTitle = column.Size == ColumnSizeEnum.WrapTitle;
+                                        var titleClass = column.AlignRight ? "ph-datagrid__col-title ph-datagrid__col-title--right" : "ph-datagrid__col-title";
+
+                                        if (column.Sortable == true)
+                                        {
+                                            <th aria-sort="@AriaSortValue(column)" scope="col" class="@thClass">
+                                                <div class="@titleClass" @onclick="@(() => SortColumn(column))" role="button">
+                                                    <span class="ph-datagrid__col-title-text">@RenderTitle(column.Title, breakTitle)</span>
+                                                    <div class="ph-datagrid__sort-indicator">
+                                                        <PhIcon IconType="IconType.ChevronUp" Size="SortIconSize" />
+                                                    </div>
+                                                </div>
+                                            </th>
+                                        }
+                                        else
+                                        {
+                                            <th scope="col" class="@thClass">
+                                                <div class="@titleClass">
+                                                    @RenderTitle(column.Title, breakTitle)
+                                                </div>
+                                            </th>
+                                        }
+                                    }
+                                    <th>@*take up remaining space*@</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @if (IsInitialized)
+                                {
+                                    @* Don't load the virtualize component until we've initialized the grid to speed up rendering *@
+                                    <Virtualize @ref="_virtualizeComponent"
+                                                TItem="(int RowIndex, TGridItem Data)"
+                                                ItemsProvider="@ProvideVirtualizedItems"
+                                                ItemSize="_itemSize"
+                                                ItemContent="@(item => builder => RenderRow(builder, item.RowIndex, item.Data))"
+                                                OverscanCount="_overScanCount" />
+                                }
+                            </tbody>
+
+                        </table>
+                    </PhTrailingEdge>
+                    <PhDataGridLoadingOverlay @ref="_loadingOverlayRef" />
+                </div>
+
+            }
+
+        </Defer>
+    </div>
+
+</CascadingValue>
+
+@code
+{
+
+    @* ReSharper disable once InconsistentNaming *@
+    private void RenderRow(RenderTreeBuilder __builder, int rowIndex, TGridItem item)
+    {
+        var style = GetItemStyle(item);
+
+        var checkedStyle = style.HasFlag(ItemStyleFlags.Checked);
+        var dimmedStyle = style.HasFlag(ItemStyleFlags.Dimmed);
+        var disabledStyle = style.HasFlag(ItemStyleFlags.Disabled);
+        var checkboxDisabledStyle = disabledStyle || style.HasFlag(ItemStyleFlags.CheckboxDisabled);
+        var checkboxHiddenStyle = style.HasFlag(ItemStyleFlags.CheckboxHidden);
+
+        var groupingEnabled = RowType == RowTypeEnum.LinesBetweenRows;
+        _groupingHelper.ComputeGroupStatesForRow(rowIndex, item, _orderedColumns, groupingEnabled);
+
+        <tr class="@RowStyle(item, dimmedStyle || disabledStyle)" @onclick="() => ToggleRowHighlighted(item)" aria-rowindex="@rowIndex">
+            @if (SelectionType != SelectionTypeEnum.Off)
+            {
+                <td class="ph-datagrid__checkbox-column" @onclick:stopPropagation>
+                    @if (!checkboxHiddenStyle)
+                    {
+                        <div class="ph-datagrid__cell">
+                            <PhCheckBox Value="@(IsSelected(item) || checkedStyle)"
+                                        Disabled="@checkboxDisabledStyle"
+                                        OnCheckChanged="@(isChecked => CheckedChanged(item, isChecked))"
+                                        Size="SelectCheckboxSize"
+                                        MutedBorder
+                                        RadioStyle="@(SelectionType == SelectionTypeEnum.SingleSelect)" />
+                        </div>
+                    }
+                </td>
+            }
+
+            @foreach (var col in _visibleOrderedColumns)
+            {
+                var alignClass = col.AlignRight ? "text-right" : null;
+                var cellType = !col.HasCustomContent && col.PropertyType == typeof(string) ? "text" : null;
+
+                var groupState = _groupingHelper.GetGroupState(col);
+                var renderContent = groupState != GroupState.Same;
+                string? groupAttr = groupState switch
+                {
+                    GroupState.Start => "start",
+                    GroupState.Same => "same",
+                    _ => null
+                };
+
+                <td @key="@col" class="@alignClass" data-group="@groupAttr">
+                    <div class="ph-datagrid__cell" data-type="@cellType">
+                        @if (renderContent)
+                        {
+                            col.CellContent(__builder, item);
+                        }
+                    </div>
+                </td>
+            }
+
+            <td>@*take up remaining space*@</td>
+        </tr>
+    }
+
+    private RenderFragment RenderTitle(string? title, bool breakTitle)
+    {
+        if (!breakTitle)
+        {
+            return __builder =>
+            {
+                @title
+            };
+        }
+
+        var (firstPart, secondPart) = title.SplitOnMiddleSpace();
+        return __builder =>
+        {
+            <span class="ph-datagrid__wrapped-header">
+                <span>@firstPart</span>@(" ")
+                @if (!string.IsNullOrWhiteSpace(secondPart))
+                {
+                    <span>@secondPart</span>
+                }
+            </span>
+        };
+    }
+}

@@ -1,0 +1,30 @@
+@using Pharos.Client.App.Result.Views.Result
+@using Pharos.Common.Web.Components.ChartCard
+@attribute [Route(PageRoute.AnalyticalRunDetails.IdParameter)]
+@attribute [Authorize]
+
+<PhPage>
+    <PageHeader>
+        <Breadcrumb Items="Breadcrumbs"></Breadcrumb>
+    </PageHeader>
+
+    <ChildContent>
+        <PhStack>
+            <div class="@(IsTableExpanded ? "hidden" : null)">
+                <PhChartCardList>
+
+                    @if (!string.IsNullOrEmpty(MethodName) || !string.IsNullOrEmpty(InstrumentSerial))
+                    {
+                        <CalibratorCurveChartView AnalyticalRunId="Id" Narrow="IsNarrow" MethodName="@MethodName" InstrumentSerial="@InstrumentSerial" OnSelectCurve="@SelectCurveOpen" />
+                        <CurveControlChartCardListView ChartState="ChartStateService" AnalyticalRunId="Id" Narrow="IsNarrow" MethodName="@MethodName" InstrumentSerial="@InstrumentSerial" NrOfPoints="5" />
+                        <QualityControlChartCardListView ChartState="ChartStateService" AnalyticalRunId="Id" Narrow="IsNarrow" MethodName="@MethodName" InstrumentSerial="@InstrumentSerial" NrOfPoints="5" />
+                    }
+
+                </PhChartCardList>
+            </div>
+
+            <TestResultsListView AnalyticalRunId="@Id" TestOrderId="@TestOrderId" Expanded="@IsTableExpanded" OnResize="() => IsTableExpanded = !IsTableExpanded"/>
+
+        </PhStack>
+    </ChildContent>
+</PhPage>

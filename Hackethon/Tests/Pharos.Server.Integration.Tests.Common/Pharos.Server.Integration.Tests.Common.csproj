@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<IsTestProject>false</IsTestProject>
+		<IsTestingPlatformApplication>false</IsTestingPlatformApplication>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Respawn" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Src\Pharos.Server.Parameters\Pharos.Server.Parameters.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server\Pharos.Server.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="Pharos.Server.Integration.Tests" />
+	</ItemGroup>
+
+</Project>

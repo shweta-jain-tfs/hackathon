@@ -1,0 +1,59 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Models.DataGrid
+
+<PhModalContent>
+    <Body>
+        <PhStack>
+            
+            <div class="grid grid-cols-2 mr-auto items-center gap-sm">
+
+                <PhLabel Text="@Loc["CurveControlDetailsModalView_Identity"]" Direction="LabelDirection.Horizontal" />
+                <PhValueBox>@TestResult.CurveControlPointName</PhValueBox>
+
+                <PhLabel Text="@Loc["CurveControlDetailsModalView_Method"]" Direction="LabelDirection.Horizontal"/>
+                <PhValueBox> @TestResult.MethodName</PhValueBox>
+
+                <PhLabel Text="@Loc["CurveControlDetailsModalView_Test"]" Direction="LabelDirection.Horizontal"/>
+                <PhValueBox> @TestResult.TestName</PhValueBox>
+
+                <PhLabel Text="@Loc["CurveControlDetailsModalView_Comment"]" Direction="LabelDirection.Horizontal"/>
+                <PhTextBox Size="TextBoxSize.ExtraLarge" MaxLength="40" @bind-Value="TestResult.Comment" DisplayOnly="@(!CanEdit)" />
+
+            </div>
+
+            <PhDataGrid DefaultSortColumn="@nameof(CurveControlTestReplicate.ReplicateNumber)" DefaultSortDirection="SortDirection.Ascending"
+                        StateID=""
+                        RowType="RowTypeEnum.LinesBetweenRows" TGridItem="CurveControlTestReplicate"
+                        Items="TestResult.Replicates.AsQueryable()" RowHeight="RowHeightEnum.Relaxed">
+                <Columns>
+                    <Column Title="@Loc["CurveControlDetailsModalView_Replicate"]" Property="@(x => x.Id)" Align="ColumnAlignEnum.Left">
+                        <PhHrefLink OnClick="@(() => ReplicateDetailsView(context.Id))"> @context.ReplicateNumber </PhHrefLink>
+                    </Column>
+                    <Column Title="@Loc["CurveControlDetailsModalView_Status"]" Property="@(x => x.IsAborted)">
+                        @GetStatusText(context)
+                    </Column>
+                    <Column Title="@Loc["CurveControlDetailsModalView_Measured"]" Property="@(x => x.MeasurementDateTime)" Sortable="true">
+                        <PhDateTime DateToShow="@context.MeasurementDateTime"/>
+                    </Column>
+                    <Column Title="@Loc["CurveControlDetailsModalView_Response"]" Property="@(x => x.ResponseAsText)" Align="ColumnAlignEnum.Right"/>
+                    <Column Title="@Loc["CurveControlDetailsModalView_Concentration"]" Property="@(x => x.ConcentrationAsText)" Align="ColumnAlignEnum.Right">
+                        @GetConcentrationText(context)
+                    </Column>
+                </Columns>
+            </PhDataGrid>
+        </PhStack>
+    </Body>
+
+    <Footer>
+        @if (CanEdit)
+        {
+            <PhButton OnClick="@(() => OnClose(ModalResult.Cancel()))">@Loc["CurveControlDetailsModalView_Cancel"]</PhButton>
+            <PhButton OnClick="@(() => OnClose(ModalResult.Ok(TestResult)))" Type="ButtonType.Primary" Disabled="Disabled">@Loc["CurveControlDetailsModalView_Save"]</PhButton>
+        }
+        else
+        {
+            <PhButton OnClick="@(() => OnClose(ModalResult.Cancel()))" Type="ButtonType.Primary">@Loc["CurveControlDetailsModalView_Close"]</PhButton>
+        }
+    </Footer>
+
+</PhModalContent>

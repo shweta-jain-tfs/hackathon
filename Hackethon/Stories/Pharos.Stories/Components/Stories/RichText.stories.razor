@@ -1,0 +1,65 @@
+﻿@using Pharos.Common.Web.Components.RichText
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/RichText")]
+
+<Stories TComponent="PhRichText">
+    <Story Name="Text content">
+        <Arguments>
+            <Arg For="_ => _.NumberHeadings" Value="true" />
+        </Arguments>
+        <Template>
+            <PhRichText @attributes="context.Args">
+                <TestRichTextContent />
+            </PhRichText>
+        </Template>
+    </Story>
+    <Story Name="Images">
+        <Arguments>
+            <Arg For="_ => _.NumberHeadings" Value="true" />
+        </Arguments>
+        <Template>
+            <PhRichText @attributes="context.Args">
+                <TestRichTextImages />
+            </PhRichText>
+            <p>
+                Trailing text after the rich text area. This should end up on a new row under the rich text content.
+            </p>
+        </Template>
+    </Story>
+    <Story Name="Images (lazy loading)">
+        <Arguments>
+            <Arg For="_ => _.NumberHeadings" Value="true" />
+        </Arguments>
+        <Template>
+            <PhRichText @attributes="context.Args">
+                <TestRichTextImages LazyLoading />
+            </PhRichText>
+            <p>
+                Trailing text after the rich text area. This should end up on a new row under the rich text content.
+            </p>
+        </Template>
+    </Story>
+    <Story Name="Table">
+        <Arguments>
+            <Arg For="_ => _.NumberHeadings" Value="true" />
+        </Arguments>
+        <Template>
+            <PhRichText @attributes="context.Args">
+                <TestRichTextTable />
+            </PhRichText>
+        </Template>
+    </Story>
+    <Story Name="Highlighted content">
+        <Arguments>
+            <Arg For="_ => _.NumberHeadings" Value="true" />
+        </Arguments>
+        <Template>
+            <PhRichText @attributes="context.Args">
+                <TestRichTextHighlighted />
+            </PhRichText>
+        </Template>
+    </Story>
+</Stories>
+
+@code {
+}

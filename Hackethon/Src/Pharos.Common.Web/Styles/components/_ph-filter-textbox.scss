@@ -1,0 +1,75 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-filter-textbox {
+    $root: &;
+    $input-height: size.$hit-area-md;
+    position: relative;
+    min-width: size.$input-width-xsmall;
+    width: size.$input-width-small;
+    max-width: 100%;
+
+    &__input {
+        display: block;
+        width: 100%;
+        min-height: $input-height;
+        padding-block: 4px;
+        padding-inline: spacing.$padding-md;
+        border: 2px solid colors.$border-active;
+        background-color: colors.$layer-tertiary;
+        color: colors.$text-secondary;
+        @include text.body2;
+        @include rounded.rounded-full;
+        text-overflow: ellipsis;
+
+        &::placeholder {
+            color: colors.$text-hint;
+        }
+
+        &::selection {
+            background-color: colors.$layer-accent;
+        }
+
+        &:focus-visible {
+            outline: none;
+            background-color: colors.$layer-selected-01;
+        }
+
+        &:disabled {
+            border-color: colors.$border-disabled;
+            background-color: colors.$layer-secondary;
+            color: colors.$text-disabled;
+            cursor: default;
+
+            &::placeholder {
+                color: currentColor;
+            }
+        }
+    }
+
+    &__clear-btn {
+        display: none;
+        position: absolute;
+        inset-block: 0;
+        inset-inline: auto spacing.$padding-xs;
+    }
+
+    &--has-text {
+        #{$root}__input {
+            padding-right: calc(spacing.$gap-xs + $input-height);
+            background-color: colors.$layer-selected-01;
+
+            &:disabled {
+                background-color: colors.$layer-secondary;
+            }
+        }
+        
+        #{$root}__clear-btn {
+            display: block;
+        }
+
+    }
+}

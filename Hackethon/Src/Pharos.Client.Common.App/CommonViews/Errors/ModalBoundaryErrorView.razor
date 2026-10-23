@@ -1,0 +1,51 @@
+﻿<div class="ph-modal-overlay">
+    <div class="ph-modal-overlay__content-area">
+        <div class="ph-modal ph-modal--alarm ph-modal--width-small ph-modal--height-small"
+             role="alertdialog"
+             aria-modal="true"
+             aria-labelledby="modal-boundary-error-title">
+
+            <div class="ph-modal__header">
+                <div class="ph-modal__title">
+                    <h3 id="modal-boundary-error-title" class="t-h2">Error</h3>
+                </div>
+            </div>
+
+            <div class="ph-modal__internalcontent">
+                <PhModalContent>
+                    <Body>
+                        <span class="whitespace-pre-line">@Exception.Message</span>
+                    </Body>
+                    <Footer>
+                        <PhButton OnClick="CloseAsync">Close</PhButton>
+                        <PhButton Type="ButtonType.Primary"
+                                  OnClick="ReloadAsync">
+                            Reload
+                        </PhButton>
+                    </Footer>
+                </PhModalContent>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public Exception Exception { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback OnReload { get; set; }
+
+    private Task CloseAsync()
+    {
+        return OnClose.InvokeAsync();
+    }
+
+    private Task ReloadAsync()
+    {
+        return OnReload.InvokeAsync();
+    }
+}

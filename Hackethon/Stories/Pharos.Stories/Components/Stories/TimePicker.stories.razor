@@ -1,0 +1,122 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/TimePicker")]
+
+<Stories TComponent="PhTimePicker">
+    <Story Name="Time picker">
+        <Template>
+            <div class="flex flex-col gap-xl">
+                <PhLabel Text="Time picker" Direction="LabelDirection.Horizontal">
+                    <PhTimePicker @attributes="context.Args" @bind-Value="@_time" />
+                </PhLabel>
+                <div>
+                    <PhLabel Text="Selected time:" Direction="LabelDirection.Horizontal">@_time</PhLabel>
+                    <PhButton OnClick="() => _time = TimeOnly.FromDateTime(DateTime.Now)">Set time to now</PhButton>
+                    <PhButton OnClick="() => _time = null">Clear time</PhButton>
+                </div>
+            </div>
+        </Template>
+    </Story>
+    <Story Name="American time">
+        <Template>
+            <PhTimePicker @attributes="context.Args" @bind-Value="@_time" Culture="en-US" />
+        </Template>
+    </Story>
+    <Story Name="Japanese time">
+        <Template>
+            <PhTimePicker @attributes="context.Args" @bind-Value="@_time" Culture="ja-JP" />
+        </Template>
+    </Story>
+    <Story Name="Swedish time">
+        <Template>
+            <PhTimePicker @attributes="context.Args" @bind-Value="@_time" Culture="sv-SE" />
+        </Template>
+    </Story>
+    <Story Name="Danish time">
+        <Template>
+            <PhTimePicker @attributes="context.Args" @bind-Value="@_time" Culture="da-DK" />
+        </Template>
+    </Story>
+    <Story Name="Validation">
+        <Template>
+            <EditForm Model="@ViewModel" Context="form" @ref="_form">
+                <pre>OnChange Value: [@ViewModel.PropertyOne]</pre>
+                <MockValidator @ref="_validator" />
+                <ValidationSummary />
+                <PhLabel Text="Change value to validate" ValidationFor="() => ViewModel.PropertyOne">
+                    <PhTimePicker @attributes="context.Args" @bind-Value="ViewModel.PropertyOne" />
+                </PhLabel>
+            </EditForm>
+            <div class="flex gap-md">
+                <PhButton OnClick="ToggleValidation">@(_isValidated ? "Clear Validation" : "Validate Form")</PhButton>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Help Text and Error States">
+        <Template>
+            <PhStack>
+                <PhLabel Text="Start Time" HelpText="Select the starting time for the event">
+                    <PhTimePicker @attributes="context.Args" @bind-Value="@_startTime" />
+                </PhLabel>
+
+                <PhLabel Text="Break Time" HelpText="Choose your preferred break time">
+                    <PhTimePicker @attributes="context.Args" @bind-Value="@_breakTime" />
+                </PhLabel>
+
+                <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e0e0e0;">
+                    <PhLabel Text="Meeting Time - Error State Example" 
+                             HelpText="Select the meeting time"
+                             ErrorText="@(_showTimeError ? "Please select a valid time during business hours" : null)">
+                        <PhTimePicker @attributes="context.Args" 
+                                     Error="_showTimeError"
+                                     @bind-Value="@_meetingTime" />
+                    </PhLabel>
+                    
+                    <div class="flex gap-md" style="margin-top: 8px;">
+                        <PhButton OnClick="() => _showTimeError = !_showTimeError">
+                            @(_showTimeError ? "Clear Error State" : "Show Error State")
+                        </PhButton>
+                    </div>
+                </div>
+            </PhStack>
+        </Template>
+    </Story>
+</Stories>
+
+
+@code {
+    TimeOnly? _time;
+    private TimeOnly? _startTime;
+    private TimeOnly? _breakTime;
+    private TimeOnly? _meetingTime;
+    private bool _showTimeError = false;
+    private bool _isValidated = false;
+
+    private Model ViewModel { get; set; } = new Model();
+    private EditForm? _form;
+    private MockValidator? _validator;
+
+    public class Model
+    {
+        public TimeOnly? PropertyOne { get; set; }
+        public TimeOnly? PropertyTwo { get; set; }
+    }
+
+    private void ToggleValidation()
+    {
+        if (_isValidated)
+        {
+            _validator?.ClearErrors();
+            _isValidated = false;
+        }
+        else
+        {
+            _form?.EditContext?.Validate();
+            _isValidated = true;
+        }
+    }
+}

@@ -1,0 +1,118 @@
+﻿@using Pharos.Common.Web.Components.Reagent
+@using Pharos.Common.Web.Utilities
+
+<div style="padding: 24px; @BackgroundStyle" class="flex flex-wrap gap-lg">
+    @foreach (var group in _groups)
+    {
+        <div class="flex flex-col gap-gutter">
+            <h2 class="t-body1">@group.Name</h2>
+            @foreach (var reagent in group.Reagents)
+            {
+                <ReagentShapeView Shape="group.Shape" FriendlyName="@reagent.Name" Colors="@reagent.Colors" ContrastSurfaceOverride="Surface" />
+            }
+        </div>
+    }
+
+</div>
+
+@code {
+    [Parameter] public ContrastSurface Surface { get; set; } = ContrastSurface.Dark;
+
+    private string BackgroundStyle => Surface switch
+    {
+        ContrastSurface.Light => "background-color: #F5F5F5; --ph-reagent-shape-outline: #000000; color: #000000",
+        ContrastSurface.Print => "background-color: #FFFFFF; --ph-reagent-shape-outline: #000000; color: #000000",
+        _ or ContrastSurface.Dark => "background-color: #1B1B1B",
+    };
+
+    private readonly ReagentGroup[] _groups =
+    [
+        new(
+            "Cartridge Elia",
+            ReagentIndicatorShape.Slanted,
+            [
+                new("El-G", ["#8DC8E8"]),
+                new("El-M", ["#FCD1BA"]),
+                new("El-A", ["#DBB6D6"]),
+                new("El-T", ["#DBEBC1"]),
+                new("El-GM (Japan)", ["#F5D9E8"]),
+                new("El-C2", ["#34BDB0"]),
+                new("El-A / El-M", ["#DBB6D6", "#FCD1BA"]),
+                new("El-G / El-A / El-M", ["#8DC8E8", "#DBB6D6", "#FCD1BA"]),
+                new("El-G / El-A", ["#8DC8E8", "#DBB6D6"]),
+                new("El-G / El-GM", ["#8DC8E8", "#F5D9E8"]),
+                new("El-G / El-T", ["#8DC8E8", "#DBEBC1"]),
+                new("EliA 3+ method", ["#F8EEA3"])
+            ]),
+
+        new(
+            "Cartridge ImmunoCAP",
+            ReagentIndicatorShape.Slanted,
+            [
+                new("tIgE", ["#126448"]),
+                new("sIgE", ["#842573"]),
+                new("sIgG4", ["#66BD52"]),
+                new("sIgG", ["#DA6A27"]),
+                new("View allergy (Japan)", ["#0B8ABB"]),
+                new("Tryptase", ["#18557C"]),
+                new("ECP", ["#881737"]),
+                new("sIgG / sIgG4", ["#DA6A27", "#66BD52"])
+            ]),
+
+        new(
+            "Cartridge Other",
+            ReagentIndicatorShape.Slanted,
+            [
+                new("ImmunoCAP Diluent", ["#828386"]),
+                new("EliA Diluent", ["#CDCED4"]),
+                new("Development solution", ["#222223"])
+            ]),
+
+        new(
+            "Bottles",
+            ReagentIndicatorShape.Rectangular,
+            [
+                new("Stop solution", ["#E68699"]),
+                new("Wash additive", ["#8DC8E8"]),
+                new("Wash concentrate", ["#005B8B"]),
+                new("Dual wash", ["#222223"])
+            ]),
+
+        new(
+            "Carriers",
+            ReagentIndicatorShape.Round,
+            [
+                new("Phadiatop", ["#FF6719"]),
+                new("Moulds & Yeast", ["#80A15F"]),
+                new("Parasites", ["#F18D94"]),
+                new("Miscellaneous", ["#243DAE"]),
+                new("Epidermal & Animals", ["#F13326"]),
+                new("Food", ["#33A1E4"]),
+                new("Mites", ["#F13672"]),
+                new("House dust", ["#8E9193"]),
+                new("Drugs", ["#29AE5D"]),
+                new("Weed pollen", ["#D6D12F"]),
+                new("ECP-Anti-ECP", ["#F2F2F2"]),
+                new("ImmunoCAP maintenance", ["#F2F2F2"]),
+                new("Total IgE Anti-IgE", ["#F2F2F2"]),
+                new("Dilution", ["#F2F2F2"]),
+                new("Tryptase Anti-Tryptase", ["#F2F2F2"]),
+                new("EliA", ["#FBD79D"]),
+                new("Insects & Venoms", ["#FFCA20"]),
+                new("Occupational allergens", ["#F172D9"]),
+                new("Grass pollen", ["#84D62E"]),
+                new("Tree pollen", ["#6B4836"]),
+                new("Panels & Atopy & Regional", ["#863F78"]),
+                new("Specific IgE Anti-IgE", ["#191919"])
+            ])
+    ];
+
+    private sealed record ReagentGroup(
+        string Name,
+        ReagentIndicatorShape Shape,
+        Reagent[] Reagents);
+
+    private sealed record Reagent(
+        string Name,
+        string[] Colors);
+}

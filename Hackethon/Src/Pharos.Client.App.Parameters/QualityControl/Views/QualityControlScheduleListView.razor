@@ -1,0 +1,28 @@
+﻿<PhDataGrid TableTitle="@Loc["QualityControlScheduleListView_Methods"]"
+            StateID="phadiaQualitycontrols"
+            TGridItem="QualityControlSchedule"
+            ItemsProvider="ViewModel.ProvideGridItems"
+            RowType="RowTypeEnum.LinesBetweenRows"
+            SelectionType="SelectionTypeEnum.Off">
+    <Columns>
+        <Column Title="@Loc["QualityControlScheduleListView_Method"]" Property="@(x => x.MethodName)" Grouped="true" QuickFilter="true" MultiSelectFilterItems="_methodNameDict" />
+        <Column Title="@Loc["QualityControlScheduleListView_QC"]" Property="@(x => x.QualityControlName)" Grouped="true" />
+        <Column Title="@Loc["QualityControlScheduleListView_Test"]" Property="@(x => x.TestName)" />
+        
+        <Column Title="@Loc["QualityControlScheduleListView_FirstInRun"]" Property="@(x => x.FirstInRun)">
+            <PhCheckBox Value="context.FirstInRun" ValueChanged="@(async isChecked => await ViewModel.UpdateFirstInRun(context, isChecked))" />
+        </Column>
+        
+        <Column Title="@Loc["QualityControlScheduleListView_LastInRun"]" Property="@(x => x.LastInRun)">
+            <PhCheckBox Value="context.LastInRun" ValueChanged="@(async isChecked => await ViewModel.UpdateLastInRun(context, isChecked))" />
+        </Column>
+        
+        <Column Title="@Loc["QualityControlScheduleListView_AfterCalibration"]" Property="@(x => x.AfterCalibration)">
+            <PhCheckBox Value="context.AfterCalibration" ValueChanged="@(async isChecked => await ViewModel.UpdateAfterCalibration(context, isChecked))" />
+        </Column>
+        
+        <Column Title="@Loc["QualityControlScheduleListView_Periodically"]" Property="@(x => x.Periodically)">
+            <PhHrefLink OnClick="_ => EditPeriodically(context)">@GetPeriodicallyDisplayValue(context)</PhHrefLink>
+        </Column>
+    </Columns>
+</PhDataGrid>

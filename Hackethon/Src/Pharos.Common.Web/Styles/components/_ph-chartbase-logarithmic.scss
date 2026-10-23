@@ -1,0 +1,147 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/typography" as text;
+
+.ph-chartbase-logarithmic {
+    max-width: 100%;
+    max-height: 100%;
+    overflow: clip;
+    stroke-width: 1px;
+    @include text.helper-text;
+    fill: colors.$text-hint;
+
+    &__axis-label--horizontal {
+        font-family: sans-serif;
+        font-weight: bold;
+        text-anchor: middle;
+    }
+
+    &__axis-label--vertical {
+        font-family: sans-serif;
+        font-weight: bold;
+        text-anchor: left;
+    }
+
+    &__axis-tick-value--horizontal {
+        text-anchor: middle;
+        dominant-baseline: top;
+    }
+
+    &__axis-tick-value--vertical {
+        text-anchor: end;
+        dominant-baseline: middle;
+    }
+
+    &__axis-tick {
+        stroke: colors.$chart-border;
+    }
+
+    &__curve {
+        fill: none;
+        stroke: colors.$status-info;
+        stroke-width: 2px;
+
+        // selected and active curves look the same for now.
+        &--selected {
+            fill: none;
+            stroke: colors.$status-info;
+            stroke-width: 8px;
+        }
+
+        &--active {
+            fill: none;
+            stroke: colors.$status-info;
+            stroke-width: 8px;
+        }
+    }
+
+    &__line--horizontal {
+        stroke: colors.$chart-border;
+        stroke-dasharray: none;
+
+        &--dashed {
+            stroke: colors.$chart-border;
+            stroke-dasharray: 1;
+        }
+    }
+
+    &__line--vertical {
+        stroke: colors.$chart-border;
+        stroke-dasharray: none;
+        stroke-width: 1px;
+
+        &--dashed {
+            stroke: colors.$chart-border;
+            stroke-dasharray: 6;
+        }
+    }
+
+    &__line-label--horizontal {
+        text-anchor: end;
+        dominant-baseline: middle;
+    }
+
+    &__line-label--vertical {
+        text-anchor: middle;
+        dominant-baseline: top;
+    }
+
+    &__point {
+        &--active {
+            fill: colors.$status-success;
+            stroke: colors.$background-primary;
+
+            &__selection-ring {
+                stroke: colors.$status-success;
+
+                &__outline {
+                    stroke: colors.$background-primary;
+                }
+            }
+        }
+
+        &--warning--active {
+            path {
+                fill: colors.$status-warning;
+                stroke: colors.$background-primary;
+            }
+
+            &__character {
+                fill: colors.$icon-inverse;
+            }
+
+            &__selection-ring {
+                stroke: colors.$status-warning;
+
+                &__outline {
+                    stroke: colors.$background-primary;
+                }
+            }
+        }
+
+        &--alert--active {
+            fill: colors.$status-alarm;
+            stroke: colors.$background-primary;
+
+            &__character {
+                fill: colors.$icon-primary;
+            }
+
+            &__selection-ring {
+                stroke: colors.$status-alarm;
+
+                &__outline {
+                    stroke: colors.$background-primary;
+                }
+            }
+        }
+    }
+
+    > svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    svg text {
+        user-select: none;
+    }
+}

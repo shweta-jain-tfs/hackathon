@@ -1,0 +1,36 @@
+﻿<PhLabel Text="@Label"
+         HelpText="@HelpText"
+         ErrorText="@(HasErrorText? ErrorText : null)"
+         Disabled="@Disabled"
+         RenderAsLabel="@(!DisplayOnly)"
+         SuppressAutoValidation="@DisplayOnly"
+         ValidationFor="@(DisplayOnly ? null : ValidationForExpression)">
+    <div class="@Classname">
+        @if (DisplayOnly)
+        {
+            <PhValueBox Disabled="@Disabled" Overflow="ValueBoxOverflow.Multiline" Rows="Rows" uiname="@AutomatedTestId">
+                @Value
+            </PhValueBox>
+        }
+        else
+        {
+            <InputTextArea Value="@Value"
+                           ValueChanged="@ValueChanged"
+                           ValueExpression="@ValueExpression"
+                           @oninput="OnInput"
+                           rows="@Rows"
+                           id="@Id"
+                           uiname="@AutomatedTestId"
+                           placeholder="@PlaceHolder"
+                           disabled="@Disabled"
+                           maxlength="@MaxLength" />
+        }
+
+        @if (_error)
+        {
+            <div class="ph-textarea__error-icon">
+                <PhIcon IconType="IconType.Alert" Size="IconSize.Md" />
+            </div>
+        }
+    </div>
+</PhLabel>

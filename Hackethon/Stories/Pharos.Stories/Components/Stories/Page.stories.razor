@@ -1,0 +1,164 @@
+﻿@using Pharos.Common.Web.Components.Breadcrumb
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Common.Web.Components.PlaceHolder
+@using Pharos.Common.Web.Components.Subnavigation
+@using Pharos.Common.Web.Components.TabControl
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/Page")]
+
+<Stories TComponent="PhPage">
+    <Story Name="Plain page layout">
+        <Template>
+
+            <div style="height: 100vh">
+                <PhPage @attributes="@context.Args">
+                    <PhPlaceHolder Title="Content" Text="" />
+                </PhPage>
+            </div>
+
+        </Template>
+    </Story>
+
+    <Story Name="With page header">
+        <Template>
+
+            <div style="height: 100vh">
+                <PhPage @attributes="@context.Args">
+                    <PageHeader>
+                        <PhPlaceHolder Title="Header content" Text="" />
+                    </PageHeader>
+                    <ChildContent>
+                        <PhPlaceHolder Title="Content" Text="" />
+                    </ChildContent>
+                </PhPage>
+            </div>
+
+        </Template>
+    </Story>
+
+    <Story Name="With sidebar">
+        <Arguments>
+            <Arg For="_ => _!.WideSidebar" Value="false" />
+        </Arguments>
+        <Template>
+            <div style="height: 100vh">
+                <PhPage @attributes="@context.Args">
+                    <PageHeader>
+                        <PhPlaceHolder Title="Header content" Text="" />
+                    </PageHeader>
+                    <Sidebar>
+                        <PhPlaceHolder Title="Sidebar" Text="" />
+                    </Sidebar>
+                    <ChildContent>
+                        <PhPlaceHolder Title="Content" Text="" />
+                    </ChildContent>
+                </PhPage>
+            </div>
+
+        </Template>
+    </Story>
+
+    <Story Name="With submenu">
+        <Arguments>
+            <Arg For="_ => _!.WideSidebar" Value="false" />
+        </Arguments>
+        <Template>
+            <div style="height: 100vh">
+                <PhPage @attributes="@context.Args">
+                    <PageHeader>
+                        <Breadcrumb Items="@_breadCrumbItems" />
+                    </PageHeader>
+                    <Sidebar>
+                        <PhSubnavMenu>
+                            <PhSubnavItem Text="Methods" Uri="." />
+                            <PhSubnavItem Text="Articles" Uri="?not-here" />
+                        </PhSubnavMenu>
+                    </Sidebar>
+                    <ChildContent>
+                        <PhPlaceHolder Title="Content" Text="" />
+                    </ChildContent>
+                </PhPage>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Scrolling content">
+        <Arguments>
+            <Arg For="_ => _!.WideSidebar" Value="false" />
+        </Arguments>
+        <Template>
+            <div style="height: 100vh">
+                <PhPage @attributes="@context.Args">
+                    <PageHeader>
+                        <PhPlaceHolder Title="Header content" Text="" />
+                    </PageHeader>
+                    <Sidebar>
+                        <PhPlaceHolder Title="Sidebar" Text="" />
+                    </Sidebar>
+                    <ChildContent>
+                        <div style="min-height: 150vh">
+                            <PhPlaceHolder Title="Content" Text="" />
+                        </div>
+                    </ChildContent>
+                </PhPage>
+            </div>
+
+        </Template>
+    </Story>
+
+    <Story Name="With sidebar no header">
+        <Arguments>
+            <Arg For="_ => _!.WideSidebar" Value="false" />
+        </Arguments>
+        <Template>
+
+            <div style="height: 100vh">
+                <PhPage @attributes="@context.Args">
+                    <Sidebar>
+                        <PhPlaceHolder Title="Sidebar" Text="" />
+                    </Sidebar>
+                    <ChildContent>
+                        <PhPlaceHolder Title="Content" Text="" />
+                    </ChildContent>
+                </PhPage>
+            </div>
+
+        </Template>
+    </Story>
+
+    <Story Name="Large content (overflow)">
+        <Arguments>
+            <Arg For="_ => _!.WideSidebar" Value="false" />
+        </Arguments>
+        <Template>
+            <div style="height: 100vh">
+                <PhPage @attributes="@context.Args">
+                    <PageHeader>
+                        <div style="min-width: 120vw">
+                            <PhPlaceHolder Title="Large header content" Text="Should not overlap sidebar" />
+                        </div>
+                    </PageHeader>
+                    <Sidebar>
+                        <PhPlaceHolder Title="Sidebar" Text="Shold not be overlapped by other content" />
+                    </Sidebar>
+                    <ChildContent>
+                        <div style="min-height: 150vh; min-width: 150vw">
+                            <PhPlaceHolder Title="Wide content" Text="Should not overlap sidebar" />
+                        </div>
+                    </ChildContent>
+                </PhPage>
+            </div>
+
+        </Template>
+    </Story>
+
+</Stories>
+
+@code
+{
+    private List<BreadcrumbItem> _breadCrumbItems = new()
+    {
+        new ("Page Title", "."),
+        new ("Text Label", ""),
+    };
+}

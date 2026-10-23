@@ -1,0 +1,10 @@
+﻿@using Pharos.Common.Web.Components.DetailsList
+
+
+@if (RefillLevelInfo != null)
+{
+    <PhDetailsList Columns="2" AlignedValues="false" TextSize="DetailsListTextSize.HelperText">
+        <PhDetailsListItem Label="@Loc["LoadListLevels_TotalRefillLevels"]"> @RefillLevelInfo.TotalRefillLevel (@RefillLevelInfo.TotalRefillLevelPercentage %)</PhDetailsListItem>
+        <PhDetailsListItem Label="@Loc["LoadListLevels_InternalStorageCapacity"]"> @RefillLevelInfo.InternalStorageCapacity </PhDetailsListItem>
+    </PhDetailsList>
+}

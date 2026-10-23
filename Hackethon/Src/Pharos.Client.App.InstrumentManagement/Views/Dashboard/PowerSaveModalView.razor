@@ -1,0 +1,11 @@
+@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhModalContent>
+    <Body>
+        <p class="text-center">@Loc["DashboardPage_PowerSaveModal_Text"]</p>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["DashboardPage_PowerSaveModal_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok()))">@Loc["DashboardPage_PowerSaveModal_Ok"]</PhButton>
+    </Footer>
+</PhModalContent>

@@ -1,0 +1,14 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+@inject IClientDeviceService ClientDeviceService
+
+@code {
+    protected override void OnInitialized()
+    {
+        var route = ClientDeviceService.ClientDeviceType == ClientDeviceType.Instrument
+            ? PageRoute.Tasks
+            : PageRoute.Instruments;
+
+        NavigationManager.NavigateTo(route, replace: true);
+    }
+}

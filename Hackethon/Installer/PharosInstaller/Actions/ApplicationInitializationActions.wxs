@@ -1,0 +1,20 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<Fragment>
+		<CustomAction Id="SetParamsForRunInitDb" Property="RunInitDb" Value="INSTALLFOLDER=[INSTALLFOLDER]" />
+
+		<!--
+		  Do NOT impersonate.
+
+		  Pharos.Server.exe with init-db argument must run as LocalSystem (NT AUTHORITY\SYSTEM), the same identity used by
+		  the PharosService Windows service at runtime.
+
+		  If impersonated, init-db runs as the installing user and Always Encrypted CMK
+		  access will become user-isolated, making the private key unusable by LocalSystem
+		  even if permissions are later granted.
+
+		  Setting Impersonate="no" ensures the action runs under LocalSystem.
+		  If the service identity changes in the future, this must be revisited.
+		-->
+		<CustomAction Id="RunInitDb" DllEntry="RunInitDb" Return="check" BinaryRef="CustomAction.CA" Execute="deferred" Impersonate="no" />
+	</Fragment>
+</Wix>

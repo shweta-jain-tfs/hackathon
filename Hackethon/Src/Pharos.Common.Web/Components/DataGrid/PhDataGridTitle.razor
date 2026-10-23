@@ -1,0 +1,40 @@
+﻿@if (!string.IsNullOrEmpty(TableTitle))
+{
+    var title = HideTotalCount || RowCount is null ? TableTitle : $"{TableTitle} ({RowCount})";
+    @if (HeaderSize == HeaderSizeEnum.WholePage)
+    {
+        <h2>@title</h2>
+    }
+    else
+    {
+        <h3>@title</h3>
+    }
+}
+
+
+@code
+{
+    /// <summary>
+    /// Sets a title for the table.
+    /// </summary>
+    [Parameter] public string? TableTitle { get; set; }
+    /// <summary>
+    /// Set to true to hide total count from the title.
+    /// </summary>
+    [Parameter] public bool HideTotalCount { get; set; }
+    [Parameter] public HeaderSizeEnum HeaderSize { get; set; } = HeaderSizeEnum.PartOfPage;
+
+    /// <summary>
+    /// Shows the number of rows in the table.
+    /// </summary>
+    private int? RowCount { get; set; }
+
+    public Task SetRowCountAsync(int rowCount)
+    {
+        if (RowCount == rowCount && !HideTotalCount)
+            return Task.CompletedTask;
+
+        RowCount = rowCount;
+        return InvokeAsync(StateHasChanged);
+    }
+}

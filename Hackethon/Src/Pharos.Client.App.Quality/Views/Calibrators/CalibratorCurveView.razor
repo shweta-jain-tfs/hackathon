@@ -1,0 +1,11 @@
+﻿@if (_content != null)
+{
+    <PhChartLogarithmic Content="_content" ChartWidth="_width" ChartHeight="_height" 
+                        DataRangeYMin="_axis.YMin" DataRangeYMax="_axis.YMax"
+                        DataRangeXMin="_axis.XMin" DataRangeXMax="_axis.XMax" Miniature="Miniature">
+    </PhChartLogarithmic>
+}
+else if (ViewModel.IsLoaded)
+{
+    <PhPlaceHolder Title="@Loc["CalibratorCurveView_NoCurveAvailable"]" Text="" />
+}

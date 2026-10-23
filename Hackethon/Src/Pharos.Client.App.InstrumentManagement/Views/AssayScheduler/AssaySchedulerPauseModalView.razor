@@ -1,0 +1,38 @@
+﻿@using Pharos.Client.App.InstrumentManagement.ViewModels.AssayScheduler
+@using Pharos.Common.Web.Components.DetailsList
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.FormElements.RadioButton
+
+<PhModalContent>
+    <Body>
+        <PhStack Gap="StackGap.Lg">
+            <PhDetailsList Columns="1" SpaceColumnsEvenly="true" AlignedValues="false">
+                @switch (Mode)
+                {
+                    case AssaySchedulerPauseMode.AllInstruments:
+                        <PhDetailsListItem>@Loc["AssaySchedulerPage_AssaySchedulerPauseModal_AllInstruments"]</PhDetailsListItem>
+                        break;
+                    case AssaySchedulerPauseMode.CurrentInstrument:
+                        <PhDetailsListItem Label="@Loc["AssaySchedulerPage_AssaySchedulerPauseModal_InstrumentName"]">@InstrumentName</PhDetailsListItem>
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            </PhDetailsList>
+            <div class="grid gap-sm">
+                <p class="t-body1">@Loc["AssaySchedulerPage_AssaySchedulerPauseModal_PauseType_Header"]</p>
+                <PhRadioGroup @bind-SelectedValue="ViewModel.PauseType">
+                    <PhRadioButton Value="PauseType.Manual" Label=@Loc["AssaySchedulerPage_AssaySchedulerPauseModal_PauseType_Manual"]></PhRadioButton>
+                    <PhRadioButton Value="PauseType.Timed" Label=@Loc["AssaySchedulerPage_AssaySchedulerPauseModal_PauseType_Timed"]>
+                        <PhDatePicker @bind-Value="ViewModel.PausedUntilDate"
+                                      Disabled="@(ViewModel.PauseType != PauseType.Timed)" />
+                    </PhRadioButton>
+                </PhRadioGroup>
+            </div>
+        </PhStack>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["AssaySchedulerPage_AssaySchedulerPauseModal_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok(ViewModel)))">@Loc["AssaySchedulerPage_AssaySchedulerPauseModal_Ok"]</PhButton>
+    </Footer>
+</PhModalContent>

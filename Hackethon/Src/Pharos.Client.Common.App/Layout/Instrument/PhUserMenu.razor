@@ -1,0 +1,13 @@
+﻿@using Pharos.Common.Web.Components.DropdownButton
+
+<div id="usermenu" title="@UserNameHoverLabel">
+    <PhDropdownButton Text="@Name" IconType="IconType.UserProfile" DropdownButtonType="DropdownButtonType.Text" UseInlineFlex="false">
+        <PhDropdownButtonItemLink Text="@Loc["UserMenu_UserProfile"]" Uri="@ProfileUri" />
+        <PhDropdownButtonItemLink Text="@Loc["UserMenu_Logout"]" Uri="@LogoutUrl" />
+    </PhDropdownButton>
+</div>
+<PhIconButton Type="IconButtonType.Blank" IconType="IconType.QuestionMark" />
+
+@code {
+    [Inject] private IStringLocalizer<Translations> Loc { get; set; } = default!;
+}

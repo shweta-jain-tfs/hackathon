@@ -1,0 +1,8 @@
+﻿@namespace Pharos.Client.App.Reagents.Views.Drawer.DilutionPlate
+
+<div class="ph-dilution-plate-panel">
+    @foreach (var plate in DilutionPlates)
+    {
+        <DilutionPlateStackView DilutionPlate="plate" LegendSelectedStatus="@LegendSelectedStatus"></DilutionPlateStackView>
+    }
+</div>

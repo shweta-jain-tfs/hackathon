@@ -1,0 +1,34 @@
+@using Pharos.Common.Web.Components.QuickFilter
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/QuickFilter/FilterTextBox")]
+
+<Stories TComponent="PhFilterTextBox">
+    <Story Name="Filter text box">
+        <Arguments>
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.Placeholder" Value="@("Filter name")" />
+            <Arg For="_ => _!.UiName" Value="@("filter-uiname")" />
+        </Arguments>
+        <Template>
+            <PhFilterTextBox @attributes="context.Args" />
+        </Template>
+    </Story>
+    <Story Name="Bound value">
+        <Arguments>
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.Placeholder" Value="@("Filter name")" />
+            <Arg For="_ => _!.UiName" Value="@("filter-uiname")" />
+        </Arguments>
+        <Template>
+            <div class="mb-md">
+                Current: <span style="white-space: pre">"@_value"</span>
+            </div>
+            <PhFilterTextBox @attributes="context.Args" @bind-Value="@_value" />
+        </Template>
+    </Story>
+</Stories>
+
+@code
+{
+    private string? _value;
+}

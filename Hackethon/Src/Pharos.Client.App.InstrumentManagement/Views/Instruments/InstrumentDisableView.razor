@@ -1,0 +1,16 @@
+@using Pharos.Common.Web.Components.FormElements.Enums
+<PhModalContent>
+    <Body>
+
+        <div>@Loc["InstrumentsPage_DisableDialogText"]</div>
+
+    </Body>
+
+    <Footer>
+
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["InstrumentsPage_DisableDialogButtonSecondary"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok()))">@Loc["InstrumentsPage_DisableDialogButtonPrimary"]</PhButton>
+
+    </Footer>
+</PhModalContent>
+

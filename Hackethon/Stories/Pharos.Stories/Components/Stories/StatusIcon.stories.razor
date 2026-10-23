@@ -1,0 +1,58 @@
+@using Pharos.Common.Web.Components.Icons
+@attribute [Stories("Components/StatusIcon")]
+
+<Stories TComponent="PhStatusIcon">
+    <Story Name="Status icon">
+        <Template>
+            <div style="background: lightgray; padding: 16px">
+                <PhStatusIcon @attributes="context.Args" />
+            </div>
+        </Template>
+    </Story>
+    <Story Name="All icons and sizes">
+        <Template>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            @foreach (StatusIconSize size in Enum.GetValues(typeof(StatusIconSize)))
+                            {
+                                <th>@size</th>
+                            }
+                        </tr>
+                    </thead>
+                    @foreach (StatusIconType icon in Enum.GetValues(typeof(StatusIconType)))
+                    {
+                        <tr>
+                            <th scope="row">@icon</th>
+                            @foreach (StatusIconSize size in Enum.GetValues(typeof(StatusIconSize)))
+                            {
+                                <td><PhStatusIcon @attributes="context.Args" Icon="@icon" Size="@size" /></td>
+                            }
+                        </tr>
+                    }
+                </table>
+            </div>
+        </Template>
+    </Story>
+    <Story Name="Outline">
+        <Arguments>
+            <Arg For="_ => _!.Size" Value="@StatusIconSize.Xxxxl" />
+            <Arg For="_ => _!.Outline" Value="@true" />
+        </Arguments>
+        <Template>
+            <div class="flex flex-wrap gap-xl" style="background: lightgray; padding: 16px">
+                @foreach (StatusIconType icon in Enum.GetValues(typeof(StatusIconType)))
+                {
+                    <PhStatusIcon @attributes="context.Args" Icon="@icon" />
+                }
+            </div>
+        </Template>
+    </Story>
+</Stories>
+
+
+@code
+{
+}

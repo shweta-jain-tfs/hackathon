@@ -1,0 +1,85 @@
+@startuml
+
+interface IItem{
+    string id
+    Dependency dependency
+}
+
+' interface IGroupable{
+
+' }
+
+Class Page{
+    string name
+    string header
+    Url helpUrl
+}
+
+Class Option{
+    string label
+    string helpText
+    TypeEnum type
+    string value
+    bool required
+    bool isDropDown
+    string minValue
+    string maxValue
+    Choice[] choices
+}
+
+Class Choice{
+    string label
+    string value
+}
+
+Class Group{
+    string label
+}
+
+Class Dependency{
+    'disable|hide
+    EnumVisuals type
+    string mainOptionId
+    string mainOptionValue
+}
+
+
+
+
+Class Table{
+    string label
+    TableItem[] tableItems
+    Dependency dependency
+}
+
+Class TableItem{
+    string label
+    string pageId
+}
+
+Page "1" *-- "0..n" IItem
+IItem <|-- Page
+IItem <|-- Option
+
+'IGroupable <|-- Page
+'IGroupable <|-- Option
+IItem <|-- Group
+IItem <|-- Table
+Table "1" *-- "1..n" TableItem
+'Option "1" o-- "0..1" Dependency
+Option "1" o-- "0..n" Choice
+'Group "1" o-- "1" Dependency
+'Group "1" o-- "1..n" IGroupable
+
+'IItem <|-- IGroupable
+'IItem <|-- TableItem
+'Page "1" o-- "0..1" Dependency
+'Table "1" o-- "0..1" Dependency
+
+IItem "1" o-- "0..1" Dependency
+Group "1" o-- "0..n" Page
+Group "1" o-- "o..n" Option
+
+
+
+@enduml

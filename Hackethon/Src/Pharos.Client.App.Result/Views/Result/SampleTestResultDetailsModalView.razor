@@ -1,0 +1,95 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Models.DataGrid
+<PhModalContent>
+    <Body>
+
+    <PhStack>
+        <PhGrid>
+
+            <PhGridColumn Span="ColumnSpan.Col3">
+                <div class="grid grid-cols-2 mr-auto items-center gap-sm">
+                    <PhLabel Text="@Loc["SampleResultDetails_SampleId"]" Direction="LabelDirection.Horizontal"></PhLabel>
+                    <PhValueBox>@TestResult.SampleIdDisplay</PhValueBox>
+
+                    <PhLabel Text="@Loc["SampleResultDetails_Dilution"]" Direction="LabelDirection.Horizontal"></PhLabel>
+                    <PhValueBox>@TestResult.TotalDilution</PhValueBox>
+                </div>
+
+            </PhGridColumn>
+
+            <PhGridColumn Span="ColumnSpan.Col3">
+                <div class="grid grid-cols-2 mr-auto items-center gap-sm">
+                    <PhLabel Text="@Loc["SampleResultDetails_Method"]" Direction="LabelDirection.Horizontal"></PhLabel>
+                    <PhValueBox>@TestResult.MethodName</PhValueBox>
+
+                    <PhLabel Text="@Loc["SampleResultDetails_PreDilution"]" Direction="LabelDirection.Horizontal"></PhLabel>
+                    <PhValueBox>@TestResult.PreDilution</PhValueBox>
+                </div>
+            </PhGridColumn>
+
+            <PhGridColumn Span="ColumnSpan.Col3">
+                <div class="grid grid-cols-2 mr-auto items-center gap-sm">
+                    <PhLabel Text="@Loc["SampleResultDetails_Test"]" Direction="LabelDirection.Horizontal"></PhLabel>
+                    <PhValueBox>@TestResult.TestName</PhValueBox>
+
+                    <PhLabel Text="@Loc["SampleResultDetails_InstrumentDilution"]" Direction="LabelDirection.Horizontal"></PhLabel>
+                    <PhValueBox>@TestResult.InstrumentDilution</PhValueBox>
+                </div>
+
+            </PhGridColumn>
+        </PhGrid>
+
+        <PhLabel Direction="LabelDirection.Horizontal" Text="@Loc["SampleResultDetails_Comment"]">
+            <PhTextBox Size="TextBoxSize.ExtraLarge" @bind-Value="TestResult.Comment" MaxLength="40" DisplayOnly="@(!CanEdit)" />
+        </PhLabel>
+
+            <PhDataGrid DefaultSortColumn="@nameof(SampleTestReplicate.ReplicateNumber)" DefaultSortDirection="SortDirection.Ascending"
+                    StateID=""
+                    RowType="RowTypeEnum.LinesBetweenRows" TGridItem="SampleTestReplicate"
+                    Items="TestResult.Replicates.AsQueryable()" RowHeight="RowHeightEnum.Relaxed">
+            <Columns>
+                <Column Title="@Loc["SampleResultDetails_Replicate"]" Property="@(x => x.Id)" Align="ColumnAlignEnum.Left">
+                        <PhHrefLink OnClick="@(() => ReplicateDetailsView(context.Id))"> @context.ReplicateNumber </PhHrefLink>
+                </Column>
+
+                <Column Title="@Loc["SampleResultDetails_Active"]" Property="@(x => x.Active)">
+                    @if (CanEdit)
+                    {
+                        <PhCheckBox @bind-Value="context.Active" Disabled="CannotBeModified"></PhCheckBox>
+                    }
+                    else
+                    {
+                        @(context.Active ? Loc["SampleResultDetails_Yes"] : Loc["SampleResultDetails_No"])
+                    }
+                </Column>
+
+                <Column Title="@Loc["SampleResultDetails_Measured"]" Property="@(x => x.MeasurementDateTime)" Sortable="true">
+                    <PhDateTime DateToShow="@context.MeasurementDateTime"/>
+                </Column>
+
+                <Column Title="@Loc["SampleResultDetails_Status"]" Property="@(x => x.IsAborted)">
+                        @GetStatusText(context)
+                </Column>
+
+                <Column Title="@Loc["SampleResultDetails_Response"]" Property="@(x => x.ResponseAsText)" Align="ColumnAlignEnum.Right"/>
+                <Column Title="@Loc["SampleResultDetails_Concentration"]" Property="@(x => x.ConcentrationAsText)" Align="ColumnAlignEnum.Right">
+                    @GetConcentrationText(context)
+                </Column>
+
+            </Columns>
+        </PhDataGrid>
+    </PhStack>
+    </Body>
+
+    <Footer>
+        @if (CanEdit)
+        {
+            <PhButton OnClick="@(() => OnClose(ModalResult.Cancel()))">@Loc["SampleResultDetails_Cancel"]</PhButton>
+            <PhButton OnClick="@(() => OnClose(ModalResult.Ok(TestResult)))" Type="ButtonType.Primary" Disabled="Disabled">@Loc["SampleResultDetails_Save"]</PhButton>
+        }
+        else
+        {
+            <PhButton OnClick="@(() => OnClose(ModalResult.Cancel()))" Type="ButtonType.Primary">@Loc["SampleResultDetails_Close"]</PhButton>
+        }
+    </Footer>
+</PhModalContent>

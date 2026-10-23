@@ -1,0 +1,27 @@
+﻿@attribute [Authorize]
+
+<PhModalContent SelectedText="@Loc["ReflexDetailPage_Selected"]">
+    <Body>
+        <PhStack Gap="StackGap.Lg">
+            <PhLabel Direction="LabelDirection.Horizontal" Size="LabelSize.Body1" Text="@Loc["ReflexDetailPage_DefinitionCopyName"]"> <PhValueBox>@ReflexCopyDetails.Name</PhValueBox> </PhLabel>
+
+
+            <PhLabel Direction="LabelDirection.Horizontal" Size="LabelSize.Body1" Text="@Loc["ReflexDetailPage_ConditionCopyName"]"> <PhValueBox>@FormattedCondition</PhValueBox> </PhLabel>
+
+            <PhLabel Text=@DataGridTitleText>
+                <PhDataGrid StateID="" TGridItem="RequestReflexTest" Items="ReflexCopyDetails.ReflexTests.OrderBy(x => x.TestSortOrder).AsQueryable()" SelectionType="SelectionTypeEnum.Off" RowType="RowTypeEnum.LinesBetweenRows">
+                    <Columns>
+                        <Column Title="@Loc["ReflexDetailPage_Test"]" Property="@(item => item!.TestName)" />
+                        <Column Title="@Loc["ReflexDetailPage_Method"]" Property="@(item => item!.MethodName)" />
+                        <Column Title="@Loc["ReflexDetailPage_Replicates"]" Property="@(item => item!.NumberOfReplicates)" />
+                        <Column Title="@Loc["ReflexDetailPage_InstrDil"]" Property="@(item => item!.InstrumentDilutionFactor)" />
+                    </Columns>
+                </PhDataGrid>
+            </PhLabel>
+        </PhStack>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => OnClose(ModalResult.Ok(ReflexCopyDetails)))">@Loc["ReflexEditView_DeleteReflex"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => OnClose(ModalResult.Cancel()))">@Loc["ReflexEditView_DialogButtonSecondary"]</PhButton>
+    </Footer>
+</PhModalContent>

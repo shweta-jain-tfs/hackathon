@@ -1,0 +1,43 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+@use "../abstracts/size";
+@use "../abstracts/typography" as text;
+
+.ph-datepicker-panel-year {
+    display: flex;
+    flex-direction: column;
+    max-height: size.$modal-height-size-xsmall;
+    overflow-y: auto;
+
+    &__grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: spacing.$gap-xs;
+    }
+
+    &__button {
+        padding: spacing.$padding-sm;
+        @include text.body1;
+        @include rounded.rounded;
+        cursor: pointer;
+
+        &:hover {
+            background: colors.$layer-hover-01;
+        }
+
+        &[aria-current="date"] {
+            color: colors.$text-primary;
+        }
+
+        &.selected {
+            background: colors.$layer-accent;
+        }
+
+        &:disabled {
+            cursor: default;
+            color: colors.$text-disabled;
+            background: transparent;
+        }
+    }
+}

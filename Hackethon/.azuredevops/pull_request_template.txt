@@ -1,0 +1,22 @@
+Please include a summary of the changes.
+
+### Type of change
+
+Please delete options that are not relevant.
+
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that might cause existing functionality not to work as expected)
+- [ ] Refactoring (improvements in the code without changes in functionality)
+- [ ] Other (documentation, Azure DevOps files, tests)
+
+### Checklist
+
+Verify the following BEFORE creating a pull request and tick off the items.
+
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have merged changes from the main to this branch
+- [ ] The generated REST API models are up-to-date
+- [ ] All unit tests pass locally with my changes
+- [ ] My changes generate no new warnings or code analysis issues
+- [ ] README files are up-to-date

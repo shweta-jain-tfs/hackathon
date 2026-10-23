@@ -1,0 +1,246 @@
+# Builds and publishes an artifact of pharos which can be used in deploys.
+
+trigger: 
+- main
+
+parameters:
+- name: dllVersionTag
+  default: 0.11.0
+- name: parameterUpdatePackageVersion
+  default: '10003'
+- name: EnableExtendedTestLogging
+  displayName: Enable Extended Test Logging
+  default: false
+  type: boolean
+- name: EnableRequirementUnitTestTraceability
+  displayName: Enable Requirement and Unit Test Mapping
+  default: false
+  type: boolean
+- name: RequirementUnitTestTraceabilityReportFormat
+  displayName: Requirement and Unit Test Mapping Report Format
+  default: html
+  type: string
+  values:
+  - html
+  - csv
+
+pool:
+  name: Development
+
+resources:
+  repositories:
+    - repository: sharedPipeline # Name to reference this repository at a later step
+      type: git
+      name: "TetrisSoftware/SharedPipelineTemplates"
+
+variables:
+- group: PRBuild
+- name: nodeVersion
+  value: '20.11.0'
+- name: dotNetVersion
+  value: '10.0.402'
+- name: buildConfiguration
+  value: 'Release'
+- group: JFrogArtifactory
+- name: branchSpecificVersion
+  value: $[replace(replace('True',eq(variables['Build.SourceBranchName'], 'main'), '0.1.0'),'True','${{ parameters.dllVersionTag }}')]
+- name: softwareDeviceIdentifier
+  value: '00000000000000'
+- name: softwareManufactureDate
+  value: $[format('{0:yyyy\-MM\-dd}', pipeline.startTime)]
+
+name: $(Build.SourceBranchName).$(Build.BuildId)
+
+stages:
+- stage: Build
+  displayName: Build Stage
+  jobs:
+    - job: Build
+      steps:
+      - task: JfrogCliV2@1
+        displayName: Init Build info for JFrog Artifactory
+        inputs:
+          jfrogPlatformConnection: 'JFrogPlatformServiceConnection'
+          command: |
+            jf rt bdi $(XRAY_BUILD_NAME)
+          workingDirectory: '$(Build.SourcesDirectory)'
+      - template: .azuredevops/templates/build-npm-step.yml@sharedPipeline
+        parameters:
+          nodeVersion: '$(nodeVersion)'
+          buildNumber: '$(branchSpecificVersion).$(Build.BuildId)'
+          webPath: '$(Build.SourcesDirectory)\Src\Pharos.Common.Web'
+          jfNpmRepoName: '$(JF_NPM_REPO_NAME)'
+          jfXrayBuildName: '$(XRAY_BUILD_NAME)'
+      
+      - template: .azuredevops/templates/build-dot-net-prerequisite-step.yml@sharedPipeline
+        parameters:
+          nugetConfigPath: '$(Build.SourcesDirectory)\nuget.config'
+          nugetRestoreProjects: '$(Build.SourcesDirectory)\Pharos.sln'
+          sdkVersion: '$(dotNetVersion)'
+          toolsDirectory: '$(Agent.ToolsDirectory)'
+
+      - task: JfrogCliV2@1
+        displayName: Build .Net Solution via JFrog CLI
+        inputs:
+          jfrogPlatformConnection: 'JFrogPlatformServiceConnection'
+          command: |
+            jf dotnet-config --repo-resolve=$(JF_NUGET_REPO_NAME)
+            jf dotnet build --configuration $(buildConfiguration) --build-name=$(XRAY_BUILD_NAME) --build-number=$(branchSpecificVersion).$(Build.BuildId) --no-restore -p:Version=$(branchSpecificVersion).$(Build.BuildId) -p:SoftwareDeviceIdentifier=$(softwareDeviceIdentifier) -p:SoftwareManufactureDate=$(softwareManufactureDate) -p:TreatWarningsAsErrors=true -p:CodeAnalysisTreatWarningsAsErrors=false
+          workingDirectory: '$(Build.SourcesDirectory)'
+        continueOnError: false
+
+      - ${{ if ne(variables['Build.SourceBranchName'], 'main') }}:
+        - template: templates/run-and-publish-xunit-test.yml
+          parameters:
+            buildConfiguration: '$(buildConfiguration)'
+            buildSourcesDirectory: '$(Build.SourcesDirectory)'
+            sqlPassword: '$(SQLPass)'
+            tempDirectory: '$(Agent.TempDirectory)'
+            agentName: '$(Agent.Name)'
+            enableExtendedTestLogging: ${{ parameters.EnableExtendedTestLogging }}
+
+      - task: DotNetCoreCLI@2
+        displayName: dotnet publish backend
+        name: PublishBackendProject
+        env:
+        # We don't want to run nswag here as the API is generated locally
+          ASPNETCORE_RUNNSWAG: false
+        inputs:
+          command: publish
+          projects: '$(Build.SourcesDirectory)\Src\Pharos.Server\Pharos.Server.csproj'
+          publishWebProjects: false
+          arguments: '-c $(BuildConfiguration) -p:Version=$(branchSpecificVersion).$(Build.BuildId) -p:SoftwareDeviceIdentifier=$(softwareDeviceIdentifier) -p:SoftwareManufactureDate=$(softwareManufactureDate) --output $(Build.ArtifactStagingDirectory)/output --self-contained true -p:PublishDocumentationFile=false'
+          zipAfterPublish: False
+           
+      # Publishes the artifact, the artifact can then be used in other pipelines or downloaded in the pipeline result after a succsefull run.
+      - task: PublishBuildArtifacts@1
+        inputs:
+            pathToPublish: $(Build.ArtifactStagingDirectory)
+            artifactName: 'Pharos'
+
+    # Only generate the job when a run explicitly requests the mapping report or for release branches.
+    - ${{ if or(parameters.EnableRequirementUnitTestTraceability, startsWith(variables['Build.SourceBranch'], 'refs/heads/Releases/')) }}:
+      - template: .azuredevops/templates/requirement-unit-test-traceability.yml@sharedPipeline
+        parameters:
+          enabled: true
+          dependsOn: Build
+          condition: succeeded()
+          sourcePath: '$(Build.SourcesDirectory)\Tests'
+          productVersion: '$(branchSpecificVersion).$(Build.BuildId)'
+          reportFormat: ${{ parameters.RequirementUnitTestTraceabilityReportFormat }}
+      
+    # Both installer jobs only depend on Build (not on each other), so they run in parallel.
+    - template: templates/create-installer-job.yml
+      parameters:
+        jobName: Create_installer
+        installerFlavor: Production
+        publishPath: '$(Pipeline.Workspace)\Pharos\output\Pharos.Server'
+        installerOutputDirectory: '$(Build.SourcesDirectory)\Installer\PharosInstaller\bin\x64\$(buildConfiguration)\Production'
+        artifactName: 'PharosInstaller'
+        parameterUpdatePackageVersion: '${{ parameters.parameterUpdatePackageVersion }}'
+        preBuildSteps:
+        # Delete the download path if it exists to ensure we start fresh
+        - task: PowerShell@2
+          displayName: 'Delete previous installer download path'
+          inputs:
+              targetType: 'inline'
+              script: |
+                  if (Test-Path "$(Pipeline.Workspace)\Pharos\output\Pharos.Server") {
+                      Remove-Item -Path "$(Pipeline.Workspace)\Pharos\output\Pharos.Server" -Recurse -Force
+                  }
+
+        # Download the artifact from the previous job
+        - task: DownloadBuildArtifacts@0
+          displayName: 'Download Build Artifacts'
+          inputs:
+            artifactName: 'Pharos'
+            downloadPath: '$(Pipeline.Workspace)'
+
+        # The test environment settings file must not ship inside the production package
+        - task: PowerShell@2
+          displayName: 'Remove test environment settings from production staging'
+          inputs:
+            targetType: 'inline'
+            script: |
+              $testSettings = "$(Pipeline.Workspace)\Pharos\output\Pharos.Server\appsettings.TestEnvironment.json"
+              if (Test-Path $testSettings) {
+                  Remove-Item -Path $testSettings -Force
+                  Write-Host "Removed $testSettings"
+              }
+
+    # Builds a second installer with the same version from the same publish output, but with
+    # appsettings.TestEnvironment.json applied as appsettings.Production.json.
+    - template: templates/create-installer-job.yml
+      parameters:
+        jobName: Create_test_installer
+        installerFlavor: TestEnvironment
+        publishPath: '$(Pipeline.Workspace)\PharosTest\output\Pharos.Server'
+        installerOutputDirectory: '$(Build.SourcesDirectory)\Installer\PharosInstaller\bin\x64\$(buildConfiguration)\TestEnvironment'
+        artifactName: 'PharosTestInstaller'
+        parameterUpdatePackageVersion: '${{ parameters.parameterUpdatePackageVersion }}'
+        fileNamePrefix: 'Pharos-TestEnvironment-'
+        preBuildSteps:
+        # Delete previous download/staging paths and installer output to ensure we start fresh
+        - task: PowerShell@2
+          displayName: 'Delete previous test installer paths'
+          inputs:
+              targetType: 'inline'
+              script: |
+                  foreach ($path in @(
+                      "$(Pipeline.Workspace)\PharosTestDownload",
+                      "$(Pipeline.Workspace)\PharosTest",
+                      "$(Build.SourcesDirectory)\Installer\PharosInstaller\bin\x64\$(buildConfiguration)\TestEnvironment")) {
+                      if (Test-Path $path) {
+                          Remove-Item -Path $path -Recurse -Force
+                      }
+                  }
+
+        # Download the artifact from the previous job
+        - task: DownloadBuildArtifacts@0
+          displayName: 'Download Build Artifacts'
+          inputs:
+            artifactName: 'Pharos'
+            downloadPath: '$(Pipeline.Workspace)\PharosTestDownload'
+
+        - task: PowerShell@2
+          displayName: 'Stage test publish output'
+          inputs:
+            targetType: 'inline'
+            script: |
+              $source = "$(Pipeline.Workspace)\PharosTestDownload\Pharos\output\Pharos.Server"
+              if (-not (Test-Path $source)) {
+                  throw "Could not find the downloaded publish output at $source"
+              }
+              New-Item -ItemType Directory -Force -Path "$(Pipeline.Workspace)\PharosTest\output\Pharos.Server" | Out-Null
+              Copy-Item -Path "$source\*" -Destination "$(Pipeline.Workspace)\PharosTest\output\Pharos.Server" -Recurse -Force
+              Write-Host "Staged test publish output at $(Pipeline.Workspace)\PharosTest\output\Pharos.Server"
+
+        - task: PowerShell@2
+          displayName: 'Apply test environment configuration'
+          inputs:
+            targetType: 'inline'
+            script: |
+              $stagingDirectory = "$(Pipeline.Workspace)\PharosTest\output\Pharos.Server"
+              $sourcePath = Join-Path $stagingDirectory 'appsettings.TestEnvironment.json'
+              $targetPath = Join-Path $stagingDirectory 'appsettings.Production.json'
+
+              if (-not (Test-Path -LiteralPath $sourcePath -PathType Leaf)) {
+                  throw "Could not find the test environment settings file: $sourcePath"
+              }
+
+              Remove-Item -LiteralPath $targetPath -Force -ErrorAction SilentlyContinue
+              Rename-Item -LiteralPath $sourcePath -NewName 'appsettings.Production.json'
+              Write-Host "Replaced appsettings.Production.json with appsettings.TestEnvironment.json in $stagingDirectory"
+
+    - job: JFrogXrayPublish
+      dependsOn:
+      - Create_installer
+      - Create_test_installer
+      steps:
+      - task: JfrogCliV2@1
+        displayName: Publish Pharos Build Info to JFrog XRay
+        inputs:
+          jfrogPlatformConnection: 'JFrogPlatformServiceConnection'
+          command: |
+            jf rt bp $(XRAY_BUILD_NAME) $(branchSpecificVersion).$(Build.BuildId)
+          workingDirectory: '$(Build.SourcesDirectory)'

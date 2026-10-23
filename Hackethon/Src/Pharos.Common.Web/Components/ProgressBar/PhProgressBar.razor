@@ -1,0 +1,10 @@
+﻿<div class="@Classname" disabled="@Disabled">
+    <div class="ph-progress__bar" style="@ProgressStyle">
+    </div>
+    @if (ShowValueText)
+    {
+        <span>
+            @_displayValue.ToString() @(_displayValue == 1 ? $" {UnitTextSingular}" : $" {UnitTextPlural}")
+        </span>
+    }
+</div>

@@ -1,0 +1,38 @@
+﻿@using Pharos.Client.Common.Models
+@using Pharos.Common.Web.Utilities
+@using Pharos.Common.Web.Components.Icons
+
+<div class="@LiquidBottleCss">
+    @if (ShowLiquidFill)
+    {
+        <div class="ph-liquid-bottle-view__liquid-fill" style="@FillStyle"></div>
+    }
+    <div class="ph-liquid-bottle-view__center-icon-text">
+        @if (Container.Status == ReagentPositionStatus.Disabled)
+        {
+            <PhIcon IconType="IconType.Disconnected" Size="IconSize.Xl" />
+        }
+        else if (IsErrorStatus)
+        {
+            <div class="ph-liquid-bottle-view__error-content">
+                <PhStatusIcon Icon="StatusIconType.Warning" Size="StatusIconSize.Lg" />
+                <span class="t-body1 font-bold">@GetErrorText()</span>
+            </div>
+        }
+        else if (Container.IsPipedEnabled)
+        {
+            <span class="t-body1">@GetPipedText()</span>
+        }
+        else if (ShowLiquidFill && !Container.IsPipedEnabled)
+        {
+            <span class="t-body1">@Container.Percentage %</span>
+            @if (Container.FillOrEmpty != FillOrEmptyIndicationType.None)
+            {
+                <div class="ph-liquid-bottle-view__text-content">
+                    <PhStatusIcon Icon="@GetWasteIconType()" Size="StatusIconSize.Md" />
+                    <span class="t-body1 font-bold">@GetEmptyOrRefillText()</span>
+                </div>
+            }
+        }
+    </div>
+</div>

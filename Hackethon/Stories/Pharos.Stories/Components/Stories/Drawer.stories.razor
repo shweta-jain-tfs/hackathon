@@ -1,0 +1,44 @@
+﻿@using Pharos.Common.Web.Components.Drawer
+@using Pharos.Common.Web.Components.FormElements
+@attribute [Stories("Components/Drawer")]
+
+<Stories TComponent="PhDrawer">
+  
+    <Story Name="Drawer">
+        <Arguments>
+            <Arg For="_ => _.IsDrawerDim" Value="false"></Arg>
+            <Arg For="_ => _.DoorState" Value="@DoorState"></Arg>
+            <Arg For="_ => _.Name" Value="@Name"></Arg>
+            <Arg For="_ => _.IsButtonVisible" Value="true"></Arg>
+        </Arguments>
+        <Template>
+            <div style="width:368px; height:900px; border: 1px solid white;">
+                <PhDrawer @attributes="context.Args" OnUnlockDrawerClick="HandleDoorStateChanged">
+                        <Pharos.Common.Web.Components.PlaceHolder.PhPlaceHolder Title="Tray 1"></Pharos.Common.Web.Components.PlaceHolder.PhPlaceHolder>
+                        <Pharos.Common.Web.Components.PlaceHolder.PhPlaceHolder Title="Tray 2"></Pharos.Common.Web.Components.PlaceHolder.PhPlaceHolder>
+                        <Pharos.Common.Web.Components.PlaceHolder.PhPlaceHolder Title="Tray 3"></Pharos.Common.Web.Components.PlaceHolder.PhPlaceHolder>
+                        <Pharos.Common.Web.Components.PlaceHolder.PhPlaceHolder Title="Tray 4"></Pharos.Common.Web.Components.PlaceHolder.PhPlaceHolder>
+                </PhDrawer>
+            </div>
+        </Template>
+    </Story>
+</Stories>
+
+@code {
+    public string Name { get; set; } = "Drawer A";
+    public PhDrawerLockState DoorState { get; set; } = PhDrawerLockState.ClosedLocked;
+    
+    private void HandleDoorStateChanged()
+    {
+        // Toggle the lock state between ClosedLocked and OpenUnlocked randomly
+        var random = new Random();
+        if (DoorState == PhDrawerLockState.ClosedLocked)
+        {
+            DoorState = random.Next(0, 2) == 0 ? PhDrawerLockState.Open : PhDrawerLockState.ClosedLocked;
+        }
+        else
+        {
+            DoorState = PhDrawerLockState.ClosedLocked;
+        }
+    }
+}

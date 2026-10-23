@@ -1,0 +1,21 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+
+.ph-chart-card-list {
+    @include rounded.rounded;
+    --ph-bg-color: #{colors.$layer-primary};
+    background: var(--ph-bg-color);
+    padding: spacing.$padding-sm;
+    padding-bottom: spacing.$padding-xs;
+
+    &__scroll-area {
+        overflow-x: auto;
+        padding-bottom: spacing.$gap-xs;
+    }
+    
+    &__list {
+        display: flex;
+        gap: spacing.$gap-gutter;
+    }
+}

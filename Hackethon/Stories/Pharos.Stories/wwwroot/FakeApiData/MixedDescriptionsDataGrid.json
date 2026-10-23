@@ -1,0 +1,122 @@
+[
+  {
+    "Id": 0,
+    "Firstname": "Alexandra Mercedes",
+    "Lastname": "Thompson-Williams",
+    "DateAndTimeOfBirth": "1985-03-15T14:30:22.1234567+01:00",
+    "HasLongFirstName": true,
+    "Description": "Long description that contains multiple sentences and provides extensive details about this particular data grid item. This description spans several lines and includes comprehensive information about various aspects of the item, making it quite lengthy and detailed for testing purposes in the data grid component."
+  },
+  {
+    "Id": 1,
+    "Firstname": "Jim",
+    "Lastname": "Smith",
+    "DateAndTimeOfBirth": "1965-01-30T08:20:15.7777777+01:00",
+    "HasLongFirstName": false,
+    "Description": "Short text here."
+  },
+  {
+    "Id": 2,
+    "Firstname": "Sebastian Alexander Benjamin",
+    "Lastname": "O'Connor-Murphy",
+    "DateAndTimeOfBirth": "1988-05-12T11:35:29.3333333+02:00",
+    "HasLongFirstName": true,
+    "Description": ""
+  },
+  {
+    "Id": 3,
+    "Firstname": "Sue",
+    "Lastname": "Brown",
+    "DateAndTimeOfBirth": "1990-08-25T15:33:42.2222222+02:00",
+    "HasLongFirstName": false,
+    "Description": "Line-break description that contains\nmultiple lines of text separated by\nline breaks for testing how the grid\nhandles multi-line content properly."
+  },
+  {
+    "Id": 4,
+    "Firstname": "Anastasia Penelope Grace",
+    "Lastname": "Williamson-Rodriguez",
+    "DateAndTimeOfBirth": "1995-09-07T13:48:33.8888888+02:00",
+    "HasLongFirstName": true,
+    "Description": "UnbrokenStringThatIsVeryLongAndContainsNoSpacesOrBreaksToTestHowTheDataGridHandlesExtremeleLongWordsAndText"
+  },
+  {
+    "Id": 5,
+    "Firstname": "Max",
+    "Lastname": "Johnson",
+    "DateAndTimeOfBirth": "1972-12-01T19:22:55.1111111+01:00",
+    "HasLongFirstName": false,
+    "Description": null
+  },
+  {
+    "Id": 6,
+    "Firstname": "Montgomery Fitzgerald",
+    "Lastname": "Anderson-Campbell",
+    "DateAndTimeOfBirth": "1983-04-18T07:15:08.4444444+02:00",
+    "HasLongFirstName": true,
+    "Description": "Short note."
+  },
+  {
+    "Id": 7,
+    "Firstname": "Bob",
+    "Lastname": "Wilson",
+    "DateAndTimeOfBirth": "1963-07-20T06:14:23.7500000+02:00",
+    "HasLongFirstName": false,
+    "Description": "Line-break text with\nseveral lines that\nbreak at different points\nto test rendering."
+  },
+  {
+    "Id": 8,
+    "Firstname": "Genevieve Charlotte Marie",
+    "Lastname": "Patterson-Mitchell",
+    "DateAndTimeOfBirth": "1976-06-14T10:58:17.6666666+02:00",
+    "HasLongFirstName": true,
+    "Description": ""
+  },
+  {
+    "Id": 9,
+    "Firstname": "Tom",
+    "Lastname": "White",
+    "DateAndTimeOfBirth": "1979-09-30T16:08:45.9375000+02:00",
+    "HasLongFirstName": false,
+    "Description": "Long description that provides detailed information about this specific data grid item, including various characteristics and properties that need to be tested within the grid component. This description is intentionally verbose and comprehensive to ensure proper handling of lengthy text content in the user interface."
+  },
+  {
+    "Id": 10,
+    "Firstname": "Isabella Sophia Catherine",
+    "Lastname": "Richardson-Edwards",
+    "DateAndTimeOfBirth": "1987-02-28T17:41:36.5000000+01:00",
+    "HasLongFirstName": true,
+    "Description": "Short summary."
+  },
+  {
+    "Id": 11,
+    "Firstname": "Ann",
+    "Lastname": "Davis",
+    "DateAndTimeOfBirth": "1970-03-11T14:25:31.0625000+02:00",
+    "HasLongFirstName": false,
+    "Description": "Line-break content that spans\nmultiple lines with various\nbreaks to test how the component\nhandles this type of formatting."
+  },
+  {
+    "Id": 12,
+    "Firstname": "Bartholomew Augustus",
+    "Lastname": "De La Cruz-Santos",
+    "DateAndTimeOfBirth": "1981-10-09T12:27:51.9999999+01:00",
+    "HasLongFirstName": true,
+    "Description": ""
+  },
+  {
+    "Id": 13,
+    "Firstname": "Jane",
+    "Lastname": "Miller",
+    "DateAndTimeOfBirth": "1992-04-22T08:45:12.3456789+02:00",
+    "HasLongFirstName": false,
+    "Description": "Long description containing multiple paragraphs of information that detail various aspects of this data grid item. The description includes comprehensive details about the item's properties, characteristics, and other relevant information that would typically be found in a detailed record or database entry."
+  },
+  {
+    "Id": 14,
+    "Firstname": "Victoria Anastasia Pearl",
+    "Lastname": "Adams-Robinson",
+    "DateAndTimeOfBirth": "1991-05-17T11:33:27.1875000+02:00",
+    "HasLongFirstName": true,
+    "Description": "Short text."
+  }
+]

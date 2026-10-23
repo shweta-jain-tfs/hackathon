@@ -1,0 +1,9 @@
+﻿<PhModalContent>
+    <Body>
+        <p class="text-center">@Loc["RequestorListPage_DeleteDialogBody"]</p>
+    </Body>
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => Close(ModalResult.Cancel()))">@Loc["RequestorListPage_DeleteDialogButtonSecondary"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => Close(ModalResult.Ok()))">@PrimaryButtonText</PhButton>
+    </Footer>
+</PhModalContent>

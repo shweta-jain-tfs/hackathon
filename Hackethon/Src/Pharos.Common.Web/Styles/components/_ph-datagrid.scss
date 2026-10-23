@@ -1,0 +1,332 @@
+@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+// Note: make sure to set --ph-bg-color to the color of the surface the datagrid is placed on to get the correct colors.
+
+// Contains the data grid to let it scroll on its own even if it's inside a container that scrolls on overflow.
+// Wraps around the filter rows and the quick grid.
+
+.ph-datagrid {
+    $root: &;
+    $z-frozen-column: 2;
+    $z-header-row: 3;
+    --ph-datagrid-row-height: #{size.$hit-area-lg};
+    --ph-datagrid-cell-padding: #{spacing.$padding-sm};
+    --ph-datagrid-cell-block-padding: 4px; // xxs
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    overflow: hidden; // don't overflow flex container
+    gap: spacing.$gap-xs;
+    @include text.body2;
+    color: colors.$text-secondary;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: spacing.$gap-sm;
+        min-height: size.$hit-area-md;
+        flex-shrink: 0;
+    }
+
+    &__title {
+        flex: 1;
+        min-width: fit-content;
+        @include text.h3;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: spacing.$gap-sm;
+    }
+
+    &__container {
+        position: relative; // for overlay
+        min-height: var(--ph-datagrid-row-height);
+        max-height: 90vh; // fallback to prevent an unconstrained grid from growing uncontrollably
+        overflow: auto;
+        transition: opacity linear 100ms;
+        transition-delay: 50ms;
+
+        &:has(> .ph-datagrid__overlay) {
+            // Dot net 10: disable loading opacity since the rendering flickers less and
+            // the transition gives the impression that the data is loading slower than it is.
+            
+            // opacity: 0.5;
+            // Don't want flicker if the queries are resolving almost immediately
+        }
+    }
+
+    &__overlay {
+        position: absolute; // don't affect the layout
+    }
+
+    &__content {
+        width: 100%;
+        border-spacing: 0;
+        white-space: nowrap;
+    }
+
+    thead {
+        margin-bottom: spacing.$gap-xs;
+        color: colors.$text-secondary;
+        position: relative;
+        z-index: $z-header-row; // don't let placeholder rows shine through the sticky header when scrolling
+
+        > tr {
+            position: sticky;
+            top: 0;
+        }
+    }
+
+    tr {
+        height: var(--ph-datagrid-row-height);
+        background: var(--ph-bg-color);
+    }
+
+    th {
+        height: inherit; // take row height to allow the whole cell height to be clickable
+
+        background-color: var(--ph-bg-color, colors.$background-primary); // use the background color of the surface the data grid is placed on
+        border-bottom: 1px solid colors.$border-heavy-01;
+
+        &:last-of-type {
+            width: 100%; // fill remaining space
+        }
+    }
+
+    td {
+        height: inherit;
+        padding-inline: var(--ph-datagrid-cell-padding);
+        padding-block: 0;
+        vertical-align: top;
+
+        &:last-of-type {
+            padding-inline: 0; // no padding on filler column
+        }
+    }
+
+    // The cell has a wrapper around its content to allow alignment and wrapping
+    &__cell {
+        --ph-datagrid-available-cell-height: calc(var(--ph-datagrid-row-height) - var(--ph-datagrid-cell-block-padding) * 2);            
+        box-sizing: content-box;
+
+        // Hard cap for cell width
+        max-width: size.$table-max-column-width;
+        width: max-content;
+        min-width: 100%; // fill column width (allows content to fill cell and allows text alignment)
+        white-space: normal;
+
+        // For text only cells, adjust padding to center text vertically within the row height
+        padding-block: calc((var(--ph-datagrid-row-height) - 1lh) / 2);
+
+        &[data-type="text"] {
+            // allow long text to wrap and preserve line breaks
+            // Wrap naturally at spaces; only split words if a word can't fit
+            white-space: pre-line; // preserve line breaks
+            overflow-wrap: break-word; // breaks only when needed
+            word-break: normal;
+        }
+
+        &:has(> :not(span)) {
+            // The cell has other elements than just text
+            min-height: var(--ph-datagrid-available-cell-height);
+            padding-block: var(--ph-datagrid-cell-block-padding);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        > a {
+            // Links in the cell should fill the line height
+            line-height: var(--ph-datagrid-available-cell-height);
+            min-width: size.$hit-area-md;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
+
+    $checkbox-column-class: #{&}__checkbox-column;
+    #{$checkbox-column-class} {
+        position: sticky;
+        left: 0;
+        z-index: $z-frozen-column;
+        padding-inline: var(--ph-datagrid-cell-padding);
+        background: inherit;
+        text-align: left;
+        width: 0; // shrink to fit content
+
+        // the checkbox currently reserves space around itself, so we remove the cell block padding or it won't fit in compact mode
+        --ph-datagrid-cell-block-padding: 0px;
+    }
+
+    &__fill-cell {
+        width: 100%; // fill remaining space
+    }
+    
+    &__col-title {
+        display: flex;
+        gap: spacing.$gap-xs; // Separate the sort indicator from title text
+        align-items: center;
+        height: 100%;
+        padding-inline: var(--ph-datagrid-cell-padding);
+        font-weight: text.$font-bold;
+        text-align: left;
+        cursor: default;
+        line-height: normal;
+
+        &[role=button] {
+            cursor: pointer;
+            user-select: none; // prevent text selection when clicking to sort
+        }
+
+        &--right {
+            text-align: right;
+            justify-content: flex-end;
+        }
+    }
+
+    &__wrapped-header {
+        white-space: normal;
+        min-width: fit-content;
+
+        > span {
+            white-space: nowrap;
+        }
+    }
+
+    &__sort-indicator {
+        color: colors.$icon-link;
+        display: none;
+
+        [aria-sort=ascending] &,
+        [aria-sort=descending] & {
+            display: flex;
+        }
+
+        [aria-sort=descending] & {
+            transform: rotateX(180deg);
+        }
+    }
+
+    &__row--disabled {
+        color: colors.$text-disabled;
+    }
+
+    &__row--highlighted {
+        --ph-datagrid-highlight: #{colors.$layer-selected-01};
+
+        // Skip hover for now - looks bad when sticky on touch screen
+        // &:hover {
+        //     --ph-datagrid-highlight: #{colors.$layer-selected-hover};
+        // }
+
+        > td:not(#{$checkbox-column-class})
+        {
+            background: var(--ph-datagrid-highlight);
+        }
+
+        > #{$checkbox-column-class} {
+            &:hover ~ td
+            {
+                --ph-datagrid-highlight: #{colors.$layer-selected-01};
+            }
+        }
+    }
+
+    &--zebra-stripes {
+        tbody tr:nth-of-type(odd) {
+            background-color: colors.$layer-secondary;
+        }
+    }
+
+    &--lines-between-rows {
+        td {
+            border-top: 1px solid colors.$border-subtle-02;
+        }
+
+        tr:first-of-type td {
+            border-top: none;
+        }
+
+        tr:last-of-type td {
+            border-bottom: 1px solid colors.$border-subtle-02;
+        }
+
+        // hide border for repeated values in grouped column unless a column to the left has a new value.
+        td[data-group="same"]:not(td[data-group="start"] ~ td) {
+            border-top-color: transparent;
+        }
+
+        // checkbox column follows the first grouped column's border style
+        #{$checkbox-column-class}:has(+ td[data-group="same"]) {
+            border-top-color: transparent;
+
+            > * {
+                // hide checkbox in repeated column (assume the same id was used for all rows in the group,
+                // so if one is checked, all will appear checked)
+                visibility: hidden;
+            }
+        }
+
+        /*
+         * Attempted feature (DISABLED):
+         * Sticky group-start cells.
+         *
+         * Problem:
+         * In Chrome, making grouped <td> sticky inside a Virtualize-backed grid can trigger severe
+         * scroll oscillation/flicker. When it happens, Virtualize starts requesting varying StartIndex/Count
+         * repeatedly (TotalItemCount remains stable), causing excessive data calls and "unrecoverable"
+         * jitter. Triggered intermittently by manual wheel scroll and/or scroll-position restore.
+         *
+         * z-index note (if re-enabled):
+         * - sticky group-start must be BELOW frozen columns and header (e.g., frozen=2, header=3)
+         * - next "start" cell must render above the previous sticky group-start
+         *
+         * Tried mitigations:
+         * - Making inner content sticky instead of <td> (did not stick reliably)
+         * - z-index tiering / isolation / overflow-anchor / border-collapse changes
+         * - ItemsProvider debounce/cancellation tweaks (returning last-known total on cancel, etc.)
+         *
+         * Re-enable only after confirming this no longer repros in Chrome with Virtualize.
+         */
+        /*
+        td[data-group="start"] {
+            position: relative;
+            background: var(--ph-bg-color);
+            z-index: 1;
+        }
+
+        // Only stick when the group continues into the next row (1-row lookahead).
+        tr:has(+ tr > td[data-group="same"]) > td[data-group="start"] {
+            position: sticky;
+            top: var(--ph-datagrid-row-height);
+            z-index: 0;
+        }
+        */
+    }
+
+    &--compact {
+        --ph-datagrid-row-height: #{size.$hit-area-md};
+        --ph-datagrid-cell-padding: #{spacing.$padding-sm};
+    }
+
+    &--minimal {
+        --ph-datagrid-row-height: #{size.$hit-area-sm};
+        --ph-datagrid-cell-padding: #{spacing.$padding-sm};
+        @include text.helper-text;
+    }
+
+    &--whole-page-header {
+        // bigger gap when used with h2 title (whole page grid)
+        gap: spacing.$gap-gutter;
+
+        #{$root}__title {
+            @include text.h2;
+        }
+    }
+}

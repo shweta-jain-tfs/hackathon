@@ -1,0 +1,66 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.Modal
+@using Pharos.Stories.Components.Stories.Views
+@attribute [Stories("Components/ModalStatus")]
+@inject IModalService Modal
+
+<Stories TComponent="PhModal">
+
+    <Story Name="Modal Information">
+
+        <Template>
+            <PhModal @attributes="context.Args" />
+            <PhButton OnClick="@(() => OpenModalDefault(ModalSize.Medium, ModalStatus.Info))">Show Information Modal</PhButton>
+            <PhLabel Text="@_modalResult" />
+        </Template>
+
+    </Story>
+
+    <Story Name="Modal Warning">
+
+        <Template>
+            <PhModal @attributes="context.Args" />
+            <PhButton OnClick="@(() => OpenModalDefault(ModalSize.Medium, ModalStatus.Warning))">Show Warning Modal</PhButton>
+            <PhLabel Text="@_modalResult" />
+        </Template>
+
+    </Story>
+
+    <Story Name="Modal Alarm">
+
+        <Template>
+            <PhModal @attributes="context.Args" />
+            <PhButton OnClick="@(() => OpenModalDefault(ModalSize.Medium, ModalStatus.Alarm))">Show Alarm Modal</PhButton>
+            <PhLabel Text="@_modalResult" />
+        </Template>
+
+    </Story>
+
+    <Story Name="Modal Default">
+
+        <Template>
+            <PhModal @attributes="context.Args" />
+            <PhButton OnClick="@(() => OpenModalDefault(ModalSize.Medium, ModalStatus.Default))">Show Alarm Modal</PhButton>
+            <PhLabel Text="@_modalResult" />
+        </Template>
+
+    </Story>
+
+</Stories>
+
+@code {
+    private string? _modalResult;
+
+    private async Task OpenModalDefault(ModalSize modalSize, ModalStatus status)
+    {
+        var modal = Modal.Show<ModalSimpleView>(new ModalOptions() { Title = "Modal Story View", ModalWidth = modalSize, ModalHeight = modalSize, Status  = status});
+
+        var result = await modal.Result;
+
+        if (!result.Canceled)
+        {
+            _modalResult = result?.Data?.ToString();
+        }
+    }
+}

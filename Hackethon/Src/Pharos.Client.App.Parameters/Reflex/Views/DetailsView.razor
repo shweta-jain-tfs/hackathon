@@ -1,0 +1,64 @@
+﻿@using Pharos.Common.Web.Components.ConditionalIndentContent
+@using Pharos.Common.Web.Components.FormElements.RadioButton
+@inherits ComponentBase
+
+<PhInputColumn>
+    <PhLabel Text="@Loc["ReflexDetailPage_Automatic_Header"]" Disabled="@(IsEmptyDefinitionName())">
+        <PhRadioGroup @bind-SelectedValue="ViewModel.Automatic" DisplayOnly="!ViewModel.CanEdit">
+            <PhRadioButton Value="true" Label=@Loc["ReflexDetailPage_Automatic_True"] Disabled="@(IsEmptyDefinitionName())"></PhRadioButton>
+            <PhRadioButton Value="false" Label=@Loc["ReflexDetailPage_Automatic_False"] Disabled="@(IsEmptyDefinitionName())"></PhRadioButton>
+        </PhRadioGroup>
+    </PhLabel>
+    
+    @if (ViewModel.UiSettings.RequestSettings.IsRequestorInformationEnabled)
+    {
+        @if (ViewModel.RequestorViewModel.CanEditRequestorInfo)
+        {
+            <PhConditionalIndentContent ShowContent="@ViewModel.HasRequestorEnabled">
+                <ParentContent>
+                    <PhCheckBox Label="@Loc["ReflexDetailPage_HasRequestorId"]"
+                                @bind-Value="ViewModel.HasRequestorEnabled"
+                                Disabled="@(IsEmptyDefinitionName())"/>
+                </ParentContent>
+
+                <ConditionalContent>
+                    <div class="flex flex-wrap gap-md">
+                        <PhLabel Text="@Loc["ReflexDetailPage_Requestor"]">
+                            <PhAutocomplete TValue="Requestor"
+                                            Result="ViewModel.RequestorViewModel.GetRequestors"
+                                            Value="ViewModel.RequestorViewModel.Model"
+                                            ValueChanged="ViewModel.RequestorViewModel.SelectRequestor"
+                                            SelectedText="FormatRequestor"
+                                            Row1Text="@(x => string.IsNullOrWhiteSpace(x.Name) ? "–" : x.Name)"
+                                            Row2Text="@(x => x.RequestorId)"
+                                            PlaceHolder="@Loc["ReflexDetailPage_SearchByIdOrName"]"
+                                            Size="TextBoxSize.Large"
+                                            Disabled="@(IsEmptyDefinitionName())"
+                                            NoResultsText="@Loc["ReflexDetailPage_NoResultsFound"]"
+                                            FooterTextFormat="@Loc["ReflexDetailPage_FooterTextFormat"]"/>
+                        </PhLabel>
+                        <PhLabel IsBlankKeepDistance>
+                            <PhHrefLink LinkSize="LinkSize.Body1" OnClick="ViewRequestorDetails" Disabled="@(string.IsNullOrWhiteSpace(ViewModel.RequestorId))">
+                                @Loc["ReflexDetailPage_ViewDetails"]
+                            </PhHrefLink>
+                        </PhLabel>
+                    </div>
+                </ConditionalContent>
+            </PhConditionalIndentContent>
+        }
+        else if (ViewModel.RequestorViewModel.CanViewRequestorInfo)
+        {
+            <PhLabel Text="@Loc["ReflexDetailPage_Requestor"]" RenderAsLabel="false">
+                <PhValueBox Size="TextBoxSize.Large">
+                    @if (ViewModel.RequestorViewModel.Model.Id != 0)
+                    {
+                        <PhHrefLink LinkSize="LinkSize.Body1" OnClick="ViewRequestorDetails">
+                            @FormatRequestor(ViewModel.RequestorViewModel.Model)
+                        </PhHrefLink>
+                    }
+                </PhValueBox>
+            </PhLabel>
+        }
+    }
+
+</PhInputColumn>

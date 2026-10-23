@@ -1,0 +1,14 @@
+﻿@inherits ComponentWithClientScriptBase
+
+<nav class="ph-subnav-menu">
+    <ul @ref="_scrollElement" @onclick="SaveScrollPosition">
+        @ChildContent
+    </ul>
+
+    @if (BottomElement != null)
+    {
+        <div class="ph-subnav-menu__footer">
+            @BottomElement
+        </div>
+    }
+</nav>

@@ -1,0 +1,101 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+
+.reagent-carrier {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--ph-carrier-icon-size);
+    height: var(--ph-carrier-icon-size);
+    position: relative;
+
+    &__status-icon-overlay {
+        transform: scale(var(--ph-carrier-scale));
+    }
+
+    &__carrier-slot {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include rounded.rounded-full;
+        color: colors.$icon-subtle;
+        width: var(--ph-carrier-slot-size);
+        height: var(--ph-carrier-slot-size);
+
+        &--not-identified {
+            color: colors.$reagent-carrier-not-identified;
+            background: colors.$reagent-carrier-not-identified;
+        }
+
+        &--unload {
+            position: relative;
+            color: colors.$unload-status;
+            background: colors.$unload-status;
+        }
+
+        > svg {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &--small {
+        --ph-carrier-icon-size: 24px;
+        --ph-carrier-slot-size: 20px;
+        --ph-carrier-unload-size: 14px;
+        --ph-carrier-scale: 1;
+    }
+
+    &--large {
+        --ph-carrier-icon-size: 48px;
+        --ph-carrier-slot-size: 32px;
+        --ph-carrier-unload-size: 24px;
+        background: colors.$reagent-carrier-slot-background;
+        @include rounded.rounded;
+        --ph-carrier-scale: 1.2;
+        position: relative;
+    }
+
+    &--selected {
+        background: colors.$layer-selected-02;
+        border: 2px solid colors.$layer-selected-03;
+
+        &:active {
+            background: colors.$layer-selected-pressed;
+            border: 2px solid colors.$border-active;
+        }
+    }
+
+    &--scan {
+        visibility: hidden;
+    }
+
+    &--highlighted {
+        position: relative;
+        background: colors.$highlighted-tube-background;
+        z-index: 1;
+    }
+
+    &--dim {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            background: colors.$tube-dim-overlay;
+            z-index: 1;
+        }
+    }
+
+    &__unload-requested-overlay {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        pointer-events: none;
+    }
+}

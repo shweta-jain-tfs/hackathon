@@ -1,0 +1,19 @@
+@using Pharos.Client.App.ServiceTools.ViewModels.RequestGenerator
+@using Pharos.Common.Web.Components.FormElements.Enums
+
+<div class="ph-request-generator__preview">
+    <PhDataGrid TGridItem="RequestPreview"
+                StateID="request-generator-preview"
+                Items="@ViewModel.PreviewItems.AsQueryable()"
+                SelectionType="SelectionTypeEnum.Off"
+                HideTotalCount="true"
+                RowType="RowTypeEnum.LinesBetweenRows">
+        <Columns>
+            <Column Title="@Loc["RequestGenerator_No"]" Property="@(x => x.Id)" />
+            <Column Title="@Loc["RequestGenerator_SampleIdColumn"]" Property="@(x => x.SampleId)" />
+            <Column Title="@Loc["RequestGenerator_Tests"]" Property="@(x => x.Tests)" />
+            <Column Title="@Loc["RequestGenerator_Tray"]" Property="@(x => x.Tray)" />
+            <Column Title="@Loc["RequestGenerator_TrayPosition"]" Property="@(x => x.TrayPosition)" />
+        </Columns>
+    </PhDataGrid>
+</div>

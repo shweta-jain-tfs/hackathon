@@ -1,0 +1,118 @@
+{
+  "AllowedHosts": "*",
+
+  "ConnectionStrings": {
+    "Default": "Server=localhost;TrustServerCertificate=True;Trusted_Connection=True;Database=Pharos;MultipleActiveResultSets=True;Column Encryption Setting=Enabled;Attestation Protocol=None;",
+    "Audit": "Server=localhost;TrustServerCertificate=True;Trusted_Connection=True;Database=AuditTrail;MultipleActiveResultSets=True;"
+  },
+  "Kestrel": {
+    "Certificates": {
+      "Default": {
+        "Location": "LocalMachine",
+        "Store": "My",
+        "Subject": "localhost",
+        "AllowInvalid": false
+      }
+    },
+    "Endpoints": {
+      "Http": {
+        "Url": "http://localhost:5128"
+      },
+      "Grpc": {
+        "Url": "http://localhost:9876",
+        "Protocols": "Http2"
+      },
+      "Https": {
+        "Url": "https://localhost:7042"
+      }
+    }
+  },
+
+  "DataProtection": {
+    "EnableDataProtection": true,
+    "ColumnMasterKey": {
+      "StoreLocation": "LocalMachine",
+      "StoreName": "My"
+    }
+  },
+
+  "Serilog": {
+    "Using": [
+      "Serilog.Sinks.Console",
+      "Serilog.Sinks.File"
+    ],
+    "MinimumLevel": {
+      "Default": "Debug",
+      "Override": {
+        "Default": "Information",
+        "Microsoft": "Warning",
+        "System": "Warning",
+        "Microsoft.Hosting.Lifetime": "Information",
+        "Grpc": "Warning",
+        "Quartz": "Information"
+      }
+    },
+    "Properties": {
+      "Application": "Pharos Server"
+    },
+    "Enrich": [
+      "FromLogContext"
+    ],
+    "WriteTo": [
+      {
+        "Name": "Async",
+        "Args": {
+          "configure": [
+            {
+              "Name": "Logger",
+              "Args": {
+                "configureLogger": {
+                  "WriteTo": [
+                    {
+                      "Name": "Console",
+                      "Args": {
+                        "outputTemplate": "{Timestamp:HH:mm:ss}|{Level:u3}|{Message}|{Notification}{Command}{NewLine}{Exception}",
+                        "restrictedToMinimumLevel": "Information",
+                        "includesScopes": true
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "Name": "Async",
+        "Args": {
+          "configure": [
+            {
+              "Name": "Logger",
+              "Args": {
+                "configureLogger": {
+                  "WriteTo": [
+                    {
+                      "Name": "File",
+                      "Args": {
+                        "path": "%PROGRAMDATA%\\Thermo Fisher Scientific\\Pharos\\Logs\\pharos-log-.txt",
+                        "formatter": {
+                          "type": "Serilog.Templates.ExpressionTemplate, Serilog.Expressions",
+                          "template": "{ {@t, @l, Trace: @tr, Src: SourceContext, @mt, ..@p, SourceContext: undefined(), Application: undefined(), EventId: undefined()} }\n",
+                          "includesScopes": true
+                        },
+                        "rollingInterval": "Day",
+                        "retainedFileCountLimit": null,
+                        "rollOnFileSizeLimit": true
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,125 @@
+@use '../abstracts/colors';
+@use '../abstracts/spacing';
+@use '../abstracts/size';
+@use '../abstracts/typography' as text;
+@use '../abstracts/rounded';
+
+.bottle-position {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: spacing.$gap-sm;
+    z-index: 1;
+
+    &__loading-indicator {
+        position: absolute;
+        z-index: 10;
+        color: colors.$reagent-bottle-slot-background;
+        transform: translateX(-50%);
+
+        &--rectangle {
+            top: -165px;
+            left: 50%;
+        }
+
+        &--circle {
+            left: 70%;
+
+            &--top {
+                top: -140px;
+            }
+
+            &--bottom {
+                top: -300px;
+            }
+        }
+    }
+
+    &--circle {
+        flex-direction: row;
+        height: 112px;
+        position: relative;
+
+        &--selected {
+            display: flex;
+
+            &::after {
+                content: "";
+                position: absolute;
+                background-color: colors.$layer-selected-02;
+                inset: -10px;
+                border: 4px solid colors.$layer-selected-03;
+                border-radius: rounded.$drawer-rounded;
+                z-index: -1;
+            }
+        }
+    }
+
+    &__circle-row {
+        display: flex;
+        gap: spacing.$gap-md;
+        width: 196px;
+        position: relative;
+        z-index: 1;
+    }
+
+    &__label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: text.$font-bold;
+        @include text.body1;
+        width: 56px;
+        height: 56px;
+
+        &--inuse {
+            color: colors.$text-primary;
+            border: 4px solid colors.$border-primary;
+            @include rounded.rounded-full;
+        }
+    }
+
+    &--selected {
+        display: flex;
+
+        &::after {
+            content: "";
+            position: absolute;
+            background-color: colors.$layer-selected-02;
+            width: 160px;
+            height: 352px;
+            inset: -16px;
+            border: 4px solid colors.$layer-selected-03;
+            border-radius: rounded.$drawer-rounded;
+            z-index: -1;
+        }
+    }
+
+    &--highlighted {
+        position: relative;
+
+        &::before {
+            content: "";
+            position: absolute;
+            background: colors.$highlighted-tube-background;
+            border-radius: rounded.$drawer-rounded;
+            z-index: -1;
+            inset: -10px;
+        }
+    }
+
+    &--dim {
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            background: colors.$tube-dim-overlay;
+            border-radius: rounded.$drawer-rounded;
+            pointer-events: none;
+            z-index: 2;
+            inset: -10px;
+        }
+    }
+}

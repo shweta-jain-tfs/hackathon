@@ -1,0 +1,37 @@
+@using Pharos.Common.Web.Components.DataGrid
+@using Pharos.Common.Web.Components.DataGrid.Columns
+@using Pharos.Common.Web.Components.DockedButtonRow
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Models.DataGrid
+
+<PhDockedButtonRow>
+    <ChildContent>
+        <PhDataGrid @ref="_dataGrid"
+                    TableTitle="@GetTitle()"
+                    StateID="internaldilutionplates"
+                    TGridItem="InternalDilutionPlate"
+                    ItemsProvider="ViewModel.ProvideItems"
+                    SelectionType="SelectionTypeEnum.MultiSelectWithSelectAll"
+                    HideTotalCount="true"
+                    OnSelectedItemsChanged="ViewModel.OnSelectedItemsChanged"
+                    RowType="RowTypeEnum.LinesBetweenRows"
+                    DefaultSortColumn="@nameof(DrawerDilutionPlate.Id)"
+                    DefaultSortDirection="SortDirection.Ascending">
+            <Columns>
+                <Column Property="@(x => x.Id)" Visible="false" />
+                <Column Title="@Loc["InventoryPage_DilutionPlatesTab_InternalGridColumn_Position"]" Property="@(x => x.Position)" Sortable="true" />
+                <Column Title="@Loc["InventoryPage_DilutionPlatesTab_InternalGridColumn_FreeWells"]" Property="@(x => x.FreeWells)" Sortable="true" />
+                <Column Title="@Loc["InventoryPage_DilutionPlatesTab_InternalGridColumn_Instrument"]" Property="@(x => x.Instrument)" Sortable="true" />
+            </Columns>
+        </PhDataGrid>
+    </ChildContent>
+    <Buttons>
+        @if (_isAuthorized)
+        {
+            <PhButton Type="ButtonType.Secondary" Disabled="@IsUnloadDisabled" OnClick="OnUnloadClicked">
+                @Loc["InventoryPage_UnloadButtonText"]
+            </PhButton>
+        }
+    </Buttons>
+</PhDockedButtonRow>

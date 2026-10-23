@@ -1,0 +1,11 @@
+@use "../abstracts/spacing";
+
+.ph-status {
+    display: flex;
+    align-items: center;
+    gap: spacing.$gap-xs;
+
+    &--gap-sm {
+        gap: spacing.$gap-sm;
+    }
+}

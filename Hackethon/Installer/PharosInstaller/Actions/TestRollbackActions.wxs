@@ -1,0 +1,10 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Fragment>
+        <CustomAction Id="TestRollbackFailInstallation" 
+                      Impersonate="no" 
+                      DllEntry="TestRollbackFailInstallation" 
+                      Return="check" 
+                      BinaryRef="CustomAction.CA" 
+                      Execute="deferred" />
+    </Fragment>
+</Wix>

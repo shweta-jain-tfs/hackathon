@@ -1,0 +1,5 @@
+@use "../abstracts/colors";
+
+.ph-separator {
+    border-top: 2px solid colors.$border-subtle-02;
+}

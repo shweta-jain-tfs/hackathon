@@ -1,0 +1,11 @@
+﻿<PhModalContent>
+    <Body>
+        <p>@Loc["SettingsImport_DeleteExistingSettings_Dialog_Text"]</p>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok(false)))">@Loc["SettingsImport_DeleteExistingSettings_Dialog_Cancel"]</PhButton>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok(true)))">@Loc["SettingsImport_DeleteExistingSettings_Dialog_Import"]</PhButton>
+    </Footer>
+</PhModalContent>
+
+

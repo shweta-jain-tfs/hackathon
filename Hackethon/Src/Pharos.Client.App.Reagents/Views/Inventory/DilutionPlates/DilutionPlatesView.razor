@@ -1,0 +1,13 @@
+@using Pharos.Common.Web.Components.Panel
+<PhStack Gap="StackGap.Lg">
+   <PhPanel NoBackground Grow>
+        <PhScroll>
+            <DrawerDilutionPlatesListView ViewModel="ViewModel.DrawerDilutionPlatesListViewModel" />
+        </PhScroll>
+    </PhPanel>
+    <PhPanel NoBackground Grow>
+        <PhScroll>
+            <InternalDilutionPlatesListView ViewModel="ViewModel.InternalDilutionPlatesListViewModel" />
+        </PhScroll>
+    </PhPanel>
+</PhStack>

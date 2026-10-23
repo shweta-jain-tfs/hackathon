@@ -1,0 +1,8 @@
+// ONLY USE WHILE DEBUGGING - DO NOT USE IN RAZOR FILES!
+
+// in dev tools, add debug as an attribute on the html element or parent element to highlight layout.
+[debug] {
+    * {
+        background-color: rgba(green, .1);
+    }
+}

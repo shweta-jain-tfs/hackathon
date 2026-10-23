@@ -1,0 +1,47 @@
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Contracts.Security
+@attribute [Route(AccountRoutes.LoginWithPin)]
+@inject IHostEnvironment Env
+
+<div class="ph-server-page">
+    <section>
+        <EditForm Model="Input" method="post" OnValidSubmit="LoginUser" FormName="loginWithPin" autocomplete="off">
+            <DataAnnotationsValidator />
+
+            <div class="ph-server-page__content">
+                <div class="ph-server-page__header">
+                    <h1 class="t-h1">@Translations.LoginWithPin_Title</h1>
+                </div>
+
+                <PhTextBox @bind-Value="Input.Pin" Label="@Translations.LoginWithPin_PinCodeLabel" Type="TextBoxType.Password" Size="TextBoxSize.Small" Error="@LoginFailed()" ErrorText="@_errorMessage" MaxLength="8" autocomplete="off" readonly />
+
+                <div class="ph-server-page__footer">
+                    @* Number Pad *@
+                    <div class="ph-numberpad">
+                        <div class="ph-numberpad__grid">
+                            <button type="submit" name="Action" value="1" class="ph-numberpad__button" disabled="@IsPinMaxLength">1</button>
+                            <button type="submit" name="Action" value="2" class="ph-numberpad__button" disabled="@IsPinMaxLength">2</button>
+                            <button type="submit" name="Action" value="3" class="ph-numberpad__button" disabled="@IsPinMaxLength">3</button>
+                            <button type="submit" name="Action" value="4" class="ph-numberpad__button" disabled="@IsPinMaxLength">4</button>
+                            <button type="submit" name="Action" value="5" class="ph-numberpad__button" disabled="@IsPinMaxLength">5</button>
+                            <button type="submit" name="Action" value="6" class="ph-numberpad__button" disabled="@IsPinMaxLength">6</button>
+                            <button type="submit" name="Action" value="7" class="ph-numberpad__button" disabled="@IsPinMaxLength">7</button>
+                            <button type="submit" name="Action" value="8" class="ph-numberpad__button" disabled="@IsPinMaxLength">8</button>
+                            <button type="submit" name="Action" value="9" class="ph-numberpad__button" disabled="@IsPinMaxLength">9</button>
+
+                            <button type="submit" name="Action" value="backspace" class="ph-numberpad__button ph-numberpad__button--backspace" disabled="@IsPinEmpty">
+                                <PhIcon IconType="IconType.ArrowLeft" Size="IconSize.Lg" />
+                            </button>
+                            <button type="submit" name="Action" value="0" class="ph-numberpad__button" disabled="@IsPinMaxLength">0</button>
+                            <button type="submit" name="Action" value="enter" class="ph-numberpad__button ph-numberpad__button--enter" disabled="@IsPinInvalid">@Translations.LoginWithPin_EnterButton</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center login-with-pin__password-link">
+                    <a href="@AccountRoutes.Login" class="ph-link">@Translations.LoginWithPin_LoginWithPasswordLink</a>
+                </div>
+            </div>
+        </EditForm>
+    </section>
+</div>

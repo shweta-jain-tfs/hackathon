@@ -1,0 +1,13 @@
+@using Pharos.Common.Web.Components.FormElements.Enums
+<PhModalContent>
+    <Body>
+    </Body>
+
+    <Footer>
+
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["InstrumentsPage_EnableDialogButtonSecondary"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok()))">@Loc["InstrumentsPage_EnableDialogButtonPrimary"]</PhButton>
+
+    </Footer>
+</PhModalContent>
+

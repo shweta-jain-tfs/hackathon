@@ -1,0 +1,13 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhModalContent>
+    <Body>
+        <div class="flex justify-content items-center mt-lg">
+            <p class="t-body1">@Loc["DashboardPage_AssayAbortModal_Text"]</p>
+        </div>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["DashboardPage_AssayAbortModal_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok()))">@Loc["DashboardPage_AssayAbortModal_Ok"]</PhButton>
+    </Footer>
+</PhModalContent>

@@ -1,0 +1,59 @@
+@if (!string.IsNullOrEmpty(SelectedText) && _selectedCount > 0)
+{
+    <div class="ph-modal__selected-count">@($"{SelectedText} {_selectedCount}")</div>
+}
+
+@code {
+    /// <summary>
+    /// Optional cascading parameter that provides the parent PhDockedButtonRow component.
+    /// Used to register a callback for updating the selected count without triggering re-renders.
+    /// </summary>
+    [CascadingParameter(Name = "ModalContent")]
+    public PhModalContent? ModalContent { get; set; }
+
+    /// <summary>
+    /// The text representing the currently selected items.
+    /// </summary>
+    [Parameter] public string? SelectedText { get; set; }
+
+    private int _selectedCount;
+
+
+
+    /// <summary>
+    /// Called after the component has rendered.
+    /// </summary>
+    /// <param name="firstRender"></param>
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && ModalContent is not null)
+        {
+            // Register the callback with PhDockedButtonRow if it exists
+            // This happens only once during initialization
+            // Register lightweight delegate (no EventCallback overhead)
+            ModalContent.SelectedCountChanged = SelectedCountUpdate;
+        }
+    }
+
+    private void SelectedCountUpdate(int count)
+    {
+        if (_selectedCount == count)
+        {
+            return;
+        }
+
+        _selectedCount = count;
+        InvokeAsync(StateHasChanged); // Only this component re-renders
+    }
+
+    /// <summary>
+    /// Disposes the component and unregisters from the parent.
+    /// </summary>
+    public void Dispose()
+    {
+        if (ModalContent is not null && ModalContent.SelectedCountChanged == SelectedCountUpdate)
+        {
+            ModalContent.SelectedCountChanged = null;
+        }
+    }
+}

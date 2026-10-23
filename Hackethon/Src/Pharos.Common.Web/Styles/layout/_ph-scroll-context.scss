@@ -1,0 +1,12 @@
+// Marks an area that contains a datagrid or scrollable content
+// To use in grid layouts, the row containing this area should have a height of minmax(0, min-content).
+// To use in flex layouts, the element containing this area should have min-height: 0 to allow it to shrink.
+
+:has(>.ph-scroll-context) {
+    min-height: 0;
+}
+
+.ph-scroll-context {
+    overflow: auto;
+    height: 100%;
+}

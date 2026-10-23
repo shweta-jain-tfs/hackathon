@@ -1,0 +1,104 @@
+@using Pharos.Client.App.Quality.ViewModels
+@using Pharos.Client.App.Quality.Views.CurveControls
+@using Pharos.Client.Common.App.Extensions
+@using Pharos.Common.Web.Components.ChartPanel
+@using Pharos.Common.Web.Models.DataGrid
+@using Pharos.Common.Web.Components.TabControl
+@using Pharos.Common.Web.Components.Panel
+@attribute [Route(PageRoute.Quality.CurveControls)]
+@attribute [Authorize]
+
+<PhPage>
+    <PageHeader>
+        <Breadcrumb Items="Breadcrumbs"></Breadcrumb>
+    </PageHeader>
+
+    <ChildContent>
+
+        <PhButtonRow Justified="false">
+            <LeftContent>
+                <PhPanel NoBackground="true">
+                    <PhLabel Direction="LabelDirection.Horizontal" Text="Showing <month> 2025">
+                        <PhButton>Change...</PhButton>
+                    </PhLabel>
+                </PhPanel>
+            </LeftContent>
+            <Buttons>
+                <PhButton>Chart settings...</PhButton>
+            </Buttons>
+        </PhButtonRow>
+
+        <PhGrid>
+            @if (ViewModel.ChartHolders is { Count: > 0 })
+            {
+                @foreach (var chart in ViewModel.ChartHolders.OrderBy(x => x.CurveControlName))
+                {
+                    <PhGridColumn Span="@ColumnSpan">
+                        <PhChartPanel Status="StatusType.None">
+                            <Title>@chart.CurveControlName</Title>
+                            <Chart>
+                                <div style="height: 350px">
+                                    @if (chart.CurveControlTestResults.All(x => x.Technology != AssayTechnology.ViewAllergy))
+                                    {
+                                        <CurveControlThumbnailChartView Interactive="true" Miniature="false"
+                                                                        SingleChart="@SingleChart"
+                                                                        OuterParameters="chart.OuterParameters" ChartComponents="chart.ChartComponents"/>
+                                    }
+                                </div>
+                            </Chart>
+                        </PhChartPanel>
+                    </PhGridColumn>
+                }
+            }
+
+            @if (ViewModel.ChartHolders is { Count: > 0 })
+            {
+                <PhGridColumn Span="ColumnSpan.Full">
+                    <div style="height: 320px">
+                        <PhTabControl>
+                            @foreach (var chart in ViewModel.ChartHolders.OrderBy(x => x.CurveControlName))
+                            {
+                                <PhTabPage Text="@chart.CurveControlName" HideTrailingEdge="true">
+                                    <PhDataGrid
+                                        TGridItem="CurveControlTestResult" Items="chart.CurveControlTestResults.AsQueryable()" RowType="RowTypeEnum.LinesBetweenRows"
+                                        StateID="cctestresults"
+                                        RowHeight="RowHeightEnum.Compact"
+                                        HighlightOptions="@(new() {
+                                            Mode = HighlightMode.Internal,
+                                            HighlightedItemChanged = ViewModel.OnHighlightedItemChanged
+                                        })"
+                                        DefaultSortColumn="@nameof(CurveControlTestResult.MeasurementDateTime)" DefaultSortDirection="SortDirection.Descending">
+                                        <Columns>
+                                            <Column Property="@(x => x.JudgmentSummary)">
+                                                <PhStatus Status="@CurveControlViewModel.GetRowStatus(context.JudgmentSummary)" />
+                                            </Column>
+                                            <Column Title="Measured" Property="@(x => x.MeasurementDateTime)" Sortable="true">
+                                                <PhHrefLink >
+                                                    <PhDateTime DateToShow="@(context.MeasurementDateTime)"/>
+                                                </PhHrefLink>
+                                            </Column>
+                                            <Column Title="Resp." Property="@(x => x.MeanResponseAsText)" Align="ColumnAlignEnum.Right">
+                                                @context.MeanResponseAsText.FormatDecimalForDisplay()
+                                            </Column>
+                                            <Column Title="Conc." Property="@(x => x.MeanConcentrationAsText)" Align="ColumnAlignEnum.Right">
+                                                @context.MeanConcentrationAsText.FormatDecimalForDisplay()
+                                            </Column>
+                                            <Column Title="Conj. lot" Property="@(x => x.MeasurementDateTime)">
+                                                @{
+                                                    var conjugateLotNumber = GetConjugateLotNumber(context);
+
+                                                    <PhStatus Text="@conjugateLotNumber" />
+                                                }
+                                            </Column>
+                                            <Column Title="Comment" Property="@(x => x.Comment)"/>
+                                        </Columns>
+                                    </PhDataGrid>
+                                </PhTabPage>
+                            }
+                        </PhTabControl>
+                    </div>
+                </PhGridColumn>
+            }
+        </PhGrid>
+    </ChildContent>
+</PhPage>

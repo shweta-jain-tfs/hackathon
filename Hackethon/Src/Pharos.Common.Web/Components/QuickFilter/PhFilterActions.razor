@@ -1,0 +1,20 @@
+﻿<PhPopover @ref="_popover" Appearance="PopoverStyle.Dropdown" Position="PopoverPosition.Auto" AutoHide OnToggle="SetOpenState">
+    <Anchor>
+        <button class="@ButtonCssClasses" popovertarget="@(_popover?.Id)">
+            <PhIcon IconType="IconType.More" Size="IconSize.Md" />
+        </button>
+    </Anchor>
+    <Panel>
+        <ul @onclick="ClosePanel">
+            @if (OnResetToDefault.HasDelegate)
+            {
+                <PhDropdownButtonItem Text="@Strings.ResetToDefault" OnClick="OnResetToDefault" Type="DropdownButtonItemType.Link" />
+            }
+
+            @if (OnClearAll.HasDelegate)
+            {
+                <PhDropdownButtonItem Text="@Strings.ClearAllFilters" OnClick="OnClearAll" Type="DropdownButtonItemType.Link" />
+            }
+        </ul>
+    </Panel>
+</PhPopover>

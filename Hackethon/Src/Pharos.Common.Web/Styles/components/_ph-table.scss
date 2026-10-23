@@ -1,0 +1,155 @@
+@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+// Note: make sure to set --ph-bg-color to the color of the surface the datagrid is placed on to get the correct colors.
+
+// Contains the data grid to let it scroll on its own even if it's inside a container that scrolls on overflow.
+// Wraps around the filter rows and the quick grid.
+
+.ph-table {
+    --ph-datagrid-row-height: #{size.$hit-area-lg};
+    --ph-datagrid-cell-padding: #{spacing.$padding-md};
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    overflow: hidden; // don't overflow flex container
+    gap: spacing.$gap-gutter;
+    @include text.body2;
+    color: colors.$text-secondary;
+
+    table {
+        width: 100%;
+        border-spacing: 0;
+        white-space: nowrap;
+    }
+
+    thead {
+        margin-bottom: spacing.$gap-xs;
+        color: colors.$text-secondary;
+        position: relative;
+        z-index: 2; // don't let placeholder rows shine through the sticky header when scrolling
+
+        > tr {
+            position: sticky;
+            top: 0;
+        }
+    }
+
+    tr {
+        height: var(--ph-datagrid-row-height);
+        background: var(--ph-bg-color);
+    }
+
+    th {
+        height: inherit; // take row height to allow the whole cell height to be clickable
+
+        background-color: var(--ph-bg-color, colors.$background-primary); // use the background color of the surface the data grid is placed on
+        border-bottom: 1px solid colors.$border-heavy-01;
+
+        &:last-of-type {
+            width: 100%; // fill remaining space
+        }
+    }
+
+    td {
+        padding-inline: var(--ph-datagrid-cell-padding);
+
+        &:last-of-type {
+            padding-inline: 0; // no padding on filler column
+        }
+    }
+
+    $checkbox-column-class: #{&}__checkbox-column;
+    #{$checkbox-column-class} {
+        position: sticky;
+        left: 0;
+        z-index: 1;
+        padding-inline: var(--ph-datagrid-cell-padding);
+        background: inherit;
+    }
+
+    &__col-title {
+        display: flex;
+        gap: spacing.$gap-sm; // Separate the sort indicator from title text
+        align-items: center;
+        height: 100%;
+        padding-inline: var(--ph-datagrid-cell-padding);
+        font-weight: text.$font-bold;
+        text-align: left;
+        cursor: default;
+
+        &[role=button] {
+            cursor: pointer;
+        }
+
+        &--right {
+            text-align: right;
+        }
+    }
+
+    &__col-title-text {
+        flex-grow: 1; // allow right aligned text next to sort indicator
+    }
+
+    &__sort-indicator {
+        color: colors.$icon-link;
+        display: none;
+
+        [aria-sort=ascending] &,
+        [aria-sort=descending] & {
+            display: block;
+        }
+
+        [aria-sort=descending] & {
+            transform: rotateX(180deg);
+        }
+    }
+
+    &__row--highlighted {
+        --ph-datagrid-highlight: #{colors.$layer-selected-01};
+
+        // Skip hover for now - looks bad when sticky on touch screen
+        // &:hover {
+        //     --ph-datagrid-highlight: #{colors.$layer-selected-hover};
+        // }
+
+        > td:not(#{$checkbox-column-class})
+        {
+            background: var(--ph-datagrid-highlight);
+        }
+
+        > #{$checkbox-column-class} {
+            background: var(--ph-bg-color);
+
+            &:hover ~ td
+            {
+                --ph-datagrid-highlight: #{colors.$layer-selected-01};
+            }
+        }
+    }
+
+    &--zebra-stripes {
+        tbody tr:nth-of-type(odd) {
+            background-color: colors.$layer-secondary;
+        }
+    }
+
+    &--lines-between-rows {
+        td {
+            border-bottom: 1px solid colors.$border-subtle-02;
+        }
+    }
+
+    &--compact {
+        --ph-datagrid-row-height: #{size.$hit-area-md};
+        --ph-datagrid-cell-padding: #{spacing.$padding-sm};
+    }
+
+    &--minimal {
+        --ph-datagrid-row-height: #{size.$hit-area-sm};
+        --ph-datagrid-cell-padding: #{spacing.$padding-sm};
+        @include text.helper-text;
+    }
+}

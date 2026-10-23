@@ -1,0 +1,193 @@
+<h1>PhRichText Component Image Testing@(LazyLoading ? " (Lazy loading)" : "")</h1>
+
+<p>Testing image positioning, alignment, and layout behavior in the PhRichText component.</p>
+
+<h2>Scenario 1: Full Width Image</h2>
+
+<p>Testing full-width image display without positioning classes. Image resolution: 1145x400px.</p>
+
+<img src="https://picsum.photos/1145/400?random=@(RandomPrefix)1" alt="Full-width image test" width="1145" height="400" loading="@LoadingAttribute" />
+
+<p>Full-width images should span the entire content container width and maintain their aspect ratio without scaling beyond native resolution.</p>
+
+<h2>Scenario 2: Left Aligned Image with Little Content</h2>
+
+<p>Testing left-aligned image with minimal text content.</p>
+
+<img class="image-left" src="https://picsum.photos/556/300?random=@(RandomPrefix)2" alt="Left-aligned image" width="556" height="300" loading="@LoadingAttribute" />
+
+<p>Short paragraph testing basic text flow around left-aligned image. Image resolution: 556x300px.</p>
+
+<h2>Scenario 3: Left Aligned Image with Multiple Paragraphs</h2>
+
+<p>Testing left-aligned image with extensive text content to validate text wrapping behavior.</p>
+
+<img class="image-left" src="https://picsum.photos/556/350?random=@(RandomPrefix)3" alt="Left-aligned with multiple paragraphs" width="556" height="350" loading="@LoadingAttribute" />
+
+<p>First paragraph testing text flow around the left-aligned image. This content should wrap to the right side of the image while maintaining proper spacing and readability. Image resolution: 556x350px.</p>
+
+<p>Second paragraph continuing the text flow test. This paragraph validates that multiple blocks of text properly wrap around the positioned image and maintain consistent formatting and spacing throughout.</p>
+
+<p>Third paragraph extending beyond the image height. This content tests when the text flow returns to full width after clearing the image boundaries, ensuring proper layout reset.</p>
+
+<p>Fourth paragraph confirming normal content flow after the image positioning effect ends. This validates that subsequent content uses the full container width properly.</p>
+
+<h2>Scenario 4: Right Aligned Image</h2>
+
+<p>Testing right-aligned image positioning and text wrapping behavior.</p>
+
+<img class="image-right" src="https://picsum.photos/556/280?random=@(RandomPrefix)4" alt="Right-aligned image" width="556" height="280" loading="@LoadingAttribute" />
+
+<p>Content testing right-aligned image with text flowing to the left side. The image should float to the right while maintaining proper margins and spacing. Image resolution: 556x280px.</p>
+
+<p>Additional paragraph testing continued text flow around the right-positioned image and validating when layout returns to normal width.</p>
+
+<h2>Scenario 5: Figure Elements</h2>
+
+<h3>Full Width Figure</h3>
+
+<p>Testing full-width figure with caption. Figure resolution: 1145x350px.</p>
+
+<figure>
+    <img src="https://picsum.photos/1145/350?random=@(RandomPrefix)5" alt="Full-width figure" width="1145" height="350" loading="@LoadingAttribute" />
+    <figcaption>Caption: Full-width figure with caption testing semantic markup and caption positioning below the image.</figcaption>
+</figure>
+
+<h3>Left Aligned Figure</h3>
+
+<p>Testing left-aligned figure with text wrapping around both image and caption.</p>
+
+<figure class="image-left">
+    <img src="https://picsum.photos/556/250?random=@(RandomPrefix)6" alt="Left-aligned figure" width="556" height="250" loading="@LoadingAttribute" />
+    <figcaption>Caption: Left-positioned figure with caption. Image resolution: 556x250px.</figcaption>
+</figure>
+
+<p>Text content flowing around the left-aligned figure. This tests how text wraps around both the image and caption areas, ensuring proper spacing and alignment for the complete figure element.</p>
+
+<p>Additional content to test figure positioning behavior and layout recovery after the figure content ends.</p>
+
+<h3>Right Aligned Figure</h3>
+
+<p>Testing right-aligned figure positioning with caption elements.</p>
+
+<figure class="image-right">
+    <img src="https://picsum.photos/556/300?random=@(RandomPrefix)7" alt="Right-aligned figure" width="556" height="300" loading="@LoadingAttribute" />
+    <figcaption>Caption: Right-positioned figure testing caption alignment and text wrapping behavior. Image resolution: 556x300px.</figcaption>
+</figure>
+
+<p>Content testing right-aligned figure with text flowing around the left side. The caption should align properly with the image while text wraps around the entire figure element.</p>
+
+<h3>Right Aligned Figure with Extensive Caption (Oversized Image)</h3>
+
+<p>Testing right-aligned figure with lengthy caption content and oversized image to validate behavior when image exceeds typical container width.</p>
+
+<figure class="image-right">
+    <img src="https://picsum.photos/1000/400?random=@(RandomPrefix)8" alt="Oversized right-aligned figure with long caption" width="1000" height="400" loading="@LoadingAttribute" />
+    <figcaption>Caption: This is an extensive caption for testing how longer caption content affects figure positioning and text wrapping behavior with an oversized image. The caption should maintain proper alignment with the image while allowing text to flow around the entire figure element. This longer caption tests vertical spacing, text alignment within the caption area, and how the overall figure dimensions affect surrounding content layout. Image resolution: 1000x400px (oversized). Additional caption content to test caption text wrapping within the figure element boundaries and ensure proper styling is maintained throughout longer caption text blocks when the image exceeds normal positioning widths.</figcaption>
+</figure>
+
+<p>Text content flowing around the right-aligned figure with extensive caption and oversized image. This scenario tests how large caption content and oversized images affect the overall figure dimensions and text wrapping behavior around the complete figure element.</p>
+
+<p>Additional paragraphs to test layout behavior when content extends beyond the figure height, including both image and caption areas, ensuring proper text flow recovery with oversized image positioning.</p>
+
+<p>Final paragraph testing normal content flow after the complex figure element with oversized image, validating that layout properly resets to full width after clearing the positioned figure with extensive caption content and oversized dimensions.</p>
+
+<h2>Scenario 6: Images in Table Cells</h2>
+
+<p>Testing various image sizes within table structure to validate cell behavior and layout.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Test Case</th>
+            <th>Description</th>
+            <th>Resolution</th>
+            <th>Image Content</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Small Image</td>
+            <td>Testing small image in cell</td>
+            <td>120x80px</td>
+            <td><img src="https://picsum.photos/120/80?random=@(RandomPrefix)9" alt="Small image" width="120" height="80" loading="@LoadingAttribute" /></td>
+        </tr>
+        <tr>
+            <td>Medium Image</td>
+            <td>Testing medium image in cell</td>
+            <td>200x150px</td>
+            <td><img src="https://picsum.photos/200/150?random=@(RandomPrefix)10" alt="Medium image" width="200" height="150" loading="@LoadingAttribute" /></td>
+        </tr>
+        <tr>
+            <td>Large Image</td>
+            <td>Testing larger image affecting cell height</td>
+            <td>300x200px</td>
+            <td><img src="https://picsum.photos/300/200?random=@(RandomPrefix)11" alt="Large image" width="300" height="200" loading="@LoadingAttribute" /></td>
+        </tr>
+        <tr>
+            <td>Wide Image</td>
+            <td>Testing wide aspect ratio image</td>
+            <td>250x100px</td>
+            <td><img src="https://picsum.photos/250/100?random=@(RandomPrefix)12" alt="Wide image" width="250" height="100" loading="@LoadingAttribute" /></td>
+        </tr>
+        <tr>
+            <td>Tall Image</td>
+            <td>Testing tall aspect ratio image</td>
+            <td>150x250px</td>
+            <td><img src="https://picsum.photos/150/250?random=@(RandomPrefix)13" alt="Tall image" width="150" height="250" loading="@LoadingAttribute" /></td>
+        </tr>
+        <tr>
+            <td>Multiple Images</td>
+            <td>Testing multiple images in one cell</td>
+            <td>100x75px each</td>
+            <td>
+                <img src="https://picsum.photos/100/75?random=@(RandomPrefix)14" alt="Image 1" width="100" height="75" loading="@LoadingAttribute" />
+                <img src="https://picsum.photos/100/75?random=@(RandomPrefix)15" alt="Image 2" width="100" height="75" loading="@LoadingAttribute" />
+            </td>
+        </tr>
+        <tr>
+            <td>Image with Text</td>
+            <td>Testing image and text combination</td>
+            <td>180x120px</td>
+            <td>
+                <img src="https://picsum.photos/180/120?random=@(RandomPrefix)16" alt="Image with text" width="180" height="120" loading="@LoadingAttribute" />
+                <p>Text content with image</p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>Table testing validates: cell height adjustment with various image sizes, aspect ratio handling, multiple images per cell, mixed content behavior, and that images maintain their native resolution without unwanted scaling.</p>
+
+<h2>Scenario 7: Picture Element with Multiple Sources</h2>
+
+<p>Testing responsive picture element with multiple source options and fallback img element.</p>
+
+<picture>
+    <source media="(min-width: 800px)" srcset="https://picsum.photos/556/350?random=@(RandomPrefix)18" width="556" height="350" />
+    <source media="(min-width: 400px)" srcset="https://picsum.photos/400/250?random=@(RandomPrefix)19" width="400" height="250" />
+    <img class="image-left" src="https://picsum.photos/300/200?random=@(RandomPrefix)20" alt="Responsive picture element test" width="300" height="200" loading="@LoadingAttribute" />
+</picture>
+
+<p>The picture element provides responsive image delivery with multiple source options based on media queries. Text should wrap around the picture element similar to regular images. The browser selects the appropriate source based on viewport width: large screens get 556x350px, medium screens get 400x250px, and small screens get the fallback 300x200px image.</p>
+
+<p>This scenario tests how the PhRichText component handles the picture element with its nested source elements and fallback img element, ensuring proper positioning and text flow behavior with responsive image delivery.</p>
+
+<h2>Layout Reset Validation</h2>
+
+<p>Final floating image to confirm layout reset after closing the rich text area.</p>
+
+<img src="https://picsum.photos/300/300?random=@(RandomPrefix)17" alt="Final layout validation" class="image-left" width="300" height="300" loading="@LoadingAttribute" />
+
+@code {
+    /// <summary>
+    /// Controls whether images use lazy loading or eager loading.
+    /// When true, images load lazily. When false, images load eagerly.
+    /// </summary>
+    [Parameter]
+    public bool LazyLoading { get; set; }
+
+    private string LoadingAttribute => LazyLoading ? "lazy" : "eager";
+
+    private string RandomPrefix => LazyLoading ? "2" : "1";
+}

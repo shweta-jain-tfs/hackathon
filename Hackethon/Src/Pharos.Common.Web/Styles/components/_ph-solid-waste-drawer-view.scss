@@ -1,0 +1,25 @@
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+
+.ph-solid-waste-drawer-view {
+    display: flex;
+    gap: spacing.$gap-sm;
+    margin-top: 192px;
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-md;
+    }
+
+    .ph-drawer__placeholder-container {
+        height: 664px;
+    }
+
+    .ph-drawer__indicator-container {
+        height: 16px;
+    }
+
+}

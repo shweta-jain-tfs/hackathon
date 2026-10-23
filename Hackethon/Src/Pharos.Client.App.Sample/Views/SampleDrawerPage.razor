@@ -1,0 +1,60 @@
+@using Pharos.Client.App.Sample.Views.SampleDrawer
+@using Pharos.Client.App.Sample.Views.TrayPanel
+@using Pharos.Common.Web.Components.TrailingEdge
+
+@attribute [Route(PageRoute.Samples)]
+@attribute [Authorize]
+
+<PhPage>
+    <ChildContent>
+        @if (!ViewModel.IsBusy)
+        {
+            <div class="samples-page">
+
+                <CascadingValue Value="@ViewModel.LegendViewModel.LegendSelectionResult" Name="SampleDrawerLegendSelectionResult">
+                    <CascadingValue Value="@ViewModel.LegendViewModel.OnResetLegendSelectionRequested" Name="SampleDrawerOnResetLegendSelectionRequested" IsFixed="true">
+
+                        <div class="samples-page__left-drawer">
+                            <SampleDrawerView ViewModel="@ViewModel.LeftSampleDrawerViewModel"
+                                              DrawerName="@GetDrawerName(DrawerPosition.Left)"
+                                              DrawerPosition="DrawerPosition.Left"
+                                              AnyTraySelected="@(_selectedTrayDrawerPosition ==DrawerPosition.Left)"
+                                              TraySelected="OnTraySelected" />
+                        </div>
+
+                        <div class="samples-page__right-drawer">
+                            <SampleDrawerView ViewModel="@ViewModel.RightSampleDrawerViewModel"
+                                              DrawerName="@GetDrawerName(DrawerPosition.Right)"
+                                              DrawerPosition="DrawerPosition.Right"
+                                              AnyTraySelected="@(_selectedTrayDrawerPosition ==DrawerPosition.Right)"
+                                              TraySelected="OnTraySelected" />
+                        </div>
+
+                        @if (_selectedTrayDrawerPosition is DrawerPosition.Right)
+                        {
+                            <div class="samples-page__tray-panel samples-page__tray-panel--right">
+                                <TrayPanelView @ref="_trayPanelViewRef" TrayId="@_trayId" OnCloseClick="TrayPanelCloseClicked" />
+                            </div>
+                        }
+
+                        else if (_selectedTrayDrawerPosition is DrawerPosition.Left)
+                        {
+                            <div class="samples-page__tray-panel samples-page__tray-panel--left">
+                                <TrayPanelView @ref="_trayPanelViewRef" TrayId="@_trayId" OnCloseClick="TrayPanelCloseClicked" />
+                            </div>
+                        }
+
+                    </CascadingValue>
+                </CascadingValue>
+
+                <div class="samples-page__legend">
+                    <PhTrailingEdge Mode="TrailingEdgeDisplayMode.VerticalOnly">
+                        <SampleLegendView ViewModel="ViewModel.LegendViewModel" />
+                    </PhTrailingEdge>
+                </div>
+
+            </div>
+        }
+
+    </ChildContent>
+</PhPage>

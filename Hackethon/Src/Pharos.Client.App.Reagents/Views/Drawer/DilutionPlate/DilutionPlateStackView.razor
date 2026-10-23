@@ -1,0 +1,18 @@
+﻿@namespace Pharos.Client.App.Reagents.Views.Drawer.DilutionPlate
+@using Pharos.Common.Web.Components.Icons
+
+<div class="@_plateSlotCss">
+    @if (!_hasError)
+    {
+        @for (var platePosition = 1; platePosition <= DilutionPlate.NumberOfPlates; platePosition++)
+        {
+            <DilutionPlateView Position="platePosition"></DilutionPlateView>
+        }
+    }
+    else
+    {
+        <div class="@_plateSlotStatusCss">
+            <PhStatusIcon Icon="StatusIconType.Warning" Size="StatusIconSize.Sm" />
+        </div>
+    }
+</div>

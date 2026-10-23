@@ -1,0 +1,4 @@
+#!/bin/sh
+# Git hook wrapper for Windows – calls PowerShell script
+
+pwsh -NoLogo -NoProfile -ExecutionPolicy Bypass -File "$(dirname "$0")/pre-commit.ps1"

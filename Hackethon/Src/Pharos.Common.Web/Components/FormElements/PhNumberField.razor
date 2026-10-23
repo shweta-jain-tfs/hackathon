@@ -1,0 +1,40 @@
+﻿@inherits Base.ComponentWithClientScriptBase
+@typeparam TValue
+
+<PhLabel Text="@Label"
+         HelpText="@HelpText"
+         ErrorText="@(HasErrorText ? ErrorText : null)"
+         Disabled="@Disabled"
+         RenderAsLabel="@(!DisplayOnly)"
+         SuppressAutoValidation="@DisplayOnly"
+         ValidationFor="@(DisplayOnly ? null : ValidationForExpression)">
+    <div class="@CssClasses" @onkeydown:preventDefault="_preventEnterKey">
+        @if(DisplayOnly)
+        {
+            <PhValueBox Disabled="@Disabled" Overflow="ValueBoxOverflow.Ellipsis" uiname="@AutomatedTestId">
+                @TextValue
+            </PhValueBox>
+        }
+        else
+        {
+            <input @ref="_inputElementRef"
+                   id="@Id"
+                   uiname="@AutomatedTestId"
+                   type="text"
+                   inputmode="@InputMode"
+                   placeholder="@PlaceHolder"
+                   @bind-value="@TextValue"
+                   @bind-value:event="oninput"
+                   @onchange="@OnChange"
+                   @onkeydown="@BlurOnEnter"
+                   @onblur="@OnBlur"
+                   disabled="@Disabled" />
+        }
+        @if (_error)
+        {
+            <div class="ph-numberfield__error-icon">
+                <PhIcon IconType="IconType.Alert" Size="IconSize.Md" />
+            </div>
+        }
+    </div>
+</PhLabel>

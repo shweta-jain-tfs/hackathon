@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Pharos.Server.Application</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Tetris.Protocol.Messages" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pharos.Server.Domain.Parameters\Pharos.Server.Domain.Parameters.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Domain.Abstractions\Pharos.Server.Domain.Abstractions.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Domain.Reflex\Pharos.Server.Domain.Reflex.csproj" />
+		<ProjectReference Include="..\Pharos.Contracts\Pharos.Contracts.csproj" />
+	</ItemGroup>
+
+</Project>

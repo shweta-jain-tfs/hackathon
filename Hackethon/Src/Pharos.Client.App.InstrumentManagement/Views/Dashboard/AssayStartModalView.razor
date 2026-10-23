@@ -1,0 +1,14 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhModalContent>
+    <Body>
+        <div class="flex flex-col gap-sm">
+            <p class="t-body2">@Loc["DashboardPage_AssayStartModalView_GuidingText"]</p>
+            <MethodSettingsView ShowRunColumns></MethodSettingsView>
+        </div>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => @CloseModal(ModalResult.Cancel()))">@Loc["DashboardPage_AssayStartModal_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => @CloseModal(ModalResult.Ok()))">@Loc["DashboardPage_AssayStartModal_Ok"]</PhButton>
+    </Footer>
+</PhModalContent>

@@ -1,0 +1,44 @@
+@using Pharos.Client.Common.Localization
+@inject IStringLocalizer<Translations> Loc
+
+<PhModalContent>
+    <Body>
+        <div class="ph-delete-tube-types-outcome flex flex-col gap-md">
+            @if (DeletedEntries.Count > 0)
+            {
+                <section class="flex flex-col gap-xs">
+                    <h3 class="ph-delete-tube-types-outcome__header">@Loc["SettingsSamples_DeletedTubeTypes"]</h3>
+                    <div class="ph-delete-tube-types-outcome__list">
+                        @foreach (var entry in DeletedEntries)
+                        {
+                            <div class="ph-delete-tube-types-outcome__row">
+                                <span class="ph-delete-tube-types-outcome__name">@entry</span>
+                            </div>
+                        }
+                    </div>
+                </section>
+            }
+
+            @if (BlockedEntries.Count > 0)
+            {
+                <section class="flex flex-col gap-xs">
+                    <h3 class="ph-delete-tube-types-outcome__header">@Loc["SettingsSamples_CouldNotDelete"]</h3>
+                    <div class="ph-delete-tube-types-outcome__list">
+                        @foreach (var entry in BlockedEntries)
+                        {
+                            <div class="ph-delete-tube-types-outcome__row">
+                                <span class="ph-delete-tube-types-outcome__name">@entry.DisplayName</span>
+                                <span class="ph-delete-tube-types-outcome__reason">@Loc[entry.ReasonResourceKey]</span>
+                            </div>
+                        }
+                    </div>
+                </section>
+            }
+        </div>
+    </Body>
+    <Footer>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok()))">
+            @Loc["InformationModal_Close"]
+        </PhButton>
+    </Footer>
+</PhModalContent>

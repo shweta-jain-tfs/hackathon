@@ -1,0 +1,77 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Pharos.Server.Parameters</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Src\Pharos.Server.Parameters\Pharos.Server.Parameters.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Integration.Tests.Common\Pharos.Server.Integration.Tests.Common.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Application\Commands\ImportArticles\article_multi_expected.arf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportArticles\article_min_v1.arf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportArticles\article_min_v1_extra.arf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportArticles\article_min_v2.arf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportArticles\article_error.arf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportArticles\article_malformed_package.arf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportArticles\article_delete_article.arf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportArticles\article_delete_package.arf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportArticles\article_delete_package_expected.arf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportArticles\article.arf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportArticles\version.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportMethodsAndTests\article_error.arf">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportMethodsAndTests\sIgA_parse_error.mth">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportMethodsAndTests\sIgE_modified.tst">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportMethodsAndTests\sIgE_modified.mth">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportMethodsAndTests\sIgE.mth">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportMethodsAndTests\sIgE.tst">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="Application\Commands\ImportMethodsAndTests\version.txt">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="FileComparer\TestMethodExtraSection.mth">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="FileComparer\TestMethodWithVariations.mth">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="FileComparer\TestMethod.mth">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+</Project>

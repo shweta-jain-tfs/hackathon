@@ -1,0 +1,31 @@
+﻿@attribute [Route(AccountRoutes.PinSetup)]
+
+@using Pharos.Contracts.Security
+
+<div class="ph-pin-setup">
+
+    <section>
+        <EditForm Model="this" method="post">
+            <div class="ph-pin-setup__content">
+                <div class="ph-pin-setup__title">
+                    <h1 class="t-display1">@Translations.SetupPin_Title</h1>
+                </div>
+
+                <div class="ph-pin-setup__description">
+                    <p>@Translations.SetupPin_Description</p>
+                    <p>@Translations.SetupPin_Instructions</p>
+                </div>
+
+                <div class="ph-pin-setup__code-row">
+                    <span class="t-body2 text-secondary">@Translations.SetupPin_PinCodeLabel</span>
+                    <span class="t-body1 text-primary">@Pin</span>
+                </div>
+            </div>
+
+            <div class="ph-pin-setup__actions">
+                <a href="@ReturnUrl" class="ph-button ph-button--primary">@Translations.SetupPin_OkButton</a>
+            </div>
+        </EditForm>
+    </section>
+
+</div>

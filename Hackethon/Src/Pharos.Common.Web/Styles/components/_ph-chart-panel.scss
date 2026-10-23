@@ -1,0 +1,56 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-chart-panel {
+    $root: &;
+    --ph-bg-color: #{colors.$layer-subtle};
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    gap: spacing.$gap-sm;
+    padding: spacing.$padding-md;
+    background: var(--ph-bg-color);
+
+    &__header {
+        display: flex;
+        gap: spacing.$gap-xs;
+        align-items: center;
+        @include text.h1;
+    }
+
+    &__header-action {
+        display: flex;
+        gap: spacing.$gap-sm;
+    }
+
+    &__header-title {
+        display: flex;
+        gap: spacing.$gap-xs;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-md;
+        justify-content: space-between;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    &__content-chart {
+        align-self: center;
+        max-width: 100%;
+        flex: 1;
+        overflow: hidden;
+        touch-action: none;
+    }
+
+    &__content-footer {
+        height: 150px;
+        overflow: auto;
+        flex-shrink: 0;
+    }
+}

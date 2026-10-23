@@ -1,0 +1,31 @@
+﻿@using Pharos.Common.Web.Components.PlaceHolder
+
+@namespace Pharos.Common.Web.Components.Drawer
+
+<div class="@SampleTraySelectionFrameCss">
+    <div class="@SampleTrayCss" @onclick="()=> OnTrayClicked()">
+        <div class="@SampleTrayContainerCss">
+            @if (ShowTrayError())
+            {
+                <PhStatusIcon Icon="StatusIconType.Warning" Size="StatusIconSize.Lg" />
+                <div class="ph-tray__error-text">@TrayErrorName</div>
+            }
+            else if (SampleTubes?.Any() ?? false)
+            {
+                @foreach (var tube in SampleTubes)
+                {
+                    <PhSampleTube Size="SampleTubeSize.Small"
+                                  Status="tube.Status"
+                                  Error="tube.TubeError"
+                                  IsManualInput="@(tube.PositionSource == TubePositionSource.ManualInput)"
+                                  IsConfirmManualInput="@(tube.PositionSource == TubePositionSource.ConfirmManualInput)"
+                                  IsUnloadRequested="tube.IsUnloadRequested"
+                                  IsHighPriority="tube.IsHighPriority" />
+                }
+            }
+        </div>
+        <div class="@SampleTrayBarcodeCss">
+            @Barcode
+        </div>
+    </div>
+</div>

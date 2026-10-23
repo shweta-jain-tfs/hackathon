@@ -1,0 +1,46 @@
+﻿@namespace Pharos.Client.App.Reagents.Views.BarcodeDetails
+@using Pharos.Client.App.Reagents.Views.BottleDrawer
+@using Pharos.Client.App.Reagents.Views.Drawer.LoaderDetail
+@using Pharos.Client.Common.App.Helpers
+@using Pharos.Common.Web.Components.Reagent
+@using Pharos.Client.Common.Models
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Label
+
+<div class="reagent-info-dialog">
+    <div class="reagent-info-content">
+        @if (ReagentContentDetail != null)
+        {
+            <div class="ph-bottle-reagent-details">
+                <div class="ph-bottle-reagent-details__bottle-icon">
+                    @if(ReagentContentDetail.Size == ReagentSize.Large)
+                    {
+                        <LargeBottleIcon />
+                    }
+                    else if(ReagentContentDetail.Size == ReagentSize.Small)
+                    {
+                        <SmallBottleIcon />
+                    }
+                </div>
+                <div class="ph-bottle-reagent-details__details-section">
+                    <div class="ph-bottle-reagent-details__item-details">
+                        <PhLabel Direction="LabelDirection.Vertical" Text="@Loc["ReagentPage_Name"]" Size="LabelSize.Body2">
+                            <div class="ph-bottle-reagent-details__shape-wrapper">
+                                <ReagentShapeView Shape="@ReagentHelper.GetShape(ReagentContentDetail.Shape)" FriendlyName="@ReagentContentDetail.Name" Colors="@ReagentContentDetail.Colors" IsCarrierTypeReagent=false />
+                            </div>
+                        </PhLabel>
+                        <ReagentFieldView Text="Quantity" Value="@GetQuantity()" />
+                    </div>
+                    <div class="ph-bottle-reagent-details__item-details">
+                        <ReagentFieldView Text="Lot Number" Value="@ReagentContentDetail?.LotNumber" />
+                        <ReagentFieldView Text="Expiry Date" Value="@GetExpiryDate()" />
+                    </div>
+                </div>
+                <div class="ph-bottle-reagent-details__close-button">
+                    <PhButton Type="@ButtonType.Primary" OnClick="@CloseModal">Close</PhButton>
+                </div>
+            </div>
+        }
+    </div>
+</div>

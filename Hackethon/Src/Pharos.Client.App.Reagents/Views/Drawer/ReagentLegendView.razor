@@ -1,0 +1,16 @@
+﻿@namespace Pharos.Client.App.Reagents.Views.Drawer
+@using Pharos.Common.Web.Components.Legend
+@using Pharos.Common.Web.Components.Reagent
+
+<div class="reagent-page__legend-view-container">
+    <PhLegend TStatus="ReagentStatus"
+              @ref="_phLegend"
+              StatusHeaderText="@Loc["Legend_State_Header"]"
+              LegendStatuses="@ViewModel.ReagentStatuses"
+              GetStatusText="@ReagentLegendViewModel.GetReagentStatusText"
+              SelectionChanged="@ViewModel.OnStatusSelected"
+              ErrorHeaderText="@Loc["Legend_Issue_Header"]"
+              LegendErrors="@ViewModel.LegendErrors"
+              IsAnyHighPriority="false"
+              IsAnyManualEntry="false" />
+</div>

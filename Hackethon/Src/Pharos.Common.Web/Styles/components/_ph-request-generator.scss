@@ -1,0 +1,61 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+
+.ph-request-generator {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$gap-sm;
+
+    &__layout {
+        display: grid;
+        grid-template-columns: 0.6fr 0.3fr 1fr;
+        gap: spacing.$gap-md;
+        min-height: 430px;
+    }
+
+    &__inner-section {
+        display: flex;
+        gap: spacing.$gap-md;
+    }
+
+    &__empty-state {
+        color: colors.$text-hint;
+        font-style: italic;
+        padding: spacing.$padding-lg;
+        text-align: center;
+    }
+
+    &__validation-error {
+        color: colors.$status-validation;
+    }
+
+    &__action-section {
+        display: flex;
+        gap: spacing.$gap-md;
+        justify-content: start;
+        min-height: 50px;
+    }
+
+    &__preview {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-lg;
+        max-height: 230px;
+    }
+
+    &__data-grid {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: spacing.$gap-sm;
+        max-height: 530px;
+    }
+
+    &__actions {
+        display: flex;
+        flex-direction: row;
+        gap: spacing.$gap-md;
+        align-items: center;
+        justify-content: end;
+    }
+}

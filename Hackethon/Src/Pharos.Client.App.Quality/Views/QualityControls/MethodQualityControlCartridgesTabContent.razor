@@ -1,0 +1,43 @@
+@namespace Pharos.Client.App.Quality.Views.QualityControls
+@using Pharos.Client.Common.App.Constants
+@using Pharos.Client.Common.Localization
+@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhDockedButtonRow>
+    <ChildContent>
+        <PhDataGrid TableTitle="@Loc["MethodQualityControlCartridgesTabContent_Cartridges"]"
+                    StateID="cartridges"
+                    TGridItem="UnloadableQualityControlCartridge"
+                    ItemsProvider="ViewModel.CartridgesProvider"
+                    SelectionType="SelectionTypeEnum.MultiSelect"
+                    OnSelectedItemsChanged="OnSelectedItemsChanged">
+            <Columns>
+                <Column Title="@Loc["MethodQualityControlCartridgesTabContent_Doses"]" Property="@(x => x.Doses)">
+                    @context.Doses @Loc["MethodQualityControlCartridgesTabContent_DosesUnit"]
+                </Column>
+
+                <Column Title="@Loc["MethodQualityControlCartridgesTabContent_Lot"]" Property="@(x => x.Lot)" QuickFilter="true" MultiSelectFilterItems="ViewModel.CartridgeLotDictionary"/>
+
+                <Column Title="@Loc["MethodQualityControlCartridgesTabContent_Status"]" Property="@(x => x.Status)" EnumDisplayNameSelector="@(x => x.ToLocalizedString("Reagent"))" />
+
+                <Column Title="@Loc["MethodQualityControlCartridgesTabContent_ExpiryDate"]" Property="@(x => x.ExpiryDate)" Format="@FormatStrings.ShortDate" />
+
+                <Column Title="@Loc["MethodQualityControlCartridgesTabContent_ExpiryDateOpenCell"]" Property="@(x => x.ExpiryDateOpenCell)" Format="@FormatStrings.ShortDate" />
+                
+                <Column Title="@Loc["MethodQualityControlCartridgesTabContent_Instrument"]"
+                        Property="@(x => x.InstrumentName)"
+                        QuickFilter="true"
+                        MultiSelectFilterItems="@InstrumentFilterModel.FilterDataSourceDisplayName" />
+
+                <Column Title="@Loc["MethodQualityControlCartridgesTabContent_Position"]" Property="@(x => x.Position)">
+                    @GetCartridgePosition(context)
+                </Column>
+            </Columns>
+        </PhDataGrid>
+    </ChildContent>
+    <Buttons>
+        <PhButton HasPermission="_hasUnloadPermission" Type="ButtonType.Secondary" OnClick="Unload" Disabled="!IsUnloadEnabled">
+            @Loc["MethodQualityControlCartridgesTabContent_UnloadCartridges"]
+        </PhButton>
+    </Buttons>
+</PhDockedButtonRow>

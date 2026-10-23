@@ -1,0 +1,20 @@
+﻿@using Pharos.Client.Common.App.Auth
+<PhAuthorize Permission="@Permissions.ManageInstruments">
+    <PhAuthorize Permission="@Policies.ServiceEngineerOrRndMode">
+        <PhPanel>
+            <div class="flex flex-col gap-md">
+                <h3 class="t-h3">@Loc["ServiceToolsPage_PairingView_Header"]</h3>
+                <p class="t-body2">@Loc["ServiceToolsPage_PairingView_Description"]</p>
+                <div class="flex flex-wrap gap-gutter">
+                    <PhButton OnClick="OpenPairingModal">
+                        @Loc["ServiceToolsPage_PairingView_OpenPairingDialog"]
+                    </PhButton>
+                    @if (_showRefreshButton)
+                    {
+                        <PhButton OnClick="Refresh" IgnoreMaxWidth>@Loc["ServiceToolsPage_PairingView_RefreshButton"]</PhButton>
+                    }
+                </div>
+            </div>
+        </PhPanel>
+    </PhAuthorize>
+</PhAuthorize>

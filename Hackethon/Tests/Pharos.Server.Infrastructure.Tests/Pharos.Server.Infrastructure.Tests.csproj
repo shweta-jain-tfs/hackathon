@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Src\Pharos.Client\Pharos.Client.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server.Infrastructure.Hubs\Pharos.Server.Infrastructure.Hubs.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server.Infrastructure\Pharos.Server.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server\Pharos.Server.csproj" />
+	</ItemGroup>
+
+</Project>

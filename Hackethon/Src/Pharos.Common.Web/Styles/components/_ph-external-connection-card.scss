@@ -1,0 +1,94 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-external-connection-card {
+    $root: &;
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+        gap: spacing.$gap-sm;
+        padding: spacing.$padding-xs spacing.$padding-sm;
+        background-color: colors.$background-secondary;
+        border: 2px solid colors.$border-subtle-01;
+        border-radius: rounded.$rounded-default;
+        align-items: center;
+        @include text.body1;
+    }
+
+    &__header-title {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    &__toggle {
+        grid-column: 2;
+        grid-row: 1 / -1;
+        align-self: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        color: colors.$icon-link;
+        display: flex;
+        align-items: center;
+    }
+
+    &__header-content {
+        grid-column: 1;
+        grid-row: 2;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        column-gap: 4px;
+        row-gap: spacing.$gap-sm;
+        align-items: center;
+    }
+
+    &__status-label-group {
+        display: flex;
+        align-items: center;
+        gap: spacing.$gap-xs;
+    }
+
+    &__status-label {
+        color: colors.$text-hint;
+        width: max-content;
+    }
+
+    &__status-value {
+        color: colors.$text-secondary;
+    }
+
+    &__body {
+        --ph-bg-color: #{colors.$background-secondary};
+        display: none;
+        padding: spacing.$padding-sm;
+        background-color: colors.$background-secondary;
+        border-bottom: 2px solid colors.$border-subtle-01;
+        border-left: 2px solid colors.$border-subtle-01;
+        border-right: 2px solid colors.$border-subtle-01;
+        border-bottom-left-radius: rounded.$rounded-default;
+        border-bottom-right-radius: rounded.$rounded-default;
+    }
+
+    &__item {
+        font-weight: text.$font-bold;
+    }
+
+    &--expanded {
+        #{$root}__header {
+            border-bottom: none;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        #{$root}__body {
+            display: block;
+        }
+    }
+}

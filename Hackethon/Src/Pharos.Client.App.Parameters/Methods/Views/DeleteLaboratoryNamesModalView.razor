@@ -1,0 +1,16 @@
+﻿@using Pharos.Client.Common.Localization
+@using Pharos.Common.Web.Components.Label
+
+<PhModalContent>
+    <Body>
+        <PhInputColumn Spacing="InputSpacing.Loose">
+            <PhLabel Direction="LabelDirection.Horizontal" Size="LabelSize.Body1" Text="@Loc["LaboratoryName_DeleteDialog_Name"]">
+                <PhValueBox Size="TextBoxSize.Medium"> @LaboratoryTestNames </PhValueBox>
+			</PhLabel>
+		</PhInputColumn>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["LaboratoryName_DeleteDialog_ButtonSecondary"]</PhButton>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok()))">@Loc["LaboratoryName_DeleteDialog_ButtonPrimary"]</PhButton>
+    </Footer>
+</PhModalContent>

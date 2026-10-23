@@ -1,0 +1,16 @@
+﻿<PhModalContent>
+    <Body>
+    <div class="text-center">
+        <PhStack Gap="StackGap.Xxl">
+            <p>@Loc["ConnectionLostModal_Text"]</p>
+            <p>@string.Format(Loc["ConnectionLostModal_ConnectionLostTime"], OfflineTime)</p>
+        </PhStack>
+    </div>
+    </Body>
+    <Footer>
+        @* This button will be hidden unitl the service UI is implemented *@
+        <div style="display:none">
+            <PhButton Type="ButtonType.Secondary" OnClick="OnButtonClickServiceUi">@Loc["ConnectionLostModal_Button_ServiceUi"]</PhButton>
+        </div>
+    </Footer>
+</PhModalContent>

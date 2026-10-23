@@ -1,0 +1,77 @@
+﻿@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.Menu
+@using Pharos.Common.Web.Components.Sidebar
+@attribute [Stories("Components/Menu")]
+
+<Stories TComponent="PhMenuItem">
+    <Story Name="Notification">
+        <Arguments>
+            <Arg For="_ => _.Text" Value="@("About")" />
+            <Arg For="_ => _.Number" Value="15" />
+            <Arg For="_ => _.NotificationLevel" Value="@NotificationLevel.Info" />
+            <Arg For="_ => _.Uri" Value="@("?not-here")" />
+        </Arguments>
+        <Template>
+            <div style="height: 100vh; width: 20%">
+                <PhSidebar Scroll>
+                    <ChildContent>
+                        <PhMenu>
+                            <PhMenuItem Text="Home" IconType="@IconType.UserProfile" Uri="." />
+                            <PhMenuItem @attributes="context.Args" />
+                            <PhMenuItem Text="Services" Uri="?not-here" />
+                        </PhMenu>
+                    </ChildContent>
+                </PhSidebar>
+            </div>
+        </Template>
+
+    </Story>
+    <Story Name="Active sub menu page">
+        <Arguments>
+            <Arg For="_ => _.Text" Value="@("Help")" />
+            <Arg For="_ => _.Uri" Value="@(".")" />
+        </Arguments>
+        <Template>
+            <div style="height: 100vh; width: 20%">
+                <PhSidebar Scroll>
+                    <ChildContent>
+                        <PhMenu>
+                            <PhMenuItem Text="Home" IconType="@IconType.UserProfile" Uri="?not-here" />
+                            <PhMenuItem Text="About" Uri="?not-here" />
+                            <PhMenuItem Text="Services" Uri="?not-here" />
+                            <PhMenuGroup Text="More..." SubMenu="PhMenuGroup.SubMenuType.FloatingRight">
+                                <PhMenuItem Text="Contact" Uri="?not-here" />
+                                <PhMenuItem @attributes="context.Args" />
+                                <PhMenuItem Text="Settings" Uri="?not-here" />
+                            </PhMenuGroup>
+                        </PhMenu>
+                    </ChildContent>
+                </PhSidebar>
+            </div>
+        </Template>
+    </Story>
+    <Story Name="Expanding sub menu">
+        <Arguments>
+            <Arg For="_ => _.Text" Value="@("Help")" />
+            <Arg For="_ => _.Uri" Value="@(".")" />
+        </Arguments>
+        <Template>
+            <div style="height: 100vh; width: 20%">
+                <PhSidebar Scroll>
+                    <ChildContent>
+                        <PhMenu>
+                            <PhMenuItem Text="Home" IconType="@IconType.UserProfile" Uri="?not-here" />
+                            <PhMenuItem Text="About" Uri="?not-here" />
+                            <PhMenuItem Text="Services" Uri="?not-here" />
+                            <PhMenuGroup Text="Expanding" SubMenu="PhMenuGroup.SubMenuType.Expanding">
+                                <PhMenuItem Text="Contact" Uri="?not-here" />
+                                <PhMenuItem @attributes="context.Args" />
+                                <PhMenuItem Text="Settings" Uri="?not-here" />
+                            </PhMenuGroup>
+                        </PhMenu>
+                    </ChildContent>
+                </PhSidebar>
+            </div>
+        </Template>
+    </Story>
+</Stories>

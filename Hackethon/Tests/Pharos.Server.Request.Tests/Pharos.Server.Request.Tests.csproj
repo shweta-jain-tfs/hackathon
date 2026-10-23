@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Pharos.Server.Request</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Src\Pharos.Server.Request\Pharos.Server.Request.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server.Parameters\Pharos.Server.Parameters.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Integration.Tests.Common\Pharos.Server.Integration.Tests.Common.csproj" />
+	</ItemGroup>
+
+</Project>

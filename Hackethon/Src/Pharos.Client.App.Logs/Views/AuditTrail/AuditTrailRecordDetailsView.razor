@@ -1,0 +1,37 @@
+﻿@using Pharos.Common.Web.Components.DetailsList
+
+<PhModalContent>
+    <Body>
+        <div class="flex flex-col gap-xl">
+            <PhDetailsList Columns="2">
+                <PhLabel Text="@Loc["AuditTrailView_GridColumn_Date"]">
+                    <PhValueBox Size="TextBoxSize.Medium">@Record.Created.ToString("g")</PhValueBox>
+                </PhLabel>
+
+                <PhLabel Text="@Loc["AuditTrailView_GridColumn_User"]">
+                    <PhValueBox Size="TextBoxSize.Medium">@Record.CreatedBy</PhValueBox>
+                </PhLabel>
+            </PhDetailsList>
+
+            <PhDetailsList Columns="2">
+                <PhLabel Text="@Loc["AuditTrailView_GridColumn_Description"]">
+                    <PhValueBox Size="TextBoxSize.Medium">@Record.Description</PhValueBox>
+                </PhLabel>
+
+                <PhLabel Text="@Loc["AuditTrailView_GridColumn_Comment"]">
+                    <PhValueBox Size="TextBoxSize.Medium">@Record.Comment</PhValueBox>
+                </PhLabel>
+            </PhDetailsList>
+
+            <PhLabel Text="@Loc["AuditTrail_RecordDetailsModal_EventData"]">
+                <PhValueBox>
+                    <div class="whitespace-pre-line">@Record.EventData</div>
+                </PhValueBox>
+            </PhLabel>
+        </div>
+    </Body>
+
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="HandleCloseAsync">Close</PhButton>
+    </Footer>
+</PhModalContent>

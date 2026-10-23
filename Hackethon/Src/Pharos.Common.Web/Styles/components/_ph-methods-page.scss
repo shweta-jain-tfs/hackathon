@@ -1,0 +1,44 @@
+﻿@use "../abstracts/spacing";
+@use "../abstracts/colors";
+@use "../abstracts/typography" as text;
+
+.ph-methods-page {
+    display: flex;
+    gap: spacing.$gap-xl;
+
+    &--test-general-tab-dilution-defaults {
+        display: flex;
+        gap: spacing.$gap-xl;
+        padding-left: spacing.$gap-xl;
+    }
+
+    &__test-general-tab-ruo-test {
+        display: flex;
+        align-items: flex-end;
+    }
+
+    &__calibrator-tab-numeric-field {
+        display: flex;
+        align-items: center;
+        gap: spacing.$gap-xs;
+    }
+
+    &__calibrator-tab-grid-container {
+        overflow: auto;
+    }
+
+    &__test-advanced-tab-order-variant {
+        display: flex;
+        gap: spacing.$gap-xl;
+        align-items: flex-start;
+    }
+
+    &__test-advanced-tab-order-variant-checkbox {
+        padding-top: spacing.$gap-xl;
+    }
+
+    &__test-advanced-tab-divider {
+        width: 100%;
+        border-top: 2px solid colors.$border-subtle-02;
+    }
+}

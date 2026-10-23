@@ -1,0 +1,12 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhModalContent>
+    <Body>
+    @Loc["RerunCurveControlModalView_InfoText"]
+    </Body>
+
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))"> @Loc["RerunCurveControlModalView_Cancel"] </PhButton>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok()))" Type="ButtonType.Primary"> @Loc["RerunCurveControlModalView_Rerun"] </PhButton>
+    </Footer>
+</PhModalContent>

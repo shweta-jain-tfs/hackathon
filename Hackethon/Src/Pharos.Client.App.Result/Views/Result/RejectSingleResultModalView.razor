@@ -1,0 +1,67 @@
+@using Pharos.Common.Web.Components.ConditionalIndentContent
+@using Pharos.Common.Web.Components.DetailsList
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.FormElements.RadioButton
+<PhModalContent>
+
+    <Body>
+    @if (CanReject)
+    {
+        <PhInputColumn>
+            <PhDetailsList HighlightedValues="true">
+                <PhDetailsListItem Label="@Loc["RejectSingleTestModal_SampleID"]">@TestToReject!.SampleIdDisplay</PhDetailsListItem>
+                <PhDetailsListItem Label="@Loc["RejectSingleTestModal_TestName"]">@TestToReject!.TestName</PhDetailsListItem>
+                <PhDetailsListItem Label="@Loc["RejectSingleTestModal_Status"]">@TestToReject!.Status.ToLocalizedString("TestResultDetails")</PhDetailsListItem>
+            </PhDetailsList>
+
+            <PhConditionalIndentContent ShowContent="AddNewTest">
+                <ParentContent>
+                    <PhCheckBox Label="@Loc["RejectSingleTestModal_AddNewTest"]" @bind-Value="AddNewTest"></PhCheckBox>
+                </ParentContent>
+
+                <ConditionalContent>
+                    <PhStack Gap="StackGap.Lg">
+
+                        <PhDetailsList>
+                            <PhDetailsListItem Label="@Loc["RejectSingleTestModal_CurrentInstrumentDilution"]"> @OriginalInstrumentDilution</PhDetailsListItem>
+                            <PhDetailsListItem Label="@Loc["RejectSingleTestModal_CurrentPreDilution"]"> @OriginalPreDilution</PhDetailsListItem>
+                        </PhDetailsList>
+
+                        <PhRadioGroup @bind-SelectedValue="@SelectedDilutionOption">
+                            <PhRadioButton Label="@Loc["RejectSingleTestModal_SameDilutions"]" Value="DilutionOption.SameDilutions"/>
+                            <PhRadioButton Label="@Loc["RejectSingleTestModal_ChangeInstrumentDilution"]" Value="DilutionOption.ChangeInstrumentDilution">
+                                <PhStack Gap="StackGap.Lg">
+
+                                    <PhLabel Text="@Loc["RejectSingleTestModal_InstrumentDilution"]" HelpText="@Loc["RejectSingleTestModal_TotalDilution", NewInstrumentDilution, OriginalPreDilution, NewInstrumentDilution*OriginalPreDilution]">
+                                        <PhDropdown Options="@ValidDilutions" @bind-Value="NewInstrumentDilution"/>
+                                    </PhLabel>
+
+                                </PhStack>
+                            </PhRadioButton>
+                        </PhRadioGroup>
+                    </PhStack>
+                </ConditionalContent>
+            </PhConditionalIndentContent>
+        </PhInputColumn>
+    }
+    else
+    {
+        @Loc["RejectSingleTestModal_NoTestsToReject"]
+    }
+
+    </Body>
+    <Footer>
+
+        @if (CanReject)
+        {
+            <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["RejectSingleTestModal_Cancel"]</PhButton>
+            <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok((GetReturnDilutionOption(), NewInstrumentDilution))))">@Loc["RejectSingleTestModal_Reject"]</PhButton>
+        }
+        else
+        {
+            <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["RejectSingleTestModal_Ok"]</PhButton>
+        }
+
+    </Footer>
+
+</PhModalContent>

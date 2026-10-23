@@ -1,0 +1,11 @@
+<PhDataGrid TableTitle="@Loc["MethodDetailsCurveControlTab_CurveControl"]" StateID="curvecontrols" TGridItem="MethodCurveControl" Items="ViewModel.Model.CurveControls.AsQueryable()" RowType="RowTypeEnum.LinesBetweenRows">
+    <Columns>
+        <Column Title="@Loc["MethodDetailsCurveControlTab_CurveControlName"]" Property="@(x => x.CurveControlName)" />
+        <Column Title="@Loc["MethodDetailsCurveControlTab_MethodTestName"]" Property="@(x => x.MethodTestName)" />
+        <Column Title="@Loc["MethodDetailsCurveControlTab_Replicates"]" Property="@(x => x.Replicates)" />
+        <Column Title="@Loc["MethodDetailsCurveControlTab_ExpectedConcentration"]" Property="@(x => x.ExpectedConcentration)" />
+        <Column Title="@Loc["MethodDetailsCurveControlTab_ExpectedStdDev"]" Property="@(x => x.ExpectedStdDev)" />
+        <Column Title="@Loc["MethodDetailsCurveControlTab_InnerStdDevLimit"]" Property="@(x => x.InnerStdDevLimit)" />
+        <Column Title="@Loc["MethodDetailsCurveControlTab_OuterStdDevLimit"]" Property="@(x => x.OuterStdDevLimit)" />
+    </Columns>
+</PhDataGrid>

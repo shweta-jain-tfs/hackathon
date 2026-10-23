@@ -1,0 +1,19 @@
+@using Pharos.Client.Common.App.Views
+@inherits Pharos.Common.Web.Components.Base.ComponentWithClientScriptBase
+
+@attribute [Route(PageRoute.LockScreen)]
+@layout EmptyLayout
+
+<div class="@AppLayoutCssClasses">
+    <PhStack Gap="StackGap.Xs">
+        <PhModal/>
+        <InstrumentStatusBarView LockScreenMode />
+        <div class="ph-lockscreen" @onclick="HandleClick">
+            <LockScreenView />
+            <div class="ph-lockscreen__login-hint">
+                <PhIcon IconType="@IconType.UserProfile" Size="@IconSize.Lg" />
+                <span>@Loc["Lockscreen_Login_Hint"]</span>
+            </div>
+        </div>
+    </PhStack>
+</div>

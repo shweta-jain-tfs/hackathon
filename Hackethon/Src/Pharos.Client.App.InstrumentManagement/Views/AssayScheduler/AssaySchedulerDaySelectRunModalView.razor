@@ -1,0 +1,33 @@
+﻿@using Pharos.Client.Common.Models
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.FormElements.RadioButton
+@using Pharos.Common.Web.Components.DetailsList
+
+<PhModalContent>
+    <Body>
+        <div class="flex flex-col gap-xl">
+            <div class="grid gap-sm">
+                <div class="flex gap-xl">
+                    <PhDetailsList Columns="2">
+                        <PhDetailsListItem Label="@Loc["AssaySchedulerPage_AssaySchedulerDaySelectRunModal_InstrumentName"]">@InstrumentName</PhDetailsListItem>
+                        <PhDetailsListItem Label="@Loc["AssaySchedulerPage_AssaySchedulerDaySelectRunModal_Day"]">@Day.ToString()</PhDetailsListItem>
+                    </PhDetailsList>
+                </div>
+                <PhDetailsList Columns="1">
+                    <PhDetailsListItem Label="@Loc["AssaySchedulerPage_AssaySchedulerDaySelectRunModal_MethodName"]">@AssaySchedulerMethod.MethodName</PhDetailsListItem>
+                </PhDetailsList>
+            </div>
+            <div class="grid gap-sm">
+                <p class="t-body2">@Loc["AssaySchedulerPage_AssaySchedulerDaySelectRunModal_WhenToRun_Header"]</p>
+                <PhRadioGroup @bind-SelectedValue="@AssaySchedulerMethod.WhenToRun">
+                    <PhRadioButton Value="InstrumentMethodWhenToRun.Directly" Label=@Loc["AssaySchedulerPage_AssaySchedulerDaySelectRunModal_Directly"]></PhRadioButton>
+                    <PhRadioButton Value="InstrumentMethodWhenToRun.AtFirstTest" Label=@Loc["AssaySchedulerPage_AssaySchedulerDaySelectRunModal_AtFirstTest"]></PhRadioButton>
+                </PhRadioGroup>
+            </div>
+        </div>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["AssaySchedulerPage_AssaySchedulerDaySelectRunModal_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok(AssaySchedulerMethod)))">@Loc["AssaySchedulerPage_AssaySchedulerDaySelectRunModal_Ok"]</PhButton>
+    </Footer>
+</PhModalContent>

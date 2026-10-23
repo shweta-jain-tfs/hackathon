@@ -1,0 +1,143 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+$sample-tray-width: 336px;
+$sample-tray-height: 176px;
+
+.ph-tray {
+    width: $sample-tray-width;
+    height: $sample-tray-height;
+    box-sizing: border-box;
+    padding: 8px;
+    position: relative;
+
+    &--empty {
+        display: flex;
+        flex-shrink: 0;
+        border-radius: rounded.$drawer-rounded;
+        border: 2px dashed colors.$drawer-border;
+    }
+
+    &--filled {
+        display: flex;
+        @include rounded.rounded;
+        background: colors.$drawer-filled-container-background;
+    }
+
+    &--error-filled {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        flex-wrap: wrap;
+        border-radius: rounded.$drawer-rounded;
+        background: colors.$tray-error-border;
+        padding: 4px;
+    }
+
+    &--scan {
+        background: colors.$drawer-position-bg;
+        border-radius: rounded.$drawer-rounded;
+    }
+
+    &__content {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        @include rounded.rounded;
+        background: colors.$drawer-filled-container-background;
+    }
+
+    &__error-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+        background: colors.$drawer-filled-background;
+        border-radius: rounded.$rounded-default;
+    }
+
+    &__error-text {
+        @include text.body2;
+        font-weight: text.$font-bold;
+        color: colors.$sample-tray-error-text;
+        height: 36px;
+        padding-left: spacing.$padding-xs;
+    }
+
+    &__selection-frame {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+        &::before {
+            border-radius: rounded.$drawer-rounded;
+            content: "";
+            position: absolute;
+        }
+
+        &:not(.selected):active::before {
+            background: colors.$layer-selected-02;
+            width: calc($sample-tray-width + 64px);
+            height: calc($sample-tray-height + 16px);
+        }
+
+        &.selected:not(:active)::before {
+            background: colors.$layer-selected-02;
+            border: 4px solid colors.$layer-selected-03;
+            width: calc($sample-tray-width + 64px);
+            height: calc($sample-tray-height + 16px);
+        }
+
+        &.selected:active::before {
+            background: colors.$layer-selected-pressed;
+            border: 4px solid colors.$border-active;
+            width: calc($sample-tray-width + 64px);
+            height: calc($sample-tray-height + 16px);
+        }
+    }
+
+    &__barcode-container {
+        position: absolute;
+        top: 50%;
+        left: calc(100% + 32px);
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        @include text.body2;
+        font-weight: text.$font-normal;
+        pointer-events: none;
+        user-select: none;
+
+        &--hidden {
+            visibility: hidden;
+        }
+
+        &--dim {
+            position: absolute;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: colors.$drawer-dim-overlay;
+                pointer-events: none;
+            }
+        }
+
+        &--highlight {
+            color: colors.$text-primary;
+        }
+
+        &--error {
+            color: colors.$text-error;
+        }
+    }
+}

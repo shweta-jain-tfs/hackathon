@@ -1,0 +1,39 @@
+﻿<PhStack>
+    <div class="ph-methods-page">
+        <PhLabel Text="@Loc["TestDetailsGeneralTab_Name"]">
+            <PhValueBox Size="TextBoxSize.Small">@ViewModel.Model.TestName</PhValueBox>
+        </PhLabel>
+        <PhLabel Text="@Loc["TestDetailsGeneralTab_FullName"]">
+            <PhValueBox Size="TextBoxSize.Medium">@ViewModel.Model.FullTestName</PhValueBox>
+        </PhLabel>
+        <div class="ph-methods-page__test-general-tab-ruo-test">
+            <PhCheckBox Label="@Loc["TestDetailsGeneralTab_IsRUO"]" @bind-Value="ViewModel.Model.IsRuo" DisplayOnly="true" Size="CheckBoxSize.Large"/>   
+        </div>
+    </div>
+
+    <PhCheckBox Label="@Loc["TestDetailsGeneralTab_Enabled"]" @bind-Value="ViewModel.Enabled" Disabled="@IsEditingDisabled"/>
+
+    <PhNumberField Label="@Loc["TestDetailsGeneralTab_Replicates"]"
+        @bind-Value="ViewModel.Replicates"
+        Disabled="@IsEditingDisabled"
+        MaxNumberOfDigits="1"/>
+
+    <PhLabel Text="@Loc["TestDetailsGeneralTab_DilutionDetailsHeader"]" Size="LabelSize.Body1"></PhLabel>
+
+    <div class="ph-methods-page--test-general-tab-dilution-defaults">
+        <PhDropdown TValue="DilutionMethod"
+            Label="@Loc["TestDetailsGeneralTab_DilutionMethod"]"
+            HelpText="@GetManufacturerDefaultForDilutionMethod()"
+            Size="DropdownSize.MediumInputWidth"
+            @bind-Value="ViewModel.DilutionMethod"
+            Disabled="@IsEditingDisabled" 
+            Options="ViewModel.DilutionMethodDropDownValues"/>
+        <PhDropdown TValue="int"
+            Label="@Loc["TestDetailsGeneralTab_DilutionFactor"]"
+            HelpText="@GetManufacturerDefaultForDilutionFactor()"
+            Size="DropdownSize.FitContent"
+            Disabled="@(IsEditingDisabled || ViewModel.Model.PreventDilutionFactorsBelowDefault)"
+            @bind-Value="ViewModel.DilutionFactor"
+            Options="ViewModel.DilutionFactorDropDownValues"/>
+    </div>
+</PhStack>

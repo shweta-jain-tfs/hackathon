@@ -1,0 +1,23 @@
+﻿@using Pharos.Client.Common.App.Validation
+
+@attribute [Authorize]
+
+<PhModalContent>
+    <Body>
+        <PhSimpleValidationContext @ref="_validationContext" OnValidationStateChanged="ValidationChanged" Model="ViewModel">
+            <EditQualityControlTestView ViewModel="ViewModel" />
+        </PhSimpleValidationContext>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["EditQualityControlTestModalView_Cancel"]</PhButton>
+        
+        @if(ViewModel.EditingPhadiaControl)
+        {
+            <PhButton Type="ButtonType.Primary" Disabled="!_isValid" OnClick="Apply">@Loc["EditQualityControlTestModalView_Save"]</PhButton>
+        }
+        else
+        {
+            <PhButton Type="ButtonType.Primary" Disabled="!_isValid" OnClick="Apply">@Loc["EditQualityControlTestModalView_Apply"]</PhButton>
+        }
+    </Footer>
+</PhModalContent>

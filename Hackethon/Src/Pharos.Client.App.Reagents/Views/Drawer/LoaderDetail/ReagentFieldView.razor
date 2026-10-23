@@ -1,0 +1,10 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Label
+
+<div class="reagent-loader-panel__details-container">
+    <PhLabel Direction="LabelDirection.Vertical" Text="@Text" Disabled="@IsDisabled"></PhLabel>
+    <PhValueBox Size="TextBoxSize.Default">
+        @Value
+    </PhValueBox>
+</div>

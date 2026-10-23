@@ -1,0 +1,45 @@
+﻿@using Pharos.Common.Web.Components.HighlightedContent
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Common.Web.Components.RichText
+@attribute [Stories("Components/HighlightedContent")]
+
+<Stories TComponent="PhHighlightedContent">
+    <Story Name="Highlighted content">
+        <Template>
+            <PhHighlightedContent @attributes="context.Args">
+                Some text
+            </PhHighlightedContent>
+        </Template>
+    </Story>
+    <Story Name="All types">
+        <Template>
+            <PhStack>
+            @foreach (HighlightedContentType type in Enum.GetValues(typeof(HighlightedContentType)))
+            {
+                <PhHighlightedContent Type="@type">
+                    @type.ToString()
+                </PhHighlightedContent>
+            }
+            </PhStack>
+        </Template>
+    </Story>
+    <Story Name="More content">
+        <Template>
+            <PhRichText>
+                <PhHighlightedContent @attributes="context.Args">
+                    <p>This highlighted content section demonstrates how important information can be emphasized within rich text documentation. It contains multiple content elements to test the component's ability to handle complex layouts and formatting.</p>
+                    
+                    <ul>
+                        <li>First important point to highlight</li>
+                        <li>Second critical information item</li>
+                        <li>Third essential detail for users</li>
+                        <li>Additional context or warning information</li>
+                    </ul>
+                </PhHighlightedContent>
+            </PhRichText>
+        </Template>
+    </Story>
+</Stories>
+
+@code {
+}

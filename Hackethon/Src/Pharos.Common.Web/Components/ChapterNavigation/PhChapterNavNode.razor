@@ -1,0 +1,41 @@
+﻿<li>
+  <div class="ph-chapter-nav__item">
+    <a class="ph-chapter-nav__link"
+       href="@Node.Href"
+       aria-current="@GetAriaCurrent()"
+       @onclick="Navigate"
+       @onclick:preventDefault="@PreventNavigation">
+       @Node.Title
+    </a>
+    @if (Node.HasChildren)
+    {
+      <button class="ph-chapter-nav__toggle"
+              aria-expanded="@(IsExpanded.ToString().ToLower())"
+              aria-controls="@($"chapter-{Node.Id}-children")"
+              aria-label="@(IsExpanded ? "Collapse section" : "Expand section")"
+              @onclick="Toggle"
+              type="button">
+          <PhIcon IconType="@(IsExpanded ? IconType.ChevronUp : IconType.ChevronDown)" 
+                  Size="IconSize.Md" />
+      </button>
+    }
+  </div>
+
+    @if (Node.HasChildren)
+    {
+        <ul id="@($"chapter-{Node.Id}-children")"
+            hidden="@(!IsExpanded)">
+            @foreach (var child in Node.Children)
+            {
+                <PhChapterNavNode @key="@child.Id"
+                                Node="@child"
+                                CurrentId="@CurrentId"
+                                OnNavigate="@OnNavigate"
+                                OnToggle="@OnToggle"
+                                ExpandedState="@ExpandedState"
+                                PreventNavigation="@PreventNavigation"
+                                Level="@(Level + 1)"/>
+            }
+        </ul>
+    }
+</li>

@@ -1,0 +1,33 @@
+﻿@using Pharos.Common.Web.Components.ChartCard
+
+@if (ViewModel.ChartHolders is { Count: > 0 })
+{
+    var currentCard = 0;
+    const int cardsPerRow = 3;
+    @while (currentCard < ViewModel.ChartHolders.Count)
+    {
+        @if (ViewModel.ChartHolders.Count > currentCard)
+        {
+            var startCard = currentCard;
+            <PhChartCardList>
+                @for (var card = startCard; card < startCard + cardsPerRow && card < ViewModel.ChartHolders.Count; card++)
+                {
+                    var qc = ViewModel.ChartHolders[@card];
+                    <PhChartCard Narrow="@Narrow" Status="@qc.Status" Title="@($"{qc.QualityControlName} : {qc.TestName}")" Href="@NavigateToQualityControlDetails(qc.QualityControlName, qc.TestName)">
+                        <QualityControlChartView Miniature="true" Interactive="false" ChartComponents="@qc.ChartComponents" OuterParameters="qc.OuterParameters"/>
+                    </PhChartCard>
+                }
+            </PhChartCardList>
+            currentCard += cardsPerRow;
+        }
+    }
+}
+else @if (ViewModel.ChartHolders is { Count: 0 })
+{
+    @* Placeholder *@
+    <PhChartCardList>
+        <PhChartCard Status="StatusType.None" Title="@Loc["MethodQuality_NoQcs"]">
+            <div style="width: 500px; height: 180px"></div>
+        </PhChartCard>
+    </PhChartCardList>
+}

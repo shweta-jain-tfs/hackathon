@@ -1,0 +1,8 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/spacing";
+
+.ph-navigation-history {
+    display: flex;
+    align-items: center;
+    gap: spacing.$gap-xs;
+}

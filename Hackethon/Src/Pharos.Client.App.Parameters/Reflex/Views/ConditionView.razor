@@ -1,0 +1,96 @@
+﻿@using Pharos.Common.Web.Components.StepGuide
+@attribute [Authorize]
+
+<PhInputColumn>
+    <PhLabel Direction="LabelDirection.Horizontal" Size="LabelSize.Body1" Text="@Loc["ReflexDetailPage_Condition"]" Disabled="IsEmptyDefinitionName()">
+        <PhValueBox Size="TextBoxSize.ExtraLarge"> @ViewModel.FormattedCondition </PhValueBox>
+    </PhLabel>
+
+    <PhStepGuide Mode="StepGuideMode.Wizard" AlignStepSymbolToInputField Disabled="IsEmptyDefinitionName()">
+        <PhStepGuideWizardStep Active="true" Current="@(CurrentStep == 1)">
+            <PhLabel Direction="LabelDirection.Horizontal" Text="@Loc["ConditionEditView_TestName"]" Disabled="IsEmptyDefinitionName()" Size="LabelSize.Body1" ValidationFor="() => ViewModel.TestName">
+                <PhValueBox>
+                    <PhHrefLink Disabled="!ViewModel.CanEdit || IsEmptyDefinitionName()" OnClick="ConditionTestAddViewOpen">
+                        @GetString(ViewModel.TestName)
+                    </PhHrefLink>
+                </PhValueBox>
+            </PhLabel>
+        </PhStepGuideWizardStep>
+        <PhStepGuideWizardStep Active="@(CurrentStep >= 2)" Current="@(CurrentStep == 2)" PlaceholderText="@Loc["ConditionEditView_ResultType_Placeholder"]">
+            <PhLabel Text="@Loc["ConditionEditView_ResultType"]" ValidationFor="() => ViewModel.NullableResultType">
+                <PhDropdown Options="ViewModel.ResultOptions" DisplayOnly="!ViewModel.CanEdit" @bind-Value="@ViewModel.NullableResultType" Title="@Loc["ConditionEditView_ResultType_Placeholder"]" />
+            </PhLabel>
+        </PhStepGuideWizardStep>
+        <PhStepGuideWizardStep Active="@(CurrentStep >= 3)" Current="@(CurrentStep == 3)" PlaceholderText="@Loc["ConditionEditView_CompareType_Placeholder"]">
+            <PhLabel Text="@Loc["ConditionEditView_CompareType"]" ValidationFor="() => ViewModel.NullableCompareType">
+                <PhDropdown Options="ViewModel.CompareOptions" DisplayOnly="!ViewModel.CanEdit" @bind-Value="@ViewModel.NullableCompareType" Title="@Loc["ConditionEditView_CompareType_Placeholder"]" />
+            </PhLabel>
+        </PhStepGuideWizardStep>
+        <PhStepGuideWizardStep Active="@(CurrentStep == 4)" Current="@(CurrentStep == 4)" PlaceholderText="@Loc["ConditionEditView_CompareValue_Placeholder"]">
+                @switch (ViewModel.ResultType)
+                {
+                    case ResultType.Default:
+                        break;
+                    case ResultType.Concentration:
+                        @if (ViewModel.CompareType == CompareType.Between)
+                        {
+                            <PhLabel Text="@Loc["ConditionEditView_CompareValue"]">
+                                <PhNumberRange DisplayOnly="!ViewModel.CanEdit" @bind-Value="@ViewModel.ConcentrationCompareRange" />
+                            </PhLabel>
+                        }
+                        else
+                        {
+                            <PhLabel Text="@Loc["ConditionEditView_CompareValue"]" ValidationFor="() => ViewModel.ConcentrationCompareValue">
+                                <PhNumberField DisplayOnly="!ViewModel.CanEdit" @bind-Value="@ViewModel.ConcentrationCompareValue" />
+                            </PhLabel>
+                        }
+                        break;
+                    case ResultType.Class:
+                        <PhLabel Text="@Loc["ConditionEditView_CompareValue"]" ValidationFor="() => ViewModel.ClassCompareValue">
+                        <PhDropdown DisplayOnly="!ViewModel.CanEdit" Options="@ViewModel.ClassDropDownOptions" @bind-Value="@ViewModel.ClassCompareValue" Title="@Loc["ConditionEditView_CompareValue_SelectPlaceholder"]" />
+                        </PhLabel>
+                        break;
+                    case ResultType.CutOff:
+                        <PhLabel Text="@Loc["ConditionEditView_CompareValue"]" ValidationFor="() => ViewModel.CutOffCompareValue">
+                            <PhDropdown DisplayOnly="!ViewModel.CanEdit" Options="@ViewModel.CutoffDropDownOptions" @bind-Value="@ViewModel.CutOffCompareValue" Title="@Loc["ConditionEditView_CompareValue_SelectPlaceholder"]" />
+                        </PhLabel>
+                        break;
+                    case ResultType.Quotient:
+                        @if (ViewModel.CompareType == CompareType.Between)
+                        {
+                            <PhLabel Text="@Loc["ConditionEditView_CompareValue"]">
+                                <PhNumberRange DisplayOnly="!ViewModel.CanEdit" @bind-Value="@ViewModel.QuotientCompareRange" />
+                            </PhLabel>
+                        }
+                        else
+                        {
+                            <PhLabel Text="@Loc["ConditionEditView_CompareValue"]" ValidationFor="() => ViewModel.QuotientCompareValue">
+                                <PhNumberField DisplayOnly="!ViewModel.CanEdit" @bind-Value="@ViewModel.QuotientCompareValue" />
+                            </PhLabel>
+                        }
+                        break;
+                    case ResultType.ConcentrationRaw:
+                        @if (ViewModel.CompareType == CompareType.Between)
+                        {
+                            <PhLabel Text="@Loc["ConditionEditView_CompareValue"]">
+                                <PhNumberRange DisplayOnly="!ViewModel.CanEdit" @bind-Value="@ViewModel.ConcentrationRawCompareRange" />
+                            </PhLabel>
+                        }
+                        else
+                        {
+                            <PhLabel Text="@Loc["ConditionEditView_CompareValue"]" ValidationFor="() => ViewModel.ConcentrationRawCompareValue">
+                                <PhNumberField DisplayOnly="!ViewModel.CanEdit" @bind-Value="@ViewModel.ConcentrationRawCompareValue" />
+                            </PhLabel>
+                        }
+                        break;
+                    case ResultType.RU:
+                        <PhLabel Text="@Loc["ConditionEditView_CompareValue"]" ValidationFor="() => ViewModel.RuCompareValue">
+                            <PhNumberField DisplayOnly="!ViewModel.CanEdit" @bind-Value="@ViewModel.RuCompareValue" />
+                        </PhLabel>
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+        </PhStepGuideWizardStep>
+    </PhStepGuide>
+</PhInputColumn>

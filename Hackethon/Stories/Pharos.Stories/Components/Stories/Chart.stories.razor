@@ -1,0 +1,955 @@
+﻿@using Pharos.Common.Web.Components.Charts.ChartBase
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.Panel
+@using static Pharos.Common.Web.Components.Charts.ChartBase.PhChartLinear
+@attribute [Stories("Components/Chart")]
+
+<Stories TComponent="PhChartLinear">
+    <Story Name="Linear Chart">
+        <Template>
+            <PhChartLinear PointClicked="@OnPointClicked" Interactive="true" Content="ContentStandard" ChartWidth="800" ChartHeight="400" DataRangeXMin="@_startDate" DataRangeXMax="@_endDate" DataRangeYMin="0.2" DataRangeYMax="1.2" ></PhChartLinear>
+        </Template>
+    </Story>
+
+    <Story Name="Linear Chart - miniature">
+        <Template>
+            <br/>
+            <div style="padding-left:100px;">
+                <PhChartLinear Interactive="false" Miniature="true" Content="ContentMiniature" ChartWidth="192" ChartHeight="140" DataRangeXMin="@_startDateMini" DataRangeXMax="@_endDateMini" DataRangeYMin="0.2" DataRangeYMax="1.2" @attributes="context.Args"></PhChartLinear>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Linear Chart - dynamic data">
+        <Template>
+            <PhChartLinear Interactive="true" Content="ContentDynamic" ChartWidth="800" ChartHeight="400" DataRangeXMin="@_startDate" DataRangeXMax="@_endDate" DataRangeYMin="@_dynamicYMin" DataRangeYMax="@_dynamicYMax" @attributes="context.Args"></PhChartLinear>
+
+            <div class="flex flex-row">
+                <div>
+                    <PhButton OnClick="@(() => VerticalZoomIn())">Vertical zoom in</PhButton>
+                    <PhButton OnClick="@(() => VerticalZoomOut())">Vertical zoom out</PhButton>
+                </div>
+            </div>
+            <br/>
+            <div class="flex flex-row">
+                <PhButton OnClick="@(() => _animating = !_animating)">Mod values</PhButton>
+                <div>
+                    <PhButton OnClick="@(() => AddPoint())">Add point</PhButton>
+                    <PhButton OnClick="@(() => DeletePoint())">Delete point</PhButton>
+
+                </div>
+                <div>
+                    <PhButton OnClick="@(() => AddLine())">Add line</PhButton>
+                    <PhButton OnClick="@(() => DeleteLine())">Delete line</PhButton>
+
+                </div>
+                <div>
+                    <PhButton OnClick="@(() => AddRegion())">Add region</PhButton>
+                    <PhButton OnClick="@(() => DeleteRegion())">Delete region</PhButton>
+                </div>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Linear Chart - empty">
+        <Template>
+            <PhChartLinear PointClicked="@OnPointClicked" Interactive="true" Content="ContentEmpty" ChartWidth="800" ChartHeight="400" DataRangeXMin="@_startDate" DataRangeXMax="@_endDate" DataRangeYMin="0.2" DataRangeYMax="1.2"></PhChartLinear>
+        </Template>
+    </Story>
+
+    <Story Name="Linear Chart - RU">
+        <Template>
+            <PhChartLinear Interactive="true" Content="ContentRU" ChartWidth="800" ChartHeight="500" DataRangeXMin="@_startDate3" DataRangeXMax="@_endDate3" DataRangeYMin="0" DataRangeYMax="20000"></PhChartLinear>
+        </Template>
+    </Story>
+
+    <Story Name="Logarithmic Chart">
+        <Template>
+            <PhChartLogarithmic Interactive="true" Content="ContentLogarithmic" ChartWidth="716" ChartHeight="768" DataRangeXMin="1" DataRangeXMax="10000" DataRangeYMin="10" DataRangeYMax="100000"></PhChartLogarithmic>  
+        </Template>
+    </Story>
+
+    <Story Name="Logarithmic Chart - miniature">
+        <Template>
+            <div style="padding-left:70px;">
+                <PhChartLogarithmic Miniature="true" Content="ContentLogarithmicMiniature" ChartWidth="192" ChartHeight="140" DataRangeXMin="1" DataRangeXMax="10000" DataRangeYMin="10" DataRangeYMax="100000"></PhChartLogarithmic>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Logarithmic Chart - empty">
+        <Template>
+            <PhChartLogarithmic Interactive="true" Content="ContentLogarithmicEmpty" ChartWidth="716" ChartHeight="768" DataRangeXMin="1" DataRangeXMax="10000" DataRangeYMin="10" DataRangeYMax="100000"></PhChartLogarithmic>
+        </Template>
+    </Story>
+</Stories>
+
+@code {
+    private List<PhChartLinear.IDrawable>? ContentStandard;
+    private List<PhChartLinear.IDrawable>? ContentMiniature;
+    private List<PhChartLinear.IDrawable>? ContentDynamic;
+    private List<PhChartLinear.IDrawable>? ContentEmpty;
+
+    private List<PhChartLogarithmic.IDrawable>? ContentLogarithmic;
+    private List<PhChartLogarithmic.IDrawable>? ContentLogarithmicMiniature;
+    private List<PhChartLogarithmic.IDrawable>? ContentLogarithmicAlternative;
+    private List<PhChartLogarithmic.IDrawable>? ContentLogarithmicEmpty;
+
+    private List<PhChartLinear.IDrawable>? ContentRU;
+
+    private bool _animating = false;
+
+    private DateTimeOffset _startDate = new DateTime(2024, 01, 01);
+    private DateTimeOffset _endDate = new DateTime(2024, 01, 20);
+    private DateTimeOffset _startDateMini = new DateTime(2024, 01, 15);
+    private DateTimeOffset _endDateMini = new DateTime(2024, 01, 20);
+
+    private readonly DateTimeOffset _startDate3 = new DateTime(2024, 01, 01, 10, 0, 0);
+    private readonly DateTimeOffset _endDate3 = new DateTime(2024, 01, 01, 14, 0, 0);
+
+    private double _dynamicYMin = 0.2;
+    private double _dynamicYMax = 1.2;
+
+    protected override void OnInitialized()
+    {
+        ContentStandard = LoadContentStandard();
+        ContentMiniature = LoadContentMiniature();
+        ContentDynamic = LoadContentDynamic();
+        Task.Run(Animate);
+        ContentEmpty = LoadContentEmpty();
+
+        ContentLogarithmic = LoadContentLogarithmic();
+        ContentLogarithmicMiniature = LoadContentLogarithmicMiniature();
+        ContentLogarithmicAlternative = LoadContentLogarithmicAlternative();
+        ContentLogarithmicEmpty = LoadContentLogarithmicEmpty();
+
+        ContentRU = LoadContentRU();
+    }
+
+    PhChartLinear.HorizontalLine line03 = new PhChartLinear.HorizontalLine
+    {
+        Value = 0.3,
+        Label = true,
+        Dashed = false,
+        DrawTick = false
+    };
+
+    PhChartLinear.HorizontalLine line04 = new PhChartLinear.HorizontalLine
+    {
+        Value = 0.4,
+        Label = true,
+        Dashed = false,
+        DrawTick = false
+    };
+
+    PhChartLinear.HorizontalLine line06 = new PhChartLinear.HorizontalLine
+    {
+        Value = 0.6,
+        Label = true,
+        Dashed = false,
+        DrawTick = false
+    };
+
+    PhChartLinear.HorizontalLine line07 = new PhChartLinear.HorizontalLine
+    {
+        Value = 0.7,
+        Label = true,
+        Dashed = false,
+        DrawTick = false
+    };
+
+    PhChartLinear.HorizontalLine line08 = new PhChartLinear.HorizontalLine
+    {
+        Value = 0.8,
+        Label = true,
+        Dashed = false,
+        DrawTick = false
+    };
+
+    PhChartLinear.HorizontalLine line09 = new PhChartLinear.HorizontalLine
+    {
+        Value = 0.9,
+        Label = true,
+        Dashed = false,
+        DrawTick = false
+    };
+
+    PhChartLinear.HorizontalLine line10 = new PhChartLinear.HorizontalLine
+    {
+        Value = 1.0,
+        Label = true,
+        Dashed = true,
+        DrawTick = false
+    };
+
+    PhChartLinear.HorizontalLine line11 = new PhChartLinear.HorizontalLine
+    {
+        Value = 1.1,
+        Label = true,
+        Dashed = true,
+        DrawTick = false
+    };
+
+    PhChartLinear.Regions regionsSingle = new PhChartLinear.Regions
+    {
+        RegionList = new List<PhChartLinear.Region>
+        {
+            new()
+            {
+                Start = new DateTime(2023, 12, 1),
+                End = new DateTime(2024, 2, 1),
+                UpperAlert = 1.1,
+                UpperWarning = 1.0,
+                LowerWarning = 0.4,
+                LowerAlert = 0.3,
+            }
+        }
+    };
+
+    PhChartLinear.Regions regionsMultiple = new PhChartLinear.Regions
+    {
+        RegionList = new List<PhChartLinear.Region>
+            {
+                new()
+                {
+                    Start = new DateTime(2023, 12, 1),
+                    End = new DateTime(2024, 1, 4),
+                    LowerAlert = 0.3,
+                    LowerWarning = 0.4,
+                    UpperAlert = 0.9,
+                    UpperWarning = 0.8,
+                },
+
+                new()
+                {
+                    Start = new DateTime(2024, 1, 4),
+                    End = new DateTime(2024, 1, 14),
+                    LowerAlert = 0.4,
+                    LowerWarning = 0.5,
+                    UpperAlert = 1.0,
+                    UpperWarning = 0.9
+                },
+
+                new()
+                {
+                    Start = new DateTime(2024, 1, 14),
+                    End = new DateTime(2024, 2, 1),
+                    LowerAlert = 0.5,
+                    LowerWarning = 0.6,
+                    UpperAlert = 1.1,
+                    UpperWarning = 1.0
+                },
+            }
+    };
+
+    private void OnPointClicked(PointBase point)
+    {
+        point.Selected = !point.Selected;
+    }
+
+    private List<PhChartLinear.IDrawable> LoadContentStandard()
+    {
+        PhChartLinear.VerticalLine verticalLineDashed = new PhChartLinear.VerticalLine
+        {
+            Value = new DateTime(2024, 1, 4),
+            Label = false,
+            Dashed = true
+        };
+
+        PhChartLinear.Border border = new PhChartLinear.Border();
+
+        PhChartLinear.HorizontalAxis axisX = new PhChartLinear.HorizontalAxis
+        {
+            DrawAxisLine = false,
+        };
+
+        PhChartLinear.VerticalAxis axisY = new PhChartLinear.VerticalAxis
+        {
+            TickDistance = 0.1,
+            DrawAxisLine = false,
+            DrawValues = false,
+            DrawTicks = false,
+            Label = "Some unit (RU?)"
+        };
+
+        PhChartLinear.HorizontalLine lineCut = new PhChartLinear.HorizontalLine
+        {
+            Value = 0.6,
+            Label = true,
+            Dashed = true,
+            DrawTick = true,
+            StartX = new DateTime(2024, 1, 4),
+            EndX = new DateTime(2024, 1, 10)
+        };
+
+        var content = new List<PhChartLinear.IDrawable>();
+        content.Add(regionsSingle);
+        content.Add(border);
+        content.Add(axisX);
+        content.Add(axisY);
+        content.Add(line03);
+        content.Add(line04);
+        content.Add(line07);
+        content.Add(line10);
+        content.Add(line11);
+        content.Add(lineCut);
+        content.Add(verticalLineDashed);
+        var points = randomizePointsLinear(50, _startDate, new TimeSpan(12, 0, 0), 0.0, 1.4, new double[] {-1, 0.25, 0.35, 0.7, 1.05, 1.15, 1.5});
+
+        // Specific point on vertical line
+        var p1 = new PhChartLinear.Point
+        {
+            X = new DateTime(2024, 1, 4),
+            Y = 0.5,
+            Selected = true
+        };
+        var p2 = new PhChartLinear.Point
+        {
+            X = new DateTime(2024, 1, 4),
+            Y = 1.05,
+            Selected = true
+        };
+
+        points.PointList.Remove(p1.X);
+        points.PointList.Add(p1.X, new () {p1, p2});
+
+        setPointStatus(points, regionsSingle);
+
+        // Remove some points (to check if the chart leaves a gap)
+        for (int i = 0; i < 5; i++)
+        {
+            points.PointList.RemoveAt(8);
+        }
+
+        content.Add(points);
+
+        return content;
+    }
+
+    private List<PhChartLinear.IDrawable> LoadContentMiniature()
+    {
+        var content = new List<PhChartLinear.IDrawable>();
+
+        content.Add(regionsSingle);
+        var points = randomizePointsLinear(30, _startDateMini, new TimeSpan(4, 0, 0), 0.0, 1.4, new double[] { -1, 0.25, 0.35, 0.7, 1.05, 1.15, 1.5 });
+        points.Small = true;
+
+        setPointStatus(points, regionsSingle);
+
+        content.Add(points);
+
+        return content;
+    }
+
+    private List<PhChartLinear.IDrawable> LoadContentDynamic()
+    {
+        PhChartLinear.HorizontalAxis axisXWithLine = new PhChartLinear.HorizontalAxis
+        {
+            Label = "X",
+            DrawAxisLine = true,
+        };
+
+        PhChartLinear.VerticalAxis axisYWithLine = new PhChartLinear.VerticalAxis
+        {
+            TickDistance = 0.1,
+            ValueEveryNTicks = 2,
+            Label = "Y",
+            DrawAxisLine = true,
+            DrawTicks = true
+        };
+
+        PhChartLinear.VerticalLine verticalLine1Dashed = new PhChartLinear.VerticalLine
+        {
+            Value = new DateTime(2024, 1, 4),
+            Label = false,
+            Dashed = true
+        };
+
+        PhChartLinear.VerticalLine verticalLine2Dashed = new PhChartLinear.VerticalLine
+        {
+            Value = new DateTime(2024, 1, 14),
+            Label = false,
+            Dashed = true
+        };
+
+        PhChartLinear.HorizontalLine line1Upper = new PhChartLinear.HorizontalLine
+        {
+            Value = 1.0,
+            Dashed = true,
+            DrawTick = false
+        };
+
+        var content = new List<PhChartLinear.IDrawable>();
+        content.Add(regionsMultiple);
+        content.Add(axisXWithLine);
+        content.Add(axisYWithLine);
+        content.Add(line03);
+        content.Add(line04);
+        content.Add(line06);
+        content.Add(line08);
+        content.Add(line09);
+        content.Add(line1Upper);
+        content.Add(verticalLine1Dashed);
+        content.Add(verticalLine2Dashed);
+        var points = randomizePointsLinear(50, _startDate, new TimeSpan(12, 0, 0), 0.0, 1.4);
+
+        setPointStatus(points, regionsMultiple);
+
+        content.Add(points);
+        return content;
+    }
+
+    private List<PhChartLinear.IDrawable> LoadContentEmpty()
+    {
+        PhChartLinear.HorizontalAxis axisXWithLine = new PhChartLinear.HorizontalAxis
+        {
+            Label = "x with long title",
+            DrawAxisLine = true,
+        };
+
+        PhChartLinear.VerticalAxis axisYWithLine = new PhChartLinear.VerticalAxis
+        {
+            TickDistance = 0.1,
+            ValueEveryNTicks = 2,
+            Label = "y with long title",
+            DrawAxisLine = true,
+            DrawTicks = true
+        };
+
+        var content = new List<PhChartLinear.IDrawable>();
+        content.Add(axisXWithLine);
+        content.Add(axisYWithLine);
+        return content;
+    }
+
+    static List<PhChartLogarithmic.Point> logCurvePointList = new()
+    {
+        new() { X = 2, Y = 50 },
+        new() { X = 4, Y = 60 },
+        new() { X = 6, Y = 70 },
+        new() { X = 8, Y = 85 },
+        new() { X = 10, Y = 100 },
+        new() { X = 20, Y = 200 },
+        new() { X = 30, Y = 300 },
+        new() { X = 40, Y = 400 },
+        new() { X = 50, Y = 500 },
+        new() { X = 100, Y = 1000 },
+        new() { X = 150, Y = 1600 },
+        new() { X = 200, Y = 2200 },
+        new() { X = 400, Y = 5000 },
+        new() { X = 600, Y = 8000 },
+        new() { X = 800, Y = 10500 },
+        new() { X = 1000, Y = 12000 },
+        new() { X = 2000, Y = 16000 },
+        new() { X = 3000, Y = 18000 },
+        new() { X = 4000, Y = 19000 },
+        new() { X = 5000, Y = 20000 }
+    };
+
+    PhChartLogarithmic.Curve curve = new PhChartLogarithmic.Curve
+    {
+        PointList = logCurvePointList
+    };
+
+    PhChartLogarithmic.Curve curveActive = new PhChartLogarithmic.Curve
+    {
+        PointList = logCurvePointList,
+        Active = true
+    };
+
+    PhChartLogarithmic.Points logPoints = new PhChartLogarithmic.Points
+    {
+        PointList = new()
+        {
+            new() { X = 2, Y = 100, Status = PointStatus.alert },
+            new() { X = 2, Y = 42, Status = PointStatus.normal },
+            new() { X = 10, Y = 230, Status = PointStatus.alert, Selected = true },
+            new() { X = 10, Y = 100, Status = PointStatus.normal, Selected = true },
+            new() { X = 50, Y = 400, Status = PointStatus.warning },
+            new() { X = 50, Y = 600, Status = PointStatus.normal },
+            new() { X = 200, Y = 2000, Status = PointStatus.normal },
+            new() { X = 200, Y = 2500, Status = PointStatus.normal },
+            new() { X = 1000, Y = 15000, Status = PointStatus.normal },
+            new() { X = 1000, Y = 10000, Status = PointStatus.normal },
+            new() { X = 5000, Y = 18000, Status = PointStatus.warning, Selected = true },
+            new() { X = 5000, Y = 20256, Status = PointStatus.normal, Selected = true }
+        }        
+    };
+
+    private List<PhChartLogarithmic.IDrawable> LoadContentLogarithmic()
+    {
+        PhChartLogarithmic.HorizontalAxis axisH = new PhChartLogarithmic.HorizontalAxis
+        {
+            Label = "Concentration (kU/l)",
+            DrawAxisLine = false
+        };
+
+        PhChartLogarithmic.VerticalAxis axisV = new PhChartLogarithmic.VerticalAxis
+        {
+            Label = "Response (RU)",
+            DrawAxisLine = false
+        };
+
+        var content = new List<PhChartLogarithmic.IDrawable>
+        {
+            axisH,
+            axisV,
+            new PhChartLogarithmic.HorizontalLine () { Value = 10, Label = true },
+            new PhChartLogarithmic.HorizontalLine () { Value = 100, Label = true },
+            new PhChartLogarithmic.HorizontalLine () { Value = 1000, Label = true },
+            new PhChartLogarithmic.HorizontalLine () { Value = 10000, Label = true },
+            new PhChartLogarithmic.HorizontalLine () { Value = 100000, Label = true },
+            new PhChartLogarithmic.VerticalLine () { Value = 2, Label = true },
+            new PhChartLogarithmic.VerticalLine () { Value = 10, Label = true },
+            new PhChartLogarithmic.VerticalLine () { Value = 50, Label = true },
+            new PhChartLogarithmic.VerticalLine () { Value = 200, Label = true },
+            new PhChartLogarithmic.VerticalLine () { Value = 1000, Label = true },
+            new PhChartLogarithmic.VerticalLine () { Value = 5000, Label = true },
+            curveActive,
+            logPoints
+        };
+
+        return content;
+    }
+
+    private List<PhChartLogarithmic.IDrawable> LoadContentLogarithmicMiniature()
+    {
+        var content = new List<PhChartLogarithmic.IDrawable>
+        {
+            curve,
+            logPoints
+        };
+
+        return content;
+    }
+
+    private List<PhChartLogarithmic.IDrawable> LoadContentLogarithmicAlternative()
+    {
+        PhChartLogarithmic.HorizontalAxis axisH = new PhChartLogarithmic.HorizontalAxis
+        {
+            Label = "x with long title",
+        };
+
+        PhChartLogarithmic.VerticalAxis axisV = new PhChartLogarithmic.VerticalAxis
+        {
+            Label = "y with long title",
+        };
+
+        PhChartLogarithmic.HorizontalLine lineDashedH = new PhChartLogarithmic.HorizontalLine
+        {
+            Value = 250,
+            Dashed = true,
+            Label = true
+        };
+
+        PhChartLogarithmic.VerticalLine lineDashedV = new PhChartLogarithmic.VerticalLine
+        {
+            Value = 0.03,
+            Dashed = true,
+            Label = true
+        };
+
+        PhChartLogarithmic.VerticalLine line = new PhChartLogarithmic.VerticalLine
+        {
+            Value = 10,
+        };
+
+        var content = new List<PhChartLogarithmic.IDrawable>
+        {
+            axisH,
+            axisV,
+            line,
+            lineDashedH,
+            lineDashedV,
+            curve,
+            logPoints
+        };
+
+        return content;
+    }
+
+    private List<PhChartLogarithmic.IDrawable> LoadContentLogarithmicEmpty()
+    {
+        PhChartLogarithmic.HorizontalAxis axisH = new PhChartLogarithmic.HorizontalAxis
+        {
+            Label = "x with long title",
+        };
+
+        PhChartLogarithmic.VerticalAxis axisV = new PhChartLogarithmic.VerticalAxis
+        {
+            Label = "y with long title",
+        };
+
+        var content = new List<PhChartLogarithmic.IDrawable>
+        {
+            axisH,
+            axisV
+        };
+
+        return content;
+    }
+
+    private List<PhChartLinear.IDrawable> LoadContentRU()
+    {
+        // RU chart is not yet used in Pharos. This needs further development when we know more about the design & requirements.
+        // For now it's just another linear chart, just like the CC charts, but with many points. Points have the point state "fast",
+        // just like other points can be "warning", "alert" etc. Fast here means optimized for speed in scss. Combinations of fast and other 
+        // properties (Selected, Active, Small) has not been explored yet. Neither has miniature RU charts, if needed at all.
+        // Also, it's only fast enough for up to about 1000 points in release mode. To improve speed further we may have to try 
+        // a canvas instead of individual DOM elements for each point.
+
+        PhChartLinear.Points pointsRU = new PhChartLinear.Points
+        {
+            PointList = new(),
+            FastRendering = true,
+            Small = true
+        };
+
+        var rnd = new Random();
+        var timestep = new TimeSpan(0, 2, 0);
+        for (var i = 0; i < 1000; i++)
+        {
+            var p = new PhChartLinear.Point
+            {
+                X = _startDate3 + i * timestep,
+                Y = rnd.Next(3) > 1 ? Math.Pow(rnd.NextDouble(), 4) * 15000f : 0
+            };
+            pointsRU.PointList.Add(p.X, new() { p });
+        }
+
+        PhChartLinear.HorizontalAxis axisX = new PhChartLinear.HorizontalAxis
+        {
+            Label = "x (date)",
+            DrawAxisLine = false
+        };
+
+        PhChartLinear.VerticalAxis axisY = new PhChartLinear.VerticalAxis
+        {
+            TickDistance = 5000,
+            ValueEveryNTicks = 1,
+            Label = "y (some unit)",
+            DrawAxisLine = false
+        };
+
+        var content = new List<PhChartLinear.IDrawable>
+        {
+            axisX,
+            axisY,
+            new PhChartLinear.HorizontalLine
+            {
+                Value = 5000,
+                Dashed = true
+            },
+            new PhChartLinear.HorizontalLine
+            {
+                Value = 10000,
+                Dashed = true
+            },
+            new PhChartLinear.HorizontalLine
+            {
+                Value = 15000,
+                Dashed = true
+            },
+            new PhChartLinear.HorizontalLine
+            {
+                Value = 20000,
+                Dashed = true
+            },
+            new PhChartLinear.HorizontalLine
+            {
+                Value = 25000,
+                Dashed = true
+            },
+            pointsRU
+        };
+
+        return content;
+    }
+
+    private void VerticalZoomIn()
+    {
+        _dynamicYMax -= 0.1;
+        _dynamicYMin += 0.1;
+    }
+
+    private void VerticalZoomOut()
+    {
+        _dynamicYMax += 0.1;
+        _dynamicYMin -= 0.1;
+    }
+
+    private async Task Animate()
+    {
+        PhChartLinear.HorizontalLine line = new PhChartLinear.HorizontalLine
+        {
+            Value = 0.6,
+            Label = true,
+            Dashed = false,
+            DrawTick = false
+        };
+
+        ContentDynamic.Add(line);
+
+        var points = ContentDynamic.OfType<PhChartLinear.Points>().FirstOrDefault();
+        var pointsYOriginal = points.PointList.Values.SelectMany(p => p).Select(p => p.Y).ToList();
+        var rnd = new Random();
+        var lastFewValues = new double[] { -1, 0.25, 0.35, 0.7, 1.05, 1.15, 1.5 };
+        var lastFewCounter = 0;
+        var latestCount = points.PointList.Count;
+        var degree = 0.0;
+        while (true)
+        {
+            if (!_animating)
+            {
+                await Task.Delay(1000);
+                continue;
+            }
+
+            line.Value = 0.5 + 0.3 * Math.Sin(0.1 * degree);
+
+            var count = points.PointList.Count;
+            if (count != latestCount)
+            {
+                pointsYOriginal = points.PointList.Values.SelectMany(p => p).Select(p => p.Y).ToList();
+                latestCount = count;
+            }
+
+            for (int j = 0; j < count; j++)
+            {
+                var p = points.PointList.Values.ElementAt(j)?[0];
+                if (p == null)
+                {
+                    continue;
+                }
+                p.Active = Math.Sin(0.3 * (degree + j)) > 0;
+                p.Selected = Math.Sin(0.2 * (degree + j)) > 0;
+                var pyOriginal = pointsYOriginal[j];
+                p.Y = pyOriginal + 0.1 * Math.Sin(j + degree);
+
+                if (lastFewCounter < lastFewValues.Length)
+                {
+                    p.Y = lastFewValues[lastFewCounter];
+                    lastFewCounter++;
+                }
+            }
+
+            setPointStatus(points, regionsMultiple);
+            await InvokeAsync(StateHasChanged);
+            await Task.Delay(10);
+            degree += 0.02;
+        }
+    }
+
+    private void AddPoint()
+    {
+        var rnd = new Random();
+        var randNum = rnd.NextDouble();
+        var points = ContentDynamic.OfType<PhChartLinear.Points>().First();
+        var latestX = points.PointList.Values.LastOrDefault()?[0].X;
+        var newP = new PhChartLinear.Point
+            {
+                X = (latestX ?? _startDate) + new TimeSpan(12, 0, 0),
+                Y = 0.2 + randNum,
+                Selected = randNum % 0.3 > 0.1,
+                Active = randNum % 0.15 > 0.07
+            };
+        points.PointList.Add(newP.X, new List<Point> { newP });
+        setPointStatus(points, regionsMultiple);
+    }
+
+    private void DeletePoint()
+    {
+        var points = ContentDynamic.OfType<PhChartLinear.Points>().First();
+        if (points.PointList.Count > 0)
+        {
+            points.PointList.RemoveAt(points.PointList.Count - 1);
+        }
+    }
+
+    private void AddLine()
+    {
+        var rnd = new Random();
+        var randNum = rnd.NextDouble();
+
+        if (randNum < 0.5)
+        {
+            var line = new PhChartLinear.HorizontalLine
+                {
+                    Value = 0.2 + randNum,
+                    Label = true,
+                    Dashed = true,
+                    DrawTick = true
+                };
+            ContentDynamic.Add(line);
+        }
+        else
+        {
+            var line = new PhChartLinear.VerticalLine
+                {
+                    Value = _startDate + randNum * (_endDate - _startDate),
+                    Dashed = true,
+                };
+            ContentDynamic.Add(line);
+        }
+    }
+
+    private void DeleteLine()
+    {
+        var lineH = ContentDynamic.OfType<PhChartLinear.HorizontalLine>().LastOrDefault();
+        var lineV = ContentDynamic.OfType<PhChartLinear.VerticalLine>().LastOrDefault();
+
+        var rnd = new Random();
+        var randNum = rnd.NextDouble();
+
+        if (randNum < 0.5)
+        {
+            if (lineH != null)
+            {
+                ContentDynamic.Remove(lineH);
+            }
+            else if (lineV != null)
+            {
+                ContentDynamic.Remove(lineV);
+            }
+        }
+        else
+        {
+            if (lineV != null)
+            {
+                ContentDynamic.Remove(lineV);
+            }
+            else if (lineH != null)
+            {
+                ContentDynamic.Remove(lineH);
+            }
+        }
+    }
+
+    private void AddRegion()
+    {
+        var rnd = new Random();
+        var randNum = rnd.NextDouble();
+        var start = _startDate;
+        var end = start + new TimeSpan(48, 0, 0);
+
+        var regions = ContentDynamic.OfType<PhChartLinear.Regions>().FirstOrDefault();
+        if (regions == null)
+        {
+            regions = new PhChartLinear.Regions();
+            ContentDynamic.Add(regions);
+        }
+
+        if (regions.RegionList.Count > 0)
+        {
+            start = regions.RegionList.Last().End;
+            end = start + new TimeSpan(48, 0, 0);
+        }
+
+        var region = new PhChartLinear.Region
+            {
+                Start = start,
+                End = end,
+                LowerAlert = 0.2 + randNum * 0.2,
+                LowerWarning = 0.4 + randNum * 0.2,
+                UpperAlert = 0.9 + randNum * 0.2,
+                UpperWarning = 0.7 + randNum * 0.2
+            };
+
+        regions.RegionList.Add(region);
+    }
+
+    private void DeleteRegion()
+    {
+        var regions = ContentDynamic.OfType<PhChartLinear.Regions>().LastOrDefault();
+        if (regions != null)
+        {
+            if (regions.RegionList.Count > 0)
+            {
+                regions.RegionList.Remove(regions.RegionList.Last());
+            }
+        }
+    }
+
+    private PhChartLinear.Points randomizePointsLinear(int numPoints, DateTimeOffset startDate, TimeSpan deltaTime, double min, double max, double[]? lastFewValues = null)
+    {
+        var points = new PhChartLinear.Points();
+        var rnd = new Random();
+        var lastFewCounter = 0;
+        for (var i = 0; i < numPoints; i++)
+        {
+            var p = new PhChartLinear.Point
+            {
+                X = startDate + i * deltaTime,
+                Y = min + ((max - min) / 2.0) + (rnd.Next(0, 2) * 2 - 1) * Math.Pow(rnd.NextDouble(), 3) * ((max - min) / 2.0)
+            };
+
+            // Add specific values in four flavours (nothing special, selected, active, active selected)
+            if (lastFewValues != null && i >= (numPoints - lastFewValues.Length * 4) && i < numPoints)
+            {
+                var y = lastFewValues[lastFewCounter];
+                p.Y = y;
+
+                if (i >= (numPoints - lastFewValues.Length * 3) && i < (numPoints - lastFewValues.Length * 2))
+                {
+                    p.Selected = true;
+                }
+                else if (i >= (numPoints - lastFewValues.Length * 2) && i < numPoints - lastFewValues.Length)
+                {
+                    p.Active = true;
+                }
+                else if (i >= (numPoints - lastFewValues.Length) && i < numPoints)
+                {
+                    p.Active = true;
+                    p.Selected = true;
+                }
+
+                lastFewCounter++;
+
+                if (lastFewCounter == lastFewValues.Length)
+                {
+                    lastFewCounter = 0;
+                }
+            }
+
+            points.PointList.Add(p.X, new() { p });
+        }
+
+        return points;
+    }
+
+    private void setPointStatus(PhChartLinear.Points points, PhChartLinear.Regions regions)
+    {
+        foreach (var pList in points.PointList.Values)
+        {
+            foreach (var p in pList)
+            {
+                p.Status = PointStatus.normal;
+
+                foreach (var region in regions.RegionList)
+                {
+                    if (p.X > region.Start && p.X < region.End)
+                    {
+                        if (p.Y > region.UpperAlert)
+                        {
+                            p.Status = PointStatus.alert;
+                        }
+                        else if (p.Y > region.UpperWarning)
+                        {
+                            p.Status = PointStatus.warning;
+                        }
+                        else if (p.Y < region.LowerAlert)
+                        {
+                            p.Status = PointStatus.alert;
+                        }
+                        else if (p.Y < region.LowerWarning)
+                        {
+                            p.Status = PointStatus.warning;
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}

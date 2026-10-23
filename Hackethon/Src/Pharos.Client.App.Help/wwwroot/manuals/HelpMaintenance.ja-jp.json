@@ -1,0 +1,208 @@
+﻿[
+  {
+    "key": "Cleaning",
+    "title": "クリーニング",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "概要",
+        "title": null,
+        "content": "実行またはスケジュール.."
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "ボトルの取り外し",
+        "title": "ステップ1：メンテナンス液ボトルの取り外し",
+        "content": "ボトル試薬ドロワーからメンテナンス液ボトルを取り外します。2本のチューブを外した後、ボトルを持ち上げて取り出すことができます。"
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "ボトルの洗浄",
+        "title": "ステップ2：ボトルの洗浄",
+        "content": "チューブコネクタの蓋を外し、チューブとボトルが清潔であることを確認してください。清潔でない場合は、固形残留物が溶けるまで温水で洗ってください。"
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "メンテナンス液の追加",
+        "title": "ステップ3：メンテナンス液の追加",
+        "content": "3本の200ml Phadiaメンテナンス液ボトルの内容物（合計600ml）をメンテナンス液ボトルに注ぎます。"
+      },
+      {
+        "key": "4",
+        "NavigationTitle": "ボトルの復元",
+        "title": "ステップ4：ボトルの復元",
+        "content": "メンテナンス液ボトルにチューブ蓋を取り付けます。ボトルをボトルドロワーの元の位置に戻します。2つのチューブコネクタをボトルに接続します。コネクタはキー付きで、一方向にのみ適合します。カラーマーキングに従ってください。"
+      },
+      {
+        "key": "5",
+        "NavigationTitle": "手順の開始",
+        "title": "ステップ5：手順の開始",
+        "content": "メンテナンス液ボトルにPhadiaメンテナンス液が充填されたら、スタートボタンを押してメンテナンス手順を開始できます。手順には約20分かかります。完了すると、機器は自動的にスタンバイモードに入り、シグナルタワーの緑色のライトが消灯します。"
+      }
+    ]
+  },
+  {
+    "key": "ManualCleaning",
+    "title": "手動クリーニング",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "完了",
+        "title": "完了",
+        "content": "これは手動クリーニングの確認ステップです"
+      }
+    ]
+  },
+  {
+    "key": "ExtendedRinse",
+    "title": "延長リンス",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "概要",
+        "title": "",
+        "content": "延長リンス"
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "1",
+        "title": "ステップ1：テキストがここに入ります",
+        "content": ""
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "2",
+        "title": "ステップ2：別のテキスト",
+        "content": ""
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "手順の開始",
+        "title": "ステップ3：手順の開始",
+        "content": ""
+      }
+    ]
+  },
+  {
+    "key": "PipetteCleaning",
+    "title": "ピペットクリーニング",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "概要",
+        "title": "概要",
+        "content": "ピペットクリーニングの概要"
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "ステップ1",
+        "title": "ステップ1：ピペットの準備",
+        "content": "ピペットが切断され、クリーニングの準備ができていることを確認してください。"
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "ステップ2",
+        "title": "ステップ2：ピペットを拭く",
+        "content": "ペーパータオルでピペットを拭いてください。"
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "確認",
+        "title": "確認",
+        "content": "これはピペットクリーニングの確認ステップです"
+      }
+    ]
+  },
+  {
+    "key": "CleanRinseContainer",
+    "title": "リンス容器のクリーニング",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "概要",
+        "title": "概要",
+        "content": "リンス容器のクリーニング概要"
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "ステップ1",
+        "title": "ステップ1：ドロワーを開く",
+        "content": "リンス容器用のドロワーを開きます"
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "ステップ2",
+        "title": "ステップ2：ドロワーを拭く",
+        "content": "ペーパータオルで拭いてください。"
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "確認",
+        "title": "確認",
+        "content": "これはリンス容器のクリーニングの確認ステップです"
+      }
+    ]
+  },
+  {
+    "key": "CleanSolidWasteBins",
+    "title": "固形廃棄物容器のクリーニング",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "概要",
+        "title": "概要",
+        "content": "固形廃棄物容器のクリーニング概要"
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "ステップ1",
+        "title": "ステップ1：ドロワーを開く",
+        "content": "固形廃棄物容器用のドロワーを開きます"
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "ステップ2",
+        "title": "ステップ2：ドロワーを拭く",
+        "content": "ペーパータオルで拭いてください。"
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "確認",
+        "title": "確認",
+        "content": "これは固形廃棄物容器のクリーニングの確認ステップです"
+      }
+    ]
+  },
+  {
+    "key": "CleanWashStations",
+    "title": "洗浄ステーションのクリーニング"
+  },
+  {
+    "key": "CleanTransferUnitTips",
+    "title": "トランスファーユニットチップのクリーニング"
+  },
+  {
+    "key": "CleanEjectUnitTips",
+    "title": "イジェクトユニットチップのクリーニング"
+  },
+  {
+    "key": "InspectDispenseUnit",
+    "title": "ディスペンスユニットの検査"
+  },
+  {
+    "key": "InspectCapWellRemovers",
+    "title": "キャップウェルリムーバーの検査"
+  },
+  {
+    "key": "CleanWasteChute",
+    "title": "廃棄物シュートのクリーニング"
+  },
+  {
+    "key": "CleanLiquidWasteContainer",
+    "title": "液体廃棄物容器のクリーニング"
+  },
+  {
+    "key": "Rinse",
+    "title": "リンス"
+  }
+]

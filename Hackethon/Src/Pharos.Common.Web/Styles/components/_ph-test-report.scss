@@ -1,0 +1,21 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+
+$test-report-width: 877px;
+
+.ph-test-report {
+    display: flex;
+    justify-content: space-between;
+    max-width: $test-report-width;
+    
+    &__sample-field-row {
+        display: flex;
+        gap: spacing.$gap-xl;
+        padding-left: spacing.$gap-xl;
+    }
+}
+
+.ph-test-report-divider {
+    max-width: $test-report-width;
+    border-top: 2px solid colors.$border-subtle-02;
+}

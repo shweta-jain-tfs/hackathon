@@ -1,0 +1,70 @@
+@using Pharos.Client.App.Sample.Views.TrayPanel
+@using Pharos.Common.Web.Components.DockedButtonRow
+@using Pharos.Common.Web.Components.DropdownButton
+@using Pharos.Common.Web.Models.DataGrid
+
+@attribute [Route(PageRoute.Trays.Default)]
+@attribute [Authorize]
+
+<PhPage>
+    <div class="ph-tray-page">
+        <div class="ph-tray-page__content">
+            <PhDockedButtonRow>
+                <ChildContent>
+                    <PhDataGrid @ref="_phDataGrid"
+                                TableTitle="Trays"
+                                HeaderSize="@HeaderSizeEnum.WholePage"
+                                StateID="trays"
+                                TGridItem="SampleTray"
+                                DefaultSortColumn="@nameof(SampleTray.Id)"
+                                DefaultSortDirection="SortDirection.Ascending"
+                                ItemsProvider="@ProvideGridItems"
+                                SelectionType="@SelectionType"
+                                OnSelectedItemsChanged="SelectedItemsChanged"
+                                HighlightOptions="@(new() {
+                                    Mode = HighlightMode.ExternalState,
+                                    IsHighlighted = x => x.Id == _trayIdForPanel
+                                })"
+                                HideTotalCount="false">
+                        <Columns>
+                            <Column Title="@Loc["TraysPage_TraysGridColumn_TrayId"]" Property="@(item => item.Id)" QuickFilter="true" Sortable="true">
+                                <PhHrefLink OnClick="() => TrayIdClicked(context.Id)">@context?.Id</PhHrefLink>
+                            </Column>
+                            <Column Title="@Loc["TraysPage_TraysGridColumn_TubeIssues"]" Property="@(item => item.ErrorCount)" Sortable="true">
+                                @if (context?.ErrorCount > 0)
+                                {
+                                    <span>@context.ErrorCount</span>
+                                }
+                            </Column>
+                            <Column Title="@Loc["TraysPage_TraysGridColumn_HasTubeIssues"]"  
+                                    Property="@(item => item.HasTubeIssues)"
+                                    Visible="false"
+                                    QuickFilter
+                                    QuickFilterDefault="false">
+                            </Column>
+                            <Column Title="@Loc["TraysPage_TraysGridColumn_FreePositions"]" Property="@(item => item.FreePositions)" Sortable="true"/>
+                            <Column Title="@Loc["TraysPage_TraysGridColumn_TrayLocation"]" Property="@(item => item.InstrumentName)" QuickFilter="true" Sortable="true" MultiSelectFilterItems="_trayLocationFilterDict"/>
+                        </Columns>
+                    </PhDataGrid>
+                </ChildContent>
+                <Buttons>
+                    <PhAuthorize Permission="@Permissions.ManageSamples">
+                        <PhButton Type="ButtonType.Secondary" Disabled="!HasSelectedItems" OnClick="ClearTraysButtonClicked">@Loc["TraysPage_ButtonClearTray"]</PhButton>
+                    </PhAuthorize>
+                    <PhAuthorize Permission="@Permissions.EditSystemSettings">
+                        <PhDropdownButton Text="@Loc["TraysPage_ButtonMore"]" DropdownButtonType="DropdownButtonType.Secondary">
+                            <PhDropdownButtonItem Text="@Loc["TraysPage_ButtonAddTray"]" OnClick="@AddTrayButtonClicked" />
+                            <PhDropdownButtonItem Text="@Loc["TraysPage_ButtonDeleteTray"]" Disabled="!HasSelectedItems" OnClick="DeleteTraysButtonClicked" />
+                        </PhDropdownButton>
+                    </PhAuthorize>
+                </Buttons>
+            </PhDockedButtonRow>
+        </div>
+        <div class="ph-tray-page__tray-panel">
+            @if (_trayIdForPanel is not null)
+            {
+                <TrayPanelView @ref="_trayPanelView" HasLegendView="true" TrayId="@_trayIdForPanel" InitialSelectedPosition="@SelectedPosition" OnCloseClick="TrayPanelCloseClicked" />
+            }
+        </div>
+    </div>
+</PhPage>

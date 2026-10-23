@@ -1,0 +1,6 @@
+﻿@typeparam TGridItem
+@inherits PhQuickColumnFilter<Pharos.Common.Web.Components.DataGrid.Filters.Models.BoolColumnFilter<TGridItem, bool>, TGridItem, bool>
+
+<PhToggleFilter Value="@ColumnFilter.Value"
+                ValueChanged="OnToggleChanged"
+                Label="@ColumnFilter.Column.EffectiveFilterTitle" />

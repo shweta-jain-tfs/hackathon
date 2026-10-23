@@ -1,0 +1,37 @@
+@using Pharos.Common.Web.Components.TabControl
+@attribute [Route(PageRoute.Maintenance)]
+@attribute [Authorize]
+@using Pharos.Common.Web.Components.MaintenanceCard
+<PhPage>
+    <ChildContent>
+        <PhStack>
+            <h2 class="t-h2">@Loc["MaintenancePage_Title"]</h2>
+            <PhTabControl>
+                <PhTabPage Text="@Loc["MaintenancePage_ScheduledTab"]">
+                    <PhMaintenanceCardList>
+                        @foreach (var activity in ScheduledActivities)
+                        {
+                            <PhMaintenanceCard
+                                Name="@activity.DisplayName"
+                                ImageUrl="@GetImageUrl(activity)"
+                                Description="@activity.Description"
+                                LastCompleted="@activity.LastCompleted"
+                                Duration="@activity.DurationString"
+                                Next="@activity.Next"
+                                OnClick="() => ShowActivity(activity)"
+                                LastCompletedLabel="@Loc["MaintenancePage_Previous"]"
+                                NextLabel="@Loc["MaintenancePage_Next"]"
+                                DurationLabel="@Loc["MaintenancePage_Duration"]"
+                                StatusText="@activity.StatusText"
+                                Status="@activity.Status"
+                                />
+                        }
+                    </PhMaintenanceCardList>
+                </PhTabPage>
+                <PhTabPage Text="@Loc["MaintenancePage_OnDemandTab"]" HideTrailingEdge="true">
+                    <MaintenanceActivitiesView ViewModels="@OnDemandActivities" OnShowActivity="activity => ShowActivity(activity)" />
+                </PhTabPage>
+            </PhTabControl>
+        </PhStack>
+    </ChildContent>
+</PhPage>

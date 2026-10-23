@@ -1,0 +1,41 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+
+.ph-tab-control {
+    $root: &;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: 100%;
+    min-height: 0; // allow to shrink in flex layout
+
+    &__tabs {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__panel {
+        display: grid; // used instead of flex to contain data grid
+        --ph-bg-color: #{colors.$background-secondary};
+        background-color: var(--ph-bg-color);
+        padding-block: spacing.$padding-md;
+        padding-inline: spacing.$padding-md calc(spacing.$padding-md - size.$scrollbar-width);
+        border-bottom-left-radius: rounded.$rounded-default;
+        border-bottom-right-radius: rounded.$rounded-default;
+    }
+
+    &__content {
+        display: flex; // fallback for content lacking layout
+        flex-direction: column;
+        overflow: auto;
+        scrollbar-gutter: stable;
+    }
+
+    &--style-secondary {
+        #{$root}__panel {
+            --ph-bg-color: inherit;
+            box-shadow: inset 0 0 0 2px colors.$border-subtle-01;
+        }
+    }
+}

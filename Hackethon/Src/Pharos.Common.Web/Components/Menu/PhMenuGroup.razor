@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+<AuthorizeView Policy="@Permission">
+    <Authorized>
+        <li>
+            @if (SubMenu == SubMenuType.FloatingRight)
+            {
+                <PhPopover @ref="_popover" Id="@PopoverId" Appearance="PopoverStyle.Dropdown" Position="PopoverPosition.Sidebar" AutoHide OnToggle="SetOpenState">
+                    <Anchor>
+                        <button class="ph-menu__item" disabled="@Disabled" popovertarget="@PopoverId">
+                            <span class="ph-menu__label">@Text</span>
+                        </button>
+                    </Anchor>
+                    <Panel>
+                        <ul class="@CssClassItems" @onclick="() => ClosePopover()">
+                            @ChildContent
+                        </ul>
+                    </Panel>
+                </PhPopover>
+                @if (ShowCurrentSubMenuItemBox)
+                {
+                    <ul class="ph-menu__current-submenu-item-box">
+                        @ChildContent
+                    </ul>
+                }
+            }
+            else
+            {
+                <button class="ph-menu__item" @onclick="OnClickGroup" disabled="@Disabled">
+                    <span class="ph-menu__label">@Text</span>
+                    <PhIcon IconType="@(_isOpen ? IconType.ChevronUp : IconType.ChevronDown)" Size="IconSize.Sm" />
+                </button>
+                <ul class="@CssClassItems">
+                    @ChildContent
+                </ul>
+            }
+        </li>
+
+    </Authorized>
+</AuthorizeView>

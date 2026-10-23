@@ -1,0 +1,37 @@
+@use "../abstracts/spacing";
+
+.ph-update-banner {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: spacing.$gap-sm spacing.$gap-md;
+    align-items: start;
+    margin-bottom: spacing.$gap-md;
+
+    &__media {
+        img {
+            display: block;
+            height: auto;
+        }
+    }
+
+    &__note {
+        margin: spacing.$gap-xs 0 spacing.$gap-sm;
+        max-width: 72ch;
+        opacity: .9;
+        line-height: 1.45;
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: spacing.$gap-sm;
+    }
+
+    &__changelog {
+        margin-left: auto;
+    }
+
+    @media (max-width: 767.98px) {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,131 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/transition";
+@use '../abstracts/typography' as text;
+
+.ph-switchbutton {
+    $root: &;
+    --ph-icon-size: #{size.$icon-sm};
+    // Travel = thumb width minus horizontal inset (border*2 + padding*2)
+    --_travel: calc(var(--ph-icon-size) - 8px);
+    --_border: #{colors.$border-active};
+    --_track-bg: #{colors.$layer-tertiary};
+    --_thumb-bg: #{colors.$icon-primary};
+    --_active-track-bg: #{colors.$layer-selected-01};
+    
+    position: relative;
+    color: colors.$text-secondary;
+    
+    &:has(input:focus-visible) {
+        #{$root}__track {
+            outline: 2px solid currentColor;
+            outline-offset: -2px;
+        }
+    }    
+
+    &__label {
+        display: inline-flex;
+        align-items: center;
+        gap: spacing.$gap-xs;
+        @include text.body1;
+        cursor: pointer;
+        user-select: none;
+
+        &:active {
+            --_border: transparent;
+            --_track-bg: var(--_active-track-bg);
+        }
+    }
+
+    input[type="checkbox"] {
+        position: absolute;
+        appearance: none;
+        opacity: 0;
+    }
+
+    &__track {
+        width: calc(var(--ph-icon-size) * 2);
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        padding: 2px;
+        border: 2px solid var(--_border);
+        border-radius: rounded.$rounded-full;
+        background: var(--_track-bg);
+    }
+
+    &__thumb {
+        display: flex;
+        border-radius: rounded.$rounded-full;
+        background: var(--_thumb-bg);
+        color: var(--_track-bg);
+    }
+
+    &--on {
+        --_border: transparent;
+        --_track-bg: #{colors.$button-toggle-on};
+
+        #{$root}__thumb {
+            transform: translateX(var(--_travel));
+        }
+    }
+
+    &--disabled {
+        --_border: transparent;
+        --_track-bg: #{colors.$button-disabled};
+        --_thumb-bg: #{colors.$icon-disabled-02};
+        color: colors.$text-disabled;
+    }
+
+    &--display-only {
+        --_border: transparent;
+        --_track-bg: #{colors.$layer-subtle};
+        --_thumb-bg: #{colors.$icon-secondary};
+        // label text color from disabled state is allowed to bleed through
+
+        &#{$root}--disabled {
+            --_thumb-bg: #{colors.$icon-disabled-02};
+        }
+
+        #{$root}__label {
+            user-select: text;
+        }
+
+        // Display-only "on" state lives on the thumb element
+        #{$root}__thumb--on {
+            transform: translateX(var(--_travel));
+        }
+    }
+
+    &--disabled,
+    &--display-only {
+        --_active-track-bg: var(--_track-bg);
+    
+        #{$root}__label {
+            cursor: default;
+        }
+    }
+
+    &--large {
+        --ph-icon-size: #{size.$icon-lg};        
+    }
+
+    &--label-right {
+        #{$root}__label {
+            flex-direction: row-reverse;
+        }
+    }
+
+    &--animate {
+        // No animation on initial render.
+        #{$root}__track {
+            @include transition.transition-colors;
+        }
+
+        #{$root}__thumb {
+            @include transition.transition;
+        }
+    }
+}

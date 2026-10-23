@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Pharos.Server.Result</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Src\Pharos.Server.Reagents\Pharos.Server.Reagents.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server.Result\Pharos.Server.Result.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server.Result.CurveFit\Pharos.Server.Result.CurveFit.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server.Parameters\Pharos.Server.Parameters.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server\Pharos.Server.csproj" />
+	</ItemGroup>
+
+</Project>

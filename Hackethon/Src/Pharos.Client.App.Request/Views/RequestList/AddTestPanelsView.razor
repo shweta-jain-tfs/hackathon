@@ -1,0 +1,23 @@
+﻿@attribute [Authorize]
+
+<PhModalContent SelectedText="@Loc["RequestDetailsPage_AddTestPanelsView_Selected"]">
+    <Body>
+        <PhDataGrid TableTitle="@Loc["RequestDetailsPage_AddTestPanelsView_GridTitle"]" TGridItem="Panel"
+                    StateID=""
+                    ItemsProvider="ViewModel.ProvideGridItems" 
+                    DefaultSortColumn="PanelName"
+                    DefaultSortDirection="SortDirection.Ascending"
+                    SelectionType="SelectionTypeEnum.MultiSelect" 
+                    RowType="RowTypeEnum.LinesBetweenRows" 
+                    OnSelectedItemsChanged="SelectedPanelsChanged">
+            <Columns>
+                <Column Title="@Loc["RequestDetailsPage_AddTestPanelsView_Panel"]" Property="@(item => item.PanelName)" QuickFilter="true" Sortable="true" />
+                <Column Title="@Loc["RequestDetailsPage_AddTestPanelsView_PanelFullName"]" Property="@(item => item.PanelLongName)" Sortable="true" QuickFilter="true" />
+            </Columns>
+        </PhDataGrid>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => AddTestPanelsAndCloseDialog(ModalResult.Cancel()))">@Loc["RequestDetailsPage_AddTestPanelsView_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" Disabled="!(_selectedItems?.Count > 0)" OnClick="@(() => AddTestPanelsAndCloseDialog(ModalResult.Ok(_selectedItems)))">@Loc["RequestDetailsPage_AddTestPanelsView_Add"]</PhButton>
+    </Footer>
+</PhModalContent>

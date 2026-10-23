@@ -1,0 +1,46 @@
+@using IconType = Pharos.Common.Web.Components.Icons.IconType
+@using Pharos.Common.Web.Components.Status
+
+<div class="@TaskCardCss" @onclick="HandleClickOnCard" @onclick:stopPropagation="true">
+    <div class="ph-task-card__container">
+        <div class="ph-task-card__indicator"></div>
+        <div class="ph-task-card__content">
+            <div class="flex flex-col gap-gutter">
+                <div class="ph-task-card__header">
+                    <PhStatus Status="GetStatus(State)" Size="StatusSize.Lg" />
+                    <div class="ph-task-card__header-title">
+                        @Title
+                    </div>
+                </div>
+                <div class="ph-task-card__body">
+                    <div class="ph-task-card__image-container">
+                        <PhTaskCardImage ImageType="ImageType" />
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(Description))
+                    {
+                        <div class="ph-task-card__text-container">
+                            @Description
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="ph-task-card__divider"></div>
+            <div class="ph-task-card__footer">
+                <div class="ph-task-card__time">
+                    @if (DisplayTime)
+                    {
+                        @Time
+                    }
+                </div>
+                @if (HasHelpInformation)
+                {
+                    <div class="ph-task-card__information-icon">
+                        <button type="button" class="ph-task-card__information-icon-btn" @onclick="@HandleClickOnInformationIcon" @onclick:stopPropagation="true" @onclick:preventDefault="true">
+                            <PhIcon IconType="IconType.QuestionMark" Size="IconSize.Md" />
+                        </button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

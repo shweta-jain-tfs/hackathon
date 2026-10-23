@@ -1,0 +1,9 @@
+﻿@using Pharos.Client.Common.App.Helpers
+@using Pharos.Common.Web.Components.Reagent
+
+<ReagentShapeView
+    Colors="@Colors"
+    Shape="@ReagentHelper.GetShape(Shape)"
+    Test="@Name"
+    Texts="@(Methods ?? Array.Empty<string>())"
+    IsCarrierTypeReagent="@IsCarrierTypeReagent" />

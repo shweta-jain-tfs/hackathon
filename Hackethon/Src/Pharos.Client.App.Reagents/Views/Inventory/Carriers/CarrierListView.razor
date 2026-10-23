@@ -1,0 +1,87 @@
+﻿@using Pharos.Client.App.Reagents.ViewModels.Inventory
+@using Pharos.Client.Common.App.Helpers
+@using Pharos.Common.Web.Components.Reagent
+@using Pharos.Common.Web.Components.DataGrid
+@using Pharos.Common.Web.Components.DataGrid.Columns
+@using Pharos.Common.Web.Components.DockedButtonRow
+@using Pharos.Common.Web.Components.DropdownButton
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Common.Web.Models.DataGrid
+
+<PhDockedButtonRow>
+    <ChildContent>
+        <PhStack>
+            <span class="t-body2"><span class="text-hint">@Loc["InventoryPage_FreePositions"]</span> <span class="text-secondary">@FreePositionsText</span></span>
+            <PhDataGrid @ref="_dataGrid"
+                        TableTitle="@GetTitle()"
+                        StateID="carriers"
+                        TGridItem="CarrierListItem"
+                        ItemsProvider="ViewModel.ProvideItems"
+                        SelectionType="SelectionTypeEnum.MultiSelectWithSelectAll"
+                        HideTotalCount="true"
+                        OnSelectedItemsChanged="ViewModel.OnSelectedCarriersChanged"
+                        RowType="RowTypeEnum.LinesBetweenRows"
+                        DefaultSortColumn="@nameof(CarrierListItem.Id)"
+                        DefaultSortDirection="SortDirection.Ascending">
+                <Columns>
+                    <Column Property="@(x => x.Id)" Visible="false" />
+                    <Column Title="@Loc["InventoryPage_CarriersTab_Test"]" Property="@(x => x.Test)" QuickFilter FilterTitle="@Loc["InventoryPage_CarriersTab_SearchCarrier"]" Sortable="true">
+                        <ReagentShapeView Colors="@context.Colors"
+                                          IsCarrierTypeReagent="true"
+                                          Shape="@ReagentHelper.GetShape(context.Shape.GetValueOrDefault())" 
+                                          Test="@context.Test"
+                                          Gap="ReagentShapeGap.Sm" />
+                    </Column>
+                    <Column Title="@Loc["InventoryPage_CarriersTab_Type"]" Property="@(x => x.Type)" Sortable="true">
+                        @CarriersListViewModel.GetTypeText(context.Type)
+                    </Column>
+                    <Column Title="@Loc["InventoryPage_CarriersTab_Quantity"]" Property="@(x => x.Quantity)" Align="ColumnAlignEnum.Right" Sortable="true">
+                        @CarriersListViewModel.GetQuantity(context.Quantity)
+                    </Column>
+                    <Column Title="@Loc["InventoryPage_CarriersTab_Lot"]" Property="@(x => x.Lot)" Sortable="true" />
+                    <Column Title="@Loc["InventoryPage_CarriersTab_Status"]" Property="@(x => x.Status)" Sortable="true">
+                        @{
+                            var status = CarriersListViewModel.HasStatusError(context.Status) ? StatusType.Warning : StatusType.None;
+                            var text = CarriersListViewModel.GetStatusText(context.Status);
+                        }
+                        <PhStatus Status="@status" Size="@StatusSize.Md" Text="@text" />
+                    </Column>
+                    <Column Title="@Loc["InventoryPage_CarriersTab_ExpiryDate"]" Property="@(x => x.ExpiryDate)" Format="@FormatStrings.ShortDate" Sortable="true" />
+                    <Column Visible="false" Title="@Loc["InventoryPage_CarriersTab_Status"]" Property="@(x => x.Status)" QuickFilter="true" MultiSelectFilterItems="StatusNameDict()" QuickFilterDefault="StatusFilterText" />
+                    <Column Title="@Loc["InventoryPage_CarriersTab_RefillLevel"]"
+                            Property="@(x => x.IsRefillLevelDefined)"
+                            FilterTitle="@Loc["InventoryPage_CarriersTab_IsRefillLevelMissing"]"
+                            QuickFilter="true"
+                            QuickFilterDefault="false">
+                        @GetRefillLevelStatusText(context.IsRefillLevelDefined)
+                    </Column>
+                    <Column Title="@Loc["InventoryPage_CarriersTab_Instrument"]"
+                            Property="@(x => x.Instrument)"
+                            Sortable="true"
+                            QuickFilter="true"
+                            QuickFilterDefault="@InstrumentFilterModel.DefaultFilterValueDisplayName"
+                            MultiSelectFilterItems="@InstrumentFilterModel.FilterDataSourceDisplayName" />
+                    <Column Title="@Loc["InventoryPage_CarriersTab_Position"]" Property="@(x => x.Position)" Sortable="true">
+                        @context.Position
+                    </Column>
+                </Columns>
+            </PhDataGrid>
+        </PhStack>
+    </ChildContent>
+    <Buttons>
+        <PhAuthorize Permission="@Permissions.ManageReagents">
+            <PhButton Type="ButtonType.Secondary"
+                      Disabled="@(!ViewModel.CanUnloadSelectedCarriers)" OnClick="OnUnloadClicked">
+                @Loc["InventoryPage_UnloadButtonText"]
+            </PhButton>
+            <PhDropdownButton Text="@(Loc["InventoryPage_MoreButtonText"])" DropdownButtonType="DropdownButtonType.Secondary">
+                <PhDropdownButtonItem Text="@Loc["InventoryPage_AbortUnloadText"]"
+                                      OnClick="OnAbortClicked"
+                                      Disabled="@IsAbortUnloadDisabled" />
+                <PhDropdownButtonItem Text="@Loc["InventoryPage_ExportText"]" />
+            </PhDropdownButton>
+        </PhAuthorize>
+    </Buttons>
+</PhDockedButtonRow>

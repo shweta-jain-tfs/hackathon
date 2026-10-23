@@ -1,0 +1,13 @@
+﻿<div class="@CssClasses">
+    @Row1
+    @if (!string.IsNullOrEmpty(Row2))
+    {
+        <div class="ph-run-information__status-row-2">
+            @Row2
+            @if (ChildContent != null)
+            {
+                @ChildContent
+            }
+        </div>
+    }
+</div>

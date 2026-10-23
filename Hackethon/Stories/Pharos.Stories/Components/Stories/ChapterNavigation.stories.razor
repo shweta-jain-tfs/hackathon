@@ -1,0 +1,395 @@
+@using BlazingStory.Abstractions
+@using Pharos.Common.Web.Components.ChapterNavigation
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Common.Web.Components.RichText
+@attribute [Stories("Components/ChapterNavigation")]
+
+<Stories TComponent="PhChapterNav">
+    <Story Name="User manual with subchapters">
+        <Description>
+            Interactive chapter navigation with several documents. The top level are different "documents".
+        </Description>
+        <Arguments>
+            <Arg For="_ => _!.WithBackground" Value="false" />
+            <Arg For="_ => _!.PreventNavigation" Value="true" />
+        </Arguments>
+        <Template>
+            <div style="max-width: 355px;">
+                <p class="mb-md">
+                    <strong>Current chapter:</strong> @_currentChapterId
+                </p>
+                <PhChapterNav @attributes="context.Args"
+                              Items="@_documentationItems"
+                              CurrentChapterId="@_currentChapterId"
+                              OnNavigate="@HandleNavigate" />
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="User manual with pre-selected chapter">
+        <Description>
+            Pre-selected chapter from parameter.
+        </Description>
+        <Arguments>
+            <Arg For="_ => _!.CurrentChapterId" Value="@("operating-loading-bottled")" />
+            <Arg For="_ => _!.WithBackground" Value="false" />
+            <Arg For="_ => _!.PreventNavigation" Value="true" />
+        </Arguments>
+        <Template>
+            <div style="max-width: 355px;">
+                @{
+                    var chapter = GetCurrentChapter(context, _currentChapterId);
+                }
+                <p>Use clicked chapter by clearing <em>@nameof(PhChapterNav.CurrentChapterId)</em>.</p>
+                <p class="my-md">
+                    <strong>Current chapter:</strong> @chapter
+                    @if (_currentChapterId != chapter)
+                    {
+                        <div>
+                            <strong>Clicked chapter:</strong> @_currentChapterId
+                        </div>
+                    }
+                </p>
+                <PhChapterNav @attributes="context.Args"
+                Items="@_documentationItems"
+                CurrentChapterId="@chapter"
+                OnNavigate="@HandleNavigate" />
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Deep nesting example">
+        <Description>
+            Example with deeper structure than the user manual.
+        </Description>
+        <Arguments>
+            <Arg For="_ => _!.WithBackground" Value="false" />
+            <Arg For="_ => _!.PreventNavigation" Value="true" />
+        </Arguments>
+        <Template>
+            <div style="max-width: 355px;">
+                <p class="mb-md">
+                    <strong>Current chapter:</strong> @_currentDeepChapterId
+                </p>
+                <PhChapterNav @attributes="context.Args"
+                Items="@_deepItems"
+                CurrentChapterId="@GetCurrentChapter(context, _currentDeepChapterId)"
+                OnNavigate="@HandleNavigateDeep" />
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="User manual without container">
+        <Description>
+            No fixed width around the chapter navigation.
+        </Description>
+        <Arguments>
+            <Arg For="_ => _!.WithBackground" Value="false" />
+            <Arg For="_ => _!.PreventNavigation" Value="true" />
+        </Arguments>
+        <Template>
+            <PhChapterNav @attributes="context.Args"
+            Items="@_documentationItems"
+            CurrentChapterId="@_currentChapterId"
+            OnNavigate="@HandleNavigate" />
+        </Template>
+    </Story>
+
+    <Story Name="In sidebar">
+        <Description>
+            Chapter navigation placed inside a page sidebar.
+        </Description>
+        <Arguments>
+            <Arg For="_ => _!.WithBackground" Value="true" />
+            <Arg For="_ => _!.PreventNavigation" Value="true" />
+        </Arguments>
+        <Template>
+            <div style="height: 100vh">
+                <PhPage WideSidebar>
+                    <Sidebar>
+                        <PhChapterNav @attributes="context.Args"
+                        Items="@_documentationItems"
+                        CurrentChapterId="@_currentChapterId"
+                        OnNavigate="@HandleNavigate" />
+                    </Sidebar>
+                    <ChildContent>
+                        <PhRichText>
+                            @{
+                                (var docTitle, var chapterTitle) = GetTitles(_currentChapterId);
+                            }
+                            <h1>@docTitle</h1>
+                            @if(docTitle != chapterTitle)
+                            {
+                                <h2>@chapterTitle</h2>
+                            }
+                            <p>
+                                Click the chapter navigation to select the document and chapter.
+                            </p>
+                        </PhRichText>
+                    </ChildContent>
+                </PhPage>
+            </div>
+        </Template>
+    </Story>
+
+</Stories>
+
+@code
+{
+    private string? _currentChapterId;
+    private string? _currentDeepChapterId = "api-data-crud";
+
+    private readonly List<ChapterNode> _documentationItems = new()
+    {
+        new ChapterNode
+        {
+            Id = "regulatory",
+            Title = "Regulatory information",
+            Href = "#regulatory-information",
+            Children = new List<ChapterNode>
+            {
+                new() { Id = "regulatory-compliance", Title = "Regulatory compliance", Href = "#regulatory-compliance" },
+                new() { Id = "regulatory-certifications", Title = "Certifications", Href = "#regulatory-certifications" },
+                new() { Id = "regulatory-standards", Title = "Standards compliance", Href = "#regulatory-standards" },
+                new() { Id = "regulatory-declarations", Title = "Declarations of conformity", Href = "#regulatory-declarations" }
+            }
+        },
+        new ChapterNode
+        {
+            Id = "safety",
+            Title = "Safety information",
+            Href = "#safety-information",
+            Children = new List<ChapterNode>
+            {
+                new() { Id = "safety-warnings", Title = "Safety warnings", Href = "#safety-warnings" },
+                new() { Id = "safety-symbols", Title = "Safety symbols", Href = "#safety-symbols" },
+                new() { Id = "safety-ppe", Title = "Personal protective equipment", Href = "#safety-ppe" },
+                new() { Id = "safety-hazards", Title = "Hazard identification", Href = "#safety-hazards" },
+                new() { Id = "safety-emergency", Title = "Emergency procedures", Href = "#safety-emergency" }
+            }
+        },
+        new ChapterNode
+        {
+            Id = "extended",
+            Title = "Extended information",
+            Href = "#extended-information",
+            Children = new List<ChapterNode>
+            {
+                new() { Id = "extended-specifications", Title = "Technical specifications", Href = "#extended-specifications" },
+                new() { Id = "extended-performance", Title = "Performance characteristics", Href = "#extended-performance" },
+                new() { Id = "extended-environmental", Title = "Environmental conditions", Href = "#extended-environmental" },
+                new() { Id = "extended-compatibility", Title = "System compatibility", Href = "#extended-compatibility" }
+            }
+        },
+        new ChapterNode
+        {
+            Id = "operating",
+            Title = "Operating instructions",
+            Href = "#operating-instructions",
+            Children = new List<ChapterNode>
+            {
+                new() { Id = "operating-safety", Title = "Safety precautions", Href = "#operating-safety" },
+                new() { Id = "operating-startup", Title = "Start up", Href = "#operating-startup" },
+                new ChapterNode
+                {
+                    Id = "operating-loading",
+                    Title = "Loading reagents and samples",
+                    Href = "#operating-loading",
+                    Children = new List<ChapterNode>
+                    {
+                        new() { Id = "operating-loading-bottled", Title = "Bottled reagents", Href = "#operating-loading-bottled" },
+                        new() { Id = "operating-loading-cartridges", Title = "Cartridges and carriers", Href = "#operating-loading-cartridges" },
+                        new() { Id = "operating-loading-reagents", Title = "Bottled reagents", Href = "#operating-loading-reagents" },
+                        new() { Id = "operating-loading-example1", Title = "Sample preparation", Href = "#operating-loading-example1" },
+                        new() { Id = "operating-loading-example2", Title = "Reagent handling", Href = "#operating-loading-example2" },
+                        new() { Id = "operating-loading-example3", Title = "Loading procedures", Href = "#operating-loading-example3" },
+                        new() { Id = "operating-loading-example4", Title = "Storage requirements", Href = "#operating-loading-example4" },
+                        new() { Id = "operating-loading-example5", Title = "Temperature control", Href = "#operating-loading-example5" },
+                        new() { Id = "operating-loading-example6", Title = "Inventory management", Href = "#operating-loading-example6" },
+                        new() { Id = "operating-loading-example7", Title = "Safety protocols", Href = "#operating-loading-example7" }
+                    }
+                },
+                new() { Id = "operating-requests", Title = "Request management", Href = "#operating-requests" },
+                new() { Id = "operating-qc", Title = "Quality control management", Href = "#operating-qc" },
+                new() { Id = "operating-assay", Title = "Standard assay run", Href = "#operating-assay" },
+                new() { Id = "operating-results", Title = "Result management", Href = "#operating-results" },
+                new() { Id = "operating-waste", Title = "Waste disposal", Href = "#operating-waste" },
+                new() { Id = "operating-maintenance", Title = "Maintenance", Href = "#operating-maintenance" },
+                new() { Id = "operating-preparation", Title = "Preparation for next shift", Href = "#operating-preparation" },
+                new() { Id = "operating-errors", Title = "Error management", Href = "#operating-errors" },
+                new() { Id = "operating-example1", Title = "Workflow optimization", Href = "#operating-example1" },
+                new() { Id = "operating-example2", Title = "Batch processing", Href = "#operating-example2" },
+                new() { Id = "operating-example3", Title = "System calibration", Href = "#operating-example3" },
+                new() { Id = "operating-example4", Title = "Data backup procedures", Href = "#operating-example4" }
+            }
+        },
+        new ChapterNode
+        {
+            Id = "system",
+            Title = "System description",
+            Href = "#system-description",
+            Children = new List<ChapterNode>
+            {
+                new() { Id = "system-overview", Title = "System overview", Href = "#system-overview" },
+                new() { Id = "system-components", Title = "System components", Href = "#system-components" },
+                new() { Id = "system-architecture", Title = "System architecture", Href = "#system-architecture" },
+                new() { Id = "system-interfaces", Title = "User interfaces", Href = "#system-interfaces" },
+                new() { Id = "system-workflow", Title = "System workflow", Href = "#system-workflow" }
+            }
+        },
+        new ChapterNode
+        {
+            Id = "error",
+            Title = "Error management",
+            Href = "#error-management",
+            Children = new List<ChapterNode>
+            {
+                new() { Id = "error-codes", Title = "Error codes", Href = "#error-codes" },
+                new() { Id = "error-troubleshooting", Title = "Troubleshooting guide", Href = "#error-troubleshooting" },
+                new() { Id = "error-recovery", Title = "Recovery procedures", Href = "#error-recovery" },
+                new() { Id = "error-prevention", Title = "Error prevention", Href = "#error-prevention" },
+                new() { Id = "error-logging", Title = "Error logging", Href = "#error-logging" }
+            }
+        }
+    };
+
+    private readonly List<ChapterNode> _deepItems = new()
+    {
+        new ChapterNode
+        {
+            Id = "user",
+            Title = "User Guide",
+            Href = "#user-guide",
+            Children = new List<ChapterNode>
+            {
+                new() { Id = "user-overview", Title = "Overview", Href = "#overview" },
+                new() { Id = "user-quickstart", Title = "Quick Start", Href = "#quick-start" }
+            }
+        },
+        new ChapterNode
+        {
+            Id = "dev",
+            Title = "Developer Guide",
+            Href = "#dev-guide",
+            Children = new List<ChapterNode>
+            {
+                new() { Id = "dev-setup", Title = "Setup", Href = "#setup" },
+                new() { Id = "dev-development", Title = "Development", Href = "#development" }
+            }
+        },
+        new ChapterNode
+        {
+            Id = "api",
+            Title = "API Reference",
+            Href = "#api-reference",
+            Children = new List<ChapterNode>
+            {
+                new ChapterNode
+                {
+                    Id = "api-auth",
+                    Title = "Authentication",
+                    Href = "#auth-api",
+                    Children = new List<ChapterNode>
+                    {
+                        new() { Id = "api-auth-login", Title = "Login", Href = "#login-api" },
+                        new() { Id = "api-auth-logout", Title = "Logout", Href = "#logout-api" }
+                    }
+                },
+                new ChapterNode
+                {
+                    Id = "api-data",
+                    Title = "Data Management",
+                    Href = "#data-api",
+                    Children = new List<ChapterNode>
+                    {
+                        new ChapterNode
+                        {
+                            Id = "api-data-crud",
+                            Title = "CRUD Operations",
+                            Href = "#crud-api",
+                            Children = new List<ChapterNode>
+                            {
+                                new() { Id = "api-data-crud-create", Title = "Create", Href = "#create-api" },
+                                new() { Id = "api-data-crud-read", Title = "Read", Href = "#read-api" },
+                                new() { Id = "api-data-crud-update", Title = "Update", Href = "#update-api" }
+                            }
+                        },
+                        new() { Id = "api-data-validation", Title = "Validation", Href = "#validation-api" }
+                    }
+                }
+            }
+        }
+    };
+
+    private void HandleNavigate(string chapterId)
+    {
+        _currentChapterId = chapterId;
+
+        // In a real application, this would trigger navigation
+        Console.WriteLine($"Navigating to chapter: {chapterId}");
+    }
+
+    private void HandleNavigateDeep(string chapterId)
+    {
+        _currentDeepChapterId = chapterId;
+
+        // In a real application, this would trigger navigation
+        Console.WriteLine($"Navigating to chapter: {chapterId}");
+    }
+
+    private string? GetCurrentChapter(IStoryContext context, string? fallback)
+    {
+        const string propertyName = nameof(PhChapterNav.CurrentChapterId);
+
+        // Check if CurrentChapterId is provided in context.Args
+        if (context.Args?.ContainsKey(propertyName) == true)
+        {
+            var value = context.Args[propertyName]?.ToString();
+            if (!string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
+        }
+
+        // Fall back to the provided value
+        return fallback;
+    }
+
+    private (string docTitle, string chapterTitle) GetTitles(string? chapterId)
+    {
+        if (string.IsNullOrEmpty(chapterId))
+        {
+            return ("No document selected", "No chapter selected");
+        }
+
+        foreach (var doc in _documentationItems)
+        {
+            var found = FindChapter(doc, chapterId);
+            if (found != null)
+            {
+                return (doc.Title, found.Title);
+            }
+        }
+
+        return ("Unknown document", "Unknown chapter");
+    }
+
+    private ChapterNode? FindChapter(ChapterNode node, string chapterId)
+    {
+        if (node.Id == chapterId)
+        {
+            return node;
+        }
+
+        foreach (var child in node.Children)
+        {
+            var found = FindChapter(child, chapterId);
+            if (found != null)
+            {
+                return found;
+            }
+        }
+
+        return null;
+    }
+}

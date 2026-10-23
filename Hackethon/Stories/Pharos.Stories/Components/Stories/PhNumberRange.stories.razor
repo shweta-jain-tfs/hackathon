@@ -1,0 +1,122 @@
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Stories.Components.TestContent
+@using System.ComponentModel.DataAnnotations
+@attribute [Stories("Components/NumberRange")]
+
+<Stories TComponent="PhNumberRange<int?>">
+
+    <Story Name="Default">
+        <Description>Default usage with core parameters as controls.</Description>
+        <Arguments>
+            <Arg For="_ => _!.MinPlaceholder" Value="@("Min")" />
+            <Arg For="_ => _!.MaxPlaceholder" Value="@("Max")" />
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.Size" Value="@TextBoxSize.ExtraSmall" />
+            <Arg For="_ => _!.HelpText" Value="@("Enter a number range")" />
+        </Arguments>
+        <Template>
+            <PhNumberRange TValue="int?" @attributes="context.Args" @bind-Value="_defaultRange" />
+        </Template>
+    </Story>
+
+    <Story Name="Variants">
+        <Description>Main visual variants (sizes and states).</Description>
+        <Template>
+            <div class="flex flex-col gap-sm">
+                @foreach (var size in Enum.GetValues<TextBoxSize>())
+                {
+                    <div>
+                        <PhLabel Text="@($"Size: {size}")">
+                            <PhNumberRange TValue="int?" 
+                                           MinPlaceholder="Min" 
+                                           MaxPlaceholder="Max"
+                                           Size="@size" 
+                                           @bind-Value="_variantRange" />
+                        </PhLabel>
+                    </div>
+                }
+                <div>
+                    <PhLabel Text="Disabled">
+                        <PhNumberRange TValue="int?" 
+                                       MinPlaceholder="Min" 
+                                       MaxPlaceholder="Max"
+                                       Disabled="true" 
+                                       @bind-Value="_variantRange" />
+                    </PhLabel>
+                </div>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Validation">
+        <Description>Validation examples.</Description>
+        <Template>
+            <EditForm Model="@ValidationModel" Context="editContext">
+                <DataAnnotationsValidator />
+
+                <div class="flex flex-col gap-lg">
+                    <PhLabel Text="Age Range (5-15)">
+                        <PhNumberRange TValue="int?" 
+                                       MinPlaceholder="Min age"
+                                       MaxPlaceholder="Max age"
+                                       HelpText="Enter an age range between 5 and 15"
+                                       @bind-Value="@ValidationModel.AgeRange" />
+                    </PhLabel>
+
+                    <PhLabel Text="Price Range">
+                        <PhNumberRange TValue="decimal?" 
+                                       MinPlaceholder="Min price"
+                                       MaxPlaceholder="Max price"
+                                       HelpText="Enter a price range"
+                                       @bind-Value="@ValidationModel.PriceRange" />
+                    </PhLabel>
+                </div>
+            </EditForm>
+        </Template>
+    </Story>
+
+</Stories>
+
+@code
+{
+    private (int? Min, int? Max) _defaultRange = (null, null);
+    private (int? Min, int? Max) _variantRange = (10, 50);
+
+    public class Model
+    {
+        [CustomValidation(typeof(Model), nameof(ValidateAgeRange))]
+        public (int? Min, int? Max) AgeRange { get; set; } = (7, 12);
+
+        [CustomValidation(typeof(Model), nameof(ValidatePriceRange))]
+        public (decimal? Min, decimal? Max) PriceRange { get; set; } = (10.0m, 50.0m);
+
+        public static ValidationResult? ValidateAgeRange((int? Min, int? Max) value, ValidationContext context)
+        {
+            if (!value.Min.HasValue || !value.Max.HasValue)
+                return new ValidationResult("Value is required");
+
+            if (value.Min >= value.Max)
+                return new ValidationResult("The minimum value must be less than the maximum value");
+
+            if (value.Min < 5 || value.Max > 15)
+                return new ValidationResult("Values must be between 5 and 15");
+
+            return ValidationResult.Success;
+        }
+
+        public static ValidationResult? ValidatePriceRange((decimal? Min, decimal? Max) value, ValidationContext context)
+        {
+            if (!value.Min.HasValue || !value.Max.HasValue)
+                return new ValidationResult("Value is required");
+
+            if (value.Min >= value.Max)
+                return new ValidationResult("The minimum value must be less than the maximum value");
+
+            return ValidationResult.Success;
+        }
+    }
+
+    private Model ValidationModel { get; set; } = new Model();
+}

@@ -1,0 +1,80 @@
+﻿@using Pharos.Client.Common.App.Validation
+@using Pharos.Client.Common.App.Helpers
+@using Pharos.Common.Web.Components.FieldOperator
+@using Pharos.Common.Web.Components.Status
+@attribute [Authorize]
+
+<PhModalContent>
+    <Body>
+        <PhSimpleValidationContext @ref="_validation" Model="RequestTest">
+            <div class="flex flex-col gap-md">
+                <div class="grid grid-cols-2 gap-md">
+                    <div class="flex flex-col gap-md">
+                        <PhLabel Text="@Loc["TestEditView_TestName"]">
+                            <PhValueBox>@RequestTest.LabTestName</PhValueBox>
+                        </PhLabel>
+                        <PhLabel Text="@Loc["TestEditView_Method"]">
+                            <PhValueBox>@RequestTest.MethodName</PhValueBox>
+                        </PhLabel>
+                        <PhLabel Text="@Loc["TestEditView_Status"]">
+                            <PhValueBox>
+                                <PhStatus Status="@TestOrderStatusHelper.GetStatusType(RequestTest.State, RequestTest.IsActive)" Size="StatusSize.Xs" Text="@RequestTest.StatusText"></PhStatus>
+                            </PhValueBox>
+                        </PhLabel>
+                    </div>
+                    <div class="flex flex-col gap-md">
+                        <PhLabel Text="@Loc["TestEditView_TestFullName"]">
+                            <PhValueBox>@RequestTest.FullTestName</PhValueBox>
+                        </PhLabel>
+                        <PhLabel Text="@Loc["TestEditView_MethodFullName"]">
+                            <PhValueBox>@RequestTest.FullMethodName</PhValueBox>
+                        </PhLabel>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-sm">
+                    <PhFieldOperatorRow>
+                        <PhFieldOperator OperatorText="x">
+                            <PhLabel Text="@Loc["TestEditView_PreDilution"]">
+                                <PhValueBox Size="TextBoxSize.Default">@PreDilutionFactor</PhValueBox>
+                            </PhLabel>
+                        </PhFieldOperator>
+
+                        <PhFieldOperator OperatorText="=">
+                            <PhLabel Text="@Loc["TestEditView_InstrumentDilution"]">
+                                @if (IsEditMode)
+                                {
+                                    <PhDropdown Size="DropdownSize.Default" TValue="int" Options="_instrumentDilutionValues" @bind-Value="RequestTest.InstrumentDilutionFactor" />
+                                }
+                                else
+                                {
+                                    <PhValueBox Size="TextBoxSize.Default">@RequestTest.InstrumentDilutionFactor</PhValueBox>
+                                }
+                            </PhLabel>
+                        </PhFieldOperator>
+
+                        <PhFieldOperator>
+                            <PhLabel Text="@Loc["TestEditView_TotalDilution"]">
+                                <PhValueBox Size="TextBoxSize.Default">@TotalDilution</PhValueBox>
+                            </PhLabel>
+                        </PhFieldOperator>
+                    </PhFieldOperatorRow>
+
+                    <PhLabel Text="@Loc["TestEditView_Replicates"]" ValidationFor="() => RequestTest.NumberOfReplicates">
+                        @if (IsEditMode)
+                        {
+                            <PhNumberField @bind-Value="@RequestTest.NumberOfReplicates" Size="TextBoxSize.Small" />
+                        }
+                        else
+                        {
+                            <PhValueBox Size="TextBoxSize.Small">@RequestTest.NumberOfReplicates</PhValueBox>
+                        }
+                    </PhLabel>
+                </div>
+            </div>
+        </PhSimpleValidationContext>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => OnClose(ModalResult.Cancel()))">@(IsEditMode? @Loc["TestEditView_Button_Cancel"] : @Loc["TestEditView_Button_Close"])</PhButton>
+        <PhButton OnClick="ValidateAndSave" Disabled="@(!IsValid())">@Loc["TestEditView_Button_Done"]</PhButton>
+    </Footer>
+</PhModalContent>

@@ -1,0 +1,33 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-numberrange {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$gap-xs;
+    pointer-events: none;
+
+    &__fields {
+        width: fit-content;
+        display: flex;
+        align-items: center;
+        gap: spacing.$gap-xs;
+        pointer-events: auto;
+    }
+
+    &__separator {
+        color: colors.$text-secondary;
+        @include text.body1;
+    }
+
+    &__error-text {
+        color: colors.$status-validation;
+        @include text.helper-text;
+    }
+
+    &__help-text {
+        color: colors.$text-hint;
+        @include text.helper-text;
+    }
+}

@@ -1,0 +1,16 @@
+﻿@if (Mode == TrailingEdgeDisplayMode.Disabled)
+{
+    @ChildContent
+}
+else
+{
+    <div class="@CssClasses">
+        <div class="@ContentCssClasses">
+            @ChildContent
+        </div>
+        <div class="ph-trailing-edge__top"></div>
+        <div class="ph-trailing-edge__left"></div>
+        <div class="ph-trailing-edge__bottom"></div>
+        <div class="ph-trailing-edge__right"></div>
+    </div>
+}

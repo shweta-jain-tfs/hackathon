@@ -1,0 +1,58 @@
+@using Pharos.Client.Common.App.PageRouting
+@using Pharos.Common.Web.Components.Base
+@using Pharos.Common.Web.Components.ChapterNavigation
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Common.Web.Components.RichText
+@using Pharos.Common.Web.Components.TrailingEdge
+@attribute [Route(PageRoute.Help)]
+@inherits ComponentWithClientScriptBase
+
+<PhPage WideSidebar TrailingEdge="TrailingEdgeSize.Default">
+
+    <Sidebar>
+        <PhChapterNav WithBackground
+            Items="@ViewModel.ChapterNavNodes"
+            CurrentChapterId="@_menuChapterId?.ToString()"
+            OnNavigate="GoToChapter"
+            />
+    </Sidebar>
+
+    <ChildContent>
+        <div @ref="_richTextWrapper" class="mx-sm">
+            <PhRichText NumberHeadings="true">
+                @if (ViewModel is { IsLoaded: true, HelpContentManual.Chapters.Count: > 0 })
+                {
+                    var selectedChapter = GetSelectedTopChapter();
+
+                    if (selectedChapter is not null)
+                    {
+                        @RenderChapter([selectedChapter])
+                    }
+                    else
+                    {
+                        @* start page view placeholder for when the manual is visited via the main menu *@
+                        <h1>Manuals</h1>
+                        <p>Search for chapters or keywords in the search bar, find content using the navigation to the left, or choose one of your most recently read chapters below.</p>
+                    }
+                }
+                else if (ViewModel.IsLoaded)
+                {
+                    <p>
+                        No help content available.
+                    </p>
+                }
+                else if (_failedToLoad)
+                {
+                    <p>Failed to load help content.</p>
+                }
+                else
+                {
+                    <p>
+                        Loading help content...
+                    </p>
+                }
+            </PhRichText>
+        </div>
+    </ChildContent>
+
+</PhPage>

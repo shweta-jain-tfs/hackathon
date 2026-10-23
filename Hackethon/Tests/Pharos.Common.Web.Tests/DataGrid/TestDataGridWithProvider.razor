@@ -1,0 +1,26 @@
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Pharos.Common.Web.Components.DataGrid
+@using Pharos.Common.Web.Components.DataGrid.Columns
+@using Pharos.Common.Web.Models.DataGrid
+
+<PhDataGrid TGridItem="Person"
+            StateID="test-grid-provider"
+            ItemsProvider="ItemsProvider"
+            SelectionType="SelectionType"
+            ItemStyleOptions="ItemStyleOptions"
+            ScrollToItemKey="@ScrollToItemKey"
+            ScrollToItemIndexResolver="@ScrollToItemIndexResolver">
+    <Columns>
+        <Column Title="First name" Property="@(person => person.FirstName)" />
+        <Column Title="Last name" Property="@(person => person.LastName)" />
+        <Column Title="Full name" Property="@(person => person.FullName)" />
+    </Columns>
+</PhDataGrid>
+
+@code {
+    [Parameter] public GridItemsProvider<Person>? ItemsProvider { get; set; }
+    [Parameter] public SelectionTypeEnum SelectionType { get; set; } = SelectionTypeEnum.Off;
+    [Parameter] public ItemStyleOptions<Person>? ItemStyleOptions { get; set; }
+    [Parameter] public string? ScrollToItemKey { get; set; }
+    [Parameter] public Func<string, Task<int>>? ScrollToItemIndexResolver { get; set; }
+}

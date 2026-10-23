@@ -1,0 +1,35 @@
+﻿@using Pharos.Common.Web.Components.TrailingEdge
+<PhPopover @ref="_popover" Appearance="PopoverStyle.None" FillWidth OnToggle="SetOpenState">
+    <Anchor>
+        <button class="@ButtonCssClasses" popovertarget="@(_popover?.Id)">
+            <span class="ph-filter-button__text">
+                @Title
+                @if(ActiveFilterCount > 0)
+                {
+                    <text> (@ActiveFilterCount)</text>
+                }
+                <span class="ph-filter-button__placeholder">@Title (0)</span>
+            </span>
+            <div class="ph-filter-button__icon">
+                <PhIcon IconType="@(_isOpen ? IconType.ChevronUp : IconType.ChevronDown)" Size="IconSize.Xs"></PhIcon>
+            </div>
+        </button>
+    </Anchor>
+    <Panel>
+        <div class="@PanelCssClasses">
+            <div class="ph-filter-panel__content">
+                <PhTrailingEdge Mode="TrailingEdgeDisplayMode.VerticalOnly">
+                    @ChildContent
+                </PhTrailingEdge>
+            </div>
+            @if (OnClearFilter.HasDelegate)
+            {
+                <div class="ph-filter-panel__footer">
+                    <button class="ph-filter-panel__clear-button" @onclick="ClearFilter">
+                        @ClearButtonLabel
+                    </button>
+                </div>
+            }
+        </div>
+    </Panel>
+</PhPopover>

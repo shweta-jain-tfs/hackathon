@@ -1,0 +1,29 @@
+﻿@using Pharos.Client.App.Sample.ViewModels
+@inherits ComponentBase
+
+<PhDrawer Name="@DrawerName"
+          ActionName="@Loc["SamplePage_UnlockDrawer"]"
+          DoorState="@ViewModel.PhDrawerLockState"
+          DoorStateText="@GetDrawerStateText(ViewModel.PhDrawerLockState)"
+          IsButtonVisible="@ViewModel.IsButtonVisible"
+          OnUnlockDrawerClick="() => ViewModel.UnlockSampleDrawerAsync()"
+          HasManageSamplePermission="@ViewModel.HasRequiredPermission"
+          IsDrawerDim="@IsDrawerDim()"
+          Position="@DrawerPosition"
+          IsScanningOngoing="@ViewModel.IsScanningOngoing" >
+          
+    @foreach (var tray in ViewModel.SampleTrays)
+    {
+        <PhSampleTray IsTrayAbsent="@tray.IsPositionEmpty"
+                      IsTrayError="tray.TrayError != SampleTrayError.None"
+                      TrayErrorName = "@GetTrayErrorName(tray.TrayError)"
+                      Barcode="@tray.Id"
+                      BarcodePosition="@GetTrayBarcodePosition()"
+                      SampleTubes="@tray.SamplePositions.ToSampleTubes()"
+                      IsTrayDim="@IsDrawerDim()"
+                      IsTrayHighLight="@(ViewModel.PhDrawerLockState == PhDrawerLockState.Open)"
+                      IsScanningOnGoing="@ViewModel.IsScanningOngoing"
+                      OnTraySelected="() => HandleTraySelected(tray)"
+                      IsTraySelected="@(_selectedTrayId == tray.Id)" />
+    }
+</PhDrawer>

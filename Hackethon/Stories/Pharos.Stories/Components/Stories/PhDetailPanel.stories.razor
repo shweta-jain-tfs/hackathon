@@ -1,0 +1,85 @@
+@using Pharos.Common.Web.Components.Panel
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@attribute [Stories("Components/DetailPanel")]
+@inherits Pharos.Stories.Components.Stories.PhDetailPanelStories
+
+<Stories TComponent="PhDetailPanel">
+
+    <Story Name="Default">
+        <Description>Default detail panel with limiter and standard width.</Description>
+        <Template>
+            <div style="position: relative; height: 260px; border: 1px solid #d9d9d9; overflow: hidden;">
+                <div style="position: absolute; inset: 0; background: linear-gradient(90deg, #f8f8f8 0%, #ededed 100%);">
+                    <div style="padding: 16px; max-width: 45%;">Background content behind the detail panel.</div>
+                    @if (!_isDefaultOpen)
+                    {
+                        <div style="padding: 0 16px;">
+                            <PhButton Type="@ButtonType.Secondary" OnClick="OpenDefaultPanel">Open panel</PhButton>
+                        </div>
+                    }
+                </div>
+
+                @if (_isDefaultOpen)
+                {
+                    <PhDetailPanel ShowCloseButton="true" OnCloseClick="CloseDefaultPanel">
+                        <div style="padding: 16px;">
+                            <div class="t-title3">Detail panel</div>
+                            <div class="t-body2 mt-sm">Default content inside the panel.</div>
+                        </div>
+                    </PhDetailPanel>
+                }
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Variants">
+        <Description>Width and limiter variants.</Description>
+        <Template>
+            <div class="flex flex-col gap-lg">
+                <div style="position: relative; height: 220px; border: 1px solid #d9d9d9; overflow: hidden;">
+                    <div style="position: absolute; inset: 0; background: linear-gradient(90deg, #f8f8f8 0%, #ededed 100%);">
+                        <div style="padding: 16px; max-width: 45%;">Panel with limiter enabled.</div>
+                        @if (!_isLimiterVariantOpen)
+                        {
+                            <div style="padding: 0 16px;">
+                                <PhButton Type="@ButtonType.Secondary" OnClick="OpenLimiterVariant">Open panel</PhButton>
+                            </div>
+                        }
+                    </div>
+
+                    @if (_isLimiterVariantOpen)
+                    {
+                        <PhDetailPanel Width="40%" ShowCloseButton="true" OnCloseClick="CloseLimiterVariant">
+                            <div style="padding: 16px;" class="flex flex-col gap-sm">
+                                <div>Width: 40%, limiter: true</div>
+                            </div>
+                        </PhDetailPanel>
+                    }
+                </div>
+
+                <div style="position: relative; height: 220px; border: 1px solid #d9d9d9; overflow: hidden;">
+                    <div style="position: absolute; inset: 0; background: linear-gradient(90deg, #f8f8f8 0%, #ededed 100%);">
+                        <div style="padding: 16px; max-width: 45%;">Panel with limiter disabled.</div>
+                        @if (!_isNoLimiterVariantOpen)
+                        {
+                            <div style="padding: 0 16px;">
+                                <PhButton Type="@ButtonType.Secondary" OnClick="OpenNoLimiterVariant">Open panel</PhButton>
+                            </div>
+                        }
+                    </div>
+
+                    @if (_isNoLimiterVariantOpen)
+                    {
+                        <PhDetailPanel Width="75%" ShowLimiter="false" ShowCloseButton="true" OnCloseClick="CloseNoLimiterVariant">
+                            <div style="padding: 16px;" class="flex flex-col gap-sm">
+                                <div>Width: 75%, limiter: false</div>
+                            </div>
+                        </PhDetailPanel>
+                    }
+                </div>
+            </div>
+        </Template>
+    </Story>
+
+</Stories>

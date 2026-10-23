@@ -1,0 +1,153 @@
+﻿@typeparam TStatus
+@inherits ComponentBase
+@namespace Pharos.Common.Web.Components.Legend
+@using Pharos.Common.Web.Components.Drawer
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.Icons.Svg
+@using Pharos.Common.Web.Components.Reagent
+@using Pharos.Common.Web.Components.Status
+
+<div class="ph-legend">
+
+    @*Status Section*@
+    @if (HasStatusItems)
+    {
+        <div class="ph-legend__section">
+            <div class="ph-legend__section-heading">@StatusHeaderText</div>
+            <div class="ph-legend__section-content">
+                @if (IsAnyHighPriority)
+                {
+                    <div class="@GetItemCssClass(_selectionResult.IsHighPrioritySelected)" @onclick="OnHighPriorityClick">
+
+                        <span class="ph-legend__item-icon">
+                            <PhSampleTube Status="null" Size="SampleTubeSize.Small" IsHighPriority="IsAnyHighPriority"></PhSampleTube>
+                        </span>
+                        <span class="@GetItemTextCss()">@HighPriorityText</span>
+                    </div>
+                }
+
+                @if (IsAnyManualEntry)
+                {
+                    <div class="@GetItemCssClass(_selectionResult.IsManualEntrySelected)" @onclick="OnManualEntryClick">
+
+                        <span class="ph-legend__item-icon">
+                            <PhSampleTube Status="null" Size="SampleTubeSize.Small" IsManualInput="IsAnyManualEntry"></PhSampleTube>
+                        </span>
+                        <span class="@GetItemTextCss()">@ManualEntryText</span>
+                    </div>
+                }
+
+                @if (typeof(TStatus).Equals(typeof(TubeStatus)))
+                {
+                    @foreach (var status in LegendStatuses.OrderBy(i => Convert.ToInt32(i)))
+                    {
+                        <div class="@GetItemCssClass(status)" @onclick="() => OnStatusClick(status)">
+                            <span class="ph-legend__item-icon">
+                                <PhSampleTube Status="@((TubeStatus)(object)status)" Size="SampleTubeSize.Small"></PhSampleTube>
+                            </span>
+                            <span class="@GetItemTextCss()">@GetStatusText(status)</span>
+                        </div>
+                    }
+                }
+                else if (typeof(TStatus).Equals(typeof(ReagentStatus)))
+                {
+                    @foreach (var status in LegendStatuses.OrderBy(i => Convert.ToInt32(i)))
+                    {
+                        <div class="@GetItemCssClass(status)" @onclick="() => OnStatusClick(status)">
+                            <div class="ph-legend__reagent-item">
+                                <span class="@GetReagentItemIconCss((ReagentStatus)(object)status)">
+                                    @if (status.Equals(ReagentStatus.Identified))
+                                    {
+                                        <PhStatusIcon Icon="StatusIconType.Progress" Size="StatusIconSize.Md"></PhStatusIcon>
+                                    }
+                                </span>
+                            </div>
+                            <span class="@GetItemTextCss()">@GetStatusText(status)</span>
+                        </div>
+                    }
+                }
+                else if (typeof(TStatus).Equals(typeof(BottleStatus)))
+                {
+                    @foreach (var status in LegendStatuses.OrderBy(i => Convert.ToInt32(i)))
+                    {
+                        <div class="@GetItemCssClass(status)" @onclick="() => OnStatusClick(status)">
+                            <div class="ph-legend__bottle-item">
+                                <span class="@GetBottleItemIconCss((BottleStatus)(object)status)" />
+                            </div>
+                            <span class="@GetItemTextCss()">@GetStatusText(status)</span>
+                        </div>
+                    }
+                }
+                else if (typeof(TStatus).Equals(typeof(LiquidBottleStatus)))
+                {
+                    @foreach (var status in LegendStatuses.OrderBy(i => Convert.ToInt32(i)))
+                    {
+                        <div class="@GetItemCssClass(status)" @onclick="() => OnStatusClick(status)">
+                            <div class="ph-legend__liquid-item">
+                                <span class="@GetLiquidItemIconCss((LiquidBottleStatus)(object)status)">
+                                    @if (status.Equals(LiquidBottleStatus.Disabled))
+                                    {
+                                        <PhIcon IconType="IconType.Disconnected" Size="IconSize.Md" />
+                                    }
+                                </span>
+                            </div>
+                            <span class="@GetItemTextCss()">@GetStatusText(status)</span>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    }
+
+
+    @*Error Section*@
+    @if (HasErrorItems)
+    {
+        <div class="ph-legend__section">
+            <div class="ph-legend__section-heading">@ErrorHeaderText</div>
+            <div class="ph-legend__section-content">
+
+                @if (UnloadRequestedCount > 0)
+                {
+                    <div class="@GetItemCssClass(_selectionResult.IsUnloadRequestedSelected)" @onclick="OnUnloadRequestedClick">
+                        <span class="ph-legend__item-icon">
+                            <PhSampleTube Status="null" Size="SampleTubeSize.Small" IsUnloadRequested="true" />
+                        </span>
+                        <span class="@GetItemTextCss()">@string.Format(UnloadRequestedText, UnloadRequestedCount)</span>
+                    </div>
+                }
+
+                @foreach (var legendError in OrderedLegendErrors)
+                {
+                    <div class="@GetItemCssClass(legendError)" @attributes="(legendError.IsClickable ? GetErrorAttributes(legendError) : null)">
+                        <span class="@GetErrorIconCss(legendError)">
+
+                            @switch (legendError.Error)
+                            {
+                                case TubeStatus tubeStatus:
+                                    <PhSampleTube Status="@tubeStatus" Size="SampleTubeSize.Small" />
+                                    break;
+
+                                case ReagentError.UnloadRequested:
+                                    <UnloadRequestedMedium />
+                                    break;
+                                case ReagentError.NeedEmptyLoader:
+                                    <PhStatusIcon Icon="StatusIconType.PendingAction" Size="StatusIconSize.Md" />
+                                    break;
+
+                                default:
+                                    <PhStatusIcon Icon="StatusIconType.Warning" Size="StatusIconSize.Md" />
+                                    break;
+                            }
+                        </span>
+
+                        <span class="@GetItemTextCss(legendError.IsClickable)">@string.Format(legendError.Text, @legendError.Count)</span>
+
+                    </div>
+                }
+
+            </div>
+        </div>
+    }
+
+</div>

@@ -1,0 +1,6 @@
+@using Pharos.Common.Web.Utilities.Redirect
+
+@attribute [Route(PageRoute.Parameters.Default)]
+@attribute [Authorize]
+
+<RedirectTo Uri="@PageRoute.Parameters.Methods" Replace />

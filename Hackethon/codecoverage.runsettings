@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <CodeCoverage>
+    <Sources>
+      <Exclude>
+        <Source>.*[\\/]Migrations[\\/].*\.cs$</Source>
+        <Source>.*[\\/]Tests[\\/].*\.cs$</Source>
+        <Source>.*[\\/]Models\.generated\.cs$</Source>
+        <Source>.*[\\/]Program\.cs$</Source>
+        <Source>.*\.Designer\.cs$</Source>
+      </Exclude>
+    </Sources>
+  </CodeCoverage>
+</Configuration>

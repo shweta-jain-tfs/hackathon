@@ -1,0 +1,33 @@
+﻿@using Pharos.Common.Web.Components.Icons;
+
+@using Pharos.Common.Web.Components.Icons.Svg;
+<div class="@_cartridgeSelectionFrameCss">
+    <div class="@_reagentCartridgeCss">
+        <Cartridge />
+        @if (_shouldShowOverlay)
+        {
+            <CartridgeOverlay />
+        }
+        <div class="@_reagentCartridgeSlotCss">
+            @if (_statusIconType.HasValue && _statusIconSize.HasValue)
+            {
+                <div class="reagent-cartridge__status-icon-overlay">
+                    <PhStatusIcon Icon="@_statusIconType.Value" Size="@_statusIconSize.Value"></PhStatusIcon>
+                </div>
+            }
+        </div>
+        @if (CellContent.IsUnloadRequested)
+        {
+            <div class="reagent-cartridge__unload-requested-overlay">
+                @if (Size == ReagentIconSize.Large)
+                {
+                    <UnloadRequestedLarge />
+                }
+                else
+                {
+                    <UnloadRequestedSmall />
+                }
+            </div>
+        }
+    </div>
+</div>

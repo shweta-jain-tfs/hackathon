@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>Pharos.Server.AuditTrail</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Src\Pharos.Server.AuditTrail\Pharos.Server.AuditTrail.csproj" />
+  </ItemGroup>
+
+</Project>

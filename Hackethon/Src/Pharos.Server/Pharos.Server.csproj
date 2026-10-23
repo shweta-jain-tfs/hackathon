@@ -1,0 +1,87 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<UserSecretsId>aspnet-Pharos.Server-7a405dc2-f57c-4a07-8225-5e6c55c9f028</UserSecretsId>
+		<PublishDocumentationFile>false</PublishDocumentationFile>
+		<Configurations>Debug;Release;nswag</Configurations>
+		<BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+		<SoftwareDeviceIdentifier Condition="'$(SoftwareDeviceIdentifier)' == ''">00000000000000</SoftwareDeviceIdentifier>
+		<SoftwareManufactureDate Condition="'$(SoftwareManufactureDate)' == ''">$([System.DateTime]::UtcNow.ToString('yyyy-MM-dd'))</SoftwareManufactureDate>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<AssemblyMetadata Include="SoftwareDeviceIdentifier" Value="$(SoftwareDeviceIdentifier)" />
+		<AssemblyMetadata Include="SoftwareManufactureDate" Value="$(SoftwareManufactureDate)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="keyring\**" />
+		<Content Remove="keyring\**" />
+		<EmbeddedResource Remove="keyring\**" />
+		<None Remove="keyring\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="*.zip" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="System.Management" />
+		<PackageReference Include="Serilog.Expressions" />
+		<PackageReference Include="Serilog.Sinks.Async" />
+		<PackageReference Include="NSwag.AspNetCore" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)' != 'NSWAG'">
+		<ProjectReference Include="..\Pharos.Client\Pharos.Client.csproj" />
+		<ProjectReference Include="..\Pharos.Common.Web\Pharos.Common.Web.csproj" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(Configuration)' == 'NSWAG'">
+		<Compile Remove="Components\App.razor.cs" />
+		<Content Remove="Components\App.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pharos.Server.Mediator\Pharos.Server.Mediator.csproj" />
+		<ProjectReference Include="..\Pharos.Server.AuditTrail\Pharos.Server.AuditTrail.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Infrastructure.Abstractions\Pharos.Server.Infrastructure.Abstractions.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Loadlist\Pharos.Server.LoadList.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Result.Flr\Pharos.Server.Result.Flr.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Lis.Astm\Pharos.Server.Lis.Astm.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Lis.HL7\Pharos.Server.Lis.HL7.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Lis\Pharos.Server.Lis.csproj" />
+		<ProjectReference Include="..\Pharos.Server.LabCommunity\Pharos.Server.LabCommunity.csproj" />
+		<ProjectReference Include="..\Pharos.Server.LogDump\Pharos.Server.LogDump.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Identity\Pharos.Server.Identity.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Infrastructure\Pharos.Server.Infrastructure.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Instrument\Pharos.Server.Instrument.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Localization\Pharos.Server.Localization.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Parameters\Pharos.Server.Parameters.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Quality\Pharos.Server.Quality.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Reagents\Pharos.Server.Reagents.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Reflex\Pharos.Server.Reflex.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Request\Pharos.Server.Request.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Result\Pharos.Server.Result.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Search\Pharos.Server.Search.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Settings\Pharos.Server.Settings.csproj" />
+		<ProjectReference Include="..\Pharos.Server.SystemErrors\Pharos.Server.SystemErrors.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Sample\Pharos.Server.Sample.csproj" />
+		<ProjectReference Include="..\Pharos.Server.SystemUpdate\Pharos.Server.SystemUpdate.csproj" />
+		<ProjectReference Include="..\Pharos.Server.TaskCard\Pharos.Server.TaskCard.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Maintenance\Pharos.Server.Maintenance.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="Pharos.Server.Integration.Tests" />
+	</ItemGroup>
+</Project>

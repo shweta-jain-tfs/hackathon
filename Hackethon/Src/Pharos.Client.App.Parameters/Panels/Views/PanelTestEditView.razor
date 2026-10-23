@@ -1,0 +1,47 @@
+@using Pharos.Client.Common.App.Validation
+@attribute [Authorize]
+
+<PhModalContent>
+    <Body>
+        <PhSimpleValidationContext @ref="_validation" Model="ViewModel">
+            <PhGrid>
+                <PhGridColumn Span="ColumnSpan.Half">
+                    <PhInputColumn>
+                        <PhLabel Text="@Loc["TestEditView_TestName"]">
+                            <PhValueBox>@ViewModel.TestName</PhValueBox>
+                        </PhLabel>
+                        <PhLabel Text="@Loc["TestEditView_Method"]">
+                            <PhValueBox>@ViewModel.MethodName</PhValueBox>
+                        </PhLabel>
+                        <PhLabel Text="@Loc["TestEditView_InstrumentDilution"]">
+                            <PhDropdown TValue="int"
+                                        Options="_instrumentDilutionValues"
+                                        @bind-Value="ViewModel.InstrumentDilutionFactor"
+                                        Size="DropdownSize.SmallInputWidth" />
+                        </PhLabel>
+                        <PhLabel Text="@Loc["TestEditView_NumberOfReplicates"]" ValidationFor="() => ViewModel.Replicates">
+                            <PhNumberField @bind-Value="@ViewModel.Replicates"
+                                           Size="TextBoxSize.Small" />
+                        </PhLabel>
+                    </PhInputColumn>
+                </PhGridColumn>
+
+                <PhGridColumn Span="ColumnSpan.Half">
+                    <PhInputColumn>
+                        <PhLabel Text="@Loc["TestEditView_TestFullName"]">
+                            <PhValueBox>@ViewModel.FullTestName</PhValueBox>
+                        </PhLabel>
+                        <PhLabel Text="@Loc["TestEditView_MethodFullName"]">
+                            <PhValueBox>@ViewModel.FullMethodName</PhValueBox>
+                        </PhLabel>
+                    </PhInputColumn>
+                </PhGridColumn>
+            </PhGrid>
+        </PhSimpleValidationContext>
+    </Body>
+
+    <Footer>
+        <PhButton OnClick="@(() => OnClose(ModalResult.Cancel()))">@Loc["TestEditView_Cancel"]</PhButton>
+        <PhButton OnClick="ValidateAndSave" Disabled="@(!IsValid())">@Loc["TestEditView_Done"]</PhButton>
+    </Footer>
+</PhModalContent>

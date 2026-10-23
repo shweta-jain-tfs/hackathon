@@ -1,0 +1,70 @@
+@using Pharos.Common.Web.Components.DateFilter
+@attribute [Stories("Components/QuickFilter/DateFilter")]
+
+<Stories TComponent="PhDateFilter">
+
+    <Story Name="Interactive">
+        <Description>Default usage with core parameters as controls.</Description>
+        <Arguments>
+            <Arg For="_ => _!.Options" Value="DateFilterOptions.All" />
+            <Arg For="_ => _!.Texts" Value="FilterTexts" />
+        </Arguments>
+        <Template>
+            <PhDateFilter @attributes="context.Args" @bind-Value="@_interactiveValue" />
+            <pre class="mt-md t-helper-text">
+                @_interactiveValue
+            </pre>
+        </Template>
+    </Story>
+    
+    <Story Name="Default options">
+        <Description>Default usage with core parameters as controls.</Description>
+        <Arguments>
+            <Arg For="_ => _!.Texts" Value="FilterTexts" />
+        </Arguments>
+        <Template>
+            <PhDateFilter @attributes="context.Args" @bind-Value="@_defaultValue" Options="DateFilterOptions.Default" />
+            <pre class="mt-md t-helper-text">
+                @_defaultValue
+            </pre>
+        </Template>
+    </Story>
+
+    <Story Name="With date range limits">
+        <Description>Default usage with core parameters as controls.</Description>
+        <Arguments>
+            <Arg For="_ => _!.MinDate" Value="_minDate" />
+            <Arg For="_ => _!.MaxDate" Value="_maxDate" />
+            <Arg For="_ => _!.Options" Value="DateFilterOptions.All" />
+            <Arg For="_ => _!.Texts" Value="FilterTexts" />
+        </Arguments>
+        <Template>
+            <PhDateFilter @attributes="context.Args" @bind-Value="@_constrainedValue" />
+            <pre class="mt-md t-helper-text">
+                @_constrainedValue
+            </pre>
+        </Template>
+    </Story>
+
+</Stories>
+
+@code
+{
+    private DateFilterValue _interactiveValue = new();
+    private DateFilterValue _defaultValue = new();
+    private DateFilterValue _constrainedValue = new();
+    private static DateOnly Today => DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly _minDate = Today.AddMonths(-2);
+    private DateOnly _maxDate = Today.AddMonths(2);
+
+    private static readonly DateFilterTexts FilterTexts = new()
+    {
+        Today = "Today",
+        LastDaysPrefix = "Last",
+        LastDaysSuffix = "days",
+        Month = "Month",
+        CustomRange = "Custom range",
+        From = "From:",
+        To = "To:"
+    };
+}

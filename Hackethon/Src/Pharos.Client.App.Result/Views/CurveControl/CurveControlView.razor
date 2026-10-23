@@ -1,0 +1,89 @@
+﻿@using Pharos.Common.Web.Models.DataGrid
+@using Pharos.Common.Web.Components.ChartPanel
+@using Pharos.Common.Web.Components.FormElements.Enums
+
+@if (ViewModel.ChartHolders is { Count: > 0 })
+{
+    <PhDockedButtonRow EnableButtons="HasApproveResultPermission">
+        <ChildContent>
+            <PhGrid FillHeight>
+                @foreach (var chart in ViewModel.ChartHolders.OrderBy(x => x.CurveControlName))
+                {
+                    <PhGridColumn Span="@ColumnSpan">
+                        <PhChartPanel Status="@GetStatusSymbol(chart)">
+
+                            <Title>
+                                @chart.CurveControlName : @chart.TestName
+                            </Title>
+
+                            <Action>
+                                <PhIconButton IconType="IconType.More" IconSize="IconSize.Md"></PhIconButton>
+                            </Action>
+
+                            <Chart>
+                                @if (chart.CurveControlTestResults.All(x => x.Technology != AssayTechnology.ViewAllergy))
+                                {
+                                    <CurveControlThumbnailChartView Interactive="true" Miniature="false"
+                                                                    SingleChart="SingleChart"
+                                                                    OuterParameters="chart.OuterParameters" ChartComponents="chart.ChartComponents"/>
+                                }
+                            </Chart>
+                            <Footer>
+                                <PhDataGrid TGridItem="CurveControlTestResult" StateID="cctestresults" Items="chart.CurveControlTestResults.AsQueryable()" RowHeight="RowHeightEnum.Compact" RowType="RowTypeEnum.LinesBetweenRows"
+                                            DefaultSortColumn="@nameof(CurveControlTestResult.MeasurementDateTime)" DefaultSortDirection="SortDirection.Descending">
+                                    <Columns>
+
+                                        <Column Property="@(x => x.JudgmentSummary)">
+                                            <PhStatus Status="@CurveControlChartViewModel.GetRowStatus(context.JudgmentSummary)"/>
+                                        </Column>
+                                        
+                                        <Column Title="ID" Property="@(x => x.CurveControlPointName)">
+                                            <PhHrefLink OnClick="@(() => OpenDetailsView(context))">
+                                                @context.CurveControlPointName
+                                            </PhHrefLink>
+                                        </Column>
+
+                                        <Column Title="@Loc["CurveControlPage_Measured"]" Property="@(x => x.MeasurementDateTime)" Sortable="true"> 
+                                            <PhDateTime DateToShow="@(context.MeasurementDateTime)"/>
+                                        </Column>
+                                        <Column Title="@Loc["CurveControlPage_Response"]" Property="@(x => x.MeanResponseAsText)" Align="ColumnAlignEnum.Right"/>
+                                        <Column Title="@Loc["CurveControlPage_Concentration"]" Property="@(x => x.MeanConcentrationAsText)" Align="ColumnAlignEnum.Right">
+                                            @GetConcentrationText(context, context.MeanConcentrationAsText)
+                                        </Column>
+                                        <Column Title="@Loc["CurveControlPage_Expected"]" Property="@(x => x.ExpectedConcentration)">
+                                            @GetConcentrationText(context, context.ExpectedConcentration)
+                                        </Column>
+                                        <Column Title="@Loc["CurveControlPage_Comment"]" Property="@(x => x.Comment)"/>
+                                    </Columns>
+                                </PhDataGrid>
+                            </Footer>
+                        </PhChartPanel>
+                    </PhGridColumn>
+                }
+            </PhGrid>
+        </ChildContent>
+        <Buttons>
+
+            @if (ShowAcceptCurve)
+            {
+                <PhButton Type="ButtonType.Secondary" OnClick="@AcceptCurveModal"> @Loc["CurveControlPage_AcceptCurveButton"] </PhButton>
+            }
+            
+            @if (ShowSelectCurve)
+            {
+                <PhButton Type="ButtonType.Secondary" OnClick="SelectCurveOpen"> @Loc["CurveControlPage_SelectCurve"] </PhButton>
+            }
+            
+            @if (ShowRunNewCurve)
+            {
+                <PhButton Type="ButtonType.Secondary" OnClick="ReRunCurveOpen"> @Loc["CurveControlPage_RerunCurve"] </PhButton>
+            }
+            
+            @if (ShowRunNewCurveControl)
+            {
+                <PhButton Type="ButtonType.Secondary" OnClick="@OpenRerunCurveControlModal"> @Loc["CurveControlPage_ReRunCurveControl"] </PhButton>
+            }
+            
+        </Buttons>
+    </PhDockedButtonRow>
+}

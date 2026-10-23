@@ -1,0 +1,28 @@
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        ["@FieldId1", "@FieldId2"].forEach((id) => {
+            const field = document.getElementById(id);
+            if (field) {
+                field.addEventListener("input", () => clearFieldError(field));
+            }
+        });
+    });
+
+    function clearFieldError(input) {
+        input?.closest('.ph-textbox')?.classList.remove('ph-textbox--error');
+    }
+</script>
+
+@code {
+    /// <summary>
+    /// An ID for the first PhTextBox field to clear error state on when user starts typing.
+    /// </summary>
+    [Parameter]
+    public string FieldId1 { get; set; } = string.Empty;
+
+    /// <summary>
+    /// An ID for the second PhTextBox field to clear error state on when user starts typing.
+    /// </summary>
+    [Parameter]
+    public string FieldId2 { get; set; } = string.Empty;
+}

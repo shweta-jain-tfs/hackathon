@@ -1,0 +1,22 @@
+@using Pharos.Common.Web.Components.Drawer
+
+<div class="ph-solid-waste-drawer-view">
+    <SolidWasteIndicatorView />
+    <div class="ph-solid-waste-drawer-view__content">
+        <div class="@WasteDrawerCss">
+            <PhDrawer ActionName="@Loc["ReagentPage_UnlockDrawer"]" 
+                      DoorState="@ViewModel.PhDrawerLockState"
+                      DoorStateText="@GetDrawerStateText(ViewModel.PhDrawerLockState)"
+                      IsButtonVisible="@ViewModel.IsButtonVisible"
+                      OnUnlockDrawerClick="@ViewModel.UnlockSolidWasteDrawer"
+                      HasManageSamplePermission="@ViewModel.HasRequiredPermission"
+                      IsScanningOngoing="false"
+                      Position="@DrawerPosition.Center">
+                @foreach (var container in ViewModel.Containers)
+                {
+                    <SolidWasteContainerView Container="@container" />
+                }
+            </PhDrawer>
+        </div>
+    </div>
+</div>

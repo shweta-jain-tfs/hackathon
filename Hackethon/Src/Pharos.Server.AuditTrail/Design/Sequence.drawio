@@ -1,0 +1,130 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" version="26.1.0">
+  <diagram name="Page-1" id="j6izv0d1tJoV4ISCGNep">
+    <mxGraphModel dx="1434" dy="746" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="z4pd8mM6EzupYstYCUuk-1" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="120" y="598" width="580" height="342" as="geometry" />
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-2" value="Pharos" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="z4pd8mM6EzupYstYCUuk-1">
+          <mxGeometry y="42" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-3" value="Create&lt;div&gt;audit log entry N&lt;/div&gt;" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="z4pd8mM6EzupYstYCUuk-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="70" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="80" y="70" />
+              <mxPoint x="80" y="100" />
+            </Array>
+            <mxPoint x="55" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-4" value="DB" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="z4pd8mM6EzupYstYCUuk-1">
+          <mxGeometry x="240" y="42" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-5" value="Secret storage" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="z4pd8mM6EzupYstYCUuk-1">
+          <mxGeometry x="480" y="42" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-6" value="Retrieve salt and last hash" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="z4pd8mM6EzupYstYCUuk-1" target="z4pd8mM6EzupYstYCUuk-5">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="50" y="162" as="sourcePoint" />
+            <mxPoint x="130" y="162" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-7" value="Return salt and last hash" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="z4pd8mM6EzupYstYCUuk-1" source="z4pd8mM6EzupYstYCUuk-5" target="z4pd8mM6EzupYstYCUuk-2">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="370" y="212" as="sourcePoint" />
+            <mxPoint x="450" y="212" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-8" value="Compute hash N" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="z4pd8mM6EzupYstYCUuk-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="222" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="80" y="222" />
+              <mxPoint x="80" y="252" />
+            </Array>
+            <mxPoint x="55" y="252" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-9" value="Store entry - audit log data | hash N" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="z4pd8mM6EzupYstYCUuk-1" target="z4pd8mM6EzupYstYCUuk-4">
+          <mxGeometry x="0.0021" width="80" relative="1" as="geometry">
+            <mxPoint x="50" y="282" as="sourcePoint" />
+            <mxPoint x="530" y="282" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-10" value="Store hash N, overwrites hash N-1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="z4pd8mM6EzupYstYCUuk-1">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="50" y="322" as="sourcePoint" />
+            <mxPoint x="530" y="322" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-11" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Creating entry N sequence&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="z4pd8mM6EzupYstYCUuk-1">
+          <mxGeometry x="170" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-12" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="120" y="120" width="580" height="342" as="geometry" />
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-13" value="Pharos" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="z4pd8mM6EzupYstYCUuk-12">
+          <mxGeometry y="42" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-14" value="Create&lt;div&gt;audit log entry 1&lt;/div&gt;" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="z4pd8mM6EzupYstYCUuk-13">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="70" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="80" y="70" />
+              <mxPoint x="80" y="100" />
+            </Array>
+            <mxPoint x="55" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-15" value="DB" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="z4pd8mM6EzupYstYCUuk-12">
+          <mxGeometry x="240" y="42" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-16" value="Secret storage" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;curved&quot;:0,&quot;rounded&quot;:0};" vertex="1" parent="z4pd8mM6EzupYstYCUuk-12">
+          <mxGeometry x="480" y="42" width="100" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-17" value="Retrieve salt" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="z4pd8mM6EzupYstYCUuk-12" target="z4pd8mM6EzupYstYCUuk-16">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="50" y="162" as="sourcePoint" />
+            <mxPoint x="130" y="162" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-18" value="Return salt" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="z4pd8mM6EzupYstYCUuk-12" source="z4pd8mM6EzupYstYCUuk-16" target="z4pd8mM6EzupYstYCUuk-13">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="370" y="212" as="sourcePoint" />
+            <mxPoint x="450" y="212" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-19" value="Compute hash 1" style="html=1;align=left;spacingLeft=2;endArrow=block;rounded=0;edgeStyle=orthogonalEdgeStyle;curved=0;rounded=0;" edge="1" parent="z4pd8mM6EzupYstYCUuk-12">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="50" y="222" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="80" y="222" />
+              <mxPoint x="80" y="252" />
+            </Array>
+            <mxPoint x="55" y="252" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-20" value="Store entry - audit log data | hash 1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="z4pd8mM6EzupYstYCUuk-12" target="z4pd8mM6EzupYstYCUuk-15">
+          <mxGeometry x="0.0021" width="80" relative="1" as="geometry">
+            <mxPoint x="50" y="282" as="sourcePoint" />
+            <mxPoint x="530" y="282" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-21" value="Store hash 1" style="html=1;verticalAlign=bottom;endArrow=block;curved=0;rounded=0;" edge="1" parent="z4pd8mM6EzupYstYCUuk-12">
+          <mxGeometry width="80" relative="1" as="geometry">
+            <mxPoint x="50" y="322" as="sourcePoint" />
+            <mxPoint x="530" y="322" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="z4pd8mM6EzupYstYCUuk-22" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Creating entry 1 sequence&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="z4pd8mM6EzupYstYCUuk-12">
+          <mxGeometry x="170" width="210" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,33 @@
+﻿@{
+    var iconType = IsOn ? IconType.Checkmark : IconType.X;
+}
+
+<div class="@Classname">
+    @if (!DisplayOnly)
+    {
+        <label class="ph-switchbutton__label">
+            <input type="checkbox"
+                   id="@Id"
+                   checked="@IsOn"
+                   @onchange="OnInternalChange"
+                   disabled="@Disabled" />
+            <span class="ph-switchbutton__track">
+                <span class="ph-switchbutton__thumb">
+                    <PhIcon IconType="@iconType" Size="null" />
+                </span>
+            </span> @Label
+        </label>
+    }
+    else
+    {
+        <div class="ph-switchbutton__label">
+            <span class="ph-switchbutton__track">
+                <span class="@(IsOn
+                          ? "ph-switchbutton__thumb ph-switchbutton__thumb--on"
+                          : "ph-switchbutton__thumb")">
+                    <PhIcon IconType="@iconType" Size="null" />
+                </span>
+            </span> @Label
+        </div>
+    }
+</div>

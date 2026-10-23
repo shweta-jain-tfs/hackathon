@@ -1,0 +1,144 @@
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.Links
+@attribute [Stories("Components/LinkList")]
+
+<Stories TComponent="PhLinkList">
+    <Story Name="Href Links">
+
+        <Description>
+            <b>Description:</b>
+            <span>
+                Clicking the link will navigate you to the corresponding Component Story
+            </span>
+        </Description>
+
+        <Arguments>
+            <Arg For="_ => _!.Separator" Value="_separator" />
+            <Arg For="_ => _!.Links" Value="HrefLinks" />
+        </Arguments>
+
+        <Template>
+            <div style="overflow: auto;">
+                <PhLinkList @attributes="context.Args"></PhLinkList>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="OnClick Links">
+        <Description>
+            <b>Description:</b>
+            <span>
+                The click event shows a text in a label below the linklist row.
+            </span>
+        </Description>
+
+        <Arguments>
+            <Arg For="_ => _!.Separator" Value="_separator" />
+            <Arg For="_ => _!.Links" Value="OnClickLinks" />
+        </Arguments>
+
+        <Template>
+            <div style="overflow: auto;">
+                <PhLinkList @attributes="context.Args"></PhLinkList>
+                <PhLabel Text="@_output" Size="LabelSize.HelperText"></PhLabel>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Star separator Links">
+        <Description>
+            <b>Description:</b>
+            <span>
+                This shows a star as separator instead of the default comma.
+                The click event shows a text in a label below the linklist row.
+            </span>
+        </Description>
+
+        <Arguments>
+            <Arg For="_ => _!.Separator" Value="_starSeparator" />
+            <Arg For="_ => _!.Links" Value="OnClickLinks" />
+        </Arguments>
+
+        <Template>
+            <div style="overflow: auto;">
+                <PhLinkList @attributes="context.Args"></PhLinkList>
+                <PhLabel Text="@_output" Size="LabelSize.HelperText"></PhLabel>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Short text">
+        <Description>
+            <b>Description:</b>
+            <span>
+                this shows the minimum width for short texts.
+                The click event shows a text in a label below the linklist row.
+            </span>
+        </Description>
+
+        <Arguments>
+            <Arg For="_ => _!.Separator" Value="_separator" />
+            <Arg For="_ => _!.Links" Value="OnClickLinksShortText" />
+        </Arguments>
+
+        <Template>
+            <div style="overflow: auto;">
+                <PhLinkList @attributes="context.Args"></PhLinkList>
+                <PhLabel Text="@_output" Size="LabelSize.HelperText"></PhLabel>
+            </div>
+        </Template>
+    </Story>
+
+</Stories>
+
+@code
+{
+    private string _separator = ", ";
+    private string _starSeparator = "* ";
+
+    private string _output = string.Empty;
+
+    private List<LinkItem> HrefLinks { get; } =
+    [
+        new() { Text = "Href links", Href = "/?path=/story/components-linklist--href-links" },
+        new()  { Text = "OnClick", Href = "/?path=/story/components-linklist--onclick-links" },
+        new() { Text = "Short text", Href = "/?path=/story/components-linklist--short-text" }
+    ];
+
+    private List<LinkItem> OnClickLinks { get; set; } = [];
+    private List<LinkItem> OnClickLinksStarSeparator { get; set; } = [];
+    private List<LinkItem> OnClickLinksShortText { get; set; } = [];
+
+    protected override void OnInitialized()
+    {
+        OnClickLinks =
+        [
+            new() { Text = "Home", OnClick = () => OnClickHandler("Home Clicked") },
+            new() { Text = "Label", OnClick = () => OnClickHandler("Label Clicked") },
+            new() { Text = "Icons", OnClick = () => OnClickHandler("Icons Clicked") }
+        ];
+
+        OnClickLinksStarSeparator = new List<LinkItem>
+        {
+            new() { Text = "Home", OnClick = () => OnClickHandler("Home with star separator Clicked") },
+            new() { Text = "Label", OnClick = () => OnClickHandler("Label with star separator Clicked") },
+            new() { Text = "Icons", OnClick = () => OnClickHandler("Icons with star separator Clicked") }
+        };
+
+        OnClickLinksShortText = new List<LinkItem>
+        {
+            new() { Text = "Hi", OnClick = () => OnClickHandler("Hi Clicked") },
+            new() { Text = "By", OnClick = () => OnClickHandler("By Clicked") },
+            new() { Text = "C#", OnClick = () => OnClickHandler("C# Clicked") }
+        };
+    }
+
+
+    private async Task OnClickHandler(string linkText)
+    {
+        // Handle the OnClick event for the links
+        _output = linkText;
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

@@ -1,0 +1,110 @@
+﻿@using Pharos.Common.Web.Components.AlignedTables
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Client.Common.App.Views.ReagentShapeColor
+@using Microsoft.AspNetCore.Components.Web
+@using Pharos.Common.Web.Utilities
+
+@typeparam T
+
+<PhAlignedTableItem Title="@Title">
+    <table class="ph-loadlist-grid">
+        <thead>
+        <tr>
+            @foreach (var col in Columns)
+            {
+                var colspan = col.ColumnSpan > 1 ? col.ColumnSpan.ToString() : null;
+
+                if (col.Sortable)
+                {
+                    var thClass = col.AlignRight ? "ph-loadlist-grid__col-title ph-loadlist-grid__col-title--right" : "ph-loadlist-grid__col-title";
+
+                    <th aria-sort="@AriaSortValue(col)" scope="col" colspan="@colspan">
+                        <div class="@thClass" @onclick="@(() => SortColumn(col))" role="button">
+                            <span class="ph-loadlist-grid__col-title-text">@col.Header</span>
+                            <div class="ph-loadlist-grid__sort-indicator">
+                                <PhIcon IconType="IconType.ChevronUp" Size="IconSize.Sm"/>
+                            </div>
+                        </div>
+                    </th>
+                }
+                else
+                {
+                    <th scope="col" colspan="@colspan">
+                        <div class="ph-loadlist-grid__col-title">
+                            @col.Header
+                        </div>
+                    </th>
+                }
+            }
+            <th>@*filler*@</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var row in DisplayRows)
+        {
+            <tr>
+                @foreach (var col in Columns)
+                {
+                    var cellValue = col.GetValue(row);
+                    var colspan = col.ColumnSpan > 1 ? col.ColumnSpan.ToString() : null;
+                    var cellClass = new CssBuilder("")
+                        .AddClass("text-right", col.AlignRight)
+                        .AddClass("ph-aligned-tables__cell-wrap", col.WrapText)
+                        .Build();
+
+                    cellClass = cellClass.Length == 0 ? null : cellClass;
+
+                    <td class="@cellClass" colspan="@colspan">
+                        @switch (col)
+                        {
+                            case ColorColumn<T> colorCol:
+                            {
+                                var name = cellValue as string ?? string.Empty;
+                                var shape = colorCol.ShapeSelector(row);
+                                var c1 = colorCol.Color1Selector(row);
+
+                                <ReagentShapeColorView Shape="@shape" Name="@name" Colors="@c1"/>
+
+                                break;
+                            }
+                            case MultiColorColumn<T> multiColorCol:
+                            {
+                                var name = cellValue as List<string?> ?? [];
+                                var shape = multiColorCol.ShapeSelector(row);
+                                var colors = multiColorCol.ColorsSelector(row);
+
+                                <ReagentShapeColorView Shape="@shape" Methods="@name" Colors="@colors" />
+
+                                break;
+                            }
+                            case StatusColumn<T> statusColumn:
+                            {
+                                if (cellValue is int?)
+                                {
+                                    var status = statusColumn.StatusSelector(row);
+                                    var text = statusColumn.TextSelector(row);
+                                    <PhStatus Size="StatusSize.Lg" Status="@status" Text="@text"/>
+                                }
+
+                                break;
+                            }
+                            case DateColumn<T>:
+                            {
+                                <LoadListDateView DateToShow="@(cellValue as DateTimeOffset?)"/>
+                                break;
+                            }
+                            default:
+                            {
+                                @cellValue
+                                break;
+                            }
+                        }
+                    </td>
+                }
+                <td>@*filler*@</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</PhAlignedTableItem>

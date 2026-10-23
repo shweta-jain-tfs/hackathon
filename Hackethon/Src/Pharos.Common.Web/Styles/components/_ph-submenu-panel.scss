@@ -1,0 +1,26 @@
+@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+
+.ph-submenu-panel {
+    $root: &;
+    position: absolute;
+    inset: 0;
+    padding-bottom: spacing.$padding-sm;
+    display: flex;
+    flex-direction: column;
+    --ph-bg-color: #{colors.$layer-tertiary};
+    background: var(--ph-bg-color);
+
+    &__content {
+        --ph-menu-item-hover-bg: #{colors.$layer-hover-02};
+        --ph-menu-item-padding-left: #{spacing.$padding-xxl};
+        overflow-y: auto;
+        overflow-x: clip;
+    }
+
+    &[hidden],
+    &--hidden {
+        display: none;
+    }
+}

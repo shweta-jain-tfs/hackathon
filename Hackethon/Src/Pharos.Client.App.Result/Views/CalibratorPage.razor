@@ -1,0 +1,72 @@
+@using Pharos.Common.Web.Components.FormElements.Enums
+@attribute [Route(PageRoute.CalibratorDetails.IdParameter)]
+
+<PhPage>
+    <PageHeader>
+        <Breadcrumb Items="Breadcrumbs"/>
+    </PageHeader>
+
+    <ChildContent>
+        <PhDockedButtonRow EnableButtons="HasApproveResultPermission">
+            <ChildContent>
+
+                @if (ViewModel.IsLoaded)
+                {
+                    if (ViewModel.Data == null || ViewModel.IsWaitingForOrderedCurve)
+                    {
+                        @Loc["CalibratorPage_NoCurve"]
+                    }
+                    else if (ViewModel.HasCurveDetails)
+                    {
+                        <PhStatus Text="@ValidDateText" Status="ValidStatus" Size="StatusSize.Lg" FontSize="StatusFontSize.Body1"/>
+
+                        <PhGrid>
+                            <PhGridColumn Span="ColumnSpan.Half">
+                                <CalibratorCurveView ViewModel="ViewModel" Miniature="false"/>
+                            </PhGridColumn>
+                            <PhGridColumn Span="ColumnSpan.Half">
+
+                                @if (ViewModel.Data.CalibratorTestResults != null)
+                                {
+                                    <PhDataGrid TableTitle="@Loc["CalibratorPage_Calibrators"]" StateID="calibrators" TGridItem="CalibratorTestResult" Items="ViewModel.Data.CalibratorTestResults.AsQueryable()">
+                                        <Columns>
+                                            <Column Property="@(x => x.NormDoseCheckSummary)">
+                                                <PhStatus Status="GetStatus(context)"/>
+                                            </Column>
+                                            <Column Title="@Loc["CalibratorPage_Identity"]" Property="@(x => x.CalibratorPointName)">
+                                                <PhHrefLink OnClick="@(() => DetailsViewOpen(context))"> @context.CalibratorPointName </PhHrefLink>
+                                            </Column>
+                                            <Column Title="@Loc["CalibratorPage_Response"]" Property="@(x => x.MeanResponseAsText)" Align="ColumnAlignEnum.Right"/>
+                                            <Column Title="@Loc["CalibratorPage_Calculated"]" Property="@(x => x.MeanConcentrationAsText)" Align="ColumnAlignEnum.Right">
+                                                @GetConcentrationText(context, context.MeanConcentrationAsText)
+                                            </Column>
+                                            <Column Title="@Loc["CalibratorPage_Concentration"]" Property="@(x => x.ExpectedConcentration)" Align="ColumnAlignEnum.Right">
+                                                @GetConcentrationText(context, context.ExpectedConcentration)
+                                            </Column>
+                                            <Column Title="@Loc["CalibratorPage_Comment"]" Property="@(x=> x.Comment)"/>
+                                        </Columns>
+                                    </PhDataGrid>
+                                }
+                            </PhGridColumn>
+                        </PhGrid>
+                    }
+                }
+
+            </ChildContent>
+            <Buttons>
+                @if (ShowAcceptCurveButton)
+                {
+                    <PhButton Type="ButtonType.Secondary" OnClick="AcceptCurveOpen"> @Loc["CalibratorPage_AcceptCurve"] </PhButton>
+                }
+                @if (ShowSelectCurveButton)
+                {
+                    <PhButton Type="ButtonType.Secondary" OnClick="SelectCurveOpen"> @Loc["CalibratorPage_SelectCurve"] </PhButton>
+                }
+                @if (ShowReRunCurveButton)
+                {
+                    <PhButton Type="ButtonType.Secondary" OnClick="ReRunCurveOpen"> @Loc["CalibratorPage_RerunCurve"] </PhButton>
+                }
+            </Buttons>
+        </PhDockedButtonRow>
+    </ChildContent>
+</PhPage>

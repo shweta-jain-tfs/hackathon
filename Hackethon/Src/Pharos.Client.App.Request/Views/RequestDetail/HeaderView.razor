@@ -1,0 +1,38 @@
+﻿@using Pharos.Common.Web.Components.DetailsList
+@using Pharos.Common.Web.Components.Status
+@inherits ComponentBase
+<div>
+    <PhStack>
+        @if (ViewModel.IsNewEntity)
+        {
+            <PhLabel Direction="LabelDirection.Horizontal" Size="LabelSize.Body1" Text="@Loc["RequestDetailPage_SampleId"]" Disabled="@(!ViewModel.IsNewEntity)">
+                <PhTextBox @ref="_sampleIdFieldRef" @bind-Value="@ViewModel.SampleId" Disabled="@(_notAuthorized || !ViewModel.IsNewEntity)" Size="TextBoxSize.Large" MaxLength="32" />
+            </PhLabel>
+        }
+
+        <PhGrid AlignTop>
+            <PhGridColumn Span="ColumnSpan.Col4">
+                <PhDetailsList TextSize="DetailsListTextSize.Body2" AlignedValues="false">
+                    <PhDetailsListItem Label="@Loc["RequestDetailPage_State"]">
+                        @if (ViewModel.RequestState.HasValue)
+                        {
+                            <PhStatus Status="@GetStatusType(ViewModel.RequestState.Value)" Size="StatusSize.Xs" Text="@ViewModel.RequestStateText"></PhStatus>
+                        }
+                    </PhDetailsListItem>
+                </PhDetailsList>
+            </PhGridColumn>
+            <PhGridColumn Span="ColumnSpan.Col4">
+                <PhDetailsList TextSize="DetailsListTextSize.Body2" AlignedValues="false">
+                    <PhDetailsListItem Label="@Loc["RequestDetailPage_RequiredVolume"]">@ViewModel.RequiredVolumeDisplay</PhDetailsListItem>
+                </PhDetailsList>
+            </PhGridColumn>
+            <PhGridColumn Span="ColumnSpan.Col4">
+                <PhDetailsList TextSize="DetailsListTextSize.Body2" AlignedValues="false">
+                    <PhDetailsListItem Label="@Loc["RequestDetailPage_LastModified"]">
+                        <PhDateTime DateToShow="@ViewModel.LastModified" />
+                    </PhDetailsListItem>
+                </PhDetailsList>
+            </PhGridColumn>
+        </PhGrid>
+    </PhStack>
+</div>

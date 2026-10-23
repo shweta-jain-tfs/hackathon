@@ -1,0 +1,19 @@
+﻿<PhInputColumn Spacing="InputSpacing.Compact">
+    <div class="flex gap-xxl">
+        <PhTextBox Label="@Loc["MethodDetailsTestTab_Name"]" @bind-Value="ViewModel.Model.MethodName" DisplayOnly="true" />
+        <PhTextBox Label="@Loc["MethodDetailsGeneralTab_FullMethodName"]" @bind-Value="ViewModel.Model.FullMethodName" DisplayOnly="true" />
+        <PhNumberField Label="@Loc["MethodDetailsGeneralTab_MethodVersion"]" @bind-Value="ViewModel.Model.MethodVersion" DisplayOnly="true" />
+    </div>
+
+    <PhCheckBox Label="@Loc["MethodDetailsGeneralTab_Enable"]" @bind-Value="ViewModel.Enabled" Disabled="@IsEditingDisabled" />
+    <PhTextBox Label="@Loc["MethodDetailsGeneralTab_LisMethodID"]" @bind-Value="ViewModel.MethodNameLis" Disabled="@IsEditingDisabled" MaxLength="20" />
+    <PhDropdown TValue="int?"
+                Label="@Loc["MethodDetailsGeneralTab_DefaultLISChannel"]"
+                Options="@ViewModel.LisChannels"
+                @bind-Value="ViewModel.DefaultLisChannelId"
+                Disabled="@IsEditingDisabled" />
+    <PhLabel Text="@Loc["MethodDetailsGeneralTab_Technology"]">
+        <PhValueBox Size="TextBoxSize.Small">@ViewModel.Model.Technology.ToLocalizedString("MethodDetailsGeneralTab")</PhValueBox>
+    </PhLabel>
+    <PhCheckBox Label="@Loc["MethodDetailsGeneralTab_IsRUO"]" @bind-Value="ViewModel.Model.IsRuo" DisplayOnly="true" />
+</PhInputColumn>

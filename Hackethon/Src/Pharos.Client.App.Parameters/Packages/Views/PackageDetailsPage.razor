@@ -1,0 +1,46 @@
+@layout ParametersLayout
+@attribute [Route(PageRoute.Parameters.PackageDetails.IdParameter)]
+@attribute [Authorize]
+
+@using Pharos.Client.App.Parameters.Articles
+@using Pharos.Client.App.Parameters.Common.Views
+@using Pharos.Client.App.Parameters.Layout
+@using Pharos.Client.App.Parameters.Packages.ViewModels
+@inherits EntityEditorPageBase<PackageDetailsViewModel, PackageDetails>
+
+
+<SectionContent SectionName="page-header">
+    <Breadcrumb Items="@Breadcrumbs" />
+</SectionContent>
+
+@if (ViewModel.IsLoaded)
+{
+    <PhStack Gap="StackGap.Xxl">
+        <PhDataGrid TableTitle="@Loc["PackageDetailsPage_SelectedProduct"]" StateID="" TGridItem="Package" Items="SelectedPackage" HideTotalCount="true">
+            <Columns>
+                <Column Title="@Loc["PackageDetailsPage_ArticleNumber"]" Property="@(item => item.OrderingNumber)" />
+                <Column Title="@Loc["PackageDetailsPage_FullName"]" Property="@(item => item.PackageFullName)" />
+                <Column Title="@Loc["PackageDetailsPage_Barcode"]" Property="@(item => item.PackageBarcode)" />
+                <Column Title="@Loc["PackageDetailsPage_IntendedMarket"]" Property="@(item => item.IntendedMarket)" />
+            </Columns>
+        </PhDataGrid>
+        <div class="ph-parameters-product__content">
+            <PhDataGrid TableTitle="@Loc["PackageDetailsPage_Contents"]" StateID="articles" TGridItem="PackageItemDetailed" Items="ViewModel.Entity.PackageItems.AsQueryable()" HideTotalCount="false" >
+                <Columns>
+                    <Column Title="@Loc["PackageDetailsPage_Amount"]" Property="@(item => item.ArticleAmount)" Align="ColumnAlignEnum.Left" />
+                    <Column Title="@Loc["PackageDetailsPage_Barcode"]" Property="@(item => item.ArticleNumber)">
+                    </Column>
+                    <Column Title="@Loc["PackageDetailsPage_Type"]" Property="@(item => item.ArticleType)">
+                        @context.ArticleType.ToLocalizedString()
+                    </Column>
+                    <Column Title="@Loc["PackageDetailsPage_ArticleName"]" Property="@(item => item.FullName)" />
+                    <Column Title="@Loc["PackageDetailsPage_Identity"]" Property="@(item => item.Identity)" />
+                    <Column Title="@Loc["PackageDetailsPage_Method"]" Property="@(item => item.MethodName)" />
+                    <Column Title="@Loc["PackageDetailsPage_Quantity"]" Property="@(item => item.Quantity)">
+                        @context.GetQuantityText(Loc)
+                    </Column>
+                </Columns>
+            </PhDataGrid>
+        </div>
+    </PhStack>
+}

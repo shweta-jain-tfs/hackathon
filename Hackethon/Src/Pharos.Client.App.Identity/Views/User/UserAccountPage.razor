@@ -1,0 +1,62 @@
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.FormElements
+
+@attribute [Route(PageRoute.UserAccount)]
+@attribute [Authorize]
+
+<PhPage>
+@if (ViewModel.CurrentUser != null)
+{
+    <PhGrid FillHeight>
+        <PhGridColumn Span="ColumnSpan.Half">
+            <PhStack Gap="StackGap.Lg">
+                <PhPanel Grow>
+                    <PhInputColumn Spacing="InputSpacing.Compact">
+                        <h2 class="t-h3">@Loc["UserAccountPage_AccountDetails"]</h2>
+                        <PhLabel Text="@Loc["UserAccountPage_UserName"]">
+                            <PhValueBox>@ViewModel.CurrentUser.UserName</PhValueBox>
+                        </PhLabel>
+                        <PhLabel Text="@Loc["UserAccountPage_Fullname"]">
+                            <PhValueBox>@(ViewModel.CurrentUser.FullName ?? "—")</PhValueBox>
+                        </PhLabel>
+                        <PhButton size="ButtonSize.Snug" Type="ButtonType.Primary" OnClick="ChangePassword">@Loc["ApplicationUsers_Details_ButtonChangePassword"]</PhButton>
+                        @if (ViewModel.IsPasswordExpirationEnabled)
+                        {
+                            <PhLabel Direction="LabelDirection.Horizontal" Text="@Loc["UserAccountPage_PasswordExpiration"]">
+                                <PhValueBox Size="TextBoxSize.Small">@ViewModel.GetPasswordExpirationDisplay() </PhValueBox>
+                            </PhLabel>
+                        }
+                    </PhInputColumn>
+                </PhPanel>
+            </PhStack>
+        </PhGridColumn>
+
+        <PhGridColumn Span="ColumnSpan.Half">
+            <PhStack Gap="StackGap.Lg">
+                <PhPanel Grow>
+                    <PhInputColumn Spacing="InputSpacing.Compact">
+                        <h2 class="t-h3">@Loc["UserAccountPage_Permissions"]</h2>
+                        <PhLabel Text="@Loc["ApplicationUsers_RoleName"]">
+                            <PhValueBox>@(ViewModel.CurrentUser.Role?.DisplayName ?? "—")</PhValueBox>
+                        </PhLabel>
+                        <PhValueBox>
+                            @foreach (var (permissionKey, translatedName) in ViewModel.Permissions)
+                            {
+                                @translatedName
+                                @if (permissionKey != ViewModel.Permissions.Last().PermissionKey)
+                                {
+                                    <br/>
+                                }
+                            }
+                        </PhValueBox>
+                    </PhInputColumn>
+                </PhPanel>
+            </PhStack>
+        </PhGridColumn>
+    </PhGrid>
+}
+else if (!ViewModel.IsLoading)
+{
+    <p>@Loc["UserAccountPage_NoUserFound"]</p>
+}
+</PhPage>

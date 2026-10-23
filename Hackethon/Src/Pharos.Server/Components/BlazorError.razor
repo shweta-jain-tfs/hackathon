@@ -1,0 +1,29 @@
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.Modal
+
+<div id="blazor-error-ui"> @* #blazor-error-ui and the non-ph classes below are used by blazor to toggle the error *@
+    <div class="backdrop"></div>
+    <div class="modal ph-modal ph-modal--alarm ph-modal--width-xsmall ph-modal--height-xsmall">
+        <div class="ph-modal__header">
+            <div class="ph-modal__title">Error</div>
+            <div class="ph-modal__close">
+                <button class="dismiss">
+                    <PhIcon IconType="IconType.ModalClose" Size="IconSize.Lg" />
+                </button>
+            </div>
+        </div>
+        <div class="ph-modal__divider"></div>
+        <div class="ph-modal__internalcontent">
+            <PhModalContent>
+                <Body>
+                    An unhandled error has occurred.
+                </Body>
+                <Footer>
+                    <button class="reload ph-button ph-button--primary">
+                        Reload
+                    </button>
+                </Footer>
+            </PhModalContent>
+        </div>
+    </div>
+</div>

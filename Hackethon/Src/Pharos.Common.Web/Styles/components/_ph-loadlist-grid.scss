@@ -1,0 +1,81 @@
+@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-loadlist-grid {
+    --ph-datagrid-row-height: #{size.$hit-area-lg};
+    --ph-datagrid-cell-padding: #{spacing.$padding-md};
+
+    width: 100%;
+    border-spacing: 0;
+    @include text.body2;
+    color: colors.$text-secondary;
+
+    tr {
+        min-height: var(--ph-datagrid-row-height); // allow wrapping
+        background: var(--ph-bg-color);
+
+        &:nth-of-type(odd) {
+            background-color: colors.$layer-secondary;
+        }
+    }
+
+    th {
+        background-color: var(--ph-bg-color, colors.$background-primary); // use the background color of the surface the data grid is placed on
+        border-bottom: 1px solid colors.$border-heavy-01;
+
+        &:last-of-type {
+            width: 100%; // fill remaining space
+        }
+    }
+
+    td {
+        padding-inline: var(--ph-datagrid-cell-padding);
+        padding-block: calc((var(--ph-datagrid-row-height) - 1lh) / 2);
+
+        &:last-of-type {
+            padding-inline: 0; // no padding on filler column
+        }
+
+        &:has(> :not(span)) {
+            // The cell has other elements than just text
+            padding-block: 0;
+            > div {
+                min-height: var(--ph-datagrid-row-height);
+
+            }
+        }
+    }
+
+    &__col-title {
+        display: flex;
+        gap: spacing.$gap-xs; // Separate the sort indicator from title text
+        align-items: center;
+        height: 100%;
+        padding-inline: var(--ph-datagrid-cell-padding);
+        font-weight: text.$font-bold;
+        text-align: left;
+        cursor: default;
+
+        &--right {
+            text-align: right;
+            justify-content: flex-end;
+        }
+    }
+
+    &__sort-indicator {
+        color: colors.$icon-link;
+        display: none;
+
+        [aria-sort=ascending] &,
+        [aria-sort=descending] & {
+            display: flex;
+        }
+
+        [aria-sort=descending] & {
+            transform: rotateX(180deg);
+        }
+    }
+
+}

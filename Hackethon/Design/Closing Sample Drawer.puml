@@ -1,0 +1,59 @@
+@startuml ClosingSampleDrawer
+skinparam BoxPadding 20
+
+actor User as user
+
+box "Instrument" #LightGrey
+	participant Pharos.Gui #LightSkyBlue
+	participant gRPC
+end box
+
+box "Pharos-Server" #LightSkyBlue
+	participant Application.Instrument
+	participant Application.Infrastructure
+end box
+
+'Scan one Sample'
+user -> gRPC : Push Unlock Button
+
+'Send lock open'
+gRPC -> Application.Instrument : grpc LockOpen
+Application.Instrument -> Application.Instrument : Send LockOpenCommand
+Application.Instrument -> Application.Instrument : Publish InstrumentStateChangedEvent
+note over Application.Instrument: InstrumentStateChangedEventHandler\nlisten on InstrumentStateChangedEvent.
+Application.Instrument -> Application.Infrastructure : _hub.StateChanged()
+Application.Infrastructure --> Pharos.Gui
+
+'Authorization'
+gRPC -> Application.Instrument : TODO: grpc Authorization
+Application.Instrument -> Application.Instrument : TODO: Send Command
+Application.Instrument -> Application.Instrument : TODO: Publish Event
+note over Application.Instrument: TODO: EventHandler\nlisten on Event.
+Application.Instrument -> Application.Infrastructure : TODO: _hub.StateChanged()
+Application.Infrastructure --> Pharos.Gui
+
+'Drawer unlocking'
+gRPC -> Application.Instrument : TODO: grpc Unlocking
+Application.Instrument -> Application.Instrument : TODO: Send Command
+Application.Instrument -> Application.Instrument : TODO: Publish Event
+note over Application.Instrument: TODO: EventHandler\nlisten on Event.
+Application.Instrument -> Application.Infrastructure : TODO: _hub.StateChanged()
+Application.Infrastructure --> Pharos.Gui
+
+'Drawer unlocked'
+gRPC -> Application.Instrument : TODO: grpc Unlocked
+Application.Instrument -> Application.Instrument : TODO: Send Command
+Application.Instrument -> Application.Instrument : TODO: Publish Event
+note over Application.Instrument: TODO: EventHandler\nlisten on Event.
+Application.Instrument -> Application.Infrastructure : TODO: _hub.StateChanged()
+Application.Infrastructure --> Pharos.Gui
+
+'Drawer opened'
+gRPC -> Application.Instrument : TODO: grpc DrawerOpened
+Application.Instrument -> Application.Instrument : TODO: Send Command
+Application.Instrument -> Application.Instrument : TODO: Publish Event
+note over Application.Instrument: TODO: EventHandler\nlisten on Event.
+Application.Instrument -> Application.Infrastructure : TODO: _hub.StateChanged()
+Application.Infrastructure --> Pharos.Gui
+
+@enduml

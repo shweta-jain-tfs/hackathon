@@ -1,0 +1,99 @@
+trigger: 
+    none
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  targetOs: 'win-x64'
+
+pool:
+  name: Development
+
+stages:
+- stage: BuildPharosInstaller 
+  displayName: PharosInstaller
+  jobs:
+    - job: temp
+      displayName: Build and publish Pharos Installer
+      steps: 
+        - task: NodeTool@0
+          inputs:
+            versionSpec: '20.11.0'
+        - task: DotNetCoreCLI@2
+          displayName: 'dotnet restore'
+          inputs:
+            command: restore
+            projects: '**/*.csproj'
+        - task: Npm@1
+          inputs:
+            command: 'install'
+            workingDir: '$(Build.SourcesDirectory)\Src\Pharos.Common.Web'
+
+        - task: PowerShell@2
+          name: GulpBuild
+          displayName: 'Run Gulp build task for Pharos.Common.Web'
+          inputs:
+            targetType: 'inline'
+            workingDirectory: $(Build.SourcesDirectory)\src\Pharos.Common.Web
+            script: npm run build      
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'restore'
+            projects: '$(Build.SourcesDirectory)\Pharos.sln'
+            feedsToUse: 'config'
+            nugetConfigPath: '$(Build.SourcesDirectory)\nuget.config'
+          displayName: 'Restore NuGet Packages'
+          continueOnError: false
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'build'
+            projects: '$(Build.SourcesDirectory)\Pharos.sln'
+            arguments: '--configuration $(buildConfiguration) --no-restore -p:Version=$(BuildVersion).$(Build.BuildId) -p:CodeAnalysisTreatWarningsAsErrors=false'
+          displayName: 'Build Solution'
+          continueOnError: false
+        - task: DotNetCoreCLI@2
+          displayName: dotnet publish backend
+          name: PublishBackendProject
+          env:
+            ASPNETCORE_RUNNSWAG: false
+          inputs:
+            command: publish
+            projects: '$(Build.SourcesDirectory)\Src\Pharos.Server\Pharos.Server.csproj'
+            publishWebProjects: false
+            arguments: '-c $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/InstallerDrop --self-contained true -p:PublishDocumentationFile=false'
+            zipAfterPublish: False
+      
+        - task: PowerShell@2
+          inputs:
+            targetType: 'inline'
+            script: |
+              cd $(Build.SourcesDirectory)\Installer\PharosInstaller
+              Get-ChildItem
+
+              $xml = [Xml] (Get-Content $(Build.SourcesDirectory)\Installer\PharosInstaller\PharosInstaller.wixproj)
+              echo ($xml.Project.ItemGroup.HarvestDirectory.Include)
+              ($xml.Project.ItemGroup[0].HarvestDirectory.Include) = "$(Build.ArtifactStagingDirectory)\InstallerDrop\Pharos.Server"
+              ($xml.Project.ItemGroup[0].BindPath.Include) = "$(Build.ArtifactStagingDirectory)\InstallerDrop\Pharos.Server"
+
+              cd $(Build.ArtifactStagingDirectory)\InstallerDrop\Pharos.Server
+              Get-ChildItem
+              $xml.Save("$(Build.SourcesDirectory)\Installer\PharosInstaller\PharosInstaller.wixproj");
+              echo $xml.Project.ItemGroup.HarvestDirectory.Include
+
+        - task: NuGetCommand@2
+          inputs:
+            command: 'restore'
+            restoreSolution: '**/*.wixproj'
+
+        - task: VSBuild@1
+          inputs:
+            solution: '$(Build.SourcesDirectory)\Installer\PharosInstaller\PharosInstaller.wixproj'
+            platform: '$(buildPlatform)'
+            configuration: '$(buildConfiguration)'
+            msbuildArgs: '/p:RunWixToolsOutOfProc=true /p:DeployOnBuild=true /p:publishUrl="$(Build.ArtifactStagingDirectory)\temper" /p:WebPublishMethod=Package /p:OutDir="$(Build.ArtifactStagingDirectory)"'
+
+        - task: PublishBuildArtifacts@1
+          inputs:
+            TargetPath: '$(Build.ArtifactStagingDirectory)/en-us'
+            

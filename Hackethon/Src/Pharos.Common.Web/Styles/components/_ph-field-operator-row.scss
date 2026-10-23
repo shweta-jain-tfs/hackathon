@@ -1,0 +1,67 @@
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/colors";
+@use "../abstracts/typography" as text;
+
+.ph-field-operator-row {
+    display: flex;
+    gap: spacing.$gap-gutter;
+    align-items: flex-start;
+
+    &__group {
+        --field-operator-row-group-width: #{size.$input-width-small};
+
+        flex: 0 0 var(--field-operator-row-group-width);
+        min-width: 0;
+
+        &--width-xsmall {
+            --field-operator-row-group-width: #{size.$input-width-xsmall};
+        }
+
+        &--width-small {
+            --field-operator-row-group-width: #{size.$input-width-small};
+        }
+
+        &--width-medium {
+            --field-operator-row-group-width: #{size.$input-width-medium};
+        }
+
+        &--width-large {
+            --field-operator-row-group-width: #{size.$input-width-large};
+        }
+
+        &--width-xlarge {
+            --field-operator-row-group-width: #{size.$input-width-xlarge};
+        }
+
+        &--operator-last {
+            display: flex;
+            gap: spacing.$gap-gutter;
+            align-items: flex-start;
+        }
+    }
+
+    &__field {
+        flex: 1;
+        min-width: 0;
+    }
+
+    &__operator {
+        flex: 0 0 auto;
+        pointer-events: none;
+    }
+
+    &__operator-spacing {
+        @include text.body2;
+        display: inline-flex;
+        align-items: center;
+        min-height: size.$control-height;
+        margin-top: calc(1lh + #{spacing.$gap-xs});
+        color: colors.$text-secondary;
+    }
+
+    &__field-spacing {
+        @include text.body2;
+        margin-top: calc(1lh + #{spacing.$gap-xs});
+    }
+}

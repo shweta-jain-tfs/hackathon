@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Quartz" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pharos.Contracts\Pharos.Contracts.csproj" />
+    <ProjectReference Include="..\Pharos.Server.Application.Modules\Pharos.Server.Application.Modules.csproj" />
+    <ProjectReference Include="..\Pharos.Server.Infrastructure.Abstractions\Pharos.Server.Infrastructure.Abstractions.csproj" />
+    <ProjectReference Include="..\Pharos.Server.Localization\Pharos.Server.Localization.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="$(AssemblyName).Tests" />
+    <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+  </ItemGroup>
+
+</Project>

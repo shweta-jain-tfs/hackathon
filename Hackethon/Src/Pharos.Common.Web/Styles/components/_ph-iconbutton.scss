@@ -1,0 +1,88 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+
+.ph-iconbutton {
+    aspect-ratio: 1 / 1;
+    padding: spacing.$padding-xs;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    @include rounded.rounded;
+    color: colors.$icon-link;
+    vertical-align: middle;
+
+    &:disabled {
+        cursor: default;
+        background-color: transparent;
+        color: colors.$icon-disabled-01;
+    }
+
+    &--standard {
+        &:hover,
+        &:focus-visible {
+            color: colors.$text-link-hover;
+            background-color: transparent;
+        }
+
+        &:active {
+            color: colors.$text-link-pressed;
+            background-color: transparent;
+        }
+
+        &:disabled {
+            color: colors.$text-link-disabled;
+        }
+    }
+
+    &--menu {
+        &:hover,
+        &:focus-visible {
+            background-color: colors.$layer-hover-01;
+        }
+
+        &:active {
+            background-color: colors.$layer-selected-pressed;
+        }
+
+        &:disabled {
+            background-color: transparent;
+        }
+    }
+
+    &--secondary-button {
+        // look and feel of a secondary button
+        min-height: size.$control-height;
+        border: 2px solid transparent;
+        border-color: colors.$button-outline;
+        padding: 0;
+
+        &:hover,
+        &:focus-visible {
+            background-color: colors.$layer-hover-01;
+        }
+
+        &:active {
+            background-color: colors.$layer-selected-01;
+        }
+
+        &:disabled {
+            border-color: colors.$button-disabled;
+            background-color: transparent;
+            color: colors.$text-link-disabled;
+        }
+    }
+
+    &--blank {
+        color: inherit;
+    }
+
+    &--selected {
+        &,
+        &:hover,
+        &:focus-visible {
+            background-color: colors.$layer-selected-01;
+        }
+    }
+}

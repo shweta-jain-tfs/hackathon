@@ -1,0 +1,131 @@
+parameters:
+- name: buildSourcesDirectory
+- name: buildConfiguration
+- name: sqlPassword
+- name: tempDirectory
+- name: agentName
+- name: enableExtendedTestLogging
+  type: boolean
+
+
+steps:
+- task: PowerShell@2
+  displayName: 'Run xUnit Tests'
+  inputs:
+    targetType: 'inline'
+    script: |
+      $resultsDirectory = '${{ parameters.buildSourcesDirectory }}\TestResults'
+      New-Item -ItemType Directory -Force -Path $resultsDirectory | Out-Null
+
+      dotnet test '${{ parameters.buildSourcesDirectory }}\Pharos.sln' `
+        --configuration '${{ parameters.buildConfiguration }}' `
+        --no-restore `
+        --no-build `
+        --results-directory $resultsDirectory `
+        --coverage `
+        --coverage-output-format cobertura `
+        --coverage-settings '${{ parameters.buildSourcesDirectory }}\codecoverage.runsettings' `
+        -- `
+        --report-xunit-trx
+
+      exit $LASTEXITCODE
+  env:
+    ConnectionStrings__Default: 'Server=VC01-MICTFS7P;Database=Pharos_Test_Integration_${{ parameters.agentName }};User Id=sa;Password=${{ parameters.sqlPassword }} ;TrustServerCertificate=True;'
+    ConnectionStrings__Audit: 'Server=VC01-MICTFS7P;Database=Pharos_Test_AuditTrail_${{ parameters.agentName }};User Id=sa;Password=${{ parameters.sqlPassword }} ;TrustServerCertificate=True;'
+    ConnectionStrings__Parameters: 'Server=VC01-MICTFS7P;Database=Pharos_Test_Parameters_${{ parameters.agentName }};User Id=sa;Password=${{ parameters.sqlPassword }};TrustServerCertificate=True;'
+    ConnectionStrings__Sample: 'Server=VC01-MICTFS7P;Database=Pharos_Test_Sample_${{ parameters.agentName }};User Id=sa;Password=${{ parameters.sqlPassword }};TrustServerCertificate=True;'
+    ConnectionStrings__Reagent: 'Server=VC01-MICTFS7P;Database=Pharos_Test_Reagent_${{ parameters.agentName }};User Id=sa;Password=${{ parameters.sqlPassword }};TrustServerCertificate=True;'
+    ConnectionStrings__Request: 'Server=VC01-MICTFS7P;Database=Pharos_Test_Request_${{ parameters.agentName }};User Id=sa;Password=${{ parameters.sqlPassword }};TrustServerCertificate=True;'
+    ConnectionStrings__Lis: 'Server=VC01-MICTFS7P;Database=Pharos_Test_Lis_${{ parameters.agentName }};User Id=sa;Password=${{ parameters.sqlPassword }};TrustServerCertificate=True;'
+    DataProtection__EnableDataProtection: "false"
+    ${{ if eq(parameters.enableExtendedTestLogging, true) }}:
+      DOTNET_CLI_TEST_TRACEFILE: '${{ parameters.tempDirectory }}\dotnet-test-trace.log'
+
+- task: PublishTestResults@2
+  displayName: 'Publish xUnit Test Results'
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '**/*.trx'
+    searchFolder: '${{ parameters.buildSourcesDirectory }}\TestResults'
+    mergeTestResults: false
+    failTaskOnFailedTests: false
+
+- script: 'dotnet tool update --global dotnet-reportgenerator-globaltool'
+  displayName: 'Install/Update ReportGenerator Tool'
+  condition: succeededOrFailed()
+
+- script: 'reportgenerator -reports:${{ parameters.buildSourcesDirectory }}/TestResults/*.cobertura.xml -targetdir:${{ parameters.buildSourcesDirectory }}/TestResults -reporttypes:"Cobertura"'
+  displayName: 'Generate Code Coverage Report'
+  condition: succeededOrFailed()
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish Code Coverage'
+  condition: succeededOrFailed()
+  inputs:
+    codeCoverageTool: 'Cobertura'
+    summaryFileLocation: '${{ parameters.buildSourcesDirectory }}/TestResults/Cobertura.xml'
+
+# .NET Framework projects need to be explicitly built before tests can be run on them. Wixproj is excluded as it doesn't have automated tests.
+- task: DotNetCoreCLI@2
+  displayName: 'Installer: Build (exclude wixproj)'
+  inputs:
+    command: 'build'
+    projects: |
+      **/Installer/**/*.csproj
+    arguments: '--configuration $(buildConfiguration) -p:Version=$(Build.BuildId)'
+
+- task: VisualStudioTestPlatformInstaller@1
+  displayName: 'Install VS Test Platform'
+  inputs:
+    versionSelector: 'latestStable'
+
+- task: VSTest@2
+  displayName: 'Installer: Run xUnit Tests'
+  inputs:
+    vsTestVersion: 'toolsInstaller'
+    testAssemblyVer2: |
+      Installer\**\bin\${{ parameters.buildConfiguration }}\**\*.Tests.dll
+    searchFolder: '${{ parameters.buildSourcesDirectory }}'
+    runInParallel: true
+    diagnosticsEnabled: ${{ parameters.enableExtendedTestLogging }}
+
+- ${{ if eq(parameters.enableExtendedTestLogging, true) }}:
+  - task: PowerShell@2
+    displayName: 'Stage Test Diagnostics'
+    condition: succeededOrFailed()
+    inputs:
+      targetType: 'inline'
+      script: |
+        $diagFolder = "${{ parameters.tempDirectory }}\test-diagnostics"
+        New-Item -ItemType Directory -Force -Path $diagFolder | Out-Null
+
+        $dotnetDiagPath = "${{ parameters.tempDirectory }}\dotnet-test-trace.log"
+        if (Test-Path $dotnetDiagPath) {
+          Copy-Item -Path $dotnetDiagPath -Destination $diagFolder -Force
+        }
+
+        Get-ChildItem -Path "${{ parameters.tempDirectory }}" -File -Include "dotnet-test-diag*.log","*.dmp","*.diag" -ErrorAction SilentlyContinue |
+          ForEach-Object {
+            Copy-Item -Path $_.FullName -Destination $diagFolder -Force
+          }
+
+        $testResultsPath = "${{ parameters.buildSourcesDirectory }}\TestResults"
+        if (Test-Path $testResultsPath) {
+          Get-ChildItem -Path $testResultsPath -Recurse -File -Include "Sequence*.xml","*.dmp","*.diag" -ErrorAction SilentlyContinue |
+            ForEach-Object {
+              Copy-Item -Path $_.FullName -Destination $diagFolder -Force
+            }
+        }
+
+        $hasDiagnostics = (Get-ChildItem -Path $diagFolder -File -ErrorAction SilentlyContinue | Measure-Object).Count -gt 0
+        Write-Host "##vso[task.setvariable variable=HasTestDiagnostics]$hasDiagnostics"
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Test Diagnostics Artifact'
+    condition: and(succeededOrFailed(), eq(variables['HasTestDiagnostics'], 'True'))
+    inputs:
+      PathtoPublish: '${{ parameters.tempDirectory }}\test-diagnostics'
+      ArtifactName: 'test-diagnostics'
+      publishLocation: 'Container'
+

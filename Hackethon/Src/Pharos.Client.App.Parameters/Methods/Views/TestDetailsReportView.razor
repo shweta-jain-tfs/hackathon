@@ -1,0 +1,104 @@
+﻿<PhStack Gap="StackGap.Md">
+    <div class="ph-test-report">
+        <PhCheckBox Label="@Loc["MethodDetailsTestReportTab_ReportConcentration"]"
+                    LabelHelpText="@GetManufacturerDefaultText(ReportViewModel.DefaultReportConcentration)"
+                    @bind-Value="ReportViewModel.ReportConcentration"
+                    Disabled="@IsEditingDisabled" />
+
+        <PhLabel Text="@Loc["MethodDetailsTestReportTab_ConcentrationUnit"]" Direction="LabelDirection.Horizontal"
+                 Disabled="@(IsEditingDisabled || !ReportViewModel.CanEditConcentrationUnit)">
+            <PhDropdown TValue="int" @bind-Value="ReportViewModel.MethodConcentrationUnitId"
+                        HelpText="@GetManufacturerDefaultText(ReportViewModel.DefaultConcentrationUnit)"
+                        Options="@ReportViewModel.ConcentrationUnitDropDownValues"
+                        Disabled="@(IsEditingDisabled || !ReportViewModel.CanEditConcentrationUnit)"
+                        Size="DropdownSize.SmallInputWidth" />
+        </PhLabel>
+    </div>
+
+    <div class="ph-test-report-divider"></div>
+
+    <div class="ph-test-report">
+        <PhCheckBox Label="@Loc["MethodDetailsTestReportTab_ReportCutOff"]"
+                    LabelHelpText="@GetManufacturerDefaultText(ReportViewModel.DefaultReportCutOff)"
+                    @bind-Value="ReportViewModel.ReportCutOff"
+                    Disabled="@IsEditingDisabled" />
+
+        <PhLabel Text="@Loc["MethodDetailsTestReportTab_CutOffConcentration"]" Direction="LabelDirection.Horizontal"
+                 Disabled="@(IsEditingDisabled || !ReportViewModel.CanEditCutOffConcentration)"
+                 HelpText="@GetManufacturerDefaultText(ReportViewModel.DefaultCutOffConcentration)"
+                 ValidationFor="() => ReportViewModel.CutOffConcentration">
+            <PhNumberField TValue="double" @bind-Value="ReportViewModel.CutOffConcentration"
+                           MaxNumberOfDigits="5"
+                           Disabled="@(IsEditingDisabled || !ReportViewModel.CanEditCutOffConcentration)"
+                           Size="TextBoxSize.Small" />
+        </PhLabel>
+    </div>
+
+    <div class="ph-test-report-divider"></div>
+
+    <div class="ph-test-report">
+        <PhCheckBox Label="@Loc["MethodDetailsTestReportTab_ReportClass"]"
+                    @bind-Value="ReportViewModel.ReportClass"
+                    OnCheckChanged="OnReportClassChanged"
+                    Disabled="@IsEditingDisabled" />
+
+        <PhLabel Text="@Loc["MethodDetailsTestReportTab_ClassTable"]" Direction="LabelDirection.Horizontal"
+                 Disabled="@(IsEditingDisabled || !ReportViewModel.CanEditClassTable)">
+            <PhDropdown TValue="int" @bind-Value="ReportViewModel.ReportClassId"
+                        Error="@IsReportClassIdInvalid()"
+                        HelpText="@GetManufacturerDefaultText(ReportViewModel.DefaultReportClassId)"
+                        Options="@GetReportClassIdDropDownValues()"
+                        Disabled="@(IsEditingDisabled || !ReportViewModel.CanEditClassTable)"
+                        Size="DropdownSize.SmallInputWidth" />
+        </PhLabel>
+    </div>
+
+    <div class="ph-test-report-divider"></div>
+
+    <PhDropdown TValue="QuotientReportMode" Label="@Loc["MethodDetailsTestReportTab_ReportQuotient"]"
+                HelpText="@GetManufacturerDefaultText(ReportViewModel.DefaultReportQuotient)"
+                @bind-Value="ReportViewModel.ReportQuotient"
+                Options="@ReportViewModel.ReportQuotientDropDownValues"
+                Disabled="@IsEditingDisabled"
+                Size="DropdownSize.SmallInputWidth" />
+
+    <div class="ph-test-report-divider"></div>
+
+    <PhLabel Text="@Loc["MethodDetailsTestReportTab_TextOutsideRangeHeader"]" Size="LabelSize.Body1" />
+
+    <PhStack Gap="StackGap.Xs">
+        <PhLabel Text="@Loc["MethodDetailsTestReportTab_UndilutedSample"]" Style="LabelStyle.Bold" />
+
+        <div class="ph-test-report__sample-field-row">
+            <PhTextBox Label="@Loc["MethodDetailsTestReportTab_BelowMin"]"
+                       @bind-Value="ReportViewModel.TextQuantitativeBelow"
+                       MaxLength="7"
+                       Disabled="@IsEditingDisabled"
+                       Size="TextBoxSize.Medium" />
+
+            <PhTextBox Label="@Loc["MethodDetailsTestReportTab_AboveMax"]"
+                       @bind-Value="ReportViewModel.TextQuantitativeAbove"
+                       MaxLength="7"
+                       Disabled="@IsEditingDisabled"
+                       Size="TextBoxSize.Medium" />
+        </div>
+    </PhStack>
+
+    <PhStack Gap="StackGap.Xs">
+        <PhLabel Text="@Loc["MethodDetailsTestReportTab_DilutedSample"]" Style="LabelStyle.Bold" />
+
+        <div class="ph-test-report__sample-field-row">
+            <PhTextBox Label="@Loc["MethodDetailsTestReportTab_BelowMin"]"
+                       @bind-Value="ReportViewModel.TextQuantitativeBelowForDilutedTest"
+                       MaxLength="7"
+                       Disabled="@IsEditingDisabled"
+                       Size="TextBoxSize.Medium" />
+
+            <PhTextBox Label="@Loc["MethodDetailsTestReportTab_AboveMax"]"
+                       @bind-Value="ReportViewModel.TextQuantitativeAboveForDilutedTest"
+                       MaxLength="7"
+                       Disabled="@IsEditingDisabled"
+                       Size="TextBoxSize.Medium" />
+        </div>
+    </PhStack>
+</PhStack>

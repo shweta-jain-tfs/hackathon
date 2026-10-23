@@ -1,0 +1,66 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.Layout
+@attribute [Stories("Components/DateTime")]
+
+<Stories TComponent="PhDateTime">
+    <Story Name="DateTime - in future - today">
+        <Template>
+            <PhLabel Text="@LabelValue">
+                <PhDateTime @attributes="context.Args" DateToShow="DateTimeOffset.Now.AddHours(2)" TextFallback="Fallback when date is null"></PhDateTime>
+            </PhLabel>
+        </Template>
+    </Story>
+
+    <Story Name="DateTime - in future - tomorrow">
+        <Template>
+            <PhLabel Text="@LabelValue">
+                <PhDateTime @attributes="context.Args" DateToShow="DateTimeOffset.Now.AddDays(1)" TextFallback="Fallback when date is null"></PhDateTime>
+            </PhLabel>
+        </Template>
+    </Story>
+
+    <Story Name="DateTime - in past - today">
+        <Template>
+            <PhLabel Text="@LabelValue">
+                <PhDateTime @attributes="context.Args" DateToShow="DateTimeOffset.Now.AddHours(-2)" TextFallback="Fallback when date is null"></PhDateTime>
+            </PhLabel>
+        </Template>
+    </Story>
+
+    <Story Name="DateTime - in past - yesterday">
+        <Template>
+            <PhLabel Text="@LabelValue">
+                <PhDateTime @attributes="context.Args" DateToShow="DateTimeOffset.Now.AddDays(-1)" TextFallback="Fallback when date is null"></PhDateTime>
+            </PhLabel>
+        </Template>
+    </Story>
+
+    <Story Name="DateTime is null, write fallback text">
+        <Template>
+            <PhLabel Text="@LabelValue">
+                <PhDateTime @attributes="context.Args" DateToShow="null" TextFallback="Fallback when date is null"></PhDateTime>
+            </PhLabel>
+        </Template>
+    </Story>
+
+    <Story Name="Regional formats">
+        <Template>
+            <PhStack>
+                @foreach (var culture in new string[] { "en-US", "ja-JP", "sv-SE", "es-ES" })
+                {
+                    <PhLabel Text="@culture">
+                        <PhDateTime @attributes="context.Args" DateToShow="DateTimeOffset.Now.AddHours(2)" Culture="@culture" />
+                    </PhLabel>
+                    <PhLabel Text="@culture">
+                        <PhDateTime @attributes="context.Args" DateToShow="DateTimeOffset.Now.AddDays(2)" Culture="@culture" />
+                    </PhLabel>
+                }
+            </PhStack>
+        </Template>
+    </Story>
+</Stories>
+
+@code {
+    private string LabelValue { get; set; } = "PhDateTime needs a parent. Another example in DataGrid.";
+}

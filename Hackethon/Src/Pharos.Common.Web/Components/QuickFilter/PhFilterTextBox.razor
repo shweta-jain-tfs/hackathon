@@ -1,0 +1,22 @@
+﻿@inherits Base.ComponentWithClientScriptBase
+<div class="@CssClasses">
+    <input @ref="_inputElementRef" 
+           @attributes="AdditionalAttributes"
+           class="ph-filter-textbox__input"
+           disabled="@Disabled"
+           maxlength="@MaxLength"
+           placeholder="@Placeholder"
+           spellcheck="false"
+           type="text"
+           uiname="@UiName"
+           value="@_currentValue"
+           @onkeydown="@HandleKeyDown"
+           @onkeydown:preventDefault="_preventEscapeKey"
+           @oninput="OnInputChange" />
+    <div class="ph-filter-textbox__clear-btn">
+        <PhIconButton IconType="IconType.ModalClose"
+                      IconSize="IconSize.Md"
+                      Disabled="@Disabled"
+                      @onclick="ResetInput" />
+    </div>
+</div>

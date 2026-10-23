@@ -1,0 +1,44 @@
+@layout ParametersLayout
+@using Pharos.Client.App.Parameters.Layout
+@using Pharos.Client.Common.App.Validation
+@using Pharos.Common.Web.Components.NavigationLock
+@attribute [Route(PageRoute.Parameters.TestDetails.IdParameter)]
+@attribute [Authorize]
+
+@inherits DetailsPageBase<Pharos.Client.App.Parameters.Methods.ViewModels.MethodTestDetailsViewModel, MethodTestDetails>
+
+@if (DetailViewModel is not null)
+{
+    <PhNavigationLock Modified="@DetailViewModel.IsModified" OnSave="() => SaveChanges(true)" IsValid="@IsValid()"/>
+
+    <SectionContent SectionName="page-header">
+        <Breadcrumb Items="@Breadcrumbs"/>
+        <div class="flex gap-md">
+            <PhButton Disabled="@(!DetailViewModel.IsModified)" OnClick="DiscardChanges">@Loc["TestDeatilsPage_Button_DiscardChanges"]</PhButton>
+            <PhButton Type="ButtonType.Primary" Disabled="@(!DetailViewModel.IsModified || !@IsValid())" OnClick="() => SaveChanges(false)">@Loc["TestDeatilsPage_Button_Save"]</PhButton>
+        </div>
+    </SectionContent>
+
+    <PhValidationContext @ref="_validation" OnValidationStateChanged="OnValidationContextStateChanged">
+        <PhTabControl>
+            <PhTabPage TabId="@((int)TabItems.General)" Text="@Loc["TestDetailsPage_General"]" HasValidationError="@TabHasError(TabItems.General.ToString())">
+                <PhValidationSection Model="@DetailViewModel.TestDetailsGeneralViewModel" SectionName="@TabItems.General.ToString()">
+                    <TestDetailsGeneralView ViewModel="@DetailViewModel.TestDetailsGeneralViewModel"/>
+                </PhValidationSection>
+            </PhTabPage>
+            <PhTabPage TabId="@((int)TabItems.Report)" Text="@Loc["TestDetailsPage_Report"]" HasValidationError="@TabHasError(TabItems.Report.ToString())">
+                <PhValidationSection Model="@DetailViewModel.TestDetailsReportViewModel" SectionName="@TabItems.Report.ToString()">
+                    <TestDetailsReportView ReportViewModel="@DetailViewModel.TestDetailsReportViewModel"/>
+                </PhValidationSection>
+            </PhTabPage>
+            <PhTabPage TabId="@((int)TabItems.LaboratoryNames)" Text="@Loc["TestDetailsPage_LaboratoryTestNames"]">
+                <LaboratoryTestNameDetailsView @key="DetailViewModel" ViewModel="@DetailViewModel"/>
+            </PhTabPage>
+            <PhTabPage TabId="@((int)TabItems.Advanced)" Text="@Loc["TestDetailsPage_Advanced"]" HasValidationError="@TabHasError(TabItems.Advanced.ToString())">
+                <PhValidationSection Model="@DetailViewModel.TestDetailsAdvancedViewModel" SectionName="@TabItems.Advanced.ToString()">
+                    <TestDetailsAdvancedView ViewModel="@DetailViewModel.TestDetailsAdvancedViewModel" />
+                </PhValidationSection>
+            </PhTabPage>
+        </PhTabControl>
+    </PhValidationContext>
+}

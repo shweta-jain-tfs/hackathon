@@ -1,0 +1,65 @@
+﻿@using Pharos.Client.App.Reagents.ViewModels.Inventory
+@using Pharos.Client.Common.App.Helpers
+@using Pharos.Common.Web.Components.Reagent
+@using Pharos.Common.Web.Components.DataGrid
+@using Pharos.Common.Web.Components.DataGrid.Columns
+@using Pharos.Common.Web.Components.DockedButtonRow
+@using Pharos.Common.Web.Components.DropdownButton
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Common.Web.Models.DataGrid
+
+
+<PhDockedButtonRow>
+    <ChildContent>
+        <PhStack>
+            <span class="t-body2"><span class="text-hint">@Loc["InventoryPage_FreePositions"]</span> <span class="text-secondary">@FreePositionsText</span></span>
+            <PhDataGrid TableTitle="@Loc["InventoryPage_BottlesTab_Title"]" StateID="bottles" TGridItem="BottleListItem"
+                ItemsProvider="ViewModel.ProvideItems" RowType="RowTypeEnum.LinesBetweenRows"
+                DefaultSortColumn="@nameof(BottleListItem.Id)"
+                DefaultSortDirection="SortDirection.Ascending">
+                <Columns>
+                    <Column Property="@(x => x.Id)" Visible="false" />
+                    <Column Title="@Loc["InventoryPage_BottlesTab_Name"]" Property="@(x => x.Name)" QuickFilter="true" FilterTitle="@Loc["InventoryPage_BottlesTab_SearchBottles"]" Sortable="true">
+                        <ReagentShapeView Colors="@context.Colors" IsCarrierTypeReagent="true"
+                            Shape="@ReagentHelper.GetShape(context.Shape.GetValueOrDefault())" 
+                            Test="@context.Name"
+                            Gap="ReagentShapeGap.Sm" />
+                    </Column>
+                    <Column Title="@Loc["InventoryPage_BottlesTab_Quantity"]" Property="@(x => x.Quantity)"
+                        Align="ColumnAlignEnum.Right" Sortable="true">
+                        @BottlesListViewModel.GetQuantity(context.Quantity)
+                    </Column>
+                    <Column Title="@Loc["InventoryPage_BottlesTab_Lot"]" Property="@(x => x.Lot)" Sortable="true" />
+                    <Column Title="@Loc["InventoryPage_BottlesTab_Status"]" Property="@(x => x.Status)" Sortable="true">
+                        @{
+                            var status = BottlesListViewModel.HasStatusError(context.Status) ? StatusType.Warning :
+                            StatusType.None;
+                            var text = BottlesListViewModel.GetStatusText(context.Status);
+                        }
+                        <PhStatus Status="@status" Size="@StatusSize.Md" Text="@text" />
+                    </Column>
+                    <Column Title="@Loc["InventoryPage_BottlesTab_ExpiryDate"]" Property="@(x => x.ExpiryDate)"
+                        Format="yyyy-MM-dd" Sortable="true" />
+                    <Column Title="@Loc["InventoryPage_BottlesTab_Instrument"]" Property="@(x => x.Instrument)"
+                        Sortable="true" QuickFilter="true"
+                        QuickFilterDefault="@InstrumentFilterModel.DefaultFilterValueDisplayName"
+                        MultiSelectFilterItems="@InstrumentFilterModel.FilterDataSourceDisplayName" />
+                    <Column Title="@Loc["InventoryPage_BottlesTab_Status"]" Property="@(x => x.Status)" Visible="false"
+                        QuickFilter="true" MultiSelectFilterItems="StatusNameDict()" />
+                    <Column Title="@Loc["InventoryPage_BottlesTab_Position"]" Property="@(x => x.Position)"
+                        Align="ColumnAlignEnum.Left" Sortable="true">
+                        @BottlesListViewModel.GetPositionText(context.Type, context.Position)
+                    </Column>
+                </Columns>
+            </PhDataGrid>
+        </PhStack>
+    </ChildContent>
+    <Buttons>
+        <PhAuthorize Permission="@Permissions.ManageReagents">
+            <PhDropdownButton Text="@(Loc["InventoryPage_MoreButtonText"])"
+                DropdownButtonType="DropdownButtonType.Secondary">
+                <PhDropdownButtonItem Text="@Loc["InventoryPage_ExportText"]" />
+            </PhDropdownButton>
+        </PhAuthorize>
+    </Buttons>
+</PhDockedButtonRow>

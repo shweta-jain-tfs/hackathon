@@ -1,0 +1,24 @@
+﻿@inherits ComponentWithClientScriptBase
+@using Pharos.Common.Web.Components.TrailingEdge
+
+@if (IsActive)
+{
+    <button @ref="_openToggleRef" class="ph-submenu-toggle" hidden="@IsOpen" @onclick="ToggleOpen">
+        <span class="ph-submenu-toggle__label">@Title</span>
+        <PhIcon IconType="IconType.CaretRight" Size="IconSize.Xs" />
+    </button>
+
+    <div class="ph-submenu-panel" hidden="@(!IsOpen)">
+        <button @ref="_closeToggleRef" class="ph-submenu-toggle ph-submenu-toggle--open" @onclick="ToggleOpen">
+            <PhIcon IconType="IconType.CaretLeft" Size="IconSize.Xs" />
+            <span class="ph-submenu-toggle__label">@Title</span>
+        </button>
+        <div class="ph-submenu-panel__content">
+            <PhTrailingEdge Mode="TrailingEdgeDisplayMode.VerticalOnly" AllowClipping>
+                <ul class="ph-menu">
+                    @ChildContent
+                </ul>
+            </PhTrailingEdge>
+        </div>
+    </div>
+}

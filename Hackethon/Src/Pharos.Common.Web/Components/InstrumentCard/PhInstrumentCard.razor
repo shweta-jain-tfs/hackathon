@@ -1,0 +1,75 @@
+@using Pharos.Common.Web.Components.Health
+@using Pharos.Common.Web.Components.RunInformation
+<div class="@CardCssClass" @onclick="CardClicked">
+    <div class="ph-instrument-card__content">
+        <div class="ph-instrument-card__header">
+            <div class="ph-instrument-card__header-main">
+                <PhHealth Status="@HealthStatus" Size="HealthSize.Sm" />
+                <div class="ph-instrument-card__title">@Title</div>
+            </div>
+            @if (InstrumentActionsUserIsAuthorized)
+            {
+                <div class="ph-instrument-card__dropdown" @onclick:stopPropagation="true">
+                    <PhDropdownButton DropdownButtonType="DropdownButtonType.Icon" IconType="IconType.More">
+                        <PhDropdownButtonItem Text="@SelectTechnologiesActionLabel" OnClick="@(OnClickedSelectTechnologies)"></PhDropdownButtonItem>
+                        <PhDropdownButtonItem Text="@RenameActionLabel" OnClick="@(OnClickedRename)"></PhDropdownButtonItem>
+                        @if (Enabled)
+                        {
+                            <PhDropdownButtonItem Text="@DisableActionLabel" OnClick="@(OnClickedDisable)"></PhDropdownButtonItem>
+                        }
+                        else
+                        {
+                            <PhDropdownButtonItem Text="@EnableActionLabel" OnClick="@(OnClickedEnable)"></PhDropdownButtonItem>
+                        }
+                        <PhDropdownButtonItem Text="@DeleteActionLabel" OnClick="@(OnClickedDelete)" Disabled="@IsConnected"></PhDropdownButtonItem>
+                    </PhDropdownButton>
+                </div>
+            }
+        </div>
+        <div class="ph-instrument-card__details">
+            <div class="ph-instrument-card__left-side">
+                <div class="ph-instrument-card__left-top">
+                    <div class="ph-instrument-card__run-information">
+                        <PhRunInformation Row1="@RunInformationRow1"
+                                          Row2="@RunInformationRow2" />
+                    </div>
+                    <span class="ph-instrument-card__technology-label">@TechnologiesLabel</span>
+                </div>
+                @if (AssaySchedulerShowInfo)
+                {
+                    <div class="ph-instrument-card__scheduling" @onclick:stopPropagation="true">
+                        <span class="ph-instrument-card__scheduling-label">@AssaySchedulerTextBeforeIcon</span>
+                        <div class="ph-instrument-card__scheduling-value">
+                            <span class="@SchedulingIconCssClasses">
+                                @switch (AssaySchedulerIcon)
+                                {
+                                    case AssaySchedulerIconType.Sun:
+                                        <PhIcon IconType="IconType.Sun" Size="IconSize.Xs" />
+                                        break;
+                                    case AssaySchedulerIconType.Moon:
+                                        <PhIcon IconType="IconType.Moon" Size="IconSize.Xs" />
+                                        break;
+                                    case AssaySchedulerIconType.None:
+                                    default:
+                                        break;
+                                }
+                            </span>
+                            <span class="ph-instrument-card__scheduling-text">@AssaySchedulerTextAfterIcon</span><div
+                                class="ph-instrument-card__scheduling-switch">
+                                <PhSwitchButton Value="AssaySchedulerIsActive"
+                                                OnCheckChanged="OnAssaySchedulerSwitchChanged"
+                                                Disabled="@(!AssaySchedulerUserIsAuthorized)" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="ph-instrument-card__technology-list">
+                @foreach (var technology in Technologies)
+                {
+                    <div class="ph-instrument-card__technology-name">@technology</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

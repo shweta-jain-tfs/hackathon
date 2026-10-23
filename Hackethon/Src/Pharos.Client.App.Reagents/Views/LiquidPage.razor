@@ -1,0 +1,24 @@
+@attribute [Route(PageRoute.Liquid)]
+@attribute [Authorize]
+
+@using Pharos.Client.App.Reagents.Views.LiquidDrawer
+@using Pharos.Client.App.Reagents.ViewModels.LiquidDrawer
+@using Pharos.Common.Web.Components.TrailingEdge
+
+<PhPage>
+    <ChildContent>
+        @if (!ViewModel.IsBusy)
+        {
+            <div class="liquid-drawer-page" @onclick="ViewModel.ClearLegendSelection">
+                <div class="liquid-drawer-page__drawer">
+                    <LiquidDrawerView ViewModel="@ViewModel.LiquidDrawerViewModel" />
+                </div>
+                <div class="liquid-drawer-page__legend" @onclick:stopPropagation="true">
+                    <PhTrailingEdge Mode="TrailingEdgeDisplayMode.VerticalOnly">
+                        <LiquidLegendView ViewModel="@ViewModel.LegendViewModel" />
+                    </PhTrailingEdge>
+                </div>
+            </div>
+        }
+    </ChildContent>
+</PhPage>

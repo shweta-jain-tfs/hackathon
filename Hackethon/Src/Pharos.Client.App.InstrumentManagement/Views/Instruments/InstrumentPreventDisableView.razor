@@ -1,0 +1,16 @@
+@using Pharos.Client.Common.Localization
+@using Pharos.Common.Web.Components.FormElements.Enums
+<PhModalContent>
+    <Body>
+
+        <div>@Loc["InstrumentsPage_DisableDialogPreventText"]</div>
+
+    </Body>
+
+    <Footer>
+
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok()))">@Loc["InstrumentsPage_DisableDialogPreventButtonPrimary"]</PhButton>
+
+    </Footer>
+</PhModalContent>
+

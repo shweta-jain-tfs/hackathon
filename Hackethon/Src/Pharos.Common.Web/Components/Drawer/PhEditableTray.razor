@@ -1,0 +1,35 @@
+﻿<div class="ph-tray-detail__tray-content">
+    <div class="ph-tray-detail__tray-row-label-sample-tube">
+        <div class="ph-tray-detail__tray-content-coordinate-row-labels">
+            @for (int row = 1; row <= 5; row++)
+            {
+                <div class="@RowLabelCssClass(row)">@((char)('A' + row - 1))</div>
+            }
+        </div>
+        <div class="ph-tray-detail__tray-row-sample-tubes">
+            @if (SampleTubes?.Any() ?? false)
+            {
+                @foreach (var tube in SampleTubes)
+                {
+                    <button @onclick="() => OnSampleTubeClick(tube)">
+                        <div class="@SampleTubeCssClass(tube.Position)">
+                            <PhSampleTube Size="SampleTubeSize.Medium" 
+                                          Status="@tube.Status" 
+                                          Error="tube.TubeError" 
+                                          IsHighPriority="tube.IsHighPriority"
+                                          IsUnloadRequested="tube.IsUnloadRequested"
+                                          IsManualInput="@(tube.PositionSource == TubePositionSource.ManualInput)"
+                                          IsConfirmManualInput="@(tube.PositionSource == TubePositionSource.ConfirmManualInput)" />
+                        </div>
+                    </button>
+                }
+            }
+        </div>
+    </div>
+    <div class="ph-tray-detail__tray-content-coordinate-col-labels">
+        @for (int column = 1; column <= 10; column++)
+        {
+            <div class="@ColumnLabelClass(column)">@column</div>
+        }
+    </div>
+</div>

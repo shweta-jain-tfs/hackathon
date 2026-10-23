@@ -1,0 +1,18 @@
+<PhDataGrid TableTitle="@Loc["PhadiaQualityControlListView_Title"]"
+            StateID="phadiaQualitycontrols"
+            TGridItem="PhadiaQualityControl"
+            ItemsProvider="ViewModel.ProvideGridItems"
+            RowType="RowTypeEnum.LinesBetweenRows"
+            SelectionType="SelectionTypeEnum.Off">
+    <Columns>
+        <Column Title="@Loc["PhadiaQualityControlListView_Name"]" Property="@(x => x.Name)" Grouped="true">
+            <PhHrefLink Href="@($"{PageRoute.Parameters.PhadiaQualityControlDetails.Default}/{context!.Id}")">@context!.Name</PhHrefLink>
+        </Column>
+        <Column Title="@Loc["PhadiaQualityControlListView_Method"]" Property="@(x => x.MethodName)" Grouped="true" QuickFilter="true" MultiSelectFilterItems="_methodNameDict" />
+        <Column Title="@Loc["PhadiaQualityControlListView_Test"]" Property="@(x => x.TestName)" />
+        
+        <Column Title="@Loc["PhadiaQualityControlListView_Enabled"]" Property="@(x => x.Enabled)" QuickFilter="true" QuickFilterDefault="true" FilterTitle="@Loc["PhadiaQualityControlListView_EnabledOnly"]">
+            <PhCheckBox Value="context.Enabled" ValueChanged="@(async isChecked => await ViewModel.UpdateEnabled(context.TestId, isChecked))" />
+        </Column>
+    </Columns>
+</PhDataGrid>

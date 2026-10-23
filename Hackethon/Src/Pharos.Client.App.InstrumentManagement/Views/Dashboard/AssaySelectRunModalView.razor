@@ -1,0 +1,39 @@
+﻿@using Pharos.Client.Common.Models
+@using Pharos.Common.Web.Components.DetailsList
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.FormElements.RadioButton
+
+<PhModalContent>
+    <Body>
+        <div class="grid gap-xxl">
+            <PhDetailsList RowGap="DetailsListGap.Md" AlignedValues="false">
+                <PhDetailsListItem Label="@Loc["DashboardPage_AssaySelectRunModal_Method"]">@ViewModel.MethodName</PhDetailsListItem>
+                <PhDetailsListItem Label="@Loc["DashboardPage_AssaySelectRunModal_Calibration_Validity"]">@GetCalibrationValidity()</PhDetailsListItem>
+            </PhDetailsList>
+            <PhGrid>
+                <PhGridColumn Span="ColumnSpan.Half">
+                    <div class="grid gap-xs">
+                        <p>@Loc["DashboardPage_AssaySelectRunModal_WhatToRun_Header"]</p>
+                        <PhRadioGroup @bind-SelectedValue="@_selectedWhatToRun">
+                            <PhRadioButton Value="@WhatToRunOption.CurveControls" Disabled="@ViewModel.Calibrator" Label=@Loc["DashboardPage_AssaySelectRunModal_CurveControls"]></PhRadioButton>
+                            <PhRadioButton Value="@WhatToRunOption.NewCalibrationCurve" Label=@Loc["DashboardPage_AssaySelectRunModal_NewCalibrationCurve"]></PhRadioButton>
+                        </PhRadioGroup>
+                    </div>
+                </PhGridColumn>
+                <PhGridColumn Span="ColumnSpan.Half">
+                    <div class="grid gap-xs">
+                        <p class="t-body1">@Loc["DashboardPage_AssaySelectRunModal_WhenToRun_Header"]</p>
+                        <PhRadioGroup @bind-SelectedValue="@ViewModel.WhenToRun">
+                            <PhRadioButton Value="InstrumentMethodWhenToRun.Directly" Label=@Loc["DashboardPage_AssaySelectRunModal_Directly"]></PhRadioButton>
+                            <PhRadioButton Value="InstrumentMethodWhenToRun.AtFirstTest" Label=@Loc["DashboardPage_AssaySelectRunModal_AtFirstTest"]></PhRadioButton>
+                        </PhRadioGroup>
+                    </div>
+                </PhGridColumn>
+            </PhGrid>
+        </div>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["DashboardPage_AssaySelectRunModal_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok(ViewModel)))">@Loc["DashboardPage_AssaySelectRunModal_Ok"]</PhButton>
+    </Footer>
+</PhModalContent>

@@ -1,0 +1,9 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-validation-error-list {
+    margin-top: spacing.$padding-xs;
+    color: colors.$status-validation;
+    @include text.helper-text;
+}

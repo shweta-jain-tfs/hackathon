@@ -1,0 +1,140 @@
+@using Pharos.Common.Web.Contexts
+@inherits LayoutComponentBase
+
+<AutoLogoutMonitor>
+@if (Device == DeviceType.Instrument)
+{
+    <AuthorizeView>
+        <Authorized>
+            <ErrorBoundary @ref="_errorBoundaryModal">
+                <ChildContent>
+                    <PhModal />
+                </ChildContent>
+                <ErrorContent Context="exception">
+                    <ModalBoundaryErrorView Exception="exception"
+                                            OnClose="CloseModalError"
+                                            OnReload="ReloadModalError" />
+                </ErrorContent>
+            </ErrorBoundary>
+            <div class="@InstrumentAppLayoutCssClasses">
+                <header>
+                    <ErrorBoundary @ref="_errorBoundaryStatusBar">
+                        <ChildContent>
+                            <Pharos.Client.Common.App.Views.InstrumentStatusBarView />
+                        </ChildContent>
+                        <ErrorContent Context="exception">
+                            <div class="ph-modal-anchor">
+                                <ErrorContentView OnReload="Reload" OnClose="Close" Exception="exception" />
+                            </div>
+                        </ErrorContent>
+                    </ErrorBoundary>
+                </header>
+                <nav>
+                    <ErrorBoundary @ref="_errorBoundaryNavBar">
+                        <ChildContent>
+                            <Pharos.Client.Common.App.Layout.Instrument.NavMenu />
+                        </ChildContent>
+                        <ErrorContent Context="exception">
+                            <div class="ph-modal-anchor">
+                                <ErrorContentView OnReload="Reload" OnClose="Close" Exception="exception" />
+                            </div>
+                        </ErrorContent>
+                    </ErrorBoundary>
+                </nav>
+                @if (_suppressErrors)
+                {
+                    <main class="ph-automatic-loader ph-modal-anchor">
+                        <PhAutomaticLoader InitialText="@Loc["MainLayout_Loading"]" AlternateText="@Loc["MainLayout_StillLoading"]" />
+                        @Body
+                    </main>
+                }
+                else
+                {
+                    <ErrorBoundary @ref="_errorBoundaryBody">
+                        <ChildContent>
+                            <main class="ph-automatic-loader ph-modal-anchor">
+                                <PhAutomaticLoader InitialText="@Loc["MainLayout_Loading"]" AlternateText="@Loc["MainLayout_StillLoading"]" />
+                                @Body
+                            </main>
+                        </ChildContent>
+                        <ErrorContent Context="exception">
+                            <div class="ph-modal-anchor">
+                                <ErrorContentView OnReload="Reload" OnClose="Close" Exception="exception" />
+                            </div>
+                        </ErrorContent>
+                    </ErrorBoundary>
+                }
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <RedirectTo Uri="@PageRoute.LockScreen" />
+        </NotAuthorized>
+    </AuthorizeView>
+}
+else
+{
+    <AuthorizeView>
+        <Authorized>
+            <ErrorBoundary @ref="_errorBoundaryModal">
+                <ChildContent>
+                    <PhModal />
+                </ChildContent>
+                <ErrorContent Context="exception">
+                    <ModalBoundaryErrorView Exception="exception"
+                                            OnClose="CloseModalError"
+                                            OnReload="ReloadModalError" />
+                </ErrorContent>
+            </ErrorBoundary>
+            <div class="ph-app-layout">
+                <header>
+                    <ErrorBoundary @ref="_errorBoundaryStatusBar">
+                        <ChildContent>
+                            <Pharos.Client.Common.App.Views.InstrumentStatusBarView />
+                        </ChildContent>
+                        <ErrorContent Context="exception">
+                            <h1 class="t-h1 m-md">This is the future desktop version of the app.</h1>
+                        </ErrorContent>
+                    </ErrorBoundary>
+                </header>
+                <nav>
+                    <ErrorBoundary @ref="_errorBoundaryNavBar">
+                        <ChildContent>
+                            <Pharos.Client.Common.App.Layout.Desktop.NavMenu />
+                        </ChildContent>
+                        <ErrorContent Context="exception">
+                            <div class="ph-modal-anchor">
+                                <ErrorContentView OnReload="Reload" OnClose="Close" Exception="exception" />
+                            </div>
+                        </ErrorContent>
+                    </ErrorBoundary>
+                </nav>
+
+                @if (_suppressErrors)
+                {
+                    <main class="ph-automatic-loader ph-modal-anchor">
+                        <PhAutomaticLoader InitialText="@Loc["MainLayout_Loading"]" AlternateText="@Loc["MainLayout_StillLoading"]" />
+                        @Body
+                    </main>
+                }
+                else
+                {
+                    <ErrorBoundary @ref="_errorBoundaryBody">
+                        <ChildContent>
+                            <main class="ph-automatic-loader ph-modal-anchor">
+                                <PhAutomaticLoader InitialText="@Loc["MainLayout_Loading"]" AlternateText="@Loc["MainLayout_StillLoading"]" />
+                                @Body
+                            </main>
+                        </ChildContent>
+                        <ErrorContent Context="exception">
+                            <ErrorContentView OnReload="Reload" OnClose="Close" Exception="exception" />
+                        </ErrorContent>
+                    </ErrorBoundary>
+                }
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <RedirectToLogin />
+        </NotAuthorized>
+    </AuthorizeView>
+}
+</AutoLogoutMonitor>

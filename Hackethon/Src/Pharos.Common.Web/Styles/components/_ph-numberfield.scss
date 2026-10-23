@@ -1,0 +1,101 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-numberfield {
+    $root: &;
+    position: relative;
+    max-width: 100%;
+    width: 80px;
+    min-width: 80px;
+
+    input {
+        min-height: size.$control-height;
+        padding: 4px spacing.$padding-sm;
+        width: 100%;
+        flex-basis: 100%;
+        background-color: colors.$layer-secondary;
+        border: 2px solid colors.$border-active;
+        color: colors.$text-secondary;
+        @include text.body1;
+        @include rounded.rounded;
+        appearance: textfield;
+
+        &::placeholder {
+            color: colors.$text-hint;
+        }
+
+        &::selection {
+            background-color: colors.$layer-accent;
+        }
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        &:hover {
+            background-color: colors.$layer-hover-01;
+        }
+
+        &:focus-visible {
+            outline: none;
+            background-color: colors.$layer-selected-01;
+        }
+
+        &:disabled {
+            border-color: colors.$border-disabled;
+            background-color: colors.$layer-secondary;
+            color: colors.$text-disabled;
+            cursor: default;
+
+            &::placeholder {
+                color: currentColor;
+            }
+        }
+    }
+
+    &__error-icon {
+        position: absolute;
+        right: spacing.$padding-xs;
+        top: 50%;
+        transform: translateY(-50%);
+        display: none;
+        color: colors.$status-validation;
+    }
+
+    &--error {
+        input {
+            border-color: colors.$status-validation;
+        }
+
+        &:not(:focus-within) {
+            input {
+                padding-right: calc(size.$icon-md + spacing.$padding-xs);
+            }
+    
+            #{$root}__error-icon {
+                display: flex;
+            }
+        }
+    }    
+
+    &--size-xsmall {
+        width: size.$input-width-xsmall;
+    }
+
+    &--size-small {
+        width: size.$input-width-small;
+    }
+
+    &--size-medium {
+        width: size.$input-width-medium;
+    }
+
+    &--size-large {
+        width: size.$input-width-large;
+    }
+}

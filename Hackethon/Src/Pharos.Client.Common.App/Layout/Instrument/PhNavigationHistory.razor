@@ -1,0 +1,10 @@
+﻿<div class="ph-navigation-history">
+    <PhNavigationButton ButtonType="NavigationButtonType.Left"
+                        OnClick="NavigateBack"
+                        Disabled="!HistoryManager.IsEnabledBack()">
+    </PhNavigationButton>
+    <PhNavigationButton ButtonType="NavigationButtonType.Right"
+                        OnClick="NavigateForward"
+                        Disabled="!HistoryManager.IsEnabledForward()">
+    </PhNavigationButton>
+</div>

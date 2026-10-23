@@ -1,0 +1,336 @@
+<h2>System Components</h2>
+
+<p>The following table outlines the key components of our medical documentation system:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Part</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Authentication Module</td>
+            <td>Handles user login and security</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Patient Database</td>
+            <td>A comprehensive repository that stores all patient information including demographics, medical history, treatment records, and insurance details. This central database ensures data consistency and provides quick access to patient information across all system modules.</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Scheduling Engine</td>
+            <td>Manages appointments and resources including:
+                <ul>
+                    <li>Doctor availability tracking</li>
+                    <li>Room and equipment scheduling</li>
+                    <li>Patient appointment booking</li>
+                    <li>Automated reminder notifications</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Billing System</td>
+            <td>Processes insurance claims and payments</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Laboratory Interface</td>
+            <td>Integrates with external lab systems to automatically import test results and clinical data. The interface supports multiple data formats including HL7 and FHIR standards for seamless interoperability.</td>
+        </tr>
+        <tr>
+            <td>6</td>
+            <td>Reporting Module</td>
+            <td>Generates various reports such as:
+                <ul>
+                    <li>Patient summary reports</li>
+                    <li>Financial analytics</li>
+                    <li>Compliance audits</li>
+                    <li>Performance metrics</li>
+                    <li>Custom report templates</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>7</td>
+            <td>Mobile App Gateway</td>
+            <td>API interface for mobile applications</td>
+        </tr>
+        <tr>
+            <td>8</td>
+            <td>Backup & Recovery</td>
+            <td>Automated data protection system that ensures business continuity through regular backups, disaster recovery procedures, and data integrity verification processes.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Integration Points</h3>
+
+<p>Each component in the table above integrates with one or more other components to provide a seamless user experience. The <strong>Patient Database</strong> serves as the central hub, while the <em>Authentication Module</em> ensures secure access across all components.</p>
+
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Integration Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>A</td>
+            <td>Real-time Sync</td>
+            <td>Immediate data updates across modules</td>
+        </tr>
+        <tr>
+            <td>B</td>
+            <td>Batch Processing</td>
+            <td>Scheduled data transfers for non-critical operations including:
+                <ul>
+                    <li>Daily report generation</li>
+                    <li>Insurance claim submissions</li>
+                    <li>System maintenance tasks</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>C</td>
+            <td>API Gateway</td>
+            <td>Standardized interface for external system connections. This gateway manages authentication, rate limiting, and data transformation to ensure secure and efficient communication with third-party healthcare systems.</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Security Protocols</h3>
+
+<p>The following table shows the essential security measures implemented across the system:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Protocol</th>
+            <th>Implementation Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Multi-Factor Authentication</td>
+            <td><strong>Active</strong> - Required for all administrative accounts</td>
+        </tr>
+        <tr>
+            <td>Data Encryption at Rest</td>
+            <td><em>Implemented</em> - AES-256 encryption for all patient data</td>
+        </tr>
+        <tr>
+            <td>Role-Based Access Control</td>
+            <td>Active - Granular permissions based on job function and includes:
+                <ul>
+                    <li>Doctor access levels</li>
+                    <li>Nurse access levels</li>
+                    <li>Administrative permissions</li>
+                    <li>Read-only access for auditors</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Audit Logging</td>
+            <td>Comprehensive tracking of all user actions and system events for compliance and security monitoring purposes</td>
+        </tr>
+        <tr>
+            <td>Session Management</td>
+            <td><strong>Enforced</strong> - Automatic timeout and secure session handling</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Performance Metrics</h3>
+
+<p>System performance is monitored across multiple dimensions to ensure optimal operation:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Metric</th>
+            <th>Current Value</th>
+            <th>Target</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Response Time</td>
+            <td>1.2 seconds</td>
+            <td>&lt; 2.0 seconds</td>
+            <td>&#10003; Good</td>
+        </tr>
+        <tr>
+            <td>System Uptime</td>
+            <td>99.8%</td>
+            <td>&gt; 99.5%</td>
+            <td>&#10003; Excellent</td>
+        </tr>
+        <tr>
+            <td>Concurrent Users</td>
+            <td>450</td>
+            <td>Up to 500</td>
+            <td>&#10003; Within Limits</td>
+        </tr>
+        <tr>
+            <td>Database Performance</td>
+            <td>850ms avg query time</td>
+            <td>&lt; 1000ms</td>
+            <td>&#10003; Good</td>
+        </tr>
+        <tr>
+            <td>Backup Success Rate</td>
+            <td>100%</td>
+            <td>100%</td>
+            <td>&#10003; Perfect</td>
+        </tr>
+        <tr>
+            <td>Security Incidents</td>
+            <td>0 this month</td>
+            <td>0 target</td>
+            <td>&#10003; Secure</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Cartridge Specifications</h3>
+
+<p>The following table shows the cartridge types and their capacity specifications for reagent management with cells that have rowspan:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Cartridge type</th>
+            <th>Max. fill/cell</th>
+            <th>Product</th>
+            <th>Accessible amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="3">1-cell</td>
+            <td rowspan="3">79 mL</td>
+            <td>Development Solution</td>
+            <td>75 mL (~1400/800 doses IC/EliA)</td>
+        </tr>
+        <tr>
+            <td>ImmunoCAP Sample Diluent 2</td>
+            <td>50 mL</td>
+        </tr>
+        <tr>
+            <td>EliA Sample Diluent 1</td>
+            <td>75 mL</td>
+        </tr>
+        <tr>
+            <td rowspan="5">3-cell</td>
+            <td rowspan="5">22 mL</td>
+            <td>Development Solution</td>
+            <td>3 x 20.5 mL (3 x ~400/200 doses IC/EliA)</td>
+        </tr>
+        <tr>
+            <td>ImmunoCAP Conjugate Large</td>
+            <td>3 x 400 doses</td>
+        </tr>
+        <tr>
+            <td>EliA Conjugate Large</td>
+            <td>3 x 220 doses</td>
+        </tr>
+        <tr>
+            <td>ImmunoCAP Sample Diluent 1</td>
+            <td>3 x 20.5 mL</td>
+        </tr>
+        <tr>
+            <td>EliA Sample Diluent 2</td>
+            <td>3 x 20.5 mL (3 x ~440 doses)</td>
+        </tr>
+        <tr>
+            <td rowspan="2">6-cell</td>
+            <td rowspan="2">8 mL</td>
+            <td>ImmunoCAP Conjugate Small</td>
+            <td>6 x 100 (sIgE, tIgE) or 6 x 50 (sIgG, sIgG4, ECP, Tryptase) doses</td>
+        </tr>
+        <tr>
+            <td>EliA Conjugate Small</td>
+            <td>6 x 50 doses</td>
+        </tr>
+        <tr>
+            <td>A row</td>
+            <td>after an even</td>
+            <td>number of</td>
+            <td>grouped rows</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Table with set column widths</h3>
+
+<p>This table has no special white-space settings. It uses default table layout and the column widths as specified.</p>
+
+<table>
+    <colgroup>
+        <col style="width: 25%" />
+        <col style="width: 25%" />
+        <col style="width: 25%" />
+        <col style="width: 25%" />
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Metric</th>
+            <th>Current Value</th>
+            <th>Target</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>25%</td>
+            <td>25%</td>
+            <td>25%</td>
+            <td>25%</td>
+        </tr>
+        <tr>
+            <td>Response Time</td>
+            <td>1.2 seconds</td>
+            <td>&lt; 2.0 seconds</td>
+            <td>&#10003; Good</td>
+        </tr>
+        <tr>
+            <td>System Uptime</td>
+            <td>99.8%</td>
+            <td>&gt; 99.5%</td>
+            <td>&#10003; Excellent</td>
+        </tr>
+        <tr>
+            <td>Concurrent Users</td>
+            <td>450</td>
+            <td>Up to 500</td>
+            <td>&#10003; Within Limits</td>
+        </tr>
+        <tr>
+            <td>Database Performance</td>
+            <td>850ms avg query time</td>
+            <td>&lt; 1000ms</td>
+            <td>&#10003; Good</td>
+        </tr>
+        <tr>
+            <td>Backup Success Rate</td>
+            <td>100%</td>
+            <td>100%</td>
+            <td>&#10003; Perfect</td>
+        </tr>
+        <tr>
+            <td>Security Incidents</td>
+            <td>0 this month</td>
+            <td>0 target</td>
+            <td>&#10003; Secure</td>
+        </tr>
+    </tbody>
+</table>

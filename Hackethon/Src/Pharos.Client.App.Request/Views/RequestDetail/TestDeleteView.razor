@@ -1,0 +1,22 @@
+﻿
+<PhModalContent>
+    <Body>
+
+        <p class="text-center">@Loc["TestListView_DeleteDialogBody"]</p>
+
+        <PhDataGrid StateID="" TGridItem="TestOrderViewModel" Items="SelectedRequestTests?.OrderBy(x => x.TestSortOrder).AsQueryable()">
+            <Columns>
+                <Column Title="Test name" Property="@(item => item!.TestName)" />
+                <Column Title="Method" Property="@(item => item!.MethodName)" />
+                <Column Title="Status" Property="@(item => item!.StatusText)" />
+                <Column Title="Full name" Property="@(item => item!.FullTestName)" />
+                <Column Title="Instrument" Property="@(item => item!.InstrumentName)" />
+            </Columns>
+        </PhDataGrid>
+
+    </Body>
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => Close(ModalResult.Cancel()))">@Loc["TestListView_DeleteDialogButtonSecondary"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => Close(ModalResult.Ok()))">@_primaryButtonText</PhButton>
+    </Footer>
+</PhModalContent>

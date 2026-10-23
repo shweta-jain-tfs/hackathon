@@ -1,0 +1,21 @@
+﻿@using Pharos.Common.Web.Components.ChartCard
+
+@if (ViewModel.ChartHolders is { Count: > 0 })
+{
+    @foreach (var cc in ViewModel.ChartHolders)
+    {
+        if (cc.CurveControlTestResults.Any(x => x.Technology != AssayTechnology.ViewAllergy))
+        {
+            <PhChartCard Narrow="@Narrow" Status="@cc.Status" Title="@cc.CurveControlName" Href="@NavigateToCurveControlDetails()">
+                <CurveControlThumbnailChartView Miniature="true" Interactive="false"
+                                                OuterParameters="@cc.OuterParameters" ChartComponents="@cc.ChartComponents"/>
+                @if (cc.IsAccepted)
+                {
+                    <div style="display: flex; justify-content: center;">
+                        <span class="t-body2">@Loc["CalibratorPage_CurveAccepted"]</span>
+                    </div>
+                }
+            </PhChartCard>
+        }
+    }
+}

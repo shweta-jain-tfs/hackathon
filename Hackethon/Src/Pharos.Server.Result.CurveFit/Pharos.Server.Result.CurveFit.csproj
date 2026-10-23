@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="Pharos.Server.Result.Tests" />
+	</ItemGroup>
+
+</Project>

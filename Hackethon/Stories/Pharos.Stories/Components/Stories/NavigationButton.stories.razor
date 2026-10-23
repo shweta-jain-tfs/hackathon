@@ -1,0 +1,25 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Icons
+@attribute [Stories("Components/NavigationButton")]
+
+<Stories TComponent="PhNavigationButton">
+    <Story Name="Left">
+        <Template>
+            <PhNavigationButton ButtonType="NavigationButtonType.Left" Disabled="false" />
+            <PhNavigationButton ButtonType="NavigationButtonType.Left" Disabled="true" />
+        </Template>
+    </Story>
+
+    <Story Name="Right">
+        <Template>
+            <PhNavigationButton ButtonType="NavigationButtonType.Right" Disabled="false" />
+            <PhNavigationButton ButtonType="NavigationButtonType.Right" Disabled="true" />
+        </Template>
+    </Story>
+
+</Stories>
+
+@code
+{
+}

@@ -1,0 +1,213 @@
+﻿<div class="@CssClassItems" style="width:@(ChartWidth)px; height:@(ChartHeight)px">
+    <svg viewBox="@_viewboxLeft.ToInvariantString() 
+            @_viewboxTop.ToInvariantString() 
+            @_viewboxWidth.ToInvariantString() 
+            @_viewboxHeight.ToInvariantString()" 
+        preserveAspectRatio="xMidYMid meet">
+
+        @* Compensate for SVG Y axis pointing downwards *@
+        <g transform="scale(1,-1)">
+            @foreach (var item in Content)
+            {
+                switch (item)
+                {
+                    case HorizontalAxis a:
+                        RenderHorizontalAxis(a);
+                        break;
+
+                    case VerticalAxis a:
+                        RenderVerticalAxis(a);
+                        break;
+
+                    case Points p:
+                        RenderPoints(p);
+                        break;
+
+                    case Curve c:
+                        RenderCurve(c);
+                        break;
+
+                    case HorizontalLine l:
+                        RenderHorizontalLine(l);
+                        break;
+
+                    case VerticalLine l:
+                        RenderVerticalLine(l);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        </g>
+
+        <defs>
+            <marker id="arrow" viewBox="0 -5 10 10" refX="5" refY="0" markerWidth="4" markerHeight="4" orient="auto">
+                <path d="M0,-5L10,0L0,5" class="arrowHead"></path>
+            </marker>
+
+            @{
+                void RenderHorizontalAxis(HorizontalAxis axis)
+                {
+                    // Axis label
+                    <text>
+                        <text class="ph-chartbase-logarithmic__axis-label--horizontal" 
+                            transform="scale(1,-1)"
+                              x="@((_chartInnerWidth/2).ToInvariantString())"
+                              y="55">
+                            @axis.Label
+                        </text>
+                    </text>
+                }
+
+                void RenderVerticalAxis(VerticalAxis axis)
+                {
+                    // Axis label
+                    <text>
+                        <text class="ph-chartbase-logarithmic__axis-label--vertical"
+                            transform="scale(1,-1)" 
+                            x="-63"
+                            y="-@((_chartInnerHeight + 20).ToInvariantString())">
+                            @axis.Label
+                        </text>
+                    </text>
+                }
+                
+                void RenderPoints(Points points)
+                {
+                    // store ready-to-draw points for prioritized rendering
+                    var drawablePoints = new List<(string className, PointState state, double x, double y, bool selected, Point p)>();
+
+                    foreach (var p in points.PointList.Where(P => P.X >= DataRangeXMin && P.X <= DataRangeXMax))
+                    {
+                        var x = CalculateX(p.X);
+                        var y = CalculateY(p.Y);
+
+                        var className = "ph-chartbase-logarithmic__point";
+                        PointState pointState = PointState.normal;
+
+                        if (p.Status == PointStatus.normal)
+                        {
+                            pointState = PointState.normal;
+                        }
+                        else if (p.Status == PointStatus.warning)
+                        {
+                            pointState = PointState.warning;
+                        }
+                        else
+                        {
+                            pointState = PointState.alert;
+                        }
+
+                        drawablePoints.Add((className, pointState, x, y, p.Selected, p));
+                    }
+
+                    // Prioritize drawing order depending on state
+                    foreach (var d in drawablePoints.Where(d => d.state == PointState.normal || d.state == PointState.fast))
+                    {
+                        <PhChartPoint ClassName="@d.className" PointState="@d.state" X="@d.x" Y="@d.y" Small="@Miniature" Selected="@d.selected" Active="true" Logarithmic="true" Point="@d.p" />
+                    }
+
+                    foreach (var d in drawablePoints.Where(d => d.state == PointState.warning))
+                    {
+                        <PhChartPoint ClassName="@d.className" PointState="@d.state" X="@d.x" Y="@d.y" Small="@Miniature" Selected="@d.selected" Active="true" Logarithmic="true" Point="@d.p" />
+                    }
+
+                    foreach (var d in drawablePoints.Where(d => d.state == PointState.alert || d.state == PointState.above || d.state == PointState.below))
+                    {
+                        <PhChartPoint ClassName="@d.className" PointState="@d.state" X="@d.x" Y="@d.y" Small="@Miniature" Selected="@d.selected" Active="true" Logarithmic="true" Point="@d.p" />
+                    }
+                }
+
+                void RenderCurve(Curve curve)
+                {
+                    var dSequence = "";
+                    foreach (var p in curve.PointList.Where(P => P.X >= DataRangeXMin && P.X <= DataRangeXMax))
+                    {
+                        var x = CalculateX(p.X);
+                        var y = CalculateY(p.Y);
+                        dSequence += "L" + x.ToInvariantString() + " " + y.ToInvariantString() + " ";
+
+                    }
+                    dSequence = 'M' + dSequence.Substring(1);
+
+                    var className = "ph-chartbase-logarithmic__curve";
+                    if (curve.Selected)
+                    {
+                        className += "--selected";
+                    }
+                    else if (curve.Active)
+                    {
+                        className += "--active";
+                    }
+                    <path class="@className" d="@dSequence" />
+                }
+
+                void RenderHorizontalLine(HorizontalLine line)
+                {
+                    var y = CalculateY(line.Value).ToInvariantString();
+
+                    var x1 = _horizontalLineX1.ToInvariantString();
+                    var x1Label = _horizontalLineX1Label.ToInvariantString();
+                    var x2 = _horizontalLineX2.ToInvariantString();
+
+                    var className = "ph-chartbase-logarithmic__line--horizontal" + (line.Dashed ? "--dashed" : "");
+
+                    <line class="@className"
+                        x1="@x1" 
+                        y1="@y"
+                        x2="@x2"
+                        y2="@y"/>
+
+                    if (line.Label)
+                    {
+                        var valueText = (line.Value < 1 && line.Value > -1 && line.Value != 0) ? 
+                            line.Value.ToString("F3")
+                            : line.Value.ToString();
+
+                        <text>
+                            <text class="ph-chartbase-logarithmic__line-label--horizontal"
+                                transform="scale(1,-1)" 
+                                x="@x1Label" 
+                                y="-@y">
+                                @valueText
+                            </text>
+                        </text>
+                    }
+                }
+
+                void RenderVerticalLine(VerticalLine line)
+                {
+                    var x = CalculateX(line.Value).ToInvariantString();
+                    
+                    var y1 = _verticalLineY1.ToInvariantString();
+                    var y2 = _verticalLineY2.ToInvariantString();
+
+                    var className = "ph-chartbase-logarithmic__line--vertical" + (line.Dashed ? "--dashed" : "");
+
+                    <line class="@className"
+                        x1="@x" 
+                        y1="@y1" 
+                        x2="@x"
+                        y2="@y2"/>
+
+                    if (line.Label)
+                    {
+                        var valueText = line.Value < 10 ? line.Value.ToString("F2")
+                        : line.Value < 100 ? line.Value.ToString("F1")
+                        : line.Value.ToString();
+
+                        <text>
+                            <text class="ph-chartbase-logarithmic__line-label--vertical"
+                                transform="scale(1,-1)" 
+                                x="@x" 
+                                y="25">
+                                @valueText
+                            </text>
+                        </text>
+                    }
+                }
+            }
+        </defs>
+    </svg>
+</div>

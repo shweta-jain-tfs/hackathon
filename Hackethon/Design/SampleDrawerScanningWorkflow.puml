@@ -1,0 +1,69 @@
+@startuml SampleDrawerUnlockWorkflow 
+title "Sample Drawer Unlock-Open Workflow (From UI)"
+skinparam sequenceMessageAlign center
+
+
+
+actor "operator" as u
+box "ISW" #Orange
+  participant ISW.Infrastructure.Communication as iic #lightgray
+end box 
+
+box "Pharos.Server.Instrument" #lightblue
+    participant Application.Commands as iac #lightgray
+end box
+
+box "Pharos.Common" #lightgreen
+    participant Pharos.Server.Application.Messages as psam #lightgray
+end box
+
+box "Pharos.Sample" #lightblue
+    participant Web.Controller as pwc #lightgray
+	participant Application.Commands as piac #lightgray 
+    participant Application.Events as psae #lightgray
+    participant Application.Service  as pas #lightgray
+end box
+
+participant WebClient as w #gray
+
+
+
+u -> iic : ClosedLocked Drawer
+iic ->  iac : SendSensorInformationCommandHandler()
+iac -> iac : UpdateDrawerScanStatus()
+iac -> psam: DrawerScanStatusChanged(closedLockedDrawers, true)
+psam -> psae : DrawerScanStatusChangedEventHandler()
+Note over psae: uses IInstrumentHub instrumentHub, \n ICurrentInstrumentHub currentInstrumentHub, \n IDrawerService drawerService
+psae -> psae: Handle()
+alt notification.ClosedDrawerType == Sample1
+psae -> pas: get SampleDrawerService.DrawerScanStatus
+alt notification.DrawerScanStatus != DrawerScanStatus.Unspecified && scanStatus is Changed
+psae -> pas: SampleDrawerService.AddOrUpdateDrawersScanStatus(true)
+Note over pas: SampleDrawerService implements Common.IDrawerService
+psae -> w: Left - currentInstrumentHub & instrumentHub notification
+end
+else notification.ClosedDrawerType == Sample2
+psae -> pas: get SampleDrawerService.DrawerScanStatus
+alt notification.DrawerScanStatus != DrawerScanStatus.Unspecified && scanStatus is Changed
+psae -> pas: SampleDrawerService.AddOrUpdateDrawersScanStatus(true)
+Note over pas: SampleDrawerService implements Common.IDrawerService
+psae -> w: Right - currentInstrumentHub & instrumentHub notification
+end
+end 
+
+iic -> iac: GetSampleDrawerContentRequest()
+iac -> psam: calls GetSampleDrawerContentCommand()
+psam -> psae : GetSampleDrawerContentCommandHandler()
+psam -> psae: DrawerScanningStatusChangedEvent(DrawerType, false)
+alt request.Message.Drawer == Drawer1
+
+psae -> psae : DrawerScanningStatusChangedEventHandler()
+psae -> pas: IDrawerHelper.Drawer.AddOrUpdateDrawersScanningStatus(false)
+psae -> w: Left - currentInstrumentHub & instrumentHub notification
+else request.Message.Drawer == Drawer2
+psae -> psae : DrawerScanningStatusChangedEventHandler()
+psae -> pas: IDrawerHelper.Drawer.AddOrUpdateDrawersScanningStatus(false) 
+psae -> w: Right - currentInstrumentHub & instrumentHub notification
+end 
+
+@enduml

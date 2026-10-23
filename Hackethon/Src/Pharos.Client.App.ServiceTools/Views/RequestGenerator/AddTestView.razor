@@ -1,0 +1,49 @@
+@using Pharos.Client.App.ServiceTools.Models
+@using Pharos.Client.App.ServiceTools.Services
+@using Pharos.Client.App.ServiceTools.ViewModels.RequestGenerator
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Models.DataGrid
+@attribute [Authorize]
+
+<PhModalContent SelectedText="@Loc["RequestGenerator_AddTest_Selected"]">
+    <Body>
+        <PhDataGrid TableTitle="@Loc["RequestGenerator_Tests"]"
+                    TGridItem="MethodTest"
+                    StateID=""
+                    ItemsProvider="ViewModel.ProvideGridItems"
+                    SelectionType="SelectionTypeEnum.MultiSelect"
+                    RowType="RowTypeEnum.LinesBetweenRows"
+                    OnSelectedItemsChanged="SelectedTestsChanged"
+                    DefaultSortColumn="MethodName"
+                    DefaultSortDirection="SortDirection.Ascending"
+                    ItemStyleOptions="@(new() {
+                        Style = ItemStyleFlags.Checked | ItemStyleFlags.Disabled,
+                        Match = MatchesExistingRequestGeneratorTest,
+                        Items = CurrentTests
+                    })">
+            <Columns>
+                <Column Title="@Loc["RequestGenerator_Method"]"
+                        Property="@(item => item.MethodName)"
+                        QuickFilter="true"
+                        Sortable="true"
+                        MultiSelectFilterItems="_methodFilters" />
+                <Column Title="@Loc["RequestGenerator_Test"]"
+                        Property="@(item => item.TestName)"
+                        QuickFilter="true" />
+                <Column Title="@Loc["TestEditView_TestFullName"]"
+                        Property="@(item => item.FullTestName)"
+                        QuickFilter="true" />
+            </Columns>
+        </PhDataGrid>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModalAsync(ModalResult.Cancel()))">
+            @Loc["RequestGenerator_AddTest_Cancel"]
+        </PhButton>
+        <PhButton Type="ButtonType.Primary"
+                  Disabled="@(!(_selectedTests?.Count > 0))"
+                  OnClick="@(() => CloseModalAsync(ModalResult.Ok(_selectedTests)))">
+            @Loc["RequestGenerator_AddTest_Add"]
+        </PhButton>
+    </Footer>
+</PhModalContent>

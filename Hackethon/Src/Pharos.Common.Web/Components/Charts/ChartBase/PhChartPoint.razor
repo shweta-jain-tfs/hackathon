@@ -1,0 +1,177 @@
+﻿@using System.Globalization
+
+@{
+    // Precompute drawing metrics
+    var metrics = GetMetrics(PointState, Small, Active, Logarithmic, X, Y);
+
+    var transformPoint = string.Format(CultureInfo.InvariantCulture, "translate({0}, {1}), scale({2}, {3})", metrics.PointTx, metrics.PointTy, metrics.ScaleX, metrics.ScaleY);
+    var transformCircle = string.Format(CultureInfo.InvariantCulture, "translate({0}, {1})", metrics.SelectionOffsetX, metrics.SelectionOffsetY);
+
+    var classFinal = BuildClassName(ClassName, PointState, Active);
+
+    var viewBox = "0 0 32 32";
+
+    switch (PointState)
+    {
+        case PointState.fast:
+            <circle class=@classFinal cx="@X.ToInvariantString()" cy="@Y.ToInvariantString()" r="@metrics.Size" @onclick="@(() => OnClickPoint())" />
+            break;
+
+        case PointState.normal:
+            <circle class=@classFinal cx="@X.ToInvariantString()" cy="@Y.ToInvariantString()" r="@metrics.Size" stroke-width="@metrics.Stroke" @onclick="@(() => OnClickPoint())" />
+            break;
+
+        case PointState.alert:
+            // Triangle shape
+            <g transform="@transformPoint">
+                <svg class=@classFinal xmlns="http://www.w3.org/2000/svg" width="@metrics.Size" height="@metrics.Size" viewBox=@viewBox fill="none" stroke-width="@metrics.Stroke" @onclick="@(() => OnClickPoint())">
+                    <path d="M16.9395 3.16663L29.4297 26.4508L28.4688 28.1666H3.53125L2.56934 26.4508L15.0605 3.16663H16.9395Z" />
+                </svg>
+            </g>
+
+            if (!Small && Active)
+            {
+                // Draw an exclamation mark on the triangle
+                <g transform="@transformPoint">
+                    <svg class=@(classFinal + "__character") xmlns="http://www.w3.org/2000/svg" width="@metrics.Size" height="@metrics.Size" viewBox=@viewBox fill="none" @onclick="@(() => OnClickPoint())">
+                        <path d="M17.6154 25.42H14.3846V22.17H17.6154V25.42Z M17.6154 20.0034H14.3846V10.2534H17.6154V20.0034Z" />
+                    </svg>
+                </g>
+            }
+            break;
+
+        case PointState.warning:
+            // Diamond shape
+            <g transform="@transformPoint">
+                <svg class=@classFinal xmlns="http://www.w3.org/2000/svg" width="@metrics.Size" height="@metrics.Size" viewBox=@viewBox fill="none" stroke-width="@metrics.Stroke" @onclick="@(() => OnClickPoint())">
+                    <path d="M3 16.7976V15.2205L15.2205 3H16.7795L29 15.2205V16.7977L16.7977 29H15.2023L3 16.7976Z"/>
+                </svg>
+            </g>
+
+            if (!Small && Active)
+            {
+                // Draw an exclamation mark on the diamond
+                <g transform="@transformPoint">
+                    <svg class=@(classFinal + "__character") xmlns="http://www.w3.org/2000/svg" width="@metrics.Size" height="@metrics.Size" viewBox=@viewBox fill="none" @onclick="@(() => OnClickPoint())">
+                        <path d="M14.3333 8.66667H17.6667V17.6667H14.3333V8.66667Z"/>
+                        <path d="M14.3333 20H17.6667V23.3333H14.3333V20Z"/>
+                    </svg>
+                </g>
+            }
+            break;
+
+        case PointState.above:
+        case PointState.below:
+            // Arrow shape
+            <g transform="@transformPoint">
+                <svg class="@classFinal" xmlns="http://www.w3.org/2000/svg" width="@metrics.Size" height="@metrics.Size" viewBox=@viewBox fill="none" stroke-width="@metrics.Stroke" @onclick="@(() => OnClickPoint())">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M13 30V13.47998L6.24002 20.24L2 16L16 2L30 16L25.76 20.24L19 13.47998V30H13Z" />
+                </svg>
+            </g>
+            break;
+
+        default:
+            break;
+    }
+
+    if (Selected && !Small)
+    {
+        var radius = metrics.SelectionRadius;
+        var strokeFG = metrics.SelectionStrokeFG;
+        var strokeBG = metrics.SelectionStrokeBG;
+
+        // ring around selected point
+        <g transform="@transformCircle">
+            <circle class=@(classFinal + "__selection-ring__outline") cx="0" cy="0" r="@radius" stroke-width="@strokeBG" fill="none" />
+            <circle class=@(classFinal + "__selection-ring") cx="0" cy="0" r="@radius" stroke-width="@strokeFG" fill="none" />
+        </g>
+    }
+}
+
+@code {
+    private static string BuildClassName(string baseName, PointState state, bool active)
+    {
+        var suffix = state switch
+        {
+            PointState.alert => "--alert",
+            PointState.warning => "--warning",
+            PointState.above => "--above",
+            PointState.below => "--below",
+            PointState.fast => "--fast",
+            _ => string.Empty
+        };
+        var activeSuffix = active ? "--active" : string.Empty;
+        return baseName + suffix + activeSuffix;
+    }
+
+    private readonly record struct Metrics(
+        double PointTx,
+        double PointTy,
+        double ScaleX,
+        double ScaleY,
+        int Size,
+        int Stroke,
+        int SelectionRadius,
+        int SelectionStrokeFG,
+        int SelectionStrokeBG,
+        double SelectionOffsetX,
+        double SelectionOffsetY
+    );
+
+    private Metrics GetMetrics(PointState state, bool small, bool active, bool logarithmic, double x, double y)
+    {
+        // Common stroke
+        var stroke = small ? 0 : logarithmic ? 2 : 1;
+
+        // Size by state
+        int size = state switch
+        {
+            PointState.normal => small ? (active ? 7 : 4) : logarithmic ? 16 : (active ? 14 : 7),
+            PointState.alert => small ? (active ? 14 : 10) : logarithmic ? 36 : (active ? 32 : 17),
+            PointState.warning => small ? (active ? 14 : 10) : logarithmic ? 36 : (active ? 32 : 17),
+            PointState.above => small ? (active ? 14 : 10) : (active ? 26 : 17),
+            PointState.below => small ? (active ? 14 : 10) : (active ? 26 : 17),
+            PointState.fast => 4, // one size for RU chart points for now
+            _ => 0
+        };
+
+        // Offsets depend on state
+        double offX;
+        double offY;
+        double sx = 1, sy = -1; // default flipping for SVG Y
+        double selectionOffsetX = X;
+        double selectionOffsetY = Y;
+
+        if (state == PointState.above)
+        {
+            offX = x - (small ? (active ? 7 : 5) : (active ? 13 : 8.5));
+            offY = y; // arrow points computed around Y
+            selectionOffsetY = Y - (Active ? 14 : 9);
+        }
+        else if (state == PointState.below)
+        {
+            offX = x - (small ? (active ? 7 : 5) : (active ? 13 : 8.5));
+            offY = y; // arrow below uses same y, no flip
+            sy = 1; // do not flip for below variant
+            selectionOffsetY = Y + (Active ? 14 : 9);
+        }
+        else if (state == PointState.warning)
+        {
+            offX = x - (small ? (active ? 7 : 5) : logarithmic ? 17 : (active ? 16 : 8.5));
+            offY = y + (small ? (active ? 7 : 5) : logarithmic ? 21 : (active ? 16 : 8));
+        }
+        else
+        {
+            offX = x - (small ? (active ? 7 : 5) : logarithmic ? 17 : (active ? 16 : 8.5));
+            offY = y + (small ? (active ? 7 : 5) : logarithmic ? 21 : (active ? 18 : 9));
+        }
+
+        // Selection ring metrics
+        var selectionRadius = logarithmic ? 18 : (active ? 16 : 9);
+        var selectionStrokeFG = small ? 0 : (active ? 2 : 1);
+        var selectionStrokeBG = small ? 0 : logarithmic ? 4 : (active ? 3 : 2);
+
+        return new Metrics(offX, offY, sx, sy, size, stroke, selectionRadius, selectionStrokeFG, selectionStrokeBG, selectionOffsetX, selectionOffsetY);
+    }
+}
+

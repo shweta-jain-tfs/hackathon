@@ -1,0 +1,57 @@
+<section class="ph-software-identification-label" aria-label="Phadia E software identification label">
+    <header class="ph-software-identification-label__header">
+        <strong class="ph-software-identification-label__product">Phadia E</strong>
+        <strong class="ph-software-identification-label__intended-use">IUO/Device for Performance evaluation</strong>
+    </header>
+
+    <div class="ph-software-identification-label__content">
+        <div class="ph-software-identification-label__lot">
+            <strong class="ph-software-identification-label__lot-symbol">LOT</strong>
+            <span>@Lot</span>
+        </div>
+
+        <div class="ph-software-identification-label__manufacture-date">
+            <img class="ph-software-identification-label__manufacture-date-symbol"
+                 src="Images/DateManufactureFromPdf.png"
+                 alt="Date of manufacture" />
+            @if (ManufactureDate is { } manufactureDate)
+            {
+                <span>@manufactureDate.Date.ToShortDateString()</span>
+            }
+            else
+            {
+                <strong>DEV BUILD</strong>
+            }
+        </div>
+
+        <div class="ph-software-identification-label__manufacturer">
+            <img class="ph-software-identification-label__manufacturer-symbol"
+                 src="Images/ManufactureFromPdf.png"
+                 alt="Manufacturer" />
+            <address>
+                Phadia AB<br />
+                Rapsgatan 7P<br />
+                P.O. Box 6460<br />
+                751 37 Uppsala<br />
+                Sweden<br />
+                <strong>www.phadia.com</strong>
+            </address>
+        </div>
+
+        <div class="ph-software-identification-label__udi" aria-label="Unique Device Identification">
+            <div><strong>(01)</strong> @DeviceIdentifier</div>
+            <div><strong>(10)</strong> @UdiVersion</div>
+        </div>
+
+        <img class="ph-software-identification-label__manual-symbol"
+             src="Images/InfoFromPdf.png"
+             alt="Consult instructions for use" />
+    </div>
+</section>
+
+@code {
+    [Parameter, EditorRequired] public string Lot { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string UdiVersion { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string DeviceIdentifier { get; set; } = string.Empty;
+    [Parameter] public DateTimeOffset? ManufactureDate { get; set; }
+}

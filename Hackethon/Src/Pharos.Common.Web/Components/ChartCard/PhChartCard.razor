@@ -1,0 +1,19 @@
+﻿@using Pharos.Common.Web.Components.Status
+<div class="@ClassNames">
+    <div class="ph-chart-card__header">
+        <div class="ph-chart-card__icon">
+            <PhStatus Status="Status" Size="StatusSize.Md" />
+        </div>
+        @if (string.IsNullOrWhiteSpace(Href))
+        {
+            @Title
+        }
+        else
+        {
+            <PhHrefLink Href="@Href">@Title</PhHrefLink>
+        }
+    </div>
+    <div class="ph-chart-card__chart">
+        @ChildContent
+    </div>
+</div>

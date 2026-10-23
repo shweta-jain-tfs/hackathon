@@ -1,0 +1,29 @@
+﻿@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.Icons.Svg
+<div class="@_reagentCarrierCss">
+    <div class="@_reagentCarrierSlotCss">
+        @if (_statusIconType.HasValue && _statusIconSize.HasValue)
+        {
+            <div class="reagent-carrier__status-icon-overlay">
+                <PhStatusIcon Icon="@_statusIconType.Value" Size="@_statusIconSize.Value"></PhStatusIcon>
+            </div>
+        }
+        else
+        {
+            <Carrier></Carrier>
+        }
+        @if (CellContent.IsUnloadRequested)
+        {
+            <div class="reagent-carrier__unload-requested-overlay">
+                @if (Size == ReagentIconSize.Large)
+                {
+                    <UnloadRequestedLarge />
+                }
+                else
+                {
+                    <UnloadRequestedSmall />
+                }
+            </div>
+        }
+    </div>
+</div>

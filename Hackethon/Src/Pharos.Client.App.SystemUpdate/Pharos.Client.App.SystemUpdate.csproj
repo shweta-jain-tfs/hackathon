@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pharos.Client.Common.App\Pharos.Client.Common.App.csproj" />
+    <ProjectReference Include="..\Pharos.Client.Common.Models\Pharos.Client.Common.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+</Project>

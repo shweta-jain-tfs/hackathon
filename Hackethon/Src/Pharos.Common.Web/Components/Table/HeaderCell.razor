@@ -1,0 +1,46 @@
+﻿<th aria-sort="@AriaSortValue(_colName)" @key="@_colName" scope="col">
+    <div @onclick="@(() => SortColumn(@Name))" role="button">
+        @* class="@thClass" *@
+        <span class="ph-datagrid__col-title-text">@Name</span>
+        <div class="ph-datagrid__sort-indicator">
+            <PhIcon IconType="IconType.ChevronUp" Size="IconSize.Md"/>
+        </div>
+    </div>
+</th>
+
+@code {
+
+    [Parameter] public string Name { get; set; } = string.Empty;
+
+    private string _sortByColumn = string.Empty;
+    private bool _sortByAscending;
+    private string _colName = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        _colName = Name;
+    }
+
+    private string AriaSortValue(string column)
+    {
+        if (string.IsNullOrEmpty(column))
+        {
+            _sortByColumn = column;
+        }
+
+        return _sortByColumn.Equals(column, StringComparison.Ordinal)
+            ? (_sortByAscending ? "ascending" : "descending")
+            : "none";
+    }
+
+    private void SortColumn(string column)
+    {
+        if (_sortByColumn.Equals(column, StringComparison.Ordinal))
+        {
+            _sortByAscending = !_sortByAscending;
+        }
+
+        _sortByColumn = column;
+
+    }
+}

@@ -1,0 +1,6 @@
+@using Pharos.Common.Web.Components.Status
+
+@if (ViewModel.ShowConnectionStatus)
+{
+    <PhStatus Status="@ViewModel.Status" FontSize="StatusFontSize.Body1" Href="@PageRoute.DashboardConnections" Text="Connections" Gap="StatusGap.Sm" />
+}

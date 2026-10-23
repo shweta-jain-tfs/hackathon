@@ -1,0 +1,90 @@
+@using Pharos.Common.Web.Components.DropdownButton
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Client.Common.App.Helpers
+<PhDockedButtonRow Justified="false">
+    <ChildContent>
+        <PhStack Gap="StackGap.Xs">
+            <p class="t-helper-text">@Loc["RequestDetailPage_TestListView_TableTitle"]</p>
+            <PhDataGrid @ref="_dataGrid"
+                        TGridItem="TestOrderViewModel"
+                        StateID="@(ViewModel.IsNewEntity ? null : "testorders")"
+                        Items="ViewModel.TestOrders?.OrderBy(x => x.TestSortOrder).AsQueryable()"
+                        SelectionType="@(HasManageTestOrdersPermission ? SelectionTypeEnum.MultiSelectWithSelectAll : SelectionTypeEnum.Off)"
+                        RowType="RowTypeEnum.LinesBetweenRows"
+                        OnSelectedItemsChanged="SelectedItemsChanged">
+                <Columns>
+                    <Column Title="@Loc["RequestDetailPage_TestListView_Col_TestName"]" Property="@(item => item!.LabTestName)">
+                        <PhHrefLink OnClick="@(() => TestsEditViewOpen(context))">@context.LabTestName</PhHrefLink>
+                    </Column>
+                    <Column Title="@Loc["RequestDetailPage_TestListView_Col_Method"]" Property="@(item => item!.MethodName)"/>
+                    <Column Property="item => item.State" Title="@Loc["RequestDetailPage_TestListView_Col_State"]">
+                        <PhStatus Status="@TestOrderStatusHelper.GetStatusType(context.State, context.IsActive)" Size="StatusSize.Xs" Text="@context.StatusText"></PhStatus>
+                    </Column>
+                    <Column Title="@Loc["RequestDetailPage_TestListView_Col_MeasurementDateTime"]" Property="@(item => item!.MeasurementDateTime)">
+                        <PhHrefLink Href="@($"{PageRoute.AnalyticalRunDetails.Default}/{context.AnalyticalRunId}?TestOrderId={context.TestOrderId}&SampleId={ViewModel.SampleId}")" Disabled="@(context.AnalyticalRunId == null)">
+                            @(context.MeasurementDateTime?.ToString(FormatStrings.ShortDateTime))
+                        </PhHrefLink>
+                    </Column>
+                    <Column Title="@Loc["RequestDetailPage_TestListView_Col_Concentration"]" Property="@(item => item!.Concentration)" Visible="ShouldShowConcentrationColumn()" Align="ColumnAlignEnum.Right">
+                        @(context.ReportConcentration ? context.Concentration.FormatDecimalForDisplay() : string.Empty)
+                    </Column>
+                    <Column Title="@Loc["RequestDetailPage_TestListView_Col_Class"]" Property="@(item => item!.Class)" Visible="ShouldShowClassColumn()">
+                        @(context.ReportClass ? context.Class : string.Empty)
+                    </Column>
+                    <Column Title="@Loc["RequestDetailPage_TestListView_Col_MeanCutOff"]" Property="@(item => item!.MeanCutOff)" Visible="ShouldShowCutOffColumn()">
+                        @(context.ReportCutOff ? context.MeanCutOff : string.Empty)
+                    </Column>
+                    <Column Title="@Loc["RequestDetailPage_TestListView_Col_MeanQuotient"]" Property="@(item => item!.MeanQuotientAsText)" Align="ColumnAlignEnum.Right" Visible="ShouldShowQuotientColumn()">
+                        @(context.ReportQuotient ? context.MeanQuotientAsText.FormatDecimalForDisplay() : string.Empty)
+                    </Column>
+                    @if (GetIsReflexTestingEnabled() || ViewModel.HasReflexTests())
+                    {
+                        <Column Title="@Loc["RequestDetailPage_TestListView_Col_Reflex"]" Property="@(item => item!.ReflexDefinitions)">
+                            @if (context.ReflexDefinitions != null && context.ReflexDefinitions.Any())
+                            {
+                                var reflexDefinitions = ViewModel.GetFilteredReflexDefinitions(context.ReflexDefinitions).ToList();
+
+                                var linkList = reflexDefinitions.Select(r => new LinkItem
+                                {
+                                    Text = r.Name,
+                                    OnClick = () => ReflexViewOpen(context.State, r)
+                                }).ToList();
+
+                                <PhLinkList Links="linkList"/>
+                            }
+                        </Column>
+                    }
+                    <Column Title="@Loc["RequestDetailPage_TestListView_Col_InstrumentDilutionFactor"]" Property="@(item => item!.InstrumentDilutionFactor)"/>
+                    <Column Title="@Loc["RequestDetailPage_TestListView_Col_FullTestName"]" Property="@(item => item!.FullTestName)"/>
+                    <Column Title="@Loc["RequestDetailPage_TestListView_Col_InstrumentName"]" Property="@(item => item!.InstrumentName)"/>
+                </Columns>
+            </PhDataGrid>
+        </PhStack>
+    </ChildContent>
+    <Buttons>
+        @if (HasManageTestOrdersPermission)
+        {
+            <PhIconButton Type="IconButtonType.SecondaryButton"
+                          IconType="IconType.ArrowUp"
+                          IconSize="IconSize.Md"
+                          OnClick="@(() => AddIndexToTestSortOrder(-1))"
+                          Disabled="MoveTestOrderUpDisabled()">
+            </PhIconButton>
+            <PhIconButton Type="IconButtonType.SecondaryButton"
+                          IconType="IconType.ArrowDown"
+                          IconSize="IconSize.Md"
+                          OnClick="@(() => AddIndexToTestSortOrder(1))"
+                          Disabled="MoveTestOrderDownDisabled()">
+            </PhIconButton>
+            <PhButton Disabled="ViewModel.IsEmptySampleId || HasAnyItemsSelected" OnClick="TestsAddViewOpen">@Loc["TestListView_AddTestsButton"]</PhButton>
+            <PhButton Disabled="ViewModel.IsEmptySampleId || HasAnyItemsSelected" OnClick="PanelsAddViewOpen">@Loc["TestListView_AddPanelsButton"]</PhButton>
+            <PhButton Disabled="!HasAnyItemsSelected" OnClick="TestsDeleteButtonClicked">@Loc["TestListView_DeleteButton"]</PhButton>
+            <PhDropdownButton Disabled="ViewModel.IsEmptySampleId" Text="@Loc["TestListView_MoreButton"]" DropdownButtonType="DropdownButtonType.Secondary">
+                <PhDropdownButtonItem Text="@Loc["TestListView_ResetButton"]" OnClick="@TestsResetButtonClicked" Disabled="@ResetButtonDisabled()"/>
+                <PhDropdownButtonSeparator />
+                <PhDropdownButtonItem Text="@Loc["TestListView_HoldButton"]" OnClick="HoldTests" Disabled="!CanHoldTest" />
+                <PhDropdownButtonItem Text="@Loc["TestListView_ReleaseButton"]" OnClick="ReleaseTests" Disabled="!CanReleaseTest" />
+            </PhDropdownButton>
+        }
+    </Buttons>
+</PhDockedButtonRow>

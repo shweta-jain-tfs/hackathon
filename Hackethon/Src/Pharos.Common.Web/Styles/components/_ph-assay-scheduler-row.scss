@@ -1,0 +1,22 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.assay-scheduler-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 72px;
+    border: 2px solid colors.$border-subtle-01;
+    background-color: colors.$background-secondary;
+    padding: 0 spacing.$padding-sm;
+    box-sizing: border-box;
+    @include text.body1;
+}
+
+.assay-scheduler-row__left {
+    display: flex;
+    align-items: center;
+    gap: spacing.$gap-xs;
+}

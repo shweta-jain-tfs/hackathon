@@ -1,0 +1,35 @@
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-instrument-list {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$gap-md;
+    max-height: 100%;
+    max-width: calc(size.$instrument-card-width + size.$scrollbar-width);
+    width: 100%;    
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: spacing.$gap-gutter;
+        scrollbar-gutter: stable;
+        overflow: hidden;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    &__scroll {
+        flex: 1;
+        scrollbar-gutter: stable;
+        overflow: auto;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-md;
+    }
+}

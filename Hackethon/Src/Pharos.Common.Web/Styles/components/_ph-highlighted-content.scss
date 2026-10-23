@@ -1,0 +1,50 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-highlighted-content {
+    @include text.body2;
+    color: colors.$text-secondary;
+    background: colors.$layer-tertiary;
+    border-left: 12px solid var(--ph-highlighted-content-color, #{colors.$status-success});
+    @include rounded.rounded;
+
+    &__content {
+        display: flex;
+        gap: spacing.$gap-md;
+        align-items: center;
+        flex-wrap: wrap; // permits stacking when basis can't fit
+        padding: spacing.$padding-sm spacing.$padding-md;
+        border: 1px solid colors.$border-subtle-02;
+        border-left: none;
+        @include rounded.rounded-right;
+    }
+
+
+    &__child-content {
+        flex: 1 1 34ch; // wraps at approx 34 characters
+    }
+
+    &__child-content {
+        > * + * {
+            margin-top: spacing.$gap-sm;
+        }
+    }
+    
+    &--ok {
+        --ph-highlighted-content-color: #{colors.$status-success};
+    }
+
+    &--info {
+        --ph-highlighted-content-color: #{colors.$status-info};
+    }
+
+    &--warning {
+        --ph-highlighted-content-color: #{colors.$status-warning};
+    }
+
+    &--error {
+        --ph-highlighted-content-color: #{colors.$status-alarm};
+    }
+}

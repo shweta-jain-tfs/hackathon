@@ -1,0 +1,96 @@
+@layout ParametersLayout
+@attribute [Route(PageRoute.Parameters.TestPanelDetails.IdParameter)]
+
+@using Pharos.Client.App.Parameters.Layout
+@using Pharos.Client.App.Parameters.Panels.ViewModels
+@using Pharos.Client.Common.App.Validation
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.NavigationLock
+@using Pharos.Client.Common.App.Auth
+@using Pharos.Contracts.Security
+@inherits DetailsPageBase<PanelsDetailsViewModel, MethodPanelDetails>
+
+@if (DetailViewModel is not null)
+{
+    <PhNavigationLock Modified="@(!IsEditingDisabled && DetailViewModel.IsModified)" OnSave="() => SaveChanges(true)" IsValid="@IsValid()" />
+
+    <SectionContent SectionName="page-header">
+        <Breadcrumb Items="@Breadcrumbs" />
+        <div class="flex gap-md">
+            <PhButton Disabled="@(IsEditingDisabled || !DetailViewModel.IsModified)" OnClick="DiscardChanges">@Loc["PanelDetailsPage_DiscardChanges"]</PhButton>
+            <PhButton Type="ButtonType.Primary" Disabled="@(!IsSaveEnabled())" OnClick="() => SaveChanges(false)">@Loc["PanelDetailsPage_Save"]</PhButton>
+        </div>
+    </SectionContent>
+
+    <PhDockedButtonRow Justified="false">
+        <ChildContent>
+            <PhStack Gap="StackGap.Lg">
+                <PhPanel NoBackground>
+                    <PhSimpleValidationContext @ref="_validation" Model="@DetailViewModel">
+                        <PhGrid>
+                            <PhGridColumn Span="ColumnSpan.Half">
+                                <PhInputColumn Spacing="InputSpacing.Compact">
+                                    <PhLabel Text="@Loc["PanelDetailsPage_PanelName"]" ValidationFor="() => DetailViewModel.PanelName">
+                                        <PhTextBox MaxLength="16" @bind-Value="DetailViewModel.PanelName" Disabled="@IsEditingDisabled" />
+                                    </PhLabel>
+                                    <PhCheckBox @bind-Value="DetailViewModel.Enabled" Label="@Loc["TestPanelPage_Enabled"]" Disabled="@IsEditingDisabled" />
+                                    <PhCheckBox @bind-Value="DetailViewModel.Grouped" Label="@Loc["PanelDetailsPage_GroupedInReport"]" Disabled="@IsEditingDisabled" />
+                                </PhInputColumn>
+                            </PhGridColumn>
+
+                            <PhGridColumn Span="ColumnSpan.Half">
+                                <PhInputColumn Spacing="InputSpacing.Compact">
+                                    <PhLabel Text="@Loc["TestPanelPage_LongName"]" ValidationFor="() => DetailViewModel.PanelLongName">
+                                        <PhTextBox MaxLength="30" @bind-Value="DetailViewModel.PanelLongName" Disabled="@IsEditingDisabled" />
+                                    </PhLabel>
+                                </PhInputColumn>
+                            </PhGridColumn>
+                        </PhGrid>
+                    </PhSimpleValidationContext>
+                </PhPanel>
+
+                <PhStack Gap="StackGap.Xs">
+                    <div class="flex flex-col gap-xs">
+                        <h3 class="t-h3">@TestsHeader</h3>
+                        <p class="t-helper-text">@Loc["PanelDetailsPage_TestsSubHeader"]</p>
+                    </div>
+
+                    <PhDataGrid @ref="_dataGrid"
+                                StateID="@(DetailViewModel.IsNewEntity ? null : "paneltests")"
+                                TGridItem="PanelTestViewModel"
+                                Items="DetailViewModel.Tests.OrderBy(x => x.SortOrder).AsQueryable()"
+                                SelectionType="@(IsEditingDisabled ? SelectionTypeEnum.Off : SelectionTypeEnum.MultiSelectWithSelectAll)"
+                                OnSelectedItemsChanged="SelectedTestsChanged">
+                        <Columns>
+                            <Column Title="@Loc["PanelDetailsPage_Test"]" Property="@(x => x.TestName)">
+                                <PhHrefLink OnClick="@(() => TestEditViewOpen(context))">@context.TestName</PhHrefLink>
+                            </Column>
+                            <Column Title="@Loc["PanelDetailsPage_Method"]" Property="@(x => x.MethodName)" />
+                            <Column Title="@Loc["PanelDetailsPage_InstrumentDilution"]" Property="@(x => x.InstrumentDilutionFactor)" />
+                            <Column Title="@Loc["PanelDetailsPage_Replicates"]" Property="@(x => x.Replicates)" />
+                            <Column Title="@Loc["PanelDetailsPage_FullName"]" Property="@(x => x.FullTestName)" Size="ColumnSizeEnum.Fill" />
+                        </Columns>
+                    </PhDataGrid>
+                </PhStack>
+            </PhStack>
+        </ChildContent>
+        <Buttons>
+            <PhAuthorize Permission="@Permissions.EditSystemSettings">
+                <PhIconButton Type="IconButtonType.SecondaryButton"
+                              IconType="IconType.ArrowUp"
+                              IconSize="IconSize.Md"
+                              OnClick="@(() => AddIndexToTestSortOrder(-1))"
+                              Disabled="MoveTestOrderUpDisabled()">
+                </PhIconButton>
+                <PhIconButton Type="IconButtonType.SecondaryButton"
+                              IconType="IconType.ArrowDown"
+                              IconSize="IconSize.Md"
+                              OnClick="@(() => AddIndexToTestSortOrder(1))"
+                              Disabled="MoveTestOrderDownDisabled()">
+                </PhIconButton>
+                <PhButton Disabled="@(string.IsNullOrWhiteSpace(DetailViewModel.PanelName) || HasSelectedTests)" OnClick="TestsAddViewOpen">@Loc["PanelDetailsPage_AddTests"]</PhButton>
+                <PhButton Disabled="@(!HasSelectedTests)" OnClick="DeleteSelectedTests">@Loc["PanelDetailsPage_Delete"]</PhButton>
+            </PhAuthorize>
+        </Buttons>
+    </PhDockedButtonRow>
+}

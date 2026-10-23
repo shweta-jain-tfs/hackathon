@@ -1,0 +1,16 @@
+﻿@using Pharos.Common.Web.Components.DropdownButton
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.UploadFile
+@inherits ComponentWithClientScriptBase
+
+<div class="flex flex-col gap-xs items-start">
+    <PhButton StartIconType="IconType.Download" OnClick="ImportPackage_OpenFileDialog" Disabled="@ImportButtonDisabled">@Loc["ImportPackage_Import"]</PhButton>
+    <span class="t-helper-text text-hint">@Loc["ImportPackage_ImportPackageFromFile"]</span>
+</div>
+
+<div class="flex flex-col gap-xs items-start">
+    <PhButton StartIconType="IconType.Upload" OnClick="ExportPackageAsZip" Disabled="_isExporting">@Loc["ExportPackage_Export"]</PhButton>
+    <span class="t-helper-text text-hint">@Loc["ExportPackage_ExportPackageToFile"]</span>
+</div>
+
+<PhUploadFiles @ref="_uploadFiles" Accept=".zip" OnFileUploaded="ImportPackage_UploadFile" />

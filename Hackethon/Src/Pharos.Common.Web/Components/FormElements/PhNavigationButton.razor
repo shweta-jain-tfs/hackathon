@@ -1,0 +1,8 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums;
+@using Pharos.Common.Web.Components.Icons;
+
+<button class="ph-navigation-button @ButtonClass" 
+        disabled="@Disabled" 
+        @onclick="OnClickHandler">
+    <PhIcon IconType="@IconType" Size="IconSize.Md" />
+</button>

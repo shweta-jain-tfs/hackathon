@@ -1,0 +1,21 @@
+/*
+Base style for body, base font, base color and variable :root (default theme)
+*/
+@use "../abstracts/colors";
+@use "../abstracts/typography";
+
+html {
+    font-family: typography.$font-family-helvetica-neue, typography.$fallback-font-family;
+    color: var(--ph-text-color);
+    background: var(--ph-bg-color);
+    -webkit-font-smoothing: antialiased;
+    color-scheme: var(--ph-color-scheme);
+}
+
+:root {
+    // Default theme here
+    --ph-border-color: #{colors.$border-active};
+    --ph-bg-color: #{colors.$background-primary};
+    --ph-text-color: #{colors.$text-secondary};
+    --ph-color-scheme: dark;
+}

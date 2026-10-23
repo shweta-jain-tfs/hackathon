@@ -1,0 +1,16 @@
+<div class="@GetContentCssClass()">
+    @foreach (var item in ViewModels.SortTaskCards())
+    {
+        <div class="ph-lockscreen__ph-task-card">
+            <PhTaskCard State="@item.CardState"
+                        Title="@item.Title"
+                        Description="@item.Description"
+                        Time="@item.Time"
+                        DisplayTime="@item.DisplayTime"
+                        ImageType="@item.ImageType"
+                        NavigationForceLoad
+                        NavigationUrlForCard="@GetLoginUrlWithReturn(item.ConnectedPageUrl)">
+            </PhTaskCard>
+        </div>
+    }
+</div>

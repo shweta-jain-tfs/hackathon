@@ -1,0 +1,43 @@
+﻿@using Pharos.Common.Web.Components.PlaceHolder
+@using Pharos.Common.Web.Components.Sidebar
+@attribute [Stories("Components/Sidebar")]
+
+<Stories TComponent="PhSidebar">
+    <Story Name="Sidebar">
+        <Arguments>
+            <Arg For="_ => _.Scroll" Value="true" />
+            <Arg For="_ => _.UseSpacing" Value="true" />
+        </Arguments>
+        <Template>
+            <div style="height: 100vh; width: 20%">
+                <PhSidebar @attributes="context.Args">
+                    <Header>
+                        <PhPlaceHolder Title="Header" Text="" />
+                    </Header>
+                    <ChildContent>
+                        <div style="height: 400px">
+                            <PhPlaceHolder Title="Main menu" Text="Scrolls if scroll is enabled" />
+                        </div>
+                    </ChildContent>
+                    <Footer>
+                        <PhPlaceHolder Title="Footer" Text="Fixed size" />
+                    </Footer>
+                </PhSidebar>
+            </div>
+        </Template>
+
+    </Story>
+    <Story Name="No header or footer">
+        <Template>
+            <div style="height: 100vh; width: 20%">
+                <PhSidebar @attributes="context.Args">
+                    <ChildContent>
+                        <div style="height: 400px">
+                            <PhPlaceHolder Title="Main menu" Text="Scrolls if scroll is enabled" />
+                        </div>
+                    </ChildContent>
+                </PhSidebar>
+            </div>
+        </Template>
+    </Story>
+</Stories>

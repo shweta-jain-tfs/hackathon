@@ -1,0 +1,24 @@
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Client.Common.App.Validation
+<PhModalContent>
+    <Body>
+        <div class="flex justify-center">
+            <PhInputColumn>
+                <PhLabel Text="@Loc["InstrumentsPage_RenameDialogDisplayNameCurrent"]">
+                    <PhValueBox>@DisplayName</PhValueBox>
+                </PhLabel>
+
+                <PhSimpleValidationContext @ref="_validation" Model="RenameModel">
+                    <PhLabel Text="@Loc["InstrumentsPage_RenameDialogDisplayNameNew"]" ValidationFor="() => RenameModel.UpdatedDisplayName!">
+                        <PhTextBox @bind-Value="@RenameModel.UpdatedDisplayName" MaxLength="8"></PhTextBox>
+                    </PhLabel>
+                </PhSimpleValidationContext>
+            </PhInputColumn>
+        </div>
+    </Body>
+
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["InstrumentsPage_RenameDialogButtonSecondary"]</PhButton>
+        <PhButton Type="ButtonType.Primary" Disabled="@(!IsValid())" OnClick="@ValidateAndSave">@Loc["InstrumentsPage_RenameDialogButtonPrimary"]</PhButton>
+    </Footer>
+</PhModalContent>

@@ -1,0 +1,33 @@
+@using Pharos.Client.App.InstrumentManagement.ViewModels.Instruments
+@using Pharos.Client.Common.Localization
+@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhModalContent>
+    <Body>
+        <PhStack Gap="StackGap.Md">
+            <div class="select-technologies-view__heading t-body2">
+                @Loc["InstrumentsPage_SelectTechnologiesDialogListHeading"]
+            </div>
+            <PhInputColumn Spacing="InputSpacing.Compact">
+                @foreach (var technology in ViewModel.Technologies)
+                {
+                    <PhCheckBox Label="@(technology.Technology.ToLocalizedString("MethodDetailsGeneralTab"))"
+                                Size="CheckBoxSize.Large"
+                                Value="@technology.IsSelected"
+                                OnCheckChanged="@((value) => ViewModel.SetSelected(technology, value))"
+                                Disabled="@ViewModel.IsBusy" />
+                }
+            </PhInputColumn>
+        </PhStack>
+    </Body>
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => CloseModal(ModalResult.Cancel()))">
+            @Loc["InstrumentsPage_SelectTechnologiesDialogButtonSecondary"]
+        </PhButton>
+        <PhButton Type="ButtonType.Primary"
+                  Disabled="@(!ViewModel.IsModified || ViewModel.IsBusy)"
+                  OnClick="@Save">
+            @Loc["InstrumentsPage_SelectTechnologiesDialogButtonPrimary"]
+        </PhButton>
+    </Footer>
+</PhModalContent>

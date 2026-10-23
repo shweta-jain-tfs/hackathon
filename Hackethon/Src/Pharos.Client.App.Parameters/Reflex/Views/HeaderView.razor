@@ -1,0 +1,11 @@
+﻿@inherits ComponentBase
+
+<div @onfocusout="OnBlur">
+    <PhTextBox @ref="_reflexNameFieldRef"
+               @bind-Value="@ViewModel.DefinitionName"
+               MaxLength="@_maxNameLength"
+               Label="@Loc["ReflexDetailPage_DefinitionName"]"
+               Error="@IsError"
+               ErrorText="@ErrorText"
+               DisplayOnly="!ViewModel.CanEdit"/>
+</div>

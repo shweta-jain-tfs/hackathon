@@ -1,0 +1,18 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.FormElements.RadioButton
+
+<PhModalContent>
+    <Body>
+        <div class="grid gap-md">
+            <p class="t-body1">@Loc["DashboardPage_AssayEndModal_RadioButton_Header"]</p>
+            <PhRadioGroup @bind-SelectedValue="SelectedValue">
+                <PhRadioButton Value="EndAssayOptions.LoadedSamplesAreProcessed" Label=@Loc["DashboardPage_AssayEndModal_RadioButton_LoadedSamplesProcessed"]></PhRadioButton>
+                <PhRadioButton Value="EndAssayOptions.StartedTestsAreProcessed" Label=@Loc["DashboardPage_AssayEndModal_RadioButton_StartedTestsAreProcessed"]></PhRadioButton>
+            </PhRadioGroup>
+        </div>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["DashboardPage_AssayEndModal_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok(SelectedValue)))">@Loc["DashboardPage_AssayEndModal_Ok"]</PhButton>
+    </Footer>
+</PhModalContent>

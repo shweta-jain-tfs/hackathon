@@ -1,0 +1,47 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-datepicker-panel {
+    display: inline-flex;
+    flex-direction: column;
+    gap: spacing.$gap-sm;
+    padding: spacing.$padding-sm;
+    border-width: 2px;
+    @include rounded.rounded;
+    background: colors.$layer-secondary;
+    color: colors.$text-link;
+    
+    &__header {
+        display: flex;
+        gap: spacing.$gap-md;
+        justify-content: space-between;
+        align-items: center;
+        @include text.h3;
+    }
+
+    &__mode-switch {
+        background: colors.$layer-hover-01;
+        border: 1px solid colors.$border-active;
+        cursor: pointer;
+        padding: spacing.$padding-xs spacing.$padding-sm;
+        @include rounded.rounded;
+        display: inline-block;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background: colors.$layer-selected-01;
+        }
+
+        &:active {
+            background: colors.$layer-selected-02;
+        }
+    }
+
+    &__nav {
+        display: flex;
+        gap: spacing.$gap-sm;
+        color: colors.$icon-link;
+    }
+}

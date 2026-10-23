@@ -1,0 +1,84 @@
+[FILE]
+Type=Phadia E METHOD FILE
+FormatVersion=1.0
+Version=1
+[METHOD]
+Name=ImmunoCAP Specific IgA
+AbbreviatedName=sIgA
+MethodVersion=1
+TemplateFlag=0
+Default=1
+SequenceNumber=2
+InstrumentDilutionLocked=1
+AllocationOrder=0
+SortOrder=80
+DefaultConcentrationFactor=1.00000
+SpecialMethod=0
+RUO=0
+Allow50percentWash=0
+[REAGENTS]
+Sample=ERRROR: MUST BE INTEGER
+Conjugate=50;sIgA
+DevSol=50
+StopSol=600
+WashSolConc=washCon
+WashSolAdd=washAdd
+[CALCONTROL]
+Point=1;CC-1;AGcal;1;0.020;0.024;0.22;0.35;1.00000
+Point=1;CC-2;AGcal;1;0.100;0.010;2.20;3.50;1.00000
+[CALCURVE]
+TestName=AGcal
+AgeUntilWarning=28
+MaxBadReplicates=3
+ReportLowRUZeroPoint=0
+QuotientIndex=1
+ExcludeLowestInMeanDiff=0
+Point=CAL-0.01;0.010;2;1.00000;373.0;12.0;14511.0;149.0;3.00;4.20;0.220;-0.350
+Point=CAL-0.02;0.020;2;1.00000;676.0;15.0;14511.0;149.0;3.00;4.20;0.200;-0.200
+Point=CAL-0.04;0.040;2;1.00000;1245.0;29.0;14511.0;149.0;3.00;4.20;0.200;-0.200
+Point=CAL-0.1;0.100;2;1.00000;3072.0;65.0;14511.0;149.0;3.00;4.20;0.200;-0.200
+Point=CAL-0.3;0.300;2;1.00000;9674.0;139.0;14511.0;149.0;3.00;4.20;0.200;-0.200
+Point=CAL-1.0;1.000;2;1.00000;20875.0;262.0;31313.0;149.0;3.00;4.20;0.200;-0.200
+[BLANK]
+Subtract=1
+[PRESENTATION]
+XaxisText=Concentration
+XaxisUnit=mg/l
+XaxisScale=1
+YaxisText=Response
+YaxisUnit=RU
+YaxisScale=1
+FixedYScale=0;0.0;0.0
+[CALCULATION]
+Type=4
+NormalWeight=1
+PredictedVariance=1.746820;0.001561
+RobustWeight=0
+MinCoeffCorr=0.00000
+ZeroPoint=0;4
+LowestConc=0.000
+[CUTOFF]
+TextBelow=Negative
+TextAbove=Positive
+[REFERENCECURVE]
+ConcUnit=mgA/l
+QuantBelow=<1.00
+UseCalculatedTextQuantitiveAbove=0
+QuantAbove=>100
+QuantDoubtful=Examine
+TextBelow=
+Class=0.010;1
+Class=0.020;2
+Class=0.040;3
+Class=0.100;4
+Class=0.300;5
+Class=1.000;6
+[INTERNALQC]
+Point=GliA H;AGf98;100;0;1
+Point=GliA/G H;AGf98;100;0;1
+Point=GliA/G L;AGf98;100;0;1
+Point=GliA/G M;AGf98;100;0;1
+[ANALYTICALRUN]
+MaxAnalyticalRunSize=200
+AllowMonthlyCalibration=1
+ConnectCarrierAndConjugateLot=0

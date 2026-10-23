@@ -1,0 +1,40 @@
+﻿@using Pharos.Common.Web.Components.DetailsList
+<PhModalContent>
+    <Body>
+    <PhStack>
+        <PhDetailsList AlignedValues="false" TextSize="DetailsListTextSize.Default" HighlightedValues>
+            <PhDetailsListItem Label="@Loc["LoadListConfigurationsCopyModal_Instrument"]"> @SelectedInstrument </PhDetailsListItem>
+        </PhDetailsList>
+
+        <div>
+            @Loc["LoadListConfigurationsCopyModal_InstructionText"]
+        </div>
+
+        @if (AvailableInstruments is { Count: > 0 })
+        {
+            foreach (var instrument in AvailableInstruments)
+            {
+                <PhCheckBox Label="@instrument.Value"
+                            Value="@IsInstrumentSelected(instrument.Key)"
+                            OnCheckChanged="@(isChecked => OnInstrumentCheckChanged(instrument.Key, isChecked))">
+                </PhCheckBox>
+            }
+        }
+        else
+        {
+            @Loc["LoadListConfigurationsCopyModal_NoOtherInstruments"]
+        }
+
+    </PhStack>
+    </Body>
+
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => CloseModal(ModalResult.Cancel()))">
+            @Loc["LoadListConfigurationsCopyModal_Cancel"]
+        </PhButton>
+
+        <PhButton Disabled="@(!_selectedInstruments.Any())" Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok(_selectedInstruments)))">
+            @Loc["LoadListConfigurationsCopyModal_Copy"]
+        </PhButton>
+    </Footer>
+</PhModalContent>

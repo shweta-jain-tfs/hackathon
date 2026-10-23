@@ -1,0 +1,66 @@
+﻿@namespace Pharos.Client.App.Quality.Views
+@using Pharos.Client.App.Quality.Models
+@using Pharos.Client.App.Quality.ViewModels
+@using Pharos.Client.Common.App.Helpers
+@using Pharos.Common.Web.Components.DetailsList
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Modal
+@using Pharos.Common.Web.Components.Reagent
+@using Pharos.Common.Web.Models.DataGrid
+
+<PhModalContent>
+    <Body>
+        @if (ViewModel.QcCartridgeInfo != null)
+        {
+            <PhStack Gap="StackGap.Lg">
+                <div class="flex gap-xxl">
+                    <div class="ph-qc-range__item-details">
+                        <PhLabel Direction="LabelDirection.Vertical" Text="@Loc["QcCartridgeInfo_Name"]" Size="LabelSize.Body2">
+                            <div class="ph-qc-range__shape-wrapper">
+                                <ReagentShapeView Shape="@ReagentHelper.GetShape(ViewModel.QcCartridgeInfo!.Shape)"
+                                              Colors="@ViewModel.QcCartridgeInfo!.Colors"
+                                              Texts="@ViewModel.QcCartridgeInfo!.Texts"
+                                              FriendlyName="@ViewModel.QcCartridgeInfo.FriendlyName" />
+                            </div>
+                        </PhLabel>
+                        <PhLabel Direction="LabelDirection.Vertical" Text="@Loc["QcCartridgeInfo_Lot"]">
+                            <PhValueBox Size="TextBoxSize.Default">
+                                @ViewModel.QcCartridgeInfo.LotNumber
+                            </PhValueBox>
+                        </PhLabel>
+                    </div>
+                    <div class="ph-qc-range__cartridge-icon">
+                        <CartridgeIcon />
+                    </div>
+                </div>
+                <PhDataGrid TGridItem="QcCartridgeTestInfo"
+                            StateID="qc-ranges"
+                            Items="@QcTests"
+                            RowType="RowTypeEnum.LinesBetweenRows"
+                            SelectionType="SelectionTypeEnum.Off"
+                            DefaultSortColumn="@nameof(QcCartridgeTestInfo.TestName)"
+                            DefaultSortDirection="SortDirection.Ascending">
+                    <Columns>
+                        <Column Title="@Loc["QcCartridgeInfo_Test"]" Property="@(item => item.TestName)">
+                            @if (CanOpenTest(context))
+                            {
+                                <PhHrefLink Href="@GetTestLink(context.QcTestId)">@context.TestName</PhHrefLink>
+                            }
+                            else
+                            {
+                                @context.TestName
+                            }
+                        </Column>
+                        <Column Title="@Loc["QcCartridgeInfo_AcceptanceRanges"]" Property="@(item => item.Limits)" Align="ColumnAlignEnum.Right">
+                            @QcCartridgeDetailsViewModel.GetAcceptanceRangeText(context.Limits)
+                        </Column>
+                        <Column Title="@Loc["QcCartridgeInfo_Target"]" Property="@(item => item.Limits)" Align="ColumnAlignEnum.Right">
+                            @GetTargetText(context.Limits)
+                        </Column>
+                        <Column Title="@Loc["QcCartridgeInfo_Unit"]" Property="@(item => item.Unit)" />
+                    </Columns>
+                </PhDataGrid>
+            </PhStack>
+        }
+    </Body>
+</PhModalContent>

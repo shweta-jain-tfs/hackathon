@@ -1,0 +1,16 @@
+@code {
+
+    [Inject] private NavigationManager Navigation { get; set; } = default!;
+    [Parameter, EditorRequired] public string Uri { get; set; } = default!;
+
+    /// <summary>
+    /// Rewrite the URL. If true, replaces the current entry in the history stack. If false, appends the new entry to the history stack.
+    /// </summary>
+    [Parameter] public bool Replace { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        Navigation.NavigateToWithRedirect(Uri, forceLoad: false, replace: Replace);
+    }
+}

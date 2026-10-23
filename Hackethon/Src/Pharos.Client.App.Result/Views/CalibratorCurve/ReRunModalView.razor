@@ -1,0 +1,13 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+
+
+<PhModalContent>
+    <Body>
+        @Loc["RerunModalView_InfoText"]
+    </Body>
+
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))"> @Loc["RerunModalView_Cancel"] </PhButton>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok()))" Type="ButtonType.Primary"> @Loc["RerunModalView_Rerun"] </PhButton>
+    </Footer>
+</PhModalContent>

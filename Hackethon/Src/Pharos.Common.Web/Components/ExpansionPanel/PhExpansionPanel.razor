@@ -1,0 +1,21 @@
+﻿@using IconType = Pharos.Common.Web.Components.Icons.IconType
+<div class="@Classpanel">
+    <button class="ph-expansion-panel__bar" @onclick="ToggleExpansion">
+
+        @if (_isExpanded)
+        {
+            <PhIcon IconType="IconType.ChevronUp" Size="IconSize.Lg"></PhIcon>
+        }
+        else
+        {
+            <PhIcon IconType="IconType.ChevronDown" Size="IconSize.Lg"></PhIcon>
+        }
+
+        @Text
+
+    </button>
+
+    <div class="ph-expansion-panel__content">
+        @ChildContent
+    </div>
+</div>

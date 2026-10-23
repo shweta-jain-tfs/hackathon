@@ -1,0 +1,17 @@
+﻿@using Pharos.Client.Common.Localization
+@using Pharos.Common.Web.Components.Label
+
+<PhModalContent>
+    <Body>
+        <PhInputColumn Spacing="InputSpacing.Loose">
+            <PhLabel Direction="LabelDirection.Horizontal" Size="LabelSize.Body1" Text="@Loc["ApplicationUsersPage_DeleteDialog_Users"]">
+                <PhValueBox Size="TextBoxSize.Medium"> @UserNames </PhValueBox>
+			</PhLabel>
+            <p>@Loc["ApplicationUsersPage_DeleteDialog_DeleteInformation"]</p>
+		</PhInputColumn>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["ApplicationUsersPage_DeleteDialog_ButtonSecondary"]</PhButton>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok()))">@Loc["ApplicationUsersPage_DeleteDialog_ButtonPrimary"]</PhButton>
+    </Footer>
+</PhModalContent>

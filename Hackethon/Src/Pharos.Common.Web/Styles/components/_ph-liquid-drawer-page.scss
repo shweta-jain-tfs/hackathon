@@ -1,0 +1,22 @@
+@use "../abstracts/spacing";
+
+.liquid-drawer-page {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: spacing.$padding-xxl;
+    height: 100%;
+    width: 100%;
+
+    &__drawer {
+        display: flex;
+        height: 100%;
+        align-items: flex-start;
+        flex: 1 1 0;
+        justify-content: flex-start;
+    }
+
+    &__legend {
+        min-width: 257px;
+    }
+}

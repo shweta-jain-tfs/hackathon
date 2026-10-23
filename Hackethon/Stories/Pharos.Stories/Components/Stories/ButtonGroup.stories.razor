@@ -1,0 +1,46 @@
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Icons
+@attribute [Stories("Components/ButtonGroup")]
+
+<Stories TComponent="PhButtonGroup">
+
+    <Story Name="Justified">
+        <Template>
+            <PhButtonGroup Justified @attributes="context.Args">
+                <PhButton Type="@ButtonType.Secondary">Longer text than standard button size</PhButton>
+                <PhButton Type="@ButtonType.Secondary">Cancel</PhButton>
+                <PhButton Type="@ButtonType.Primary">Save</PhButton>
+            </PhButtonGroup>
+            <br />
+            <br />
+            <PhButtonGroup Justified @attributes="context.Args">
+                <PhButton Type="@ButtonType.Secondary">Discard changes</PhButton>
+                <PhButton Type="@ButtonType.Primary">Save</PhButton>
+            </PhButtonGroup>
+        </Template>
+    </Story>
+
+    <Story Name="NonJustified">
+        <Template>
+            <PhButtonGroup @attributes="context.Args">
+                <PhButton Type="@ButtonType.Secondary">Longer text than standard button size</PhButton>
+                <PhButton Type="@ButtonType.Secondary">Cancel</PhButton>
+                <PhButton Type="@ButtonType.Primary">Save</PhButton>
+            </PhButtonGroup>
+            <br />
+            <br />
+            <PhButtonGroup @attributes="context.Args">
+                <PhButton Type="@ButtonType.Secondary">Discard changes</PhButton>
+                <PhButton Type="@ButtonType.Primary">Save</PhButton>
+            </PhButtonGroup>
+        </Template>
+    </Story>
+
+</Stories>
+
+
+
+@code
+{
+}

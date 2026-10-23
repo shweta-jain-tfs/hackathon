@@ -1,0 +1,21 @@
+.ph-system-errors-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+
+    &__content {
+        height: 100%;
+        flex: 1;
+        position: relative;
+        z-index: 1;
+    }
+}
+
+.ph-system-errors-view {
+    height: 100%;
+
+    .ph-datagrid__row--disabled {
+        color: inherit;
+    }
+}

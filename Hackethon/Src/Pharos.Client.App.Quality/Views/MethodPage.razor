@@ -1,0 +1,33 @@
+@attribute [Route(PageRoute.Quality.Method)]
+@attribute [Authorize]
+
+@using Pharos.Client.App.Quality.Views.Calibrators
+@using Pharos.Client.App.Quality.Views.CurveControls
+@using Pharos.Common.Web.Components.ChartCard
+@using Pharos.Client.App.Quality.Views.QualityControls
+@using Pharos.Common.Web.Components.DetailsList
+
+<PhPage>
+    <PageHeader>
+        <Breadcrumb Items="Breadcrumbs"></Breadcrumb>
+    </PageHeader>
+
+    <ChildContent>
+        <PhStack>
+            <PhDetailsList Columns="2" SpaceColumnsEvenly="true" AlignedValues="false">
+                <PhDetailsListItem Label="@Loc["MethodQuality_ActiveConjugateLots"]">@ViewModel.ActiveConjugateLots</PhDetailsListItem>
+                <PhDetailsListItem>
+                    <PhLabel>@Loc["MethodQuality_ShowDataFor"]</PhLabel>
+                    <PhDropdown TValue="int" Options="@ViewModel.DataForDays" @bind-Value="@ViewModel.SelectedDays" />
+                    <PhLabel>@Loc["MethodQuality_Days"]</PhLabel>
+                </PhDetailsListItem>
+            </PhDetailsList>
+            <PhChartCardList>
+                <CalibratorCurveChartView MethodName="@MethodName" InstrumentNumber="@InstrumentNumber" />
+                <CurveControlChartCardListView MethodName="@MethodName" InstrumentNumber="@InstrumentNumber" LastDays="@ViewModel.SelectedDays" />
+            </PhChartCardList>
+            <QualityControlChartCardListView MethodName="@MethodName" InstrumentNumber="@InstrumentNumber" Narrow="false" LastDays="@ViewModel.SelectedDays" />
+        </PhStack>
+    </ChildContent>
+
+</PhPage>

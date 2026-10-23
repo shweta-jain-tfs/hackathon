@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Src\Pharos.Server.LogDump\Pharos.Server.LogDump.csproj" />
+  </ItemGroup>
+
+</Project>

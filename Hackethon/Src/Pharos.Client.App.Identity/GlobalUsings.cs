@@ -1,0 +1,10 @@
+﻿global using Microsoft.AspNetCore.Components;
+global using Pharos.Client.Common.App;
+global using Pharos.Client.Common.App.PageRouting;
+global using Pharos.Client.Common.Models;
+global using Pharos.Client.Common.Models.DataServices;
+global using Pharos.Client.Common.ViewModels;
+global using Pharos.Common.Web.Components.Breadcrumb;
+global using Microsoft.Extensions.Localization;
+global using Pharos.Client.Common.Localization;
+global using Pharos.Contracts.Security;

@@ -1,0 +1,112 @@
+﻿@using Pharos.Client.App.Parameters.QualityControl.ViewModels
+@using Pharos.Common.Web.Components.ConditionalIndentContent
+@using Pharos.Common.Web.Components.FieldOperator
+@using Pharos.Common.Web.Components.FormElements.RadioButton
+<PhStack Gap="StackGap.Lg">
+    <PhPanel>
+        <PhStack Gap="StackGap.Lg">
+            <div class="flex gap-gutter">
+                <PhNumberField Size="TextBoxSize.Small" TValue="int" Label="@Loc["EditQualityControlTestView_Replicates"]" HelpText="1 - 5" @bind-Value="@ViewModel.Replicates" />
+                <PhNumberField Size="TextBoxSize.Small" TValue="double" Label="@Loc["EditQualityControlTestView_ReplicatesCvLimit"]" HelpText="@string.Format(Loc["EditQualityControlTestView_ReplicatesCvLimit_HelpText"], 0, 50)" @bind-Value="@ViewModel.ReplicateCvLimit" />
+            </div>
+
+            <PhFieldOperatorRow>
+                <PhFieldOperator OperatorText="x">
+                    @if (ViewModel.EditingPhadiaControl)
+                    {
+                        <PhLabel Text="@Loc["EditQualityControlTestView_PreDilution"]">
+                            <PhValueBox Size="TextBoxSize.Default">@ViewModel.PreDilutionFactor</PhValueBox>
+                        </PhLabel>
+                    }
+                    else
+                    {
+                        <PhNumberField Size="TextBoxSize.Small" TValue="int" Label="@Loc["EditQualityControlTestView_PreDilution"]" HelpText="1 - 1000" @bind-Value="@ViewModel.PreDilutionFactor"/>
+                    }
+                </PhFieldOperator>
+
+                <PhFieldOperator OperatorText="=">
+                    @if (ViewModel.EditingPhadiaControl)
+                    {
+                        <PhLabel Text="@Loc["EditQualityControlTestView_InstrumentDilution"]">
+                            <PhValueBox Size="TextBoxSize.Default">@ViewModel.InstrumentDilutionFactor</PhValueBox>
+                        </PhLabel>
+                    }
+                    else
+                    {
+                        <PhDropdown TValue="int" Size="DropdownSize.Default" Label="@Loc["EditQualityControlTestView_InstrumentDilution"]" Options="@ViewModel.InstrumentDilutionFactors" @bind-Value="@ViewModel.InstrumentDilutionFactor"/>
+                    }
+                </PhFieldOperator>
+
+                <PhFieldOperator>
+                    <PhLabel Text="@Loc["EditQualityControlTestView_TotalDilution"]">
+                        <PhValueBox Size="TextBoxSize.Default">@ViewModel.TotalDilution</PhValueBox>
+                    </PhLabel>
+                </PhFieldOperator>
+            </PhFieldOperatorRow>
+            
+            <PhDropdown TValue="QualityControlType" Size="DropdownSize.MediumInputWidth" Label="@Loc["EditQualityControlTestView_ReportAs"]" Options="@ViewModel.QualityControlTypes" @bind-Value="@ViewModel.QualityControlType" />
+        </PhStack>
+    </PhPanel>
+
+    <PhPanel>
+        <PhStack Gap="StackGap.Lg">
+            <PhConditionalIndentContent ShowContent="@ViewModel.ApplyAcceptanceRange">
+                <ParentContent>
+                    <PhCheckBox Label="@Loc["EditQualityControlTestView_ApplyAcceptanceRange"]" @bind-Value="@ViewModel.ApplyAcceptanceRange" />
+                </ParentContent>
+
+                <ConditionalContent>
+                    <PhStack Gap="StackGap.Lg">
+                        @if (ViewModel.EditingPhadiaControl)
+                        {
+                            <span>@Loc["EditQualityControlTestView_LimitsHelpTextPhadia"]</span>
+                        }
+                        else
+                        {
+                            <span>@Loc["EditQualityControlTestView_LimitsHelpTextLab"]</span>
+                        }
+
+                        <PhRadioGroup @bind-SelectedValue="@ViewModel.AcceptanceType">
+                            <PhRadioButton Label="@Loc["EditQualityControlTestView_TargetValue"]" Value="AcceptanceType.Target">
+                                <div class="flex gap-gutter">
+                                    <PhNumberField Size="TextBoxSize.Small" TValue="double" Label="@Loc["EditQualityControlTestView_MaxCv"]" HelpText="1 - 100" @bind-Value="@ViewModel.MaxCv"/>
+                                    <PhDropdown TValue="int" Size="DropdownSize.Default" Label="@Loc["EditQualityControlTestView_NumberOfSd"]" Options="@ViewModel.NumberOfSds" @bind-Value="@ViewModel.NumberOfSd"/>
+                                </div>
+                            </PhRadioButton>
+
+                            <PhRadioButton Label="@Loc["EditQualityControlTestView_Range"]" Value="AcceptanceType.Range">
+                                @if (ViewModel.EditingPhadiaControl)
+                                {
+                                    <span>@Loc["EditQualityControlTestView_ManufacturingRangeUsedAsDefault"]</span>
+                                }
+                                else
+                                {
+                                    <span>@Loc["EditQualityControlTestView_DefaultLimitsOptional"]</span>
+
+                                    <div class="flex gap-gutter">
+                                        <PhNumberField Size="TextBoxSize.Small" TValue="double?" Label="@Loc["EditQualityControlTestView_LowerLimit"]" HelpText="0 - 10000" @bind-Value="@ViewModel.LowerLimit"/>
+                                        <PhNumberField Size="TextBoxSize.Small" TValue="double?" Label="@Loc["EditQualityControlTestView_UpperLimit"]" HelpText="0 - 10000" @bind-Value="@ViewModel.UpperLimit"/>
+                                    </div>
+                                }
+                            </PhRadioButton>
+                        </PhRadioGroup>
+                    </PhStack>
+                </ConditionalContent>
+            </PhConditionalIndentContent>
+        </PhStack>
+    </PhPanel>
+
+    <PhPanel>
+        <PhConditionalIndentContent ShowContent="@ViewModel.UseLotQualification">
+            <ParentContent>
+                <PhCheckBox Label="@Loc["EditQualityControlTestView_UseQualificationOfLotBeforeUse"]" @bind-Value="@ViewModel.UseLotQualification" />
+            </ParentContent>
+
+            <ConditionalContent> 
+                <PhStack Gap="StackGap.Lg">
+                    <PhNumberField Size="TextBoxSize.Small" TValue="int" Label="@Loc["EditQualityControlTestView_NumberOfTests"]" HelpText="5 - 50" @bind-Value="@ViewModel.NumberOfTests"/>
+                </PhStack>
+            </ConditionalContent>   
+        </PhConditionalIndentContent>
+    </PhPanel>
+</PhStack>

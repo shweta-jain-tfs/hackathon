@@ -1,0 +1,9 @@
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+
+.ph-parameters-product {
+
+    &__content {
+        padding-top: spacing.$padding-xxl;
+    }
+}

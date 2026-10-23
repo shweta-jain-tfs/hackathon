@@ -1,0 +1,95 @@
+name: $(Build.SourceBranchName).$(Build.BuildId)
+
+trigger: none # No CI build
+
+pr: none # Not for pull requests
+
+resources:
+  repositories:
+    - repository: sharedPipeline # Name to reference this repository at a later step
+      type: git
+      name: "TetrisSoftware/SharedPipelineTemplates"
+
+schedules:
+- cron: '0 0 * * *'
+  displayName: Daily midnight build
+  branches:
+    include:
+    - main
+
+parameters:
+- name: 'BuildConfiguration'
+  displayName: Build Configuration
+  default: Release
+  type: string
+- name: 'BuildVersion'
+  default: '0.1.0'
+  type: string
+- name: 'EnableExtendedTestLogging'
+  displayName: Enable Extended Test Logging
+  default: false
+  type: boolean
+
+variables:
+- group: PRBuild
+- group: CodeQL
+- name: 'buildConfiguration'
+  value: '${{ parameters.BuildConfiguration }}'
+- name: dotNetVersion
+  value: '10.0.402'
+- name: nodeVersion
+  value: '20.11.0'
+- name: timestamp
+  value: $[format('{0:yyyyMMddHHmmss}', pipeline.startTime)]
+- name: branchName
+  value: $[replace(variables['Build.SourceBranchName'], '/', '_')]
+
+stages:
+  - stage:
+    jobs:
+    - job: BuildAndTest
+      pool:
+        name: 'Development'
+      workspace:
+        clean: all
+      steps:
+      - template: .azuredevops/templates/build-dot-net-prerequisite-step.yml@sharedPipeline
+        parameters:
+          nugetConfigPath: '$(Build.SourcesDirectory)\nuget.config'
+          nugetRestoreProjects: '$(Build.SourcesDirectory)\Pharos.sln'
+          sdkVersion: '$(dotNetVersion)'
+          toolsDirectory: '$(Agent.ToolsDirectory)'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Build Pharos Solution with configuration: ${{ parameters.buildConfiguration }}'
+        inputs:
+          command: 'build'
+          projects: '$(Build.SourcesDirectory)\Pharos.sln'
+          arguments: '--configuration $(buildConfiguration) -p:TreatWarningsAsErrors=true -p:CodeAnalysisTreatWarningsAsErrors=true'
+
+      - template: templates/run-and-publish-xunit-test.yml
+        parameters:
+          buildConfiguration: '$(buildConfiguration)'
+          buildSourcesDirectory: '$(Build.SourcesDirectory)'
+          sqlPassword: '$(SQLPass)'
+          tempDirectory: '$(Agent.TempDirectory)'
+          agentName: '$(Agent.Name)'
+          enableExtendedTestLogging: ${{ parameters.EnableExtendedTestLogging }}
+
+    - job: CodeQLJob
+      pool:
+        name: 'Security'
+      workspace:
+        clean: all
+      displayName: Perform Static Code Analysis (CodeQL)
+      steps:
+        - template: .azuredevops/templates/security-codeql-code-scan.yml@sharedPipeline
+          parameters:
+            buildCommand: '$(buildCommand)'
+            codeqlExeDir: '$(codeqlExeDir)'
+            dotNetVersion: '$(dotNetVersion)'
+            downloadUrl: '$(downloadURL)'
+            installPath: '$(installPath)'
+            netInstallPath: '$(netInstallPath)'
+            sourcePath: '$(sourcePath)'
+            tarOutputPath: '$(tarOutputPath)'

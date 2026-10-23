@@ -1,0 +1,49 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-chart-card {
+    $root: &;
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: spacing.$gap-xs;
+    padding-block: spacing.$padding-xs;
+    @include rounded.rounded;
+    background: colors.$layer-subtle;
+
+    &__header {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        gap: spacing.$gap-xs;
+        align-items: center;
+        padding-inline: spacing.$padding-xs;
+        @include text.helper-text;
+
+        > a::after {
+            // make the whole card clickable
+            content: "";
+            display: block;
+            position: absolute;
+            inset: 0;
+        }
+    }
+
+    &__icon {
+        align-self: start;
+        min-height: 32px;
+    }
+
+    &__chart {
+        align-self: center;
+        padding-inline: spacing.$padding-xs;
+    }
+
+    &--narrow {
+        #{$root}__chart {
+            padding-inline: 0;
+        }
+    }
+}

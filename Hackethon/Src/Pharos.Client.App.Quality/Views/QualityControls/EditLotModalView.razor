@@ -1,0 +1,67 @@
+﻿@using Pharos.Client.Common.Localization
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Contracts.Security
+@using Pharos.Common.Web.Components.FormElements.RadioButton
+
+
+<PhModalContent>
+    <Body>
+        <PhInputColumn Spacing="InputSpacing.Default">
+            <PhTextBox Label="@Loc["MethodQualityControlDetailsView_EditDialog_LotNumber"]" @bind-Value="LotToEdit.LotNumber"
+                       PlaceHolder="@Loc["MethodQualityControlDetailsView_EditDialog_LotNumberPlaceHolder"]"
+					   Disabled="true"
+                       Size="TextBoxSize.Medium" />
+        </PhInputColumn>
+
+        <PhRadioGroup @bind-SelectedValue="@LotToEdit.LotType">
+            @if (IsUseQcDefaultsEnabled)
+            {
+                <PhRadioButton Label="@Loc["MethodQualityControlDetailsView_EditDialog_UseDefaultQcRange"]" Value="LotType.UseDefaultQcValues" />
+            }
+            <PhRadioButton Label="@Loc["MethodQualityControlDetailsView_EditDialog_AcceptanceRange"]" Value="LotType.AcceptanceRange" >
+                <PhStack Gap="StackGap.Lg">
+                     <PhLabel Text="@ManufacturingRangeString()" Disabled="@string.IsNullOrEmpty(ManufacturingRangeString())">
+                        <div class="flex gap-sm">
+                            <PhLabel Text="@Loc["MethodQualityControlDetailsView_EditDialog_RangeMin"]" Direction="LabelDirection.Horizontal">
+                                <PhNumberField @bind-Value="LotToEdit.RangeMin"
+                                           PlaceHolder="@Loc["MethodQualityControlDetailsView_EditDialog_RangeMinPlaceHolder"]"
+                                           Size="TextBoxSize.Small" />
+                            </PhLabel>
+                            <PhLabel Text="@Loc["MethodQualityControlDetailsView_EditDialog_RangeMax"]" Direction="LabelDirection.Horizontal">
+                                <PhNumberField @bind-Value="LotToEdit.RangeMax"
+                                           PlaceHolder="@Loc["MethodQualityControlDetailsView_EditDialog_RangeMaxPlaceHolder"]"
+                                           Size="TextBoxSize.Small" />
+                            </PhLabel>
+                        
+                        </div>
+                     </PhLabel>
+                </PhStack>
+            </PhRadioButton>
+            <PhRadioButton Label="@Loc["MethodQualityControlDetailsView_EditDialog_TargetValue"]" Value="LotType.TargetValue">
+                <PhStack Gap="StackGap.Lg">
+                    <div class="grid grid-cols-2 mr-auto items-center gap-sm">
+                        <PhLabel Text="@Loc["MethodQualityControlDetailsView_EditDialog_ExpectedConcentration"]" Direction="LabelDirection.Horizontal" For="ExpectedConcentrationId" />
+                        <PhNumberField Id="ExpectedConcentrationId"
+                                       @bind-Value="LotToEdit.ExpectedConcentration"
+                                       PlaceHolder="@Loc["MethodQualityControlDetailsView_EditDialog_ExpectedConcentrationPlaceHolder"]"
+                                       Size="TextBoxSize.Small" />
+                        <PhLabel Text="@Loc["MethodQualityControlDetailsView_EditDialog_ExpectedStdDev"]" Direction="LabelDirection.Horizontal" For="ExpectedStdDevId" />
+                        <PhNumberField Id="ExpectedStdDevId"
+                                       @bind-Value="LotToEdit.ExpectedStdDev"
+                                       PlaceHolder="@Loc["MethodQualityControlDetailsView_EditDialog_ExpectedStdDevPlaceHolder"]"
+                                       Size="TextBoxSize.Small" />
+                        <PhLabel Text="@Loc["MethodQualityControlDetailsView_EditDialog_StdDevLimit"]" Direction="LabelDirection.Horizontal" For="StdDevLimitId" />
+                        <PhNumberField Id="StdDevLimitId"
+                                       @bind-Value="LotToEdit.StdDevLimit"
+                                       PlaceHolder="@Loc["MethodQualityControlDetailsView_EditDialog_StdDevLimitPlaceHolder"]"
+                                       Size="TextBoxSize.Small" />
+					</div>
+                </PhStack>
+            </PhRadioButton>
+        </PhRadioGroup>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["MethodQualityControlDetailsView_EditDialog_ButtonSecondary"]</PhButton>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Ok(LotToEdit)))" Disabled=!IsSaveEnabled()>@Loc["MethodQualityControlDetailsView_EditDialog_ButtonPrimary"]</PhButton>
+    </Footer>
+</PhModalContent>

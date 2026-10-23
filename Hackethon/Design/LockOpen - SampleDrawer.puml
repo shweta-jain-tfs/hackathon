@@ -1,0 +1,35 @@
+@startuml LockOpen-SampleDrawer
+skinparam BoxPadding 20
+
+actor User as user
+
+box "Instrument" #LightGrey
+	participant Client.Features #LightSkyBlue
+	participant Client.Notifications.Services #LightSkyBlue
+	participant gRPC #LightGreen
+end box
+
+box "Pharos-Server" #LightSkyBlue
+	participant Application.Instrument.Grpc #LightGreen
+	participant Application.Instrument.Commands
+	participant Application.Infrastructure.Notifications
+end box
+
+'Open sample drawer'
+user -> gRPC : Open sample drawer
+
+'Send instrument storage'
+note over Application.Instrument.Grpc: PharosServiceImplementation.cs
+gRPC -> Application.Instrument.Grpc : grpc LockOpen
+Application.Instrument.Grpc -> Application.Instrument.Commands : Send LockOpenCommand
+Application.Instrument.Commands -> Application.Infrastructure.Notifications : _hub.CompartmentSampleDrawerOpenInProgress
+note over Application.Infrastructure.Notifications: Hubs\\InstrumentHub.cs
+note over Application.Infrastructure.Notifications: Get SignalR group for this instrument, and send message.
+Application.Infrastructure.Notifications --> Client.Notifications.Services: HubContext.Clients.Group(DefaultGroup).CompartmentSampleDrawerOpenInProgress()
+note over Client.Notifications.Services: Listening on\nIInstrumentHub.CompartmentSampleDrawerOpenInProgress
+Client.Notifications.Services --> Client.Notifications.Services: InstrumentStateNotificationProvider\n->\nInstrumentNotificationService
+note over Client.Features: Listening on\nCompartmentSampleDrawerOpenInProgressEventHandler\nin InstrumentNotificationService
+Client.Notifications.Services --> Client.Features: CompartmentBarView.razor.cs
+note over Client.Features: Make progress bar move
+
+@enduml

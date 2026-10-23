@@ -1,0 +1,4 @@
+﻿@using Microsoft.AspNetCore.Components.Routing
+
+@* ConfirmExternalNavigation is set to false to not interfere with automatic logout of the user *@
+<NavigationLock ConfirmExternalNavigation="false" OnBeforeInternalNavigation="@OnBeforeInternalNavigation" />

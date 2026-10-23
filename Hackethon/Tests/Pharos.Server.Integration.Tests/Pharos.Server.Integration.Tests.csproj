@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="AngleSharp.Css" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Src\Pharos.Server.Application.Modules\Pharos.Server.Application.Modules.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server\Pharos.Server.csproj" />
+		<ProjectReference Include="..\Pharos.Server.Integration.Tests.Common\Pharos.Server.Integration.Tests.Common.csproj" />
+	</ItemGroup>
+
+</Project>

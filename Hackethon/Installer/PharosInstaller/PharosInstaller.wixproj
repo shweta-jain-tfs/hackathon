@@ -1,0 +1,75 @@
+﻿<Project Sdk="WixToolset.Sdk/5.0.1">
+  <PropertyGroup>
+    <Configurations>Debug;Release</Configurations>
+    <Platforms>x64</Platforms>
+    <!-- Overridable so that different installer flavours can harvest different publish outputs. -->
+    <PharosPublishPath Condition="'$(PharosPublishPath)' == ''">..\..\Src\Pharos.Server\bin\Release\net10.0\publish</PharosPublishPath>
+    <!-- Keeps the packages of each flavour in separate output folders within a single build run. -->
+    <PharosInstallerFlavor Condition="'$(PharosInstallerFlavor)' == ''">Production</PharosInstallerFlavor>
+    <OutputPath>bin\$(Platform)\$(Configuration)\$(PharosInstallerFlavor)\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <HarvestDirectory Include="..\..\ParameterUpdatePackage">
+      <ComponentGroupName>ParameterUpdatePackageComponents</ComponentGroupName>
+      <DirectoryRefId>PUP</DirectoryRefId>
+      <SuppressRootDirectory>true</SuppressRootDirectory>
+      <SuppressRegistry>true</SuppressRegistry>
+    </HarvestDirectory>
+    <HarvestDirectory Include="$(PharosPublishPath)">
+      <ComponentGroupName>HarvestedComponents</ComponentGroupName>
+      <DirectoryRefId>INSTALLFOLDER</DirectoryRefId>
+      <SuppressRootDirectory>true</SuppressRootDirectory>
+		<!--Tell Heat (a tool from the WiX Toolset) to not attempt to generate installer authoring for registering harvested files in the registry of the target installation machine.-->
+		<SuppressRegistry>true</SuppressRegistry>
+      <Transforms>Filter.xslt</Transforms>
+    </HarvestDirectory>
+    <BindPath Include="..\..\ParameterUpdatePackage\" />
+    <BindPath Include="$(PharosPublishPath)\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Filter.xslt" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="WixToolset.Heat" Version="5.0.1" />
+    <PackageReference Include="WixToolset.Iis.wixext" Version="5.0.1" />
+    <PackageReference Include="WixToolset.Sql.wixext" Version="5.0.1" />
+    <PackageReference Include="WixToolset.Util.wixext" Version="5.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CustomAction\CustomAction.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Includes\InstallerArguments.wxi" />
+  </ItemGroup>
+	<!-- Ensure that the InstallerBootstrapper project is built before this project so that the EXE is available to copy next to the MSI. -->
+	<ItemGroup>
+    <ProjectReference Include="..\InstallerBootstrapper\InstallerBootstrapper.csproj" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+  <PropertyGroup>
+    <BootstrapperExe>$(MSBuildThisFileDirectory)..\InstallerBootstrapper\bin\$(Configuration)\net481\PharosInstaller.exe</BootstrapperExe>
+    <ReadmeSource>$(MSBuildThisFileDirectory)README.md</ReadmeSource>
+  </PropertyGroup>
+	<!-- Copy the built EXE (and README) next to the MSI after building for convenience. Project reference ensures InstallerBootstrapper is built first. -->
+	<Target Name="CopyBootstrapperAfterMsi" AfterTargets="Build">
+    <Message Text="Copy bootstrapper if present: $(BootstrapperExe)" Importance="High" />
+    <Copy Condition="Exists('$(BootstrapperExe)')" SourceFiles="$(BootstrapperExe)" DestinationFolder="$(OutputPath)\en-US\" SkipUnchangedFiles="true" />
+    <Message Condition="Exists('$(BootstrapperExe)')" Text="Copied bootstrapper next to MSI." Importance="High" />
+    <Message Text="Copy README if present: $(ReadmeSource)" Importance="High" />
+	<Copy Condition="Exists('$(ReadmeSource)')"
+	    SourceFiles="$(ReadmeSource)"
+	    DestinationFolder="$(OutputPath)\en-US\"
+	    SkipUnchangedFiles="true" />
+    <Message Condition="Exists('$(ReadmeSource)')" Text="Copied README.md next to MSI." Importance="High" />
+  </Target>
+  <Target Name="CheckParameterUpdatePackageExists" BeforeTargets="HarvestDirectory">
+    <Error
+      Condition="!Exists('$(MSBuildThisFileDirectory)..\..\ParameterUpdatePackage\')"
+      Text="The 'ParameterUpdatePackage\' folder was not found at the TetrisSoftware repository root (..\..\ParameterUpdatePackage\).Please create the folder and place a ParameterUpdatePackage-XXXXX.zip file in it." />
+    <ItemGroup>
+      <ParameterUpdatePackageZip Include="$(MSBuildThisFileDirectory)..\..\ParameterUpdatePackage\ParameterUpdatePackage-*.zip" />
+    </ItemGroup>
+    <Error
+      Condition="'@(ParameterUpdatePackageZip)' == ''"
+      Text="No ParameterUpdatePackage-XXXXX.zip file was found. Please place a ParameterUpdatePackage-XXXXX.zip file into the 'ParameterUpdatePackage\' folder at the TetrisSoftware repository root (..\..\ParameterUpdatePackage\)." />
+  </Target>
+</Project>

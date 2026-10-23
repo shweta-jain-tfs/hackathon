@@ -1,0 +1,75 @@
+@using Pharos.Common.Web.Components.DropdownButton
+@using Pharos.Common.Web.Components.Status
+
+@if (ViewModel.IsLoaded)
+{
+    <PhDockedButtonRow DockToBottom>
+        <ChildContent>
+            <div class="ph-system-error-details">
+                <PhStack Gap="StackGap.Md">
+                    <div class="ph-system-error-details__header">
+                        <PhStatus Status="ViewModel.StatusType" Text="@ViewModel.Title" FontSize="StatusFontSize.Body1" />
+                    </div>
+
+                    <div class="@(HasErrorImage ? "ph-system-error-details__content-section ph-system-error-details__content-section--with-image" : "ph-system-error-details__content-section")">
+                        <div class="ph-system-error-details__content-label">@Loc["SystemErrorDetailsPage_HeaderErrorDescription"]</div>
+                        <div class="ph-system-error-details__content-with-image">
+                            @if (HasErrorImage)
+                            {
+                                <img src="@ViewModel.ErrorImagePath"
+                                     alt="@ViewModel.Title"
+                                     class="ph-system-error-details__image" />
+                            }
+                            <PhValueBox class="ph-system-error-details__content-value" Overflow="ValueBoxOverflow.Multiline" Rows="7">@ViewModel.Content</PhValueBox>
+                        </div>
+                    </div>
+
+                    <div class="ph-system-error-details__details-grid">
+                        <PhLabel Text="@Loc["SystemErrorDetailsPage_HeaderErrorTime"]">
+                            <PhValueBox>
+                                <PhDateTime DateToShow="@ViewModel.Timestamp"></PhDateTime>
+                            </PhValueBox>
+                        </PhLabel>
+                        <PhLabel Text="@Loc["SystemErrorDetailsPage_HeaderErrorCode"]">
+                            <PhValueBox>@ViewModel.Code</PhValueBox>
+                        </PhLabel>
+
+                        <PhLabel Text="@Loc["SystemErrorDetailsPage_HeaderInstrument"]">
+                            <PhValueBox>@ViewModel.InstrumentName</PhValueBox>
+                        </PhLabel>
+                        <PhLabel Text="@Loc["SystemErrorDetailsPage_ErrorLevel"]">
+                            <PhValueBox>@ViewModel.ClassificationText</PhValueBox>
+                        </PhLabel>
+
+                        <PhLabel Text="@Loc["SystemErrorsPage_ActionTaken"]">
+                            <PhValueBox>@ViewModel.ResponseActionText</PhValueBox>
+                        </PhLabel>
+                        <PhLabel Text="@Loc["SystemErrorDetailsPage_HeaderResponseTime"]">
+                            <PhValueBox>
+                                <PhDateTime DateToShow="@ViewModel.ResponseTimestamp"></PhDateTime>
+                            </PhValueBox>
+                        </PhLabel>
+                    </div>
+                </PhStack>
+            </div>
+        </ChildContent>
+        <Buttons>
+            @if (ViewModel.PossibleResponses.Count > _maxInlineResponseButtons)
+            {
+                <PhDropdownButton DropdownButtonType="DropdownButtonType.Secondary" Text="@Loc["SystemErrorDetailsPage_ActionsButton"]">
+                    @foreach (var response in ViewModel.PossibleResponses)
+                    {
+                        <PhDropdownButtonItem Disabled="ViewModel.ResponseButtonsDisabled" Text="@ViewModel.GetResponseButtonText(response)" OnClick="() => ViewModel.RespondToError(response)" />
+                    }
+                </PhDropdownButton>
+            }
+            else
+            {
+                @foreach (var response in ViewModel.PossibleResponses)
+                {
+                    <PhButton Disabled="ViewModel.ResponseButtonsDisabled" OnClick="_ => ViewModel.RespondToError(response)">@ViewModel.GetResponseButtonText(response)</PhButton>
+                }
+            }
+        </Buttons>
+    </PhDockedButtonRow>
+}

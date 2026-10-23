@@ -1,0 +1,220 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.Menu
+@using Pharos.Common.Web.Components.Sidebar
+@attribute [Stories("Components/Menu/RouteSubMenu")]
+
+<Stories TComponent="PhMenu">
+    <Story Name="Sub menu">
+        <Arguments>
+        </Arguments>
+        <Template>
+            <NavigationLock OnBeforeInternalNavigation="HandleBeforeInternalNavigation" />
+            <div style="height: 100vh; width: 296px; max-width: 50%">
+                <PhSidebar Scroll UseSpacing>
+                    <Header>
+                        Sidebar header
+                    </Header>
+                    <ChildContent>
+                        <PhMenu @attributes="context.Args" CurrentUriOverride="@_currentUri">
+                            <ChildContent>
+                                <PhMenuItem Text="Home" IconType="@IconType.UserProfile" Uri="@Current("")" Match="NavLinkMatch.All" />
+                                <PhMenuItem Text="Services" Uri="@Current("services")" />
+                                <PhMenuGroup Text="More..." SubMenu="PhMenuGroup.SubMenuType.FloatingRight">
+                                    <PhMenuItem Text="Contact" Uri="@Current("contact")" />
+                                    <PhMenuItem Text="Parameters" Uri="@Current("parameters")" />
+                                    <PhMenuItem Text="Settings" Uri="@Current("settings")" />
+                                </PhMenuGroup>
+                            </ChildContent>
+                            <RouteSubMenus>
+                                <PhRouteSubMenu Title="Settings" MatchPrefix="settings">
+                                    <PhMenuItem Text="User settings" Uri="@Current("settings/user")" />
+                                    <PhMenuItem Text="Request settings" Uri="@Current("settings/request")" />
+                                    <PhMenuItem Text="LIS settings" Uri="@Current("settings/lis")" />
+                                </PhRouteSubMenu>
+                                <PhRouteSubMenu Title="Parameters" MatchPrefix="parameters">
+                                    <PhMenuItem Text="Parameters home" Uri="@Current("parameters")" Match="NavLinkMatch.All" />
+                                    <PhMenuItem Text="Methods" Uri="@Current("parameters/methods")" />
+                                    <PhMenuItem Text="Reflex" Uri="@Current("parameters/reflex")" />
+                                </PhRouteSubMenu>
+                            </RouteSubMenus>
+                        </PhMenu>
+                    </ChildContent>
+                    <Footer>
+                        Sidebar footer
+                        <div>Current: @_currentUri</div>
+                    </Footer>
+                </PhSidebar>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Overflow and clipping">
+        <Arguments>
+        </Arguments>
+        <Template>
+            <NavigationLock OnBeforeInternalNavigation="HandleBeforeInternalNavigation" />
+            <div style="height: 100vh; max-height: 420px; width: 296px; max-width: 50%">
+                <PhSidebar Scroll UseSpacing>
+                    <Header>Overflow and clipping</Header>
+                    <ChildContent>
+                        <PhMenu @attributes="context.Args" CurrentUriOverride="@_currentUri">
+                            <ChildContent>
+                                <PhMenuItem Text="Home" Uri="@Current("")" Match="NavLinkMatch.All" />
+                                <PhMenuGroup Text="More..." SubMenu="PhMenuGroup.SubMenuType.FloatingRight">
+                                    <PhMenuItem Text="Contact" Uri="@Current("contact")" />
+                                    <PhMenuItem Text="Settings" Uri="@Current("settings")" />
+                                </PhMenuGroup>
+                            </ChildContent>
+                            <RouteSubMenus>
+                                <PhRouteSubMenu Title="Settings" MatchPrefix="settings">
+                                    <PhMenuItem Text="ClippingTitleClippingTitleClippingTitleClippingTitleClippingTitle" Uri="@Current("settings/long-gapless")" />
+                                    <PhMenuItem Text="User settings" Uri="@Current("settings/user")" />
+                                    <PhMenuItem Text="Request settings" Uri="@Current("settings/request")" />
+                                    <PhMenuItem Text="LIS settings" Uri="@Current("settings/lis")" />
+                                    <PhMenuItem Text="Notification settings" Uri="@Current("settings/notifications")" />
+                                    <PhMenuItem Text="Audit settings" Uri="@Current("settings/audit")" />
+                                    <PhMenuItem Text="Access settings" Uri="@Current("settings/access")" />
+                                    <PhMenuItem Text="Integration settings" Uri="@Current("settings/integrations")" />
+                                    <PhMenuItem Text="Localization settings" Uri="@Current("settings/localization")" />
+                                    <PhMenuItem Text="Backup settings" Uri="@Current("settings/backup")" />
+                                    <PhMenuItem Text="Security policies" Uri="@Current("settings/security")" />
+                                    <PhMenuItem Text="Advanced settings" Uri="@Current("settings/advanced")" />
+                                    <PhMenuItem Text="Retention settings" Uri="@Current("settings/retention")" />
+                                    <PhMenuItem Text="Theme settings" Uri="@Current("settings/theme")" />
+                                    <PhMenuItem Text="API settings" Uri="@Current("settings/api")" />
+                                </PhRouteSubMenu>
+                            </RouteSubMenus>
+                        </PhMenu>
+                    </ChildContent>
+                    <Footer>
+                        <div>Current: @_currentUri</div>
+                    </Footer>
+                </PhSidebar>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Scroll to item">
+        <Arguments>
+        </Arguments>
+        <Template>
+            <NavigationLock OnBeforeInternalNavigation="HandleBeforeInternalNavigation" />
+            <div style="height: 100vh; max-height: 500px; width: 296px; max-width: 50%">
+                <PhSidebar Scroll UseSpacing>
+                    <Header>Open and scroll on nav</Header>
+                    <ChildContent>
+                        <PhMenu @attributes="context.Args" CurrentUriOverride="@_currentUri">
+                            <ChildContent>
+                                <PhMenuItem Text="Home" Uri="@Current("")" Match="NavLinkMatch.All" />
+                                <PhMenuGroup Text="More..." SubMenu="PhMenuGroup.SubMenuType.FloatingRight">
+                                    <PhMenuItem Text="Contact" Uri="@Current("contact")" />
+                                    <PhMenuItem Text="Settings" Uri="@Current("settings")" />
+                                </PhMenuGroup>
+                            </ChildContent>
+                            <RouteSubMenus>
+                                <PhRouteSubMenu Title="Settings" MatchPrefix="settings">
+                                    <PhMenuItem Text="User settings" Uri="@Current("settings/user")" />
+                                    <PhMenuItem Text="Request settings" Uri="@Current("settings/request")" />
+                                    <PhMenuItem Text="LIS settings" Uri="@Current("settings/lis")" />
+                                    <PhMenuItem Text="Notification settings" Uri="@Current("settings/notifications")" />
+                                    <PhMenuItem Text="Audit settings" Uri="@Current("settings/audit")" />
+                                    <PhMenuItem Text="Access settings" Uri="@Current("settings/access")" />
+                                    <PhMenuItem Text="Integration settings" Uri="@Current("settings/integrations")" />
+                                    <PhMenuItem Text="Localization settings" Uri="@Current("settings/localization")" />
+                                    <PhMenuItem Text="Backup settings" Uri="@Current("settings/backup")" />
+                                    <PhMenuItem Text="Security policies" Uri="@Current("settings/security")" />
+                                    <PhMenuItem Text="Advanced settings" Uri="@Current("settings/advanced")" />
+                                    <PhMenuItem Text="Retention settings" Uri="@Current("settings/retention")" />
+                                    <PhMenuItem Text="Theme settings" Uri="@Current("settings/theme")" />
+                                    <PhMenuItem Text="API settings" Uri="@Current("settings/api")" />
+                                </PhRouteSubMenu>
+                            </RouteSubMenus>
+                        </PhMenu>
+                    </ChildContent>
+                    <Footer>
+                        <div class="flex flex-col gap-xs">
+                            Click to auto-open submenu and scroll to item.
+                            <PhButton OnClick="@(() => Go("settings/api"))">Go to API settings</PhButton>
+                            <div>Current: @_currentUri</div>
+                        </div>
+                    </Footer>
+                </PhSidebar>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Submenu matching">
+        <Arguments>
+        </Arguments>
+        <Template>
+            <NavigationLock OnBeforeInternalNavigation="HandleBeforeInternalNavigation" />
+            <div style="height: 100vh; width: 296px; max-width: 50%">
+                <PhSidebar Scroll UseSpacing>
+                    <Header>Most specific submenu opens</Header>
+                    <ChildContent>
+                        <PhMenu @attributes="context.Args" CurrentUriOverride="@_currentUri">
+                            <ChildContent>
+                                <PhMenuItem Text="Home" Uri="@Current("")" Match="NavLinkMatch.All" />
+                                <PhMenuGroup Text="More..." SubMenu="PhMenuGroup.SubMenuType.FloatingRight">
+                                    <PhMenuItem Text="Submenu" Uri="@Current("submenu/general")" />
+                                    <PhMenuItem Text="Advanced submenu" Uri="@Current("submenu/advanced")" />
+                                </PhMenuGroup>
+                            </ChildContent>
+                            <RouteSubMenus>
+                                <PhRouteSubMenu Title="Submenu" MatchPrefix="submenu">
+                                    <PhMenuItem Text="General" Uri="@Current("submenu/general")" />
+                                </PhRouteSubMenu>
+                                <PhRouteSubMenu Title="Advanced submenu" MatchPrefix="submenu/advanced">
+                                    <PhMenuItem Text="Advanced root" Uri="@Current("submenu/advanced")" Match="NavLinkMatch.All" />
+                                    <PhMenuItem Text="Advanced details" Uri="@Current("submenu/advanced/details")" />
+                                </PhRouteSubMenu>
+                            </RouteSubMenus>
+                        </PhMenu>
+                    </ChildContent>
+                    <Footer>
+                        <div class="flex flex-col gap-xs">
+                            <div>Expected: <code>submenu/advanced*</code> opens <b>Advanced submenu</b> and <code>submenu/general</code> opens <b>Submenu</b>.</div>
+                            <div>Current: @_currentUri</div>
+                        </div>
+                    </Footer>
+                </PhSidebar>
+            </div>
+        </Template>
+    </Story>
+
+</Stories>
+
+@code {
+    [Inject] NavigationManager NavigationManager { get; set; } = default!;
+
+    private string _currentUri = "settings/user";
+
+    private string Current(string uri)
+    {
+        return uri == _currentUri ? NavigationManager.Uri : uri;
+    }
+
+    private void Go(string path)
+    {
+        if (path == "settings")
+        {
+            path = "settings/user";
+        }
+
+        _currentUri = path;
+    }
+
+    private Task HandleBeforeInternalNavigation(LocationChangingContext context)
+    {
+        context.PreventNavigation();
+
+        if (context.TargetLocation == NavigationManager.Uri)
+        {
+            return Task.CompletedTask;
+        }
+
+        Go(NavigationManager.ToBaseRelativePath(context.TargetLocation));
+        return Task.CompletedTask;
+    }
+}

@@ -1,0 +1,94 @@
+@using Pharos.Common.Web.Components.NavigationLock
+@using Pharos.Common.Web.Components.TrailingEdge
+
+<PhNavigationLock Modified="@ViewModel.IsModified" OnSave="@(() => ViewModel.SaveAsync())" />
+
+<div class="@TrayDetailCssClass">
+    <div class="ph-tray-detail__header">
+        <div class="ph-tray-detail__header-label-container">
+            <span class="ph-tray-detail__header-label">@(string.Format(Loc["TrayPanel_Title_TrayId"], ViewModel.TrayId))</span>
+        </div>
+        <div class="ph-tray-detail__header-button">
+            <PhIconButton IconType="IconType.ModalClose" IconSize="IconSize.Lg" OnClick="CloseButtonClicked" Type="IconButtonType.Blank" />
+        </div>
+    </div>
+    <div class="ph-tray-detail__content-tray-legend">
+        <div class="ph-tray-detail__content">
+            <PhLabel Text="@Loc["TrayPanel_InputLabel_TrayLocation"]">
+                <div class="ph-tray-detail__location-input">
+                    <PhValueBox Size="TextBoxSize.Default">@ViewModel.TrayLocation</PhValueBox>
+                </div>
+            </PhLabel>
+
+            <div class="ph-tray-detail__content-tray">
+                <CascadingValue Value="ViewModel.LegendViewModel.LegendSelectionResult" Name="TrayPanelLegendSelectionResult">
+                    <CascadingValue Value="ViewModel.LegendViewModel.OnResetLegendSelectionRequested" Name="TrayPanelOnResetLegendSelectionRequested" IsFixed="true">
+                        <PhEditableTray IsEditMode="ViewModel.IsEditMode" SampleTubes="ViewModel.GetSampleTubes()" InitialSelectedPosition="@InitialSelectedPosition" IsTubeSelected=ViewModel.IsSampleTubeSelected TubeSelected="HandleSampleTubeSelected" />
+                    </CascadingValue>
+                </CascadingValue>
+                <div class="ph-tray-detail__sample-id-container">
+                    <PhLabel Text="@GetTubeBarcodeLabel()" Disabled="@(!ViewModel.IsSampleTubeSelected)"></PhLabel>
+                    <div class="ph-tray-detail__sample-id-details">
+                        <div class="ph-tray-detail__sample-id-input">
+                            @if (ViewModel.IsEditMode)
+                            {
+                                <PhTextBox @bind-Value="@ViewModel.TubeBarcode"
+                                           Disabled="@(!ViewModel.IsEditMode)"
+                                           Size="TextBoxSize.Default"
+                                           MaxLength="@_maxTubeBarcodeLength"
+                                           OnFocus="HandleSampleIdInputFocus">
+                                </PhTextBox>
+                            }
+                            else if (ViewModel.IsRequestAvailable)
+                            {
+                                <PhValueBox Size="TextBoxSize.Default">
+                                    <PhHrefLink Href="@($"{PageRoute.SampleDetails.Default}/{ViewModel.RequestId}")">@ViewModel.SampleIdDisplay</PhHrefLink>
+                                </PhValueBox>
+                            }
+                            else
+                            {
+                                <PhValueBox Size="TextBoxSize.Default">@ViewModel.SampleIdDisplay</PhValueBox>
+                            }
+                        </div>
+                    </div>
+                    @if (ViewModel.IsHighPriorityCheckBoxVisible)
+                    {
+                        <PhCheckBox OnCheckChanged="HandleHighPriorityCheckChanged" 
+                                    @bind-Value="@ViewModel.HighPriority" 
+                                    Label=@Loc["TrayPanel_CheckboxLabel_HighPriority"] 
+                                    Disabled="@(!ViewModel.IsSampleTubeSelected)" 
+                                    DisplayOnly="@(!ViewModel.EnableHighPriority)">
+                        </PhCheckBox>
+                    }
+                </div>
+                <PhLabel Text="@Loc["TrayPanel_InputLabel_Status"]" Disabled="@(!ViewModel.IsSampleTubeSelected)">
+                    <div class="ph-tray-detail__sample-status-input">
+                        <PhValueBox Size="TextBoxSize.Default">@ViewModel.SampleTubeStatus</PhValueBox>
+                    </div>
+                </PhLabel>
+            </div>
+        </div>
+
+        @if (HasLegendView)
+        {
+            <div class="ph-tray-detail__content-legend">
+                <PhTrailingEdge Mode="TrailingEdgeDisplayMode.VerticalOnly">
+                    <SampleLegendView ViewModel="@ViewModel.LegendViewModel" />
+                </PhTrailingEdge>
+            </div>
+        }
+    </div>
+    <div class="ph-tray-detail__footer">
+        @if (!ViewModel.IsEditMode)
+        {
+            <PhAuthorize Permission="@Permissions.ManageSamples">
+                <PhButton Type="ButtonType.Secondary" Disabled="@(!ViewModel.IsSampleTubeSelected)" @onclick="HandleEditAction">@Loc["TrayPanel_ButtonEdit"]</PhButton>
+            </PhAuthorize>
+        }
+        else
+        {
+            <PhButton Type="ButtonType.Secondary" onclick="@(() => HandleDiscardAction())">@Loc["TrayPanel_ButtonCancel"]</PhButton>
+            <PhButton Type="ButtonType.Primary" OnClick="@(() => HandleSaveAction())">@Loc["TrayPanel_ButtonSave"]</PhButton>
+        }
+    </div>
+</div>

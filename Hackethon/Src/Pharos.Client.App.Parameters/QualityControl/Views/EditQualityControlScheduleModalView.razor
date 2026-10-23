@@ -1,0 +1,54 @@
+﻿@using Pharos.Client.Common.App.Validation
+@attribute [Authorize]
+
+<PhModalContent>
+    <Body>
+        <PhStack Gap="StackGap.Lg">
+            <PhDropdown TValue="Periodically" Size="DropdownSize.Default" Label="@Loc["EditQualityControlScheduleModalView_AddQcPeriodically"]" Options="@ViewModel.PeriodicalItems" @bind-Value="@ViewModel.Periodically" />
+
+            @if (ViewModel.Periodically is Periodically.YesByNumberOfTests or Periodically.YesByTime)
+            {
+                <PhSimpleValidationContext @ref="_validationContext" OnValidationStateChanged="ValidationChanged" Model="ViewModel">
+                    <PhGrid>
+                        <PhGridColumn Span="ColumnSpan.Half">                
+                            <div class="flex gap-gutter flex-row items-center">
+                                <PhLabel Text="@Loc["EditQualityControlScheduleModalView_StartAfter"]" />
+                                @if(ViewModel.Periodically == Periodically.YesByTime)
+                                {
+                                    <PhNumberField Size="TextBoxSize.ExtraSmall" TValue="int" HelpText="0 - 1440" @bind-Value="@ViewModel.StartAfter" />
+                                    <PhLabel Text="@Loc["EditQualityControlScheduleModalView_Minutes"]"/>
+                                }
+                                else
+                                {
+                                    <PhNumberField Size="TextBoxSize.ExtraSmall" TValue="int" HelpText="0 - 10000" @bind-Value="@ViewModel.StartAfter" />
+                                    <PhLabel Text="@Loc["EditQualityControlScheduleModalView_Tests"]"/>
+                                }
+                            </div> 
+                        </PhGridColumn>
+
+                        <PhGridColumn Span="ColumnSpan.Half">
+                            <div class="flex gap-gutter flex-row items-center">
+                                <PhLabel Text="@Loc["EditQualityControlScheduleModalView_RunEvery"]"/>
+                                
+                                @if (ViewModel.Periodically == Periodically.YesByTime)
+                                {
+                                    <PhNumberField Size="TextBoxSize.ExtraSmall" TValue="int" HelpText="1 - 1440" @bind-Value="@ViewModel.RunEvery" />
+                                    <PhLabel Text="@Loc["EditQualityControlScheduleModalView_Minutes"]" />
+                                }
+                                else
+                                {
+                                    <PhNumberField Size="TextBoxSize.ExtraSmall" TValue="int" HelpText="1 - 10000" @bind-Value="@ViewModel.RunEvery" />
+                                    <PhLabel Text="@Loc["EditQualityControlScheduleModalView_Tests"]" />
+                                }
+                            </div>
+                        </PhGridColumn>
+                    </PhGrid>
+                </PhSimpleValidationContext>
+            }
+        </PhStack>
+    </Body>
+    <Footer>
+        <PhButton OnClick="Cancel">@Loc["EditQualityControlScheduleModalView_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" Disabled="!_isValid" OnClick="Save">@Loc["EditQualityControlScheduleModalView_Save"]</PhButton>
+    </Footer>
+</PhModalContent>

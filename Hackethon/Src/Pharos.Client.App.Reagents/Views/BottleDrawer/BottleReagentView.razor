@@ -1,0 +1,30 @@
+@using Pharos.Client.Common.App.Helpers
+@using Pharos.Common.Web.Components.Reagent
+
+<div class="@BottleReagentCss">
+    <div class="bottle-reagent__title">
+        <div class="t-body1">
+            @GetArticleTypeText()
+        </div>
+        @foreach (var color in BottlePosition.Colors)
+        {
+            @if (!string.IsNullOrWhiteSpace(color))
+            {
+                <div class="bottle-reagent__indication" style="background-color: @color;"></div>
+            }
+        }
+    </div>
+
+    <div class="@BottlePositionCss">
+        @foreach(var bottle in BottlePosition.Bottles)
+        {
+            <BottlePositionView Size="@BottlePosition.Size" 
+                               Bottle="@bottle" 
+                               OnBottleSelected="BottleSelected" 
+                               IsSelected="IsSelected(bottle)" 
+                               IsFlashing="IsFlashing(bottle)"
+                               IsDimmed="IsDimmed(bottle)"
+                               IsHighlighted="IsHighlighted(bottle)" />
+        }
+    </div>
+</div>

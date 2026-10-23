@@ -1,0 +1,31 @@
+﻿<div class="@_containerCss">
+    <div class="ph-reagent-shapes__container">
+        @if (Shape != ReagentIndicatorShape.None)
+        {
+            if (Shape == ReagentIndicatorShape.Slanted)
+            {
+                <div class="ph-reagent-shapes__slanted-group">
+                    @foreach (var color in Colors)
+                    {
+                        @if (!string.IsNullOrWhiteSpace(color))
+                        {
+                            <div class="@_shapeSlotCss" style="@GetShapeColor(color)"></div>
+                        }
+                    }
+                </div>
+            }
+            else
+            {
+                var color = Colors.FirstOrDefault();
+                @if (!string.IsNullOrWhiteSpace(color))
+                {
+                    <div class="@_shapeSlotCss" style="@GetShapeColor(color)"></div>
+                }
+            }
+
+        }
+    </div>
+    <div class="ph-reagent-shapes__text-container">
+        @_names
+    </div>
+</div>

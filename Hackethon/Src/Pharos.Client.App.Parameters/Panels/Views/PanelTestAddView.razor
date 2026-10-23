@@ -1,0 +1,31 @@
+@using Pharos.Common.Web.Models.DataGrid
+@attribute [Authorize]
+
+<PhModalContent SelectedText="@Loc["PanelDetailsPage_SelectedCount"]">
+    <Body>
+        <PhDataGrid TableTitle="@Loc["PanelDetailsPage_TestTableHeader"]"
+                    TGridItem="MethodTest"
+                    StateID=""
+                    ItemsProvider="ViewModel.ProvideGridItems"
+                    SelectionType="SelectionTypeEnum.MultiSelect"
+                    RowType="RowTypeEnum.LinesBetweenRows"
+                    OnSelectedItemsChanged="SelectedTestsChanged"
+                    DefaultSortColumn="MethodName"
+                    DefaultSortDirection="SortDirection.Ascending"
+                    ItemStyleOptions="@(new() {
+                        Style = ItemStyleFlags.Checked | ItemStyleFlags.Disabled,
+                        Match = MatchesCurrentPanelTest,
+                        Items = CurrentPanelTests
+                    })">
+            <Columns>
+                <Column Title="@Loc["PanelDetailsPage_Method"]" Property="@(item => item!.MethodName)" QuickFilter="true" Sortable="true" MultiSelectFilterItems="_methodList" />
+                <Column Title="@Loc["PanelDetailsPage_Test"]" Property="@(item => item!.TestName)" QuickFilter="true" />
+                <Column Title="@Loc["PanelDetailsPage_FullName"]" Property="@(item => item!.FullTestName)" QuickFilter="true" />
+            </Columns>
+        </PhDataGrid>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["TestEditView_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" Disabled="!(_selectedItems?.Count > 0)" OnClick="@(() => CloseModal(ModalResult.Ok(_selectedItems)))">@Loc["PanelDetailsPage_Add"]</PhButton>
+    </Footer>
+</PhModalContent>

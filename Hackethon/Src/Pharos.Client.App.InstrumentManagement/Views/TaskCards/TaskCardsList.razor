@@ -1,0 +1,38 @@
+﻿@using Pharos.Client.App.InstrumentManagement.ViewModels.TaskCards
+@using Pharos.Common.Web.Components.DataGrid
+@using Pharos.Common.Web.Components.DataGrid.Columns
+@using Pharos.Common.Web.Components.DropdownButton
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Common.Web.Models.DataGrid
+@using Pharos.Client.App.InstrumentManagement.Views.TaskCards
+@using Pharos.Client.Common.Models
+
+<PhStack>
+    <PhDataGrid TableTitle="@Loc["TaskCardsList_Title", ViewModel.TaskCardsCount]"
+                StateID="tasks"
+                TGridItem="TaskCardListItem"
+                ItemsProvider="ViewModel.ProvideItems"
+                SelectionType="SelectionTypeEnum.Off"
+                HideTotalCount="true"
+                RowType="RowTypeEnum.ZebraStripes"
+                DefaultSortColumn="@nameof(TaskCardListItem.ExpiresAt)"
+                DefaultSortDirection="SortDirection.Ascending">
+        <Columns>
+            <Column Property="@(x => x.Id)" Visible="false" />
+            <Column Title="@Loc["TaskCardsList_TimeLeft"]" Property="@(x => x.ExpiresAt)" Sortable="true">
+                <PhTimeLeftCell ExpiresAt="context.ExpiresAt" Status="TaskCardsListViewModel.GetStatus(context.CardState)" />
+            </Column>
+            <Column Title="@Loc["TaskCardsList_TaskName"]" Property="@(x => x.CardType)" Sortable="true">
+                @ViewModel.GetTitle(context)
+            </Column>
+            <Column Title="@Loc["TaskCardsList_Instrument"]"
+                    Property="@(x => x.InstrumentDisplayName)"
+                    Sortable="true"
+                    QuickFilter="true"
+                    MultiSelectFilterItems="@InstrumentFilterModel.FilterDataSourceSerial" />
+        </Columns>
+    </PhDataGrid>
+</PhStack>
+

@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<IsTrimmable>false</IsTrimmable>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<DocumentationFile>bin\Debug\net10.0\Pharos.Common.Web.xml</DocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<SupportedPlatform Include="browser" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="$(AssemblyName).Tests" />
+	</ItemGroup>
+
+	<!-- SCSS/CSS build integration -->
+	<PropertyGroup>
+		<CssOutput>wwwroot/css/main.min.css</CssOutput>
+		<PackageLock>package-lock.json</PackageLock>
+		<NodeModules>node_modules</NodeModules>
+		<!-- npm ≥ 10 (Node ≥ 20.11) creates .package-lock.json in node_modules.
+			Used as the output marker for detecting if npm ci already ran. -->
+	   	<RestoreMarker>$(NodeModules)/.package-lock.json</RestoreMarker>
+		<GitDir>$(MSBuildProjectDirectory)/../../.git</GitDir>
+		<!-- Set only if .git exists (used to trigger rebuild on branch switch) -->
+		<GitHead Condition="Exists('$(GitDir)/HEAD')">$(GitDir)/HEAD</GitHead>
+		<!-- True when running in CI (Azure DevOps sets TF_BUILD=True) -->
+		<IsCI Condition="'$(IsCI)'=='' and '$(TF_BUILD)'=='True'">true</IsCI>
+  	</PropertyGroup>
+
+	<ItemGroup>
+		<ScssFiles Include="Styles/**/*.scss" />
+
+		<!-- Make sure Visual studio Fast Up-To-Date Check includes the files needed for triggering CSS build -->
+		<UpToDateCheckInput Include="@(ScssFiles);$(PackageLock);$(GitHead)" />
+		<UpToDateCheckOutput Include="$(CssOutput)" />
+	</ItemGroup>
+
+	<!-- npm restore:
+		- Runs only when package-lock.json is newer than node_modules/.package-lock.json
+		  or when node_modules is missing.
+		- If npm ci already ran in a build pipeline, this target will be skipped automatically. -->
+	<Target Name="NpmRestore" Condition="'$(IsCI)'!='true'" Inputs="$(PackageLock)" Outputs="$(RestoreMarker)">
+		<Message Importance="high" Text=" [NPM] - Restoring npm packages (npm ci)..." />
+		<Exec Command="npm ci" WorkingDirectory="$(MSBuildProjectDirectory)" />
+	</Target>
+
+	<!-- Rebuild CSS when:
+		- any SCSS is newer than CSS,
+		- package-lock changed,
+		- OR the dev switched branches (HEAD changed). -->
+	<Target Name="BuildScss" Condition="'$(IsCI)'!='true'" DependsOnTargets="NpmRestore" BeforeTargets="ResolveStaticWebAssets;Build;Publish" Inputs="@(ScssFiles);$(PackageLock);$(GitHead)" Outputs="$(CssOutput)">
+		<Message Importance="high" Text=" [CSS] - Building SCSS → CSS (npm run build)..." />
+		<Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)" />
+	</Target>
+
+</Project>

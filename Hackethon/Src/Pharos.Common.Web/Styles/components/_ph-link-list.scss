@@ -1,0 +1,28 @@
+﻿@use "../abstracts/spacing";
+@use "../abstracts/size";
+
+.ph-link-list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+
+    >a {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        min-width: size.$hit-area-md;
+    }
+
+    >a:first-child {
+        justify-content: flex-start;
+    }
+
+    >a:not(:first-child) {
+        justify-content: center;
+    }
+
+    &__separator {
+        white-space: pre;
+    }
+}

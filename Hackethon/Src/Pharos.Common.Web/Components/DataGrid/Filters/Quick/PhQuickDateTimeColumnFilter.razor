@@ -1,0 +1,8 @@
+﻿@using Pharos.Common.Web.Components.DateFilter
+@typeparam TGridItem
+@typeparam TProp
+@inherits PhQuickColumnFilter<Pharos.Common.Web.Components.DataGrid.Filters.Models.DateTimeColumnFilter<TGridItem, TProp>, TGridItem, TProp>
+
+<PhQuickFilter Title="@ColumnFilter.Column.EffectiveFilterTitle" ActiveFilterCount="@ColumnFilter.ActiveFilterCount" OnClearFilter="ClearFilter" OnClose="ResetLocalState" PanelSize="DateFilterPanelSize">
+    <PhDateFilter Value="@FilterValue" ValueChanged="FilterValueChanged" Options="Options" Texts="Texts" MinDate="MinDate" MaxDate="MaxDate" />
+</PhQuickFilter>

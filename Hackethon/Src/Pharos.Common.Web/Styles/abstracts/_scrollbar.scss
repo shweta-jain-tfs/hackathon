@@ -1,0 +1,51 @@
+@use "colors";
+@use "rounded";
+@use "size";
+
+@mixin customScrollbar {
+    $scrollbar-thumb-width: 8px;
+
+    ::-webkit-scrollbar {
+        width: size.$scrollbar-width;
+        height: size.$scrollbar-width;
+    }
+    ::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: transparent;
+        box-shadow: inset 0 0 1px 1px colors.$border-heavy-02;
+        border: 6px solid transparent;
+
+        &:vertical {
+            min-height: min(50%, #{size.$hit-area-md});
+            border-block-width: 0;
+            border-top-left-radius: 100% $scrollbar-thumb-width;
+            border-top-right-radius: 100% $scrollbar-thumb-width;
+            border-bottom-right-radius: 100% $scrollbar-thumb-width;
+            border-bottom-left-radius: 100% $scrollbar-thumb-width;
+        }
+
+        &:horizontal {
+            border-inline-width: 0;
+            border-top-left-radius: $scrollbar-thumb-width 100%;
+            border-top-right-radius: $scrollbar-thumb-width 100%;
+            border-bottom-right-radius: $scrollbar-thumb-width 100%;
+            border-bottom-left-radius: $scrollbar-thumb-width 100%;
+        }
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        box-shadow: inset 0 0 $scrollbar-thumb-width $scrollbar-thumb-width colors.$border-heavy-02;
+    }
+    ::-webkit-scrollbar-corner{
+        background-color: transparent;
+    }
+}
+
+@mixin hideScrollbar {
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}

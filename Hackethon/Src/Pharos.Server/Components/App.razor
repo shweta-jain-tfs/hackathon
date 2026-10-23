@@ -1,0 +1,35 @@
+﻿@using Pharos.Client
+@using Microsoft.AspNetCore.Components.Web
+
+<!DOCTYPE html>
+<html lang="@CultureName" translate="no" class="notranslate">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="google" content="notranslate">
+    <base href="/" />
+    @* Preload .NET / Blazor framework static assets *@
+    <ResourcePreloader />
+    <link href="/@Assets["_content/Pharos.Common.Web/css/main.min.css"]" rel="stylesheet" />
+    <link href="/@Assets["Pharos.Server.styles.css"]" rel="stylesheet" />
+    <HeadOutlet @rendermode="@RenderModeForPage" />
+    <ImportMap />
+    @if (IsIdentityPage)
+    {
+        <PageTitle>@_appTitle</PageTitle>
+    }
+    else
+    {
+        @* Default title to show until the client app is loaded *@
+        <title>@_appTitle</title>
+    }
+</head>
+
+<body class="@DeviceThemeCssClass" spellcheck="false" oncontextmenu="@PreventContextMenuOnInstrument">
+    <Routes @rendermode="@RenderModeForPage" ClientDeviceType="@ClientDeviceType" />
+    <script src="_framework/blazor.web.js"></script>
+    <BlazorError />
+</body>
+
+</html>

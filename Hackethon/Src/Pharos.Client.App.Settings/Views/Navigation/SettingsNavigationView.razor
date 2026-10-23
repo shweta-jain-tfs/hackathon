@@ -1,0 +1,11 @@
+@inherits ComponentWithClientScriptBase
+
+<PhSubnavMenu ScrollActiveItemIntoView="true">
+	<ChildContent>
+		@foreach (var item in Items)
+		{
+			var label = item.Value;
+			<PhSubnavItem Uri="@($"{PageRoute.Settings}/{label}")" Text="@label" />
+		}
+	</ChildContent>
+</PhSubnavMenu>

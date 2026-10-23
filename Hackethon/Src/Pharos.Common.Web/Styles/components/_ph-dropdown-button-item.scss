@@ -1,0 +1,38 @@
+@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-dropdown-button-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: size.$hit-area-md;
+    padding: 0 spacing.$padding-sm;
+    color: colors.$text-secondary;
+    text-align: left;
+    white-space:nowrap;
+    @include text.body1;
+
+    &:hover {
+        background-color: colors.$layer-hover-01;
+    }
+
+    &:disabled {
+        color: colors.$text-disabled;
+        background-color: transparent;
+        cursor: default;
+    }
+
+    &--link {
+        color: colors.$text-link;
+
+        &:active {
+            color: colors.$text-link-pressed;
+        }
+
+        &:disabled {
+            color: colors.$text-link-disabled;
+        }
+    }
+}

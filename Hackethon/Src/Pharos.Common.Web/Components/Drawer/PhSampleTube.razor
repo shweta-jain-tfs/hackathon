@@ -1,0 +1,36 @@
+﻿@namespace Pharos.Common.Web.Components.Drawer
+
+<div class="@TubeContainerClass">
+
+    @if (Error != TubeError.None)
+    {
+        <PhStatusIcon Icon="StatusIconType.Warning" Size="@StatusIconSize" />
+    }
+    else
+    {
+        <div class="@PrimaryIconPlaceholderClass">
+            @if (Status == TubeStatus.InProgress)
+            {
+                <PhIcon IconType="IconType.Processing" Size="null" />
+            }
+            else if (Status == TubeStatus.PartlyCompleted)
+            {
+                <PhStatusIcon Icon="StatusIconType.PendingAction" Size="@StatusIconSize" />
+            }
+        </div>
+    }
+
+    @if (IsManualInput || IsConfirmManualInput)
+    {
+        <div class="@ManualEntryClass">
+            <PhIcon IconType="IconType.ManualEntry" Size="null" />
+        </div>
+    }
+
+    @if (IsUnloadRequested)
+    {
+        <div class="@UnloadRequestedClass">
+            <PhIcon IconType="IconType.UnloadRequested" Size="null" />
+        </div>
+    }
+</div>

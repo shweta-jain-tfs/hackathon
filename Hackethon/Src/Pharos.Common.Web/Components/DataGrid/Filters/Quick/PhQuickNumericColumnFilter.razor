@@ -1,0 +1,15 @@
+﻿@typeparam TGridItem
+@typeparam TProp
+@inherits PhQuickColumnFilter<Pharos.Common.Web.Components.DataGrid.Filters.Models.NumericColumnFilter<TGridItem, TProp>, TGridItem, TProp>
+
+<PhQuickFilter Title="@ColumnFilter.Column.EffectiveFilterTitle" ActiveFilterCount="@ColumnFilter.ActiveFilterCount" OnClearFilter="ClearFilter">
+    <PhLabel Size="LabelSize.HelperText">Greater than</PhLabel>
+    <PhNumberField @bind-Value="GreaterThan"
+                   TValue="double?"
+                   AllowNegativeNumbers="@AllowNegativeNumbers" />
+    <PhLabel Size="LabelSize.HelperText">Less than</PhLabel>
+    <PhNumberField @bind-Value="LessThan"
+                   TValue="double?"
+                   AllowNegativeNumbers="@AllowNegativeNumbers" />
+    <PhButton Type="ButtonType.Primary" OnClick="OnSearch">Search</PhButton>
+</PhQuickFilter>

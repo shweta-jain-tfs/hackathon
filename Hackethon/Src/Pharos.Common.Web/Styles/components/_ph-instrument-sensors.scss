@@ -1,0 +1,15 @@
+@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+
+.ph-instrument-sensors {
+    display: grid;
+    grid-template-columns: spacing.$padding-xl max-content minmax(6ch, max-content) max-content;
+    padding-top: spacing.$padding-lg;
+    gap: spacing.$gap-xs;
+
+
+    &__status-col {
+        text-align: center;
+    }
+}

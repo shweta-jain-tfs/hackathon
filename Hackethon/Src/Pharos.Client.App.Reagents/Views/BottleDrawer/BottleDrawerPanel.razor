@@ -1,0 +1,52 @@
+@using Pharos.Client.App.Reagents.Views.Drawer.LoaderDetail
+@using Pharos.Client.App.Reagents.Views.BottleDrawer
+@using Pharos.Client.Common.App.Helpers
+@using Pharos.Common.Web.Components.Reagent
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.Label
+
+<div class="ph-bottle-drawer-container">
+	<div class="ph-bottle-drawer-panel">
+		<div class="ph-bottle-drawer-panel__close-button">
+			<PhIconButton IconType="IconType.ModalClose" Type="IconButtonType.Blank" IconSize="IconSize.Lg" OnClick="OnCloseButtonClicked" />
+		</div>
+		<div class="ph-bottle-drawer-panel__details-wrapper">
+			<div class="ph-bottle-drawer-panel__details">
+				<div class="ph-bottle-drawer-panel__section">
+					<ReagentFieldView IsDisabled="true" Text="@Loc["Bottle_Position"]" Value="@BottlePanel.SelectedBottle?.Location" />
+					<ReagentFieldView IsDisabled="true" Text="@Loc["Bottle_Status"]" Value="@BottlePanel.GetStatus()" />
+				</div>
+				<div class="ph-bottle-drawer-panel__section">
+					<div class="ph-bottle-drawer-panel__shape-container">
+						<PhLabel Direction="LabelDirection.Vertical" Text="@Loc["Bottle_Name"]" Disabled="true" />
+						<div class="ph-bottle-drawer-panel__shape-wrapper">
+							<ReagentShapeView Shape="@ReagentHelper.GetShape(ArticleIndicatorShape.Rectangular)" Texts="@BottleNameList" Colors="BottlePanel.Colors" />
+						</div>
+					</div>
+					<ReagentFieldView IsDisabled="true" Text="@Loc["Bottle_Lot"]" Value="@BottlePanel.SelectedBottle?.LotNumber" />
+				</div>
+				<div class="ph-bottle-drawer-panel__section">
+					<ReagentFieldView IsDisabled="true" Text="@Loc["Bottle_Quantity"]" Value="@BottlePanel.GetQuantity()" />
+					<ReagentFieldView IsDisabled="true" Text="@Loc["Bottle_ExpiryDate"]" Value="@BottlePanel.GetExpiryDate()" />
+				</div>
+			</div>
+			<div class="ph-bottle-drawer-panel__bottle-wrapper">
+				@if (BottlePanel.Size == BottlePositionSize.Large)
+				{
+					<LargeBottle/>
+				}
+				else if (BottlePanel.Size == BottlePositionSize.Small)
+				{
+					<SmallBottle />
+				}
+			</div>
+		</div>
+	</div>
+	<div class="@BottleIndicatorCss">
+		<div class="ph-bottle-drawer-instruction">
+			@Loc["Bottle_Indicator_LoadAndConnect"]
+		</div>
+	</div>
+</div>

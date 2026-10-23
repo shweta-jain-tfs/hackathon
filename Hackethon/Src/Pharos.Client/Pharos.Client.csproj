@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+	<PropertyGroup>
+		<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+		<StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+		<BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
+		<!-- needed to change culture dynamically during startup -->
+		<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+		<BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" />
+		<PackageReference Include="Microsoft.Extensions.Http" />
+		<PackageReference Include="Microsoft.Extensions.Localization" />
+		<PackageReference Include="Blazored.LocalStorage" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pharos.Client.App.Logs\Pharos.Client.App.Logs.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.Help\Pharos.Client.App.Help.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.Identity\Pharos.Client.App.Identity.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.InstrumentManagement\Pharos.Client.App.InstrumentManagement.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.Quality\Pharos.Client.App.Quality.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.Reagents\Pharos.Client.App.Reagents.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.Search\Pharos.Client.App.Search.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.ServiceTools\Pharos.Client.App.ServiceTools.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.Parameters\Pharos.Client.App.Parameters.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.Request\Pharos.Client.App.Request.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.Result\Pharos.Client.App.Result.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.Sample\Pharos.Client.App.Sample.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.Settings\Pharos.Client.App.Settings.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.SystemUpdate\Pharos.Client.App.SystemUpdate.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.TaskCard\Pharos.Client.App.TaskCard.csproj" />
+		<ProjectReference Include="..\Pharos.Client.App.Maintenance\Pharos.Client.App.Maintenance.csproj" />
+		<ProjectReference Include="..\Pharos.Client.Common.App\Pharos.Client.Common.App.csproj" />
+		<ProjectReference Include="..\Pharos.Client.Common.ViewModels\Pharos.Client.Common.ViewModels.csproj" />
+		<ProjectReference Include="..\Pharos.Client.Common.Localization\Pharos.Client.Common.Localization.csproj" />
+		<ProjectReference Include="..\Pharos.Client.LoadList\Pharos.Client.App.LoadList.csproj" />
+		<ProjectReference Include="..\Pharos.Common.Web\Pharos.Common.Web.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="$(AssemblyName).Tests" />
+	</ItemGroup>
+	
+</Project>

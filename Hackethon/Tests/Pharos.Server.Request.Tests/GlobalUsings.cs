@@ -1,0 +1,11 @@
+global using FluentAssertions;
+global using MediatR;
+global using Moq;
+global using Moq.EntityFrameworkCore;
+global using Pharos.Server.Application.Instrument;
+global using Pharos.Server.Application.Parameters;
+global using Pharos.Server.Application.Request;
+global using Pharos.Server.Domain.Enums;
+global using Pharos.Server.Request.Application.Interfaces;
+global using Pharos.Server.Request.Domain;
+global using Xunit;

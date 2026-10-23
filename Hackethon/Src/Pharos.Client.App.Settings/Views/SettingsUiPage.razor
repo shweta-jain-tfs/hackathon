@@ -1,0 +1,55 @@
+ @attribute [Route(PageRoute.SettingsUi)]
+@attribute [Authorize]
+
+<PageTitle>Settings UI</PageTitle>
+
+<h3>Settings UI</h3>
+
+@if (_settings.Any())
+{
+    <table class="table settings-table">
+        <thead>
+        <tr>
+            <th>Module</th>
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var setting in _settings)
+        {
+            <tr>
+                <td>@setting.Module</td>
+                <td>@setting.Name</td>
+                <td>@setting.Value</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Loading settings...</p>
+}
+
+<style>
+    .settings-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .settings-table th, .settings-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .settings-table th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    .settings-table td {
+        vertical-align: top;
+    }
+</style>

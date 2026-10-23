@@ -1,0 +1,51 @@
+﻿@using Pharos.Common.Web.Models.DataGrid
+@using Pharos.Client.Common.App.Validation
+
+@attribute [Authorize]
+
+<PhModalContent>
+    <Body>
+    @if (_chooseTest)
+    {
+            <PhDataGrid TableTitle="@Loc["AddLabQualityControlTestView_Tests"]"
+                    TGridItem="MethodTest"
+                    StateID=""
+                    ItemsProvider="ViewModel.ProvideGridItems"
+                    SelectionType="SelectionTypeEnum.SingleSelect"
+                    RowType="RowTypeEnum.LinesBetweenRows"
+                    OnSelectedItemChanged="SelectedTestChanged"
+                    DefaultSortColumn="MethodName"
+                    DefaultSortDirection="SortDirection.Ascending"
+                    ItemStyleOptions="@(new() {
+                        Style = ItemStyleFlags.Checked,
+                        Match = PredefinedComparer,
+                        Items = _predefinedItems
+                    })"
+                    >
+            <Columns>
+                <Column Title="@Loc["AddLabQualityControlTestView_Method"]" Property="@(item => item!.MethodName)" QuickFilter="true" Sortable="true" MultiSelectFilterItems="_methodList" />
+                <Column Title="@Loc["AddLabQualityControlTestView_Test"]" Property="@(item => item!.TestName)" QuickFilter="true" />
+                <Column Title="@Loc["AddLabQualityControlTestView_TestFullName"]" Property="@(item => item!.FullTestName)" QuickFilter="true" />
+            </Columns>
+        </PhDataGrid>
+    }
+    else
+    {
+        <PhSimpleValidationContext @ref="_validationContext" OnValidationStateChanged="ValidationChanged" Model="_qualityControlTestViewModel">
+            <EditQualityControlTestView ViewModel="_qualityControlTestViewModel" />
+        </PhSimpleValidationContext>
+    }
+    </Body>
+    <Footer>
+        @if (_chooseTest)
+        {
+            <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["AddLabQualityControlTestView_Cancel"]</PhButton>
+            <PhButton Type="ButtonType.Primary" Disabled="_selectedItem == null" OnClick="EditDetails">@Loc["AddLabQualityControlTestView_Next"]</PhButton>
+        }
+        else
+        {
+            <PhButton OnClick="ChooseTest">@Loc["AddLabQualityControlTestView_Back"]</PhButton>
+            <PhButton Type="ButtonType.Primary" Disabled="!_isValid" OnClick="Apply">@Loc["AddLabQualityControlTestView_Apply"]</PhButton>
+        }
+    </Footer>
+</PhModalContent>

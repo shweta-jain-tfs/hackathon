@@ -1,0 +1,21 @@
+﻿<div class="ph-link-list">
+    @for (var i = 0; i < Links.Count; i++)
+    {
+        var link = Links[i];
+
+        @if (link?.OnClick is not null)
+        {
+            <PhHrefLink OnClick="@(() => link.OnClick.Invoke())">@link.Text</PhHrefLink>
+            <span class="ph-link-list__separator">@GetSeparator(i)</span>
+        }
+        else if (link?.Href is not null)
+        {
+            <PhHrefLink Href="@link.Href">@link.Text</PhHrefLink>
+            <span class="ph-link-list__separator">@GetSeparator(i)</span>
+        }
+        else
+        {
+            throw new NullReferenceException("The link item needs either a OnClick or a Href");
+        }
+    }
+</div>

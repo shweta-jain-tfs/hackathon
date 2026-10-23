@@ -1,0 +1,25 @@
+﻿@namespace Pharos.Client.App.Reagents.Views.Drawer
+@using Pharos.Client.App.Reagents.Views.Drawer.DilutionPlate
+@using Pharos.Common.Web.Components.Drawer
+
+<CascadingValue Value="ViewModel.IsScanningOngoing">
+    <div class="reagent-page__reagent-drawer-view-container">
+        <PhDrawer DoorState="ViewModel.PhDrawerLockState" 
+                  DoorStateText="@GetDrawerStateText(ViewModel.PhDrawerLockState)"
+                  ActionName="@Loc["ReagentPage_UnlockDrawer"]"
+                  HasManageSamplePermission="ViewModel.HasRequiredPermission"
+                  OnUnlockDrawerClick="() => ViewModel.UnlockReagentDrawerAsync()"
+                  IsButtonVisible="ViewModel.IsButtonVisible" Position="@DrawerPosition.Center"
+                  IsScanningOngoing="ViewModel.IsScanningOngoing" IsDrawerDim="@(ViewModel.SelectedLegendStatus != null && !ViewModel.IsScanningOngoing)">
+            <ChildContent>
+                <DilutionPlateSlotView DilutionPlates="ViewModel.DilutionPlateStacks" LegendSelectedStatus="ViewModel.LoaderPanelViewModel.SelectedLegendStatus" />
+                @foreach (var loader in ViewModel.ReagentLoaders)
+                {
+                    <ReagentLoaderView Loader="@loader" OnLoaderSelected="()=>LoaderClicked(loader)"
+                                       IsSelected="@(_selectedLoaderPosition == loader.Position && ViewModel.LoaderPanelViewModel.SelectedReagentLoader != null)"
+                                       LegendSelectedStatus="ViewModel.LoaderPanelViewModel.SelectedLegendStatus"/>
+                }
+            </ChildContent>
+        </PhDrawer>
+    </div>
+</CascadingValue>

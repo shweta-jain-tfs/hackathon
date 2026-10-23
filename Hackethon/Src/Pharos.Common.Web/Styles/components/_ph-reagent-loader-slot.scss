@@ -1,0 +1,17 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+
+.reagent-loader-slot {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 72px;
+    flex-direction: column;
+    flex-wrap: wrap;
+
+    &--filled {
+        background-color: colors.$drawer-filled-container-background;
+        border-radius: rounded.$rounded-default;
+    }
+}

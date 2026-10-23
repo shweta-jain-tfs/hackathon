@@ -1,0 +1,14 @@
+@attribute [Route(PageRoute.CurveControlDetails.IdParameter)]
+
+<PhPage>
+    <PageHeader>
+        <Breadcrumb Items="Breadcrumbs"></Breadcrumb>
+    </PageHeader>
+
+    <ChildContent>
+            @if (!string.IsNullOrEmpty(MethodName))
+            {
+                <CurveControlView MethodName="@MethodName" AnalyticalRunId="Id" InstrumentSerial="@InstrumentSerial"/>
+            }
+    </ChildContent>
+</PhPage>

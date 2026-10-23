@@ -1,0 +1,74 @@
+@using Pharos.Client.Common.App.Auth
+@using Pharos.Common.Web.Components.DropdownButton
+@using Pharos.Common.Web.Models.DataGrid
+@using Pharos.Contracts.Security
+@inherits ComponentWithClientScriptBase
+
+<PhDockedButtonRow EnableButtons="CanSelect">
+    <ChildContent>
+        @if (_issuesQuickFilters.Length > 0)
+        {
+            <PhDataGrid DefaultSortColumn="@nameof(AnalyticalRun.StartDateTime)" DefaultSortDirection="SortDirection.Descending"
+                        StateID="runs"
+                        TableTitle="@Loc["AnalyticalRunsPage_Runs"]" TGridItem="AnalyticalRun" ItemsProvider="ViewModel.ProvideGridItems"
+                        HeaderSize="@HeaderSizeEnum.WholePage"
+                        SelectionType="@(CanSelect ? SelectionTypeEnum.MultiSelectWithSelectAll: SelectionTypeEnum.Off)" OnSelectedItemsChanged="SelectedAnalyticalRunsChanged"
+                        CustomQuickFilters="@_issuesQuickFilters"
+                        @ref="_dataGrid">
+                <Columns>
+                    <Column Title="@Loc["AnalyticalRunsPage_Run"]" Property="@(x => x.MethodName)" Sortable="true">
+                        <PhHrefLink Href="@($"{PageRoute.AnalyticalRunDetails.Default}/{context?.Id}")">@context?.MethodName</PhHrefLink>
+                    </Column>
+
+                    <Column Title="@Loc["AnalyticalRunsPage_State"]" Property="@(x => x.StateStatus)" QuickFilter="true" EnumDisplayNameSelector="@(status => status.ToLocalizedString("AnalyticalRunsPage"))" Sortable="true">
+                        @context.StateStatus.ToLocalizedString("AnalyticalRunsPage")
+                    </Column>
+
+                    <Column Title="@Loc["AnalyticalRunsPage_Issues"]" Property="@(x => x.IssueStatus)" Sortable="true">
+                        @{
+                            var issues = GetIssues(context);
+                        }
+                        @if (issues.Count > 0)
+                        {
+                            @for (var i = 0; i < issues.Count; i++)
+                            {
+                                if (i > 0)
+                                {
+                                    <span>, </span>
+                                }
+
+                                <PhStatus Text="@issues[i].ToLocalizedString("AnalyticalRunsPage")" Status="GetStatusSymbol(issues[i])" Href="@GetPageRoute(issues[i], context.Id)" />
+                            }
+                        }
+                    </Column>
+
+                    <Column Title="@Loc["AnalyticalRunsPage_Started"]" Property="@(x => x.StartDateTime)" Sortable="true" QuickFilter="true">
+                        <PhDateTime DateToShow="@context.StartDateTime" TextFallback="@Loc["AnalyticalRunsPage_NotAvailable"]" />
+                    </Column>
+
+                    <Column Title="@Loc["AnalyticalRunsPage_Finished"]" Property="@(x => x.EndDateTime)" Sortable="true">
+                        <PhDateTime DateToShow="@context.EndDateTime" />
+                    </Column>
+
+                    <Column Title="@Loc["AnalyticalRunsPage_Tests"]" Property="@(x => x.NumberOfTests)" />
+
+                    <Column Title="@Loc["AnalyticalRunsPage_Instrument"]"
+                            Property="@(x => x.InstrumentName)"
+                            QuickFilter="true"
+                            QuickFilterDefault="@InstrumentFilterModel.DefaultFilterValueSerial"
+                            MultiSelectFilterItems="@InstrumentFilterModel.FilterDataSourceSerial" />
+
+                    <Column Title="@Loc["AnalyticalRunsPage_CustomRunId"]" Property="@(x => x.CustomRunId)" Sortable="true" Visible="_canViewCustomRunId" />
+                </Columns>
+            </PhDataGrid>
+        }
+    </ChildContent>
+    <Buttons>
+        <PhButton Disabled="@(!CanDelete)" HasPermission="@HasDeletePermission" OnClick="DeleteSelectedAnalyticalRuns">@Loc["AnalyticalRunsPage_DeleteButton"]</PhButton>
+        <PhAuthorize Permission="@Permissions.ExportTestResults">
+            <PhDropdownButton Text="@Loc["AnalyticalRunsPage_MoreButton"]" DropdownButtonType="DropdownButtonType.Secondary">
+                <PhDropdownButtonItem Text="@Loc["AnalyticalRunsPage_Export_DownloadToClient"]" OnClick="@DownloadSelectedAnalyticalRuns" Disabled="@CannotExport" />
+            </PhDropdownButton>
+        </PhAuthorize>
+    </Buttons>
+</PhDockedButtonRow>

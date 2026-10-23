@@ -1,0 +1,76 @@
+@using Pharos.Common.Web.Components.Icons
+<div class="ph-laboratory-test-names">
+    <PhDockedButtonRow>
+        <ChildContent>
+            <div class="ph-laboratory-test-names__header">@Loc["LaboratoryTestNamesDetails_HeaderText"]</div>
+            <PhDataGrid @ref="_labNamesGrid"
+                        StateID="labnames"
+                        TGridItem="LaboratoryTestNameGridRow"
+                        Items="GridItems.AsQueryable()"
+                        RowType="RowTypeEnum.LinesBetweenRows"
+                        SelectionType="SelectionTypeEnum.MultiSelect"
+                        OnSelectedItemsChanged="SelectedLabNameChanged">
+                <Columns>
+                    <Column Title="@Loc["LaboratoryTestNamesDetails_Name"]" Property="@(x => x.LaboratoryName.TestName)">
+                        @if (context is not null && IsEditing(context))
+                        {
+                            <PhTextBox @ref="_editingTextBox"
+                                       Value="@EditingValue"
+                                       ValueChanged="value => LabNameInputChanged(context.LaboratoryName, value)"
+                                       ValueExpression="@(() => EditingValue)"
+                                       MaxLength="@LaboratoryTestNameMaximumLength"
+                                       Size="TextBoxSize.ExtraSmall"
+                                       Debounce="0"
+                                       @onblur="LabNameInputClosed" />
+                        }
+                        else if (context is not null)
+                        {
+                            var highlightDuplicateError = ViewModel.HighlightErrorIfDuplicate(context.LaboratoryName.TestName);
+
+                            <div class="flex flex-col">
+                                @if (IsEditingDisabled)
+                                {
+                                    @context.LaboratoryName.TestName
+                                }
+                                else
+                                {
+                                    <PhHrefLink OnClick="_ => BeginEdit(context)">@context.LaboratoryName.TestName</PhHrefLink>
+                                }
+
+                                @if (highlightDuplicateError)
+                                {
+                                    <div class="ph-laboratory-test-names__error-icon">
+                                        <PhIcon IconType="IconType.Alert" Size="IconSize.Md" />
+                                        <div class="ph-laboratory-test-names__error-message">
+                                            @Loc["Parameter_Method_DuplicateLabTestNameError"]
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </Column>
+                </Columns>
+            </PhDataGrid>
+            @if (_draftLabName is not null && !IsEditingDisabled)
+            {
+                <div class="ph-laboratory-test-names__draft-row">
+                    <span class="ph-laboratory-test-names__editor">
+                        <PhTextBox @ref="_editingTextBox"
+                                   Value="@EditingValue"
+                                   ValueChanged="value => LabNameInputChanged(_draftLabName, value)"
+                                   ValueExpression="@(() => EditingValue)"
+                                   MaxLength="@LaboratoryTestNameMaximumLength"
+                                   Size="TextBoxSize.ExtraSmall"
+                                   Debounce="0"
+                                   @onblur="LabNameInputClosed" />
+                    </span>
+                </div>
+            }
+        </ChildContent>
+        <Buttons>
+            <PhButton Disabled="@IsAddDisabled" OnClick="AddLaboratoryTestNameClicked">@Loc["LaboratoryTestNamesDetails_Add"]</PhButton>
+            <PhButton Disabled="@IsDeleteDisabled" OnClick="DeleteSelectedLaboratoryTestNames">@Loc["LaboratoryTestNamesDetails_Delete"]</PhButton>
+            <PhButton Disabled="@IsMoveToTopDisabled" OnClick="MoveSelectedLaboratoryTestNameToTop">@Loc["LaboratoryTestNamesDetails_MoveToTop"]</PhButton>
+        </Buttons>
+    </PhDockedButtonRow>
+</div>

@@ -1,0 +1,48 @@
+﻿@using Pharos.Client.Common.Models
+@using Pharos.Common.Web.Components.DockedButtonRow
+@using Pharos.Common.Web.Components.ExternalConnectionCard
+
+@{
+    var isConnectionCardExpanded = ViewModel.Connections.Count == 1;
+}
+
+@foreach (var item in ViewModel.Connections)
+{
+    <PhExternalConnectionCard NameTitle="@Loc["ConnectionsPage_LIS"]"
+                              Name="@item.Name"
+                              HealthStatus="@GetHealthStatus(item.PrimaryConnectionState)"
+                              StateTitle="@Loc["ConnectionsPage_Status"]"
+                              State="@GetStateText(item.PrimaryConnectionState)"
+                              IsExpanded="@isConnectionCardExpanded"
+                              ShowHealthStatus="@ShowStatusIcon(item.PrimaryConnectionState)"
+                              ShowExportPortHealthStatus="@ShowStatusIcon(item.ExportConnectionState)"
+                              ExportPortStateTitle="@Loc["ConnectionsPage_StatusExportPort"]"
+                              ShowExportPortDetail="@(item.ExportConnectionState != null)"
+                              ExportPortState="@GetStateText(item.ExportConnectionState)"
+                              ExportPortHealthStatus="@GetHealthStatus(item.ExportConnectionState)">
+        <ChildContent>
+            <PhDockedButtonRow>
+                <ChildContent>
+                        <PhDataGrid TGridItem="LisStatistics"
+                                    StateID="@null"
+                                    Items="GetStatistics(item.Id)"
+                                    HideTotalCount="true"
+                                    RowType="RowTypeEnum.LinesBetweenRows">
+                            <Columns>
+                                <Column Property="x => x.RowTitle" />
+                                <Column Property="x => x.Samples" Title="@Loc["ConnectionsPage_Samples"]" />
+                                <Column Property="x => x.Tests" Title="@Loc["ConnectionsPage_Tests"]" />
+                                <Column Property="x => x.LatestTime" Title="@Loc["ConnectionsPage_LatestTime"]" />
+                                <Column Property="x => x.LatestSample" Title="@Loc["ConnectionsPage_LatestSample"]" />
+                            </Columns>
+                        </PhDataGrid>
+                </ChildContent>
+                <Buttons>
+                    <PhAuthorize Permission="@Permissions.EditSystemSettings">
+                        <PhButton OnClick="@(() => ConfirmResetStatisticsAsync(item.Id))">@Loc["ConnectionsPage_Reset"]</PhButton>
+                    </PhAuthorize>
+                </Buttons>
+            </PhDockedButtonRow>
+        </ChildContent>
+    </PhExternalConnectionCard>
+}

@@ -1,0 +1,56 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.Modal
+@attribute [Stories("Components/ModalPredefined")]
+@inject IModalService Modal
+
+<Stories TComponent="PhModal">
+
+    <Story Name="Modal Information">
+
+        <Template>
+            <PhModal @attributes="context.Args" />
+            <PhButton OnClick="OpenModalInformation">Show Information Modal</PhButton>
+        </Template>
+
+    </Story>
+
+    <Story Name="Modal Confirmation">
+
+        <Template>
+            <PhModal @attributes="context.Args" />
+            <PhButton OnClick="OpenModalConfirmation">Show Confirmation Modal</PhButton>
+        </Template>
+
+    </Story>
+
+</Stories>
+
+@code {
+
+    private async Task OpenModalInformation()
+    {
+        var modal = Modal.ShowInformation("Hello world of information!", "Ok", new ModalOptions
+            {
+                Title = "Modal Information",
+                Status = ModalStatus.Default
+            });
+
+        await modal.Result;
+    }
+
+    private async Task OpenModalConfirmation()
+    {
+        var modal = Modal.ShowConfirm("Hello world of confirmation!", "Cancel", "Ok", new ModalOptions
+            {
+                Title = "Modal Confirmation",
+                Status = ModalStatus.Default
+            });
+
+        var result = await modal.Result;
+
+        if (!result.Canceled)
+        {
+
+        }
+    }
+}

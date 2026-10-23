@@ -1,0 +1,53 @@
+﻿@using Pharos.Common.Web.Components.Modal.Views
+@inherits Base.ComponentWithClientScriptBase
+
+<dialog @ref="@_modalElementRef" class="@CssClasses" @onclose="@AbortAsync" @key="@Id">
+    <div class="ph-modal__header">
+        <div class="ph-modal__title">
+            @if (!string.IsNullOrEmpty(Options?.Title))
+            {
+                <h3 class="t-h2">@Options.Title</h3>
+            }
+        </div>
+
+        <div class="ph-modal__header-actions">
+            @if (Options?.HeaderActions != null)
+            {
+                @Options.HeaderActions
+            }
+
+            @if (Options?.ShowCloseButton == true)
+            {
+                <div class="ph-modal__close">
+                    <PhIconButton IconType="IconType.ModalClose" Type="IconButtonType.Blank" IconSize="IconSize.Lg" OnClick="AbortAsync" />
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (Options?.Status is not null && Options.Status == ModalStatus.Default)
+    {
+        <div class="ph-modal__divider"></div>
+    }
+
+    <div class="ph-modal__internalcontent">
+
+        <CascadingValue Value="this" IsFixed="true">
+
+             <ErrorBoundary>
+            <ChildContent>
+                @Content
+            </ChildContent>
+
+            <ErrorContent Context="exception">
+                <ModalContentErrorView Exception="exception"
+                                       OnClose="AbortAsync" />
+            </ErrorContent>
+        </ErrorBoundary>
+
+        </CascadingValue>
+
+    </div>
+
+</dialog>
+

@@ -1,0 +1,15 @@
+﻿@using Pharos.Common.Web.Components.DetailsList
+@inherits ComponentBase
+
+<PhModalContent>
+    <Body>
+        <PhDetailsList>
+            <PhDetailsListItem Label="@Loc["RequestorDetailsView_RequestorId"]">@ViewModel.RequestorId</PhDetailsListItem>
+            <PhDetailsListItem Label="@Loc["RequestorDetailsView_RequestorName"]">@ViewModel.Name</PhDetailsListItem>
+            <PhDetailsListItem Label="@Loc["RequestorDetailsView_RequestorAddress"]">@ViewModel.Address</PhDetailsListItem>
+            <PhDetailsListItem Label="@Loc["RequestorDetailsView_RequestorZipCode"]">@ViewModel.ZipCode</PhDetailsListItem>
+            <PhDetailsListItem Label="@Loc["RequestorDetailsView_RequestorComment"]">@ViewModel.Comment</PhDetailsListItem>
+            <PhDetailsListItem Label="@Loc["RequestorDetailsView_RequestorPhoneNumber"]">@ViewModel.PhoneNumber</PhDetailsListItem>
+        </PhDetailsList>
+    </Body>
+</PhModalContent>

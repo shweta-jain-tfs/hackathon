@@ -1,0 +1,27 @@
+@using Pharos.Common.Web.Components.TrailingEdge
+@attribute [Route(PageRoute.Tasks)]
+@attribute [Authorize]
+
+<PhPage TrailingEdge="TrailingEdgeSize.Wide">
+    <div class="ph-taskcards-page">
+        @foreach (var group in ViewModels.GetTaskCards())
+        {
+            <div class="ph-taskcards-page__group">
+                @foreach (var item in group)
+                {
+                    <PhTaskCard
+                        State="@item.CardState"
+                        Title="@item.Title"
+                        Description="@item.Description"
+                        Time="@item.Time"
+                        DisplayTime="@item.DisplayTime"
+                        ImageType="@item.ImageType"
+                        NavigationUrlForCard="@item.ConnectedPageUrl"
+                        HasHelpInformation="@item.HasHelp"
+                        OnHelpClicked="@(() => HelpClicked(item.CardType, item.Title, item.ConnectedPageTitle, item.ConnectedPageUrl))"
+                    />
+                }
+            </div>
+        }
+    </div>
+</PhPage>

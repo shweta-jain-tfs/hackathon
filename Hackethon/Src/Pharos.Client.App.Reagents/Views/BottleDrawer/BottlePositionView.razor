@@ -1,0 +1,22 @@
+@using Pharos.Client.App.Reagents.ViewModels.BottleDrawer
+<div class="@BottlePositionCss" @onclick="BottleClicked">
+    @if (IsFlashing)
+    {
+        <div class="@BottleIndicatorPositionCss">
+            <Indicator />
+        </div>
+    }
+    
+    @if (Size == BottlePositionSize.Large)
+    {
+        <BottleContentView Size="@Size" Bottle="@Bottle" IsFlashing="@IsFlashing" />
+        <div class="@BottlePositionLabelCss">@Bottle.Position</div>
+    }
+    else
+    {
+        <div class="bottle-position__circle-row">
+            <span class="@BottlePositionLabelCss">@Bottle.Position</span>
+            <BottleContentView Size="@Size" Bottle="@Bottle" IsFlashing="@IsFlashing" />
+        </div>
+    }
+</div>

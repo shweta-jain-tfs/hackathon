@@ -1,0 +1,25 @@
+﻿@use "../abstracts/colors";
+
+.ph-loading-indicator { 
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.ph-spinner {
+    width:min(72px, 33%);
+    aspect-ratio: 1;
+    border: 8px solid colors.$layer-tertiary;
+    border-top: 8px solid colors.$layer-heavy-02;
+    border-radius: 50%;
+    animation: spin 700ms linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+    100% {
+        transform: rotate(360deg)
+    }
+}

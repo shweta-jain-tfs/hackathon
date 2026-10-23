@@ -1,0 +1,85 @@
+@using Pharos.Client.Common.App.Validation
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.NavigationLock
+@using Pharos.Contracts.Security
+
+@attribute [Authorize(Permissions.ManageUsersAndRoles)]﻿
+@layout UsersAndRolesLayout
+
+@attribute [Route(PageRoute.UsersAndRoles.UserDetails.IdUser)]
+@attribute [Authorize]
+
+@inherits DetailsPageBase<Pharos.Client.App.Identity.ViewModels.ApplicationUserDetailsViewModel, ApplicationUser, Guid>
+
+@if(DetailViewModel is not null)
+{
+    <PhNavigationLock Modified="@(DetailViewModel.IsModified)" OnSave="() => SaveChanges(true)" IsValid="@IsModelValid()"/>
+
+    <SectionContent SectionName="page-header">
+        <Breadcrumb Items="@Breadcrumbs" />
+        <div class="flex gap-md">
+                <PhButton Disabled="@(!DetailViewModel.IsModified)" OnClick="DiscardChanges">@Loc["UsersAndRolePage_Discard"]</PhButton>
+                <PhButton Type="ButtonType.Primary" Disabled="@(!DetailViewModel.IsModified || !IsModelValid())" OnClick="() => SaveChanges(false)">@Loc["UsersAndRolePage_Save"]</PhButton>
+        </div>
+    </SectionContent>
+
+    <PhGrid FillHeight>
+        <PhGridColumn Span="ColumnSpan.Half">
+            <PhPanel Grow>
+                <PhStack Gap="StackGap.Lg"> 
+                    <PhInputColumn Spacing="InputSpacing.Compact">
+                        <h3 class="t-h3">@Loc["ApplicationUsers_Details_UserAccount"]</h3>
+                        <PhSimpleValidationContext @ref="_validation" Model="DetailViewModel">
+                            <PhTextBox Label="@Loc["ApplicationUsers_UserName"]"
+                                            @bind-Value="DetailViewModel.UserName"
+                                        Disabled="false"
+                                        MaxLength="UserContract.MaximumNameLength"/>
+                        </PhSimpleValidationContext>
+                        <PhTextBox Label="@Loc["ApplicationUsers_Fullname"]" @bind-Value="DetailViewModel.FullName" Disabled="false" />
+                        <PhCheckBox Label="@Loc["ApplicationUsers_Active"]" @bind-Value="DetailViewModel.IsActive" Disabled="@DetailViewModel.IsCurrentUser" />
+                        @if (DetailViewModel.IsPinLoginEnabled && DetailViewModel.CanEnablePin)
+                        {
+                            <PhCheckBox Label="@Loc["ApplicationUsers_EnablePin"]" @bind-Value="DetailViewModel.IsPinEnabled" />
+                        }
+                        <div class="flex">
+                            <PhButton Type="ButtonType.Primary" OnClick="@(ChangePassword)" >@Loc["ApplicationUsers_Details_ButtonChangePassword"]</PhButton>
+                        </div>
+                    </PhInputColumn>
+                </PhStack>
+            </PhPanel>
+        </PhGridColumn>
+        <PhGridColumn Span="ColumnSpan.Half">
+            <PhStack Gap="StackGap.Lg">
+                <PhPanel Grow>
+                    <PhInputColumn Spacing="InputSpacing.Compact">
+                        <h3 class="t-h3">@Loc["ApplicationUsers_Details_Permission"]</h3>
+                        <PhLabel Text="@Loc["ApplicationUsers_RoleName"]">
+                            @if (DetailViewModel.IsServiceEngineer)
+                            {
+                                <PhValueBox>@DetailViewModel.Model.Role?.DisplayName</PhValueBox>
+                            }
+                            else
+                            {
+                                <PhDropdown TValue="Guid?"
+                                            Options="DetailViewModel.RoleDropDownItems"
+                                            Title="@Loc["ApplicationUsers_RoleName"]"
+                                            @bind-Value="DetailViewModel.SelectedRoleId"
+                                            Disabled="@DetailViewModel.IsCurrentUser"/>
+                            }
+                        </PhLabel>
+                        <PhValueBox >
+                            @foreach (var (permissionKey, translatedName) in DetailViewModel.Permissions)
+                            {
+                                @translatedName
+                                @if (permissionKey != DetailViewModel.Permissions.Last().PermissionKey)
+                                {
+                                    <br/>
+                                }
+                            }
+                        </PhValueBox>
+                    </PhInputColumn>
+                </PhPanel>
+            </PhStack>
+        </PhGridColumn>
+    </PhGrid>
+}

@@ -1,0 +1,31 @@
+﻿@using Pharos.Common.Web.Components.Layout
+@using Pharos.Common.Web.Components.QuickFilter
+@using Pharos.Common.Web.Components.FormElements
+
+<div class="flex flex-wrap gap-gutter items-center justify-between">
+    <h3 class="t-h3">@Loc["LoadListPage_ReagentLoaders", ReagentLoadersCount]</h3>
+    <div class="flex gap-sm justify-end">
+
+        <PhQuickFilter Title="@Loc["LoadListPage_Filter_Status"]" ActiveFilterCount="StatusList?.Count(x => x.IsSelected) ?? 0" OnClearFilter="ClearStatusFilter">
+            @if (StatusList != null)
+            {
+                foreach (var status in StatusList)
+                {
+                    <PhCheckBox Label="@status.DisplayName" @bind-Value="status.IsSelected" @bind-Value:after="NotifyFiltersChanged" Status="GetIcon(status.Value)" />
+                }
+            }
+        </PhQuickFilter>
+
+        <PhQuickFilter Title="@Loc["LoadListPage_Filter_Instrument"]" ActiveFilterCount="InstrumentList?.Count(x => x.IsSelected) ?? 0" OnClearFilter="ClearInstrumentFilter">
+            @if (InstrumentList != null)
+            {
+                foreach (var instrument in InstrumentList)
+                {
+                    <PhCheckBox Label="@instrument.DisplayName" @bind-Value="instrument.IsSelected" @bind-Value:after="NotifyFiltersChanged" />
+                }
+            }
+        </PhQuickFilter>
+
+        <PhFilterActions OnClearAll="ClearAllFilters" OnResetToDefault="ResetAllFilters" />
+    </div>
+</div>

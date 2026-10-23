@@ -1,0 +1,13 @@
+﻿@using Pharos.Client.Common.Localization
+
+<PhModalContent>
+    <Body>
+        <div class="ph-tray-detail__dialog-content">
+            @Loc["TrayPanel_UnsavedChangesDialog_Body"]
+        </div>
+    </Body>
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => CloseModal(ModalResult.Ok(false)))">@Loc["TrayPanel_UnsavedChangesDialog_ButtonSecondary"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(()=> CloseModal(ModalResult.Ok(true)))">@Loc["TrayPanel_UnsavedChangesDialog_ButtonPrimary"]</PhButton>
+    </Footer>
+</PhModalContent>

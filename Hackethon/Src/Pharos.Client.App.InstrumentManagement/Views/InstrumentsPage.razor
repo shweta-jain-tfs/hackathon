@@ -1,0 +1,96 @@
+@using Pharos.Client.App.InstrumentManagement.ViewModels.Instruments
+@using Pharos.Client.App.InstrumentManagement.Views.TaskCards
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.InstrumentCard
+@using Pharos.Common.Web.Components.TrailingEdge
+@attribute [Route(PageRoute.Instruments)]
+@attribute [Authorize]
+
+<PhPage>
+    <div class="h-full flex gap-gutter">
+        <div class="flex-1">
+            <div class="ph-instrument-list">
+                <div class="ph-instrument-list__header">
+                    <h3 class="t-h3">@Loc["InstrumentsPage_InstrumentsHeader"] (@InstrumentsViewModel.Count)</h3>
+                    <PhLabel Text="@($"{@Loc["InstrumentsPage_Sort_Label"]}:")" Direction="LabelDirection.Horizontal">
+                        <PhDropdown TValue="InstrumentSortOption"
+                                    Size="DropdownSize.FitContent"
+                                    Options="@SortOptions"
+                                    @bind-Value="_selectedSortOption" />
+                    </PhLabel>
+                </div>
+                <div class="ph-instrument-list__scroll">
+                    <PhTrailingEdge Mode="TrailingEdgeDisplayMode.VerticalOnly">
+                        <div class="ph-instrument-list__list">
+                            @if (_instrumentsLoadTask is { IsCompleted: true } && SortedInstruments.Count == 0)
+                            {
+                                <PhAuthorize Permission="@Permissions.ManageInstruments">
+                                    <PhAuthorize Permission="@Policies.ServiceEngineerOrRndMode">
+                                        <div class="ph-instrument-card">
+                                            <div class="ph-instrument-card__content">
+                                                <div class="ph-instrument-card__header">
+                                                    <p class="t-body2">@Loc["InstrumentsPage_NoInstruments"]</p>
+                                                </div>
+                                                @* <div class="ph-instrument-card__details">
+                                                </div> *@
+                                            </div>
+                                        </div>
+                                    </PhAuthorize>
+                                </PhAuthorize>
+                            }
+                            @foreach (var instrument in SortedInstruments)
+                            {
+                                var assaySchedulerTexts = GetAssaySchedulerTexts(
+                                    instrument.AssaySchedulerIsActive,
+                                    instrument.AssaySchedulerNextRunType,
+                                    instrument.AssaySchedulerNextRun,
+                                    instrument.AssaySchedulerIsPausedUntilDate);
+
+                                // Build localized state rows for the instrument card.
+                                var stateRows = GetInstrumentStateRows(instrument);
+                                <PhInstrumentCard AssaySchedulerIcon="@ToAssaySchedulerIconType(instrument.AssaySchedulerIsActive, instrument.AssaySchedulerNextRunType)"
+                                                  AssaySchedulerIsActive="instrument.AssaySchedulerIsActive"
+                                                  AssaySchedulerIsActiveChanged="@(async (value) => await OnAssaySchedulerIsActiveChanged(instrument, value))"
+                                                  AssaySchedulerShowInfo="instrument.AssaySchedulerShowInfo"
+                                                  AssaySchedulerTextAfterIcon="@assaySchedulerTexts.TextAfterIcon"
+                                                  AssaySchedulerTextBeforeIcon="@assaySchedulerTexts.TextBeforeIcon"
+                                                  AssaySchedulerUserIsAuthorized="@IsAuthorized"
+                                                  Enabled="instrument.Enabled"
+                                                  HealthStatus="@GetHealthStatus(instrument)"
+                                                  InstrumentActionsUserIsAuthorized="@IsAuthorized"
+                                                  IsConnected="@IsInstrumentConnected(instrument)"
+                                                  IsSelected="@(instrument.SerialNumber == TaskCardsListViewModel.SelectedInstrumentCard)"
+                                                  DeleteActionLabel="@Loc["InstrumentsPage_InstrumentCardAction_Delete"]"
+                                                  DisableActionLabel="@Loc["InstrumentsPage_InstrumentCardAction_Disable"]"
+                                                  EnableActionLabel="@Loc["InstrumentsPage_InstrumentCardAction_Enable"]"
+                                                  RenameActionLabel="@Loc["InstrumentsPage_InstrumentCardAction_Rename"]"
+                                                  SelectTechnologiesActionLabel="@Loc["InstrumentsPage_InstrumentCardAction_SelectTechnologies"]"
+                                                  OnCardClicked="@(() => InstrumentCardSelected(instrument))"
+                                                  OnClickedDeleteEvent="@(async () => await OnDeleteInstrument(instrument))"
+                                                  OnClickedDisableEvent="@(async () => await OnDisableInstrument(instrument))"
+                                                  OnClickedEnableEvent="@(async () => await OnEnableInstrument(instrument))"
+                                                  OnClickedRenameEvent="@(async () => await OnRenameInstrument(instrument))"
+                                                  OnClickedSelectTechnologiesEvent="@(async () => await OnSelectTechnologies(instrument))"
+                                                  RunInformationRow1="@stateRows.StateRow1"
+                                                  RunInformationRow2="@stateRows.StateRow2"
+                                                  Technologies="@GetTechnologies(instrument)"
+                                                  TechnologiesLabel="@Loc["InstrumentsPage_InstrumentCard_Technologies"]"
+                                                  Title="@instrument.DisplayName"/>
+                            }
+                        </div>
+                    </PhTrailingEdge>
+                </div>
+            </div>
+        </div>
+        <div class="flex-1 flex flex-col gap-md justify-between">
+            <PhScroll>
+                <TaskCardsList ViewModel="@TaskCardsListViewModel" />
+            </PhScroll>
+            <AssaySchedulerRow Name='@Loc["InstrumentsPage_AssayScheduling"]'
+                                IsAuthorized="@IsAuthorized"
+                                IsActive="@IsAnyAssaySchedulerActive"
+                                IsActiveChanged="@(async (value) => await OnAssaySchedulerIsActiveChangedAllInstruments(value))"
+                                VisibleSwitch="@IsAnyAssaySchedulerShowInfo" />
+        </div>
+    </div>
+</PhPage>

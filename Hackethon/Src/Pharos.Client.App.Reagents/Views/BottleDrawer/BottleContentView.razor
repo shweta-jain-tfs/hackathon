@@ -1,0 +1,13 @@
+@using Pharos.Common.Web.Components.Icons
+
+<div class="bottle-content">
+    <div class="@BottleShapeContainerCss">
+        <div class="@BottleContentLiquidCss" style="@FillStyle"></div>
+        @if (HasError)
+        {
+            <div class="bottle-content__warning-icon">
+                <PhStatusIcon Icon="StatusIconType.Warning" Size="StatusIconSize.Lg" />
+            </div>
+        }
+    </div>
+</div>

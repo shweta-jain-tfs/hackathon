@@ -1,0 +1,12 @@
+﻿
+<PhModalContent>
+    <Body>
+        <p class="whitespace-pre-line">@MessageText</p>
+    </Body>
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="@(async () => await CloseModal(ModalResult.Cancel()))">Cancel</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(async () => await CloseModal(ModalResult.Ok()))">Ok</PhButton>
+    </Footer>
+</PhModalContent>
+
+

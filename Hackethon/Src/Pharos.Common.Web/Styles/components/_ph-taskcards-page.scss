@@ -1,0 +1,18 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-taskcards-page {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$gap-gutter;
+
+    &__group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: spacing.$gap-gutter;
+        align-items: start;
+    }
+}

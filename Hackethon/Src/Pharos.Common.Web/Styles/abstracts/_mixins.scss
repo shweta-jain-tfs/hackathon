@@ -1,0 +1,18 @@
+// Place general mixins here. Specialized mixins can be placed in separate files.
+
+// Only apply the style for hover capable devices
+@mixin skip-for-touch-device {
+    @media (hover: hover) {
+        @content;
+    }
+}
+
+// Add :hover styles that are not used on touch devices that aren't hover capable.
+// Use this to avoid sticky hover on touch screens.
+@mixin non-stick-hover {
+    @include skip-for-touch-device {
+        &:hover {
+            @content
+        }
+    }
+}

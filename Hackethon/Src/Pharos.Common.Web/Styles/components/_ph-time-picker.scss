@@ -1,0 +1,175 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/size";
+@use "../abstracts/rounded";
+@use "../abstracts/typography" as text;
+
+.ph-time-picker {
+    $root: &;
+    $option-height: size.$hit-area-md;
+    display: inline-block;
+    @include text.body1;
+    color: colors.$text-secondary;
+
+    &__box {
+        --ph-border-color: #{colors.$border-active};
+        display: flex;
+        gap: spacing.$padding-xs;
+        align-items: center;
+        min-height: size.$control-height;
+        @include rounded.rounded;
+        border-width: 2px;
+        background-color: colors.$layer-secondary;
+
+        &:hover {
+            background-color: colors.$layer-hover-01;
+        }
+
+        &:focus-within {
+            background-color: colors.$layer-selected-01;
+        }
+
+        &:has(input:placeholder-shown ~ input:placeholder-shown) {
+            color: colors.$text-hint;
+        }
+    }
+
+    &__input {
+        display: flex;
+        align-items: center;
+        padding-left: spacing.$padding-sm;
+        padding-right: spacing.$padding-xs;
+        flex-grow: 1;
+
+        > input {
+            width: 2ch;
+            background-color: transparent;
+            padding: 0;
+
+            &:first-child {
+                text-align: right;
+            }
+
+            &:focus-visible {
+                outline: none;
+                background-color: colors.$layer-accent;
+            }
+
+            &::placeholder {
+                color: inherit;
+            }
+        }
+
+        &:focus-within {
+            > input {
+                color: inherit;
+            }
+
+            > button {
+                color: colors.$text-link;
+            }
+        }
+    }
+
+    &__error-icon {
+        display: flex;
+        align-items: center;
+        color: colors.$status-validation;
+    }
+
+    &__btn {
+        align-self: stretch;
+        width: size.$hit-area-lg;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-left-width: 2px;
+        margin: 3px 0;
+        color: colors.$icon-link;
+    }
+
+    &__scroll {
+        // Show a partial option to indicate that the time list is scrollable.
+        max-height: calc((#{$option-height} * 6.5));
+        overflow-y: auto;
+    }
+    
+    &__panel {
+        display: grid;
+        grid-template-columns: auto 1fr;
+
+        > li {
+            display: contents;
+        }
+    }
+
+    &__option {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: subgrid;
+        padding-inline: spacing.$padding-sm;
+        min-height: $option-height;
+        align-items: center;
+        text-align: right;
+
+        &:hover {
+            background: colors.$layer-hover-01;
+        }
+
+        &[aria-selected=true],
+        &:active {
+            background: colors.$layer-selected-01;
+        }
+
+    }
+
+    &__clear-option {
+        display: flex;
+        
+        > span:first-child {
+            min-width: 2ch;
+            text-align: right;
+        }
+    }
+
+    &--open {
+        #{$root}__box {
+            background-color: colors.$layer-selected-01;
+        }
+    }
+
+    &--disabled {
+        pointer-events: none;
+
+        #{$root}__box {
+            --ph-border-color: #{colors.$border-disabled};
+            background-color: colors.$layer-secondary;
+        }
+
+        #{$root}__input {
+            color: colors.$text-disabled;
+        }
+
+        #{$root}__btn {
+            color: colors.$icon-disabled-02;
+        }
+    }
+
+    &--error {
+        #{$root}__box {
+            --ph-border-color: #{colors.$status-validation};
+        }
+    }
+    
+    &--size-small { 
+        width: size.$input-width-small;
+    }
+
+    &--size-medium {
+        width: size.$input-width-medium;
+    }
+
+    &--size-large {
+        width: size.$input-width-large;
+    }
+}

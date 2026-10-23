@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pharos.Server.Domain.Abstractions\Pharos.Server.Domain.Abstractions.csproj" />
+	</ItemGroup>
+
+</Project>

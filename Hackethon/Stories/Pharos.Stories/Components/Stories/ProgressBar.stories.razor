@@ -1,0 +1,94 @@
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.ProgressBar
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.Icons
+@attribute [Stories("Components/ProgressBar")]
+
+<Stories TComponent="PhProgressBar">
+
+    <Story Name="Static">
+
+        <Arguments>
+            <Arg For="_ => _!.MaxValue" Value="30" />
+            <Arg For="_ => _!.Value" Value="10" />
+            <Arg For="_ => _!.ShowValueText" Value="true" />
+            <Arg For="_ => _!.UnitTextPlural" Value="_days" />
+            <Arg For="_ => _!.UnitTextSingular" Value="_day" />
+
+        </Arguments>
+
+        <Template>
+            <div style="width:187px; height:48px">
+                <PhProgressBar @attributes="context.Args" />
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Static Disabled">
+
+        <Arguments>
+            <Arg For="_ => _!.MaxValue" Value="30" />
+            <Arg For="_ => _!.Value" Value="10" />
+            <Arg For="_ => _!.ShowValueText" Value="true" />
+            <Arg For="_ => _!.UnitTextPlural" Value="_days" />
+            <Arg For="_ => _!.UnitTextSingular" Value="_day" />
+            <Arg For="_ => _!.Disabled" Value="true" />
+
+        </Arguments>
+
+        <Template>
+            <div style="width:187px; height:48px">
+                <PhProgressBar @attributes="context.Args" />
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Animated">
+
+        <Arguments>
+            <Arg For="_ => _!.MaxValue" Value="100" />
+            <Arg For="_ => _!.Value" Value="0" />
+            <Arg For="_ => _!.AnimateDuration" Value="5" />
+            <Arg For="_ => _!.ShowValueText" Value="true" />
+            <Arg For="_ => _!.UnitTextPlural" Value="_percent" />
+            <Arg For="_ => _!.UnitTextSingular" Value="_percent" />
+        </Arguments>
+
+        <Template>
+            <div style="display:flex; flex-direction:column; width:300px; gap:20px">
+                <div style="height:20px">
+                    <PhProgressBar @ref="_progressBar" @attributes="context.Args" AnimationStarted="OnAnimationStarted" AnimationDone="OnAnimationDone"/>
+                </div>
+                <PhButton Disabled="@_animationRunning" Type="@ButtonType.Primary" OnClick="StartAnimation" >
+                    Start animation
+                </PhButton>
+            </div>
+        </Template>
+    </Story>
+
+</Stories>
+
+
+
+@code
+{
+    private string _days = "days";
+    private string _day = "day";
+    private string _percent = "%";
+    private bool _animationRunning;
+    private PhProgressBar? _progressBar;
+
+    private void StartAnimation()
+    {
+        _progressBar.RunAnimation();
+    }
+
+    private void OnAnimationStarted()
+    {
+        _animationRunning = true;
+    }
+    private void OnAnimationDone()
+    {
+        _animationRunning = false;
+    }
+}

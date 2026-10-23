@@ -1,0 +1,176 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-drawer {
+    position: relative;
+    gap: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    &__title {
+        color: colors.$text-hint;
+        @include text.body2;
+    }
+
+    &__info-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 8px;
+        position: relative;
+    }
+
+    &__placeholder-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        box-sizing: border-box;
+        gap: spacing.$gap-md;
+        flex-grow: 1;
+        padding: spacing.$padding-sm;
+        border-radius: rounded.$rounded-default;
+
+        &--highlight {
+            background: colors.$background-secondary;
+        }
+
+        &--dim {
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 401px;
+                height: 100%;
+                background: colors.$drawer-dim-overlay;
+                pointer-events: none;
+                transform: translateX(-50%);
+            }
+        }
+
+        &--drawer-scan {
+            position: relative;
+            overflow: hidden;
+
+            &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                top: 0;
+                height: 100%;
+                width: 24px;
+                filter: blur(25px);
+                background: colors.$icon-on-color-selected;
+                opacity: 0;
+                mix-blend-mode: color-dodge;
+                animation: scan-drawer linear 1s forwards infinite;
+                pointer-events: none;
+            }
+        }
+    }
+
+    &__indicator-container {
+        min-height: 16px;
+        width: 100%;
+    }
+
+    &__indicator {
+        display: flex;
+        justify-content: flex-end;
+        align-content: flex-end;
+        background: colors.$drawer-front;
+        border-radius: 4px;
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+
+    &__indicator-led {
+        position: absolute;
+        width: calc(100% * 0.3342);
+        height: calc(100% * 0.5625);
+        right: 0px;
+        bottom: 0px;
+        background: colors.$drawer-front-led;
+        border-radius: 4px 0px;
+    }
+
+    &__action-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding-inline: spacing.$padding-sm;
+
+        &.ph-drawer__left {
+            align-items: flex-start;
+        }
+
+        &.ph-drawer__right {
+            align-items: flex-end;
+        }
+
+        &.ph-drawer__center {
+            align-items: center;
+        }
+    }
+
+    &__action-button {
+        display: flex;
+        min-height: 56px;
+        width: 100%;
+
+        & > * {
+            flex-grow: 1;
+        }
+    }
+
+    &__state{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @include text.body1;
+    }
+
+
+    &__indicator-led-animation {
+        animation: blink 500ms infinite alternate;
+    }
+
+    @keyframes blink {
+        0% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes scan-drawer {
+        0% {
+            left: 0;
+        }
+
+        15% {
+            opacity: 1;
+        }
+
+        85% {
+            opacity: 1;
+        }
+
+        100% {
+            left: calc(100% - 24px);
+            opacity: 0;
+        }
+    }
+}

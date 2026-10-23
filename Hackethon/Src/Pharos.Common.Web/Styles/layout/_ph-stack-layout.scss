@@ -1,0 +1,37 @@
+@use "../abstracts/spacing";
+
+// Vertical full-height stack with standard gutter.
+// To make an individual child fill the height, use flex-grow: 1 (e.g. via .ph-panel)
+.ph-stack-layout {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$gap-gutter;
+    height: 100%;
+    // If an item in the stack has a scroll context, make sure it can shrink.
+    > :has(.ph-scroll-context) {
+        min-height: 0;
+    }
+
+    > .ph-stack-layout {
+        // grow nested stacks and allow them to shrink
+        // TBD: unnecessary?
+        flex: 1;
+        min-height: 0;
+    }
+
+    &--gap-xs {
+        gap: spacing.$gap-xs;
+    }
+
+    &--gap-md {
+        gap: spacing.$gap-md;
+    }
+
+    &--gap-lg {
+        gap: spacing.$gap-lg;
+    }
+
+    &--gap-xxl {
+        gap: spacing.$gap-xxl;
+    }
+}

@@ -1,0 +1,22 @@
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: spacing.$gap-md;
+    height: 100%;
+    flex-grow: 1;
+    padding: 0 spacing.$padding-xxl;
+    border-radius: 8px;
+    border: 2px dashed #BA00FB;
+    background: rgba(#BA00FB, 0.10);
+    text-align: center;
+    @include text.body2;
+
+    &__title {
+        @include text.body1;
+    }
+}
+

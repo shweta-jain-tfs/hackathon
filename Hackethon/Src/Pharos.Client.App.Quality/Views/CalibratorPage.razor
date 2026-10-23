@@ -1,0 +1,95 @@
+@using Pharos.Client.App.Quality.Views.Calibrators
+@using Pharos.Client.Common.App.Extensions
+@using Pharos.Common.Web.Components.DropdownButton
+@attribute [Route(PageRoute.Quality.Calibrators)]
+@attribute [Authorize]
+
+<PhPage>
+    <PageHeader>
+        <Breadcrumb Items="Breadcrumbs"/>
+    </PageHeader>
+
+    <ChildContent>
+        <PhDockedButtonRow>
+            <ChildContent>
+                @if (ViewModel.IsLoaded)
+                {
+                    <PhGrid FillHeight="true">
+
+                        @* Overlay plot of curves *@
+                        <PhGridColumn Span="ColumnSpan.Half">
+                            <CalibratorCurveView ViewModel="ViewModel.CalibratorCurveViewModel" Miniature="false"/>
+                        </PhGridColumn>
+
+                        <PhGridColumn Span="ColumnSpan.Half">
+                            @* List of curves *@
+                            <div style="height: 350px">
+                                <PhDataGrid 
+                                    StateID="curves"
+                                    HighlightOptions="@(new() {
+                                        Mode = HighlightMode.Internal,
+                                        HighlightedItemChanged = ViewModel.OnHighlightedItemChanged
+                                    })"
+                                    TGridItem="CurvePresentation"
+                                    ItemsProvider="ViewModel.ProvideGridItems"
+                                    SelectionType="SelectionTypeEnum.MultiSelect"
+                                    OnSelectedItemsChanged="OnSelectedItemsChanged">
+                                    <Columns>
+                                        <Column Title="Curve" Property="x => x.MeasurementDateTime">
+                                            <PhDateTime DateToShow="@context.MeasurementDateTime" TextFallback=""/>
+                                        </Column>
+                                        <Column Title="Status" Property="x => x.ApprovalStatus">
+                                            @{
+                                                string statusText = GetStatusText(context);
+                                                <PhLabel>@statusText</PhLabel>
+                                            }
+                                        </Column>
+                                        <Column Title="Conj. lot" Property="x => x.ConjugateLot"/>
+                                        <Column Title="Carrier lot" Property="x => x.CarrierLot"/>
+                                    </Columns>
+                                </PhDataGrid>
+                            </div>
+
+                            @* Give me some space *@
+                            <div style="height: 20px"></div>
+
+                            @* List of calibrator points *@
+                            <div style="height: 400px">
+                                @if (ViewModel.CalibratorResults.Count > 0)
+                                {
+                                    <PhDataGrid
+                                        TGridItem="CalibratorTestResult"
+                                        StateID="calibratorpoints"
+                                        Items="ViewModel.CalibratorResults.AsQueryable()">
+                                        <Columns>
+                                            <Column Title="Point" Property="x => x.CalibratorPointName">
+                                                <PhHrefLink>
+                                                    @context.CalibratorPointName
+                                                </PhHrefLink>
+                                            </Column>
+                                            <Column Title="Resp." Property="x => x.MeanResponseAsText" Align="ColumnAlignEnum.Right">
+                                                @context.MeanResponseAsText.FormatDecimalForDisplay()
+                                            </Column>
+                                            <Column Title="Calc." Property="x => x.MeanConcentrationAsText" Align="ColumnAlignEnum.Right">
+                                                @context.MeanConcentrationAsText.FormatDecimalForDisplay()
+                                            </Column>
+                                            <Column Title="Conc." Property="x => x.ExpectedConcentration" Align="ColumnAlignEnum.Right"/>
+                                        </Columns>
+                                    </PhDataGrid>
+                                }
+                            </div>
+
+                        </PhGridColumn>
+                    </PhGrid>
+                }
+
+            </ChildContent>
+            <Buttons>
+                <PhButton Disabled="@NoCurvesSelected" >@Loc["CalibratorPage_RunNewCurve"]</PhButton>
+                <PhDropdownButton Text="@Loc["AnalyticalRunsPage_MoreButton"]" DropdownButtonType="DropdownButtonType.Secondary">
+                    <PhDropdownButtonItem Text="TODO" />
+                </PhDropdownButton>
+            </Buttons>
+        </PhDockedButtonRow>
+    </ChildContent>
+</PhPage>

@@ -1,0 +1,16 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhModalContent>
+    <Body>
+        <p class="text-center">@ConfirmDeleteText</p>
+
+        @if (NumberToShow > 0)
+        {
+            <p class="text-center text-warning">@NotReportedOrApprovedText</p>
+        }
+    </Body>
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => Close(ModalResult.Cancel()))">@Loc["AnalyticalRunDeleteView_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => Close(ModalResult.Ok()))">@Loc["AnalyticalRunDeleteView_Delete"]</PhButton>
+    </Footer>
+</PhModalContent>

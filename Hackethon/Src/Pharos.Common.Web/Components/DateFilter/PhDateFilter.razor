@@ -1,0 +1,39 @@
+﻿@using Pharos.Common.Web.Components.FormElements.RadioButton
+@using Pharos.Common.Web.Components.MonthPicker
+<div class="ph-date-filter">
+    <PhRadioGroup T="DateFilterMode" SelectedValue="Value.Mode" SelectedValueChanged="ModeChanged">
+        @if (ShouldRenderMode(DateFilterMode.Today))
+        {
+            <PhRadioButton Value="@DateFilterMode.Today" Label="@Strings.Today" />
+        }
+        @if (ShouldRenderMode(DateFilterMode.LastDays))
+        {
+            <PhRadioButton Value="@DateFilterMode.LastDays">
+                <LabelContent>
+                    @Strings.LastDaysPrefix
+                    <span class="@(Value.Mode != DateFilterMode.LastDays ? "pointer-events-none": null)">
+                        <PhNumberField TValue="int?" Value="@Value.LastDays" ValueChanged="LastDaysChanged" Disabled="@(Value.Mode != DateFilterMode.LastDays)" AllowNegativeNumbers="false" MaxNumberOfDigits="4" />
+                    </span>
+                    @Strings.LastDaysSuffix
+                </LabelContent>
+            </PhRadioButton>
+        }
+        @if (ShouldRenderMode(DateFilterMode.Month))
+        {
+            <PhRadioButton Value="@DateFilterMode.Month" Label="@Strings.Month">
+                <PhMonthPicker Value="@Value.From" ValueChanged="MonthChanged" MinDate="MinDate" MaxDate="EffectiveMaxDate" />
+            </PhRadioButton>
+        }
+        @if (ShouldRenderMode(DateFilterMode.DateRange))
+        {
+            <PhRadioButton Value="@DateFilterMode.DateRange" Label="@Strings.CustomRange">
+                <div class="ph-date-filter__range">
+                    <PhLabel For="@FromId" Text="@Strings.From" />
+                    <PhDatePicker Id="@FromId" TValue="DateOnly" Value="@(Value.From ?? Today)" ValueChanged="FromChanged" MinDate="MinDate" MaxDate="Value.To ?? EffectiveMaxDate" />
+                    <PhLabel For="@ToId" Text="@Strings.To" />
+                    <PhDatePicker Id="@ToId" TValue="DateOnly" Value="@(Value.To ?? Today)" ValueChanged="ToChanged" MinDate="Value.From ?? MinDate" MaxDate="EffectiveMaxDate" />
+                </div>
+            </PhRadioButton>
+        }
+    </PhRadioGroup>
+</div>

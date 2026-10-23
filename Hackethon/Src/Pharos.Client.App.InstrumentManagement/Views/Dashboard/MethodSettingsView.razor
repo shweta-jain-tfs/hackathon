@@ -1,0 +1,37 @@
+@using Pharos.Client.Common.Localization
+@using Pharos.Client.Common.Models
+@using Pharos.Common.Web.Components.ProgressBar
+
+<PhDataGrid TableTitle="@TableHeader" StateID="" TGridItem="InstrumentMethod" Items="FilteredInstrumentMethodList" RowType="RowTypeEnum.LinesBetweenRows">
+    <Columns>
+        <Column Title="@Loc["DashboardPage_MethodSettingsView_Header_Method"]" Property="@(x => x.MethodName)"/>
+
+        @if (ShowActiveSwitch)
+        {
+            <Column Title="@Loc["DashboardPage_MethodSettingsView_Header_Active"]" Property="@(x => x.IsActive)">
+                <PhSwitchButton @bind-value="@context.IsActive" DisplayOnly="@(!_canManageInstrument)" OnCheckChanged="() => ChangeActive(context)"/>
+            </Column>
+        }
+
+        <Column Title="@Loc["DashboardPage_MethodSettingsView_Header_Calibration_Validity"]" Property="@(x => x.CalibrationValidForDays)">
+            <PhProgressBar Disabled="@(!context.IsActive)"
+                           MaxValue="@(context.MaximumNumberOfDays)"
+                           Value="@(context.CalibrationValidForDays)"
+                           ShowValueText="true"
+                           UnitTextSingular="day"
+                           UnitTextPlural="days"/>
+        </Column>
+
+        @if (ShowRunColumns)
+        {
+            <Column Title="@Loc["DashboardPage_MethodSettingsView_Header_WhatToRun"]" Property="@(x => x.ForceCalibrator)">
+                <PhHrefLink OnClick="@(async () => await ChangeRunOptions(context))">@GetWhatToRunText(context)</PhHrefLink>
+            </Column>
+
+            <Column Title="@Loc["DashboardPage_MethodSettingsView_Header_WhenToRun"]" Property="@(x => x.WhenToRun)">
+                <PhHrefLink OnClick="@(async () => await ChangeRunOptions(context))">@context.WhenToRun.ToLocalizedString("DashboardPage_MethodSettingsView")</PhHrefLink>
+            </Column>
+        }
+
+    </Columns>
+</PhDataGrid>

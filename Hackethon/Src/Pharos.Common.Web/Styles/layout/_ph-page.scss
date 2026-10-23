@@ -1,0 +1,76 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+
+// page
+//   - optional sidebar (sub-navigation)
+//   - optional page header (breadcrumbs)
+//   - page content (fills the rest of the page)
+
+.ph-page {
+    $root: &;
+    --ph-page-sidebar-width: calc(#{size.$sidebar-width-narrow} + #{spacing.$padding-sm});
+    --ph-page-left-spacing: #{spacing.$gap-md};
+    --ph-page-scrollbar-padding: calc(#{spacing.$padding-md} - #{size.$scrollbar-width});
+
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+    grid-template-rows: minmax(0, auto) minmax(0, 1fr);
+    grid-template-areas:
+        "subnav header"
+        "subnav content";
+
+    &__header {
+        $header-spacing: spacing.$gap-xs;
+
+        grid-area: header;
+        margin-top: spacing.$padding-xs;
+        margin-inline: $header-spacing;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: spacing.$gap-gutter;
+        // align header content to content area content
+        padding-inline: calc(var(--ph-page-left-spacing) - #{$header-spacing}) spacing.$padding-sm;
+        padding-block: spacing.$padding-xs;
+        @include rounded.rounded;
+        background: colors.$layer-subtle;
+    }
+
+    &__sidebar {
+        grid-area: subnav;
+        width: var(--ph-page-sidebar-width);
+        margin-left: spacing.$padding-xs;
+        margin-block: spacing.$padding-xs;
+    }
+
+    &__content-area {
+        grid-area: content;
+        // the content can scroll within this area
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        padding-block: spacing.$padding-md;
+        padding-left: var(--ph-page-left-spacing);
+        padding-right: var(--ph-page-scrollbar-padding);
+    }
+
+    &__content {
+        flex-grow: 1; // allow child content to use height: 100% relative to the page content height + keep horizontal scrollbar at the bottom.
+        display: flex; // Basic default layout. Use layout components for specific layouts. Add a div for a completely unstyled layout.
+        flex-direction: column;
+        scrollbar-gutter: stable;
+        overflow: auto;
+    }
+
+    &--with-sidebar {
+        --ph-page-left-spacing: #{spacing.$gap-gutter};
+    }
+
+    &--sidebar-wide {
+        --ph-page-sidebar-width: #{size.$sidebar-width-wide};
+    }
+}

@@ -1,0 +1,105 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+@use "../abstracts/size";
+
+.reagent-loader-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    box-sizing: border-box;
+    padding: spacing.$padding-sm;
+    border: 2px solid colors.$border-subtle-01;
+    border-radius: rounded.$rounded-default;
+    background: colors.$background-secondary;
+    min-height: 940px;
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 100%;
+        height: 40px;
+
+
+        button {
+            color: colors.$icon-primary;
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        box-sizing: border-box;
+        gap: spacing.$gap-lg;
+    }
+
+    &__location-input {
+        width: 100%;
+
+        > label {
+            color: colors.$text-secondary;
+        }
+    }
+
+    input[type="text"]:disabled {
+        color: colors.$text-secondary;
+        background-color: colors.$layer-subtle;
+        border: none;
+        border-radius: rounded.$rounded-default;
+    }
+
+    &__loader-expanded {
+        width: 744px;
+        display: flex;
+        flex-direction: row;
+        row-gap: 32px;
+        column-gap: 24px;
+        flex-wrap: wrap;
+    }
+
+    &__loader-slot {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 160px;
+        width: 104px;
+        flex-direction: column;
+        flex-wrap: wrap;
+        gap: spacing.$gap-xs;
+    }
+
+    &__details {
+        display: flex;
+        width: 100%;
+        gap: spacing.$gap-lg;
+
+        > label,
+        > .ph-reagent-method {
+            flex: 1;
+            display: flex;
+        }
+    }
+
+    &__details-container {
+        flex-direction: column;
+        display: flex;
+        gap: spacing.$gap-xs;
+        flex: 1;
+        user-select: none;
+    }
+
+    &__shape-wrapper {
+        display: flex;
+        align-items: center;
+        height: size.$hit-area-lg;
+        background-color: colors.$layer-subtle;
+        padding-left: spacing.$gap-sm;
+        border-radius: rounded.$rounded-default;
+        @include text.body1;
+    }
+}

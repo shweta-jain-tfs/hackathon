@@ -1,0 +1,37 @@
+@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-progress {
+    height: 100%;
+    max-height: size.$hit-area-md;
+    width: 100%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    background-color: colors.$progress-enabled-bg;
+    color: colors.$text-primary;
+    padding: spacing.$padding-xs 10px;
+
+    &__bar {
+        height: 100%;
+        background-color: var(--bar-bg-color, colors.$progress-enabled-fg);
+        position: absolute;
+        left: 0;
+    }
+
+    span {
+        display: flex;
+        position: relative;
+        @include text.body2;
+        font-weight: text.$font-bold;
+    }
+
+    &--disabled {
+        background-color: colors.$progress-disabled-bg;
+        color: colors.$text-secondary;
+        --bar-bg-color: #{colors.$progress-disabled-fg};
+    }
+}

@@ -1,0 +1,47 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+
+.ph-dilution-plate-slot {
+    display: flex;
+    width: 56px;
+    height: 64px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+
+    &--empty {
+        border-radius: rounded.$rounded-default;
+        border: 2px dashed colors.$liquid-bottle-border;
+    }
+
+    &--scan {
+        background: colors.$drawer-filled-container-background;
+        border-radius: rounded.$rounded-default;
+    }
+
+    &--error {
+        background: colors.$status-warning;
+        border: 2px solid colors.$status-warning;
+        border-radius: rounded.$rounded-default;
+    }
+
+    &__status {
+        display: flex;
+        width: 53px;
+        height: 62px;
+        background-color: colors.$dilution-plate-error-background;
+        border-radius: 2px;
+        align-items: center;
+        justify-content: center;
+
+        &--scan {
+            visibility: hidden;
+        }
+    }
+
+    &--highlighted {
+        position: relative;
+        z-index: 1;
+    }
+}

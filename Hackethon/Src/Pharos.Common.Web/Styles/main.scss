@@ -1,0 +1,10 @@
+// Main SCSS entry point
+// =====================
+// Include components in the _index.scss file in the components folder.
+
+@use "base";
+// TODO: shorten the path to the components when Components.scss is replaced
+@use "./components/index"; // written like this due to collision with old file
+@use "layout";
+@use "themes";
+@use "utilities";

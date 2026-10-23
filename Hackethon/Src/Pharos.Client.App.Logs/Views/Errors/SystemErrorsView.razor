@@ -1,0 +1,96 @@
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Common.Web.Models.DataGrid
+
+<PhDockedButtonRow DockToBottom>
+    <ChildContent>
+        <div class="ph-system-errors-view">
+            <PhDataGrid @ref="_gridRef"
+                        TableTitle="@Loc["NavMenu_Errors"]"
+                        HeaderSize="@HeaderSizeEnum.WholePage"
+                        StateID="errors"
+                        TGridItem="SystemErrorSummary"
+                        ItemsProvider="ViewModel.ProvideGridItems"
+                        RowType="RowTypeEnum.LinesBetweenRows"
+                        DefaultSortColumn="Timestamp"
+                        DefaultSortDirection="SortDirection.Descending"
+                        SelectionType="@(IsPanelOpen ? SelectionTypeEnum.Off : SelectionTypeEnum.MultiSelectWithSelectAll)"
+                        SuppressRefresh="IsPanelOpen"
+                        OnSelectedItemsChanged="HandleSelectedItemsChangedAsync"
+                        ItemStyleOptions="@_nonConfirmableRowSelectionStyle"
+                        HighlightOptions="@(new()
+                        {
+                            Mode = HighlightMode.ExternalState,
+                            IsHighlighted = x => IsPanelOpen && HighlightedErrorId.HasValue && x.Id == HighlightedErrorId.Value
+                        })">
+                <Columns>
+                    <Column Title="@Loc["SystemErrorsPage_HeaderError"]" Property="@(x => x.Classification)"
+                            Sortable="true">
+                        <ChildContent>
+                            <PhHrefLink OnClick="@(_ => ShowErrorDetails(context.Id))">
+                                @if (IsWaitingForResponse(context) && !_locallyRespondedIds.Contains(context.Id))
+                                {
+                                    <PhStatus Status="@Translator.GetStatusType(context.Classification)" Text="@Translator.GetTitle(context.Code)"></PhStatus>
+                                }
+                                else
+                                {
+                                    @Translator.GetTitle(context.Code)
+                                }
+                            </PhHrefLink>
+                        </ChildContent>
+                    </Column>
+                    <Column Title="@Loc["SystemErrorsPage_HeaderTime"]" Property="@(x => x.Timestamp)"
+                            Sortable="true">
+                        <ChildContent>
+                            <PhDateTime DateToShow="@context.Timestamp"></PhDateTime>
+                        </ChildContent>
+                    </Column>
+                    <Column Title="@Loc["SystemErrorsPage_HeaderErrorCode"]" Property="@(x => x.Code)"
+                            QuickFilter="@(!IsPanelOpen)"
+                            ForceExactMatchFilter
+                            Sortable="true">
+                        <ChildContent>
+                            <span>@context.Code</span>
+                        </ChildContent>
+                    </Column>
+                    <Column Title="@Loc["SystemErrorsPage_OnlyUnhandled"]" Property="@(x => x.IsUnhandled)"
+                            QuickFilter="@(!IsPanelOpen)"
+                            QuickFilterDefault="true"
+                            Visible="false" />
+                    <Column Title="@Loc["SystemErrorsPage_HeaderInstrument"]"
+                            Property="@(x => x.InstrumentName)"
+                            QuickFilter="@(!IsPanelOpen)"
+                            QuickFilterDefault="@InstrumentFilterModel.DefaultFilterValuesSerial"
+                            MultiSelectFilterItems="@InstrumentFilterModel.FilterDataSourceSerial"
+                            Sortable="true">
+                        <ChildContent>
+                            <span>@context.InstrumentName</span>
+                        </ChildContent>
+                    </Column>
+                    <Column Title="@Loc["SystemErrorsPage_HeaderErrorLevel"]"
+                            Property="@(x => x.Classification)"
+                            QuickFilter="@(!IsPanelOpen)"
+                            MultiSelectFilterItems="@_classificationFilterDataSource">
+                        <ChildContent>
+                            <span>@Translator.GetErrorLevel(context.Classification)</span>
+                        </ChildContent>
+                    </Column>
+                    <Column Title="@Loc["SystemErrorsPage_ActionTaken"]" Property="@(x => x.Response)">
+                        <ChildContent>
+                            <span>@Translator.GetResponseActionText(context.Response)</span>
+                        </ChildContent>
+                    </Column>
+                </Columns>
+            </PhDataGrid>
+        </div>
+    </ChildContent>
+    <Buttons>
+        @if (!IsPanelOpen)
+        {
+            <PhButton Disabled="@(_isConfirming || _selectedErrorIds.Count == 0)"
+                      OnClick="ConfirmSelectedErrors">
+                @Loc["SystemErrorsPage_ButtonAcknowledge"]
+            </PhButton>
+        }
+    </Buttons>
+</PhDockedButtonRow>
+

@@ -1,0 +1,24 @@
+﻿@typeparam T
+@using System.Linq.Expressions
+
+<CascadingValue Value="this">
+    <div class="@Classname" uiname="@AutomatedTestId">
+        @if (!DisplayOnly && HasError && CascadedEditContext is not null && SelectedValueExpression is not null)
+        {
+            <ValidationMessage For="SelectedValueExpression" class="ph-radio-group__error" />
+        }
+
+        <div class="ph-radio-group__fields">
+            @if (DisplayOnly)
+            {
+                @ChildContent
+            }
+            else
+            {
+                <InputRadioGroup @bind-Value="@SelectedValue" Name="@GroupName">
+                    @ChildContent
+                </InputRadioGroup>
+            }
+        </div>
+    </div>
+</CascadingValue>

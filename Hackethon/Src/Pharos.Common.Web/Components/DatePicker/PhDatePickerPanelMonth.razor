@@ -1,0 +1,27 @@
+<div class="ph-datepicker-panel-month">
+    <div class="ph-datepicker-panel-month__header">
+        <button type="button" @onclick="OnYearClick">
+            @SelectedYear
+        </button>
+    </div>
+
+    <div class="ph-datepicker-panel-month__grid">
+        @for (int month = 1; month <= 12; month++)
+        {
+            var currentMonth = month;
+            var monthName = Culture.DateTimeFormat.GetMonthName(currentMonth);
+            var isCurrentMonth = currentMonth == DateTime.Now.Month && SelectedYear == DateTime.Now.Year;
+            var isSelectedMonth = currentMonth == SelectedMonth;
+            var isDisabled = IsMonthOutOfRange(SelectedYear, month);
+
+            <button type="button"
+                    class="ph-datepicker-panel-month__button @(isSelectedMonth ? "selected" : "")"
+                    @onclick="@(() => OnMonthClicked(currentMonth))"
+                    disabled="@isDisabled"
+                    aria-current="@(isCurrentMonth ? "date" : null)"
+                    aria-selected="@isSelectedMonth">
+                @monthName
+            </button>
+        }
+    </div>
+</div>

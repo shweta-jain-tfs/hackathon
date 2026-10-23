@@ -1,0 +1,77 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-valuebox {
+    $root: &;
+    --_rows: var(--ph-valuebox-rows);
+    --_py: 4px;
+    --_bw: 2px;
+    display: flex;
+    min-width: size.$input-width-xsmall;
+    max-width: 100%;
+    min-height: size.$control-height;
+    padding: var(--_py) spacing.$padding-sm;
+    align-items: center;
+    background-color: colors.$layer-subtle;
+    color: colors.$text-secondary;
+    border: var(--_bw) solid transparent; // align with input fields
+    @include rounded.rounded;
+    @include text.body1;
+    overflow-wrap: break-word;
+
+    &__text {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+  
+    &--light-mode {
+        background-color: colors.$layer-tertiary;
+    }
+
+    &--disabled {
+        color: colors.$text-disabled;
+    }
+
+    &--size-xsmall {
+        width: size.$input-width-xsmall;
+    }
+
+    &--size-small {
+        width: size.$input-width-small;
+    }
+
+    &--size-medium {
+        width: size.$input-width-medium;
+    }
+
+    &--size-large {
+        width: size.$input-width-large;
+    }
+
+    &--size-xlarge {
+        width: size.$input-width-xlarge;
+        max-width: 100%;
+    }
+
+    &--ellipsis {
+        #{$root}__text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    &--has-rows {
+        height: calc(var(--_rows) * 1lh + 2 * var(--_py) + 2 * var(--_bw));
+    }
+
+    &--multiline {
+        display: block;
+        overflow-y: auto;
+        white-space: pre-wrap;
+    }
+
+}

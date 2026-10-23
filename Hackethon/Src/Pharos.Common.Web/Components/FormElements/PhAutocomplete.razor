@@ -1,0 +1,61 @@
+﻿@inherits ComponentWithClientScriptBase
+@typeparam TValue where TValue : notnull
+
+<div class="@Classname">
+    <PhPopover @ref="_popover" Appearance="PopoverStyle.Dropdown" FillWidth AutoHide OnToggle="SetOpenState">
+        <Anchor>
+            <input @ref="_inputRef"
+                   value="@SearchText"
+                   @oninput="OnInput"
+                   @onkeyup="HandleKeyup"
+                   @onfocusin="HandleFocusIn"
+                   @onfocusout="HandleFocusOut"
+                   type="text"
+                   spellcheck="false"
+                   placeholder="@PlaceHolder"
+                   disabled="@Disabled" />
+            <div class="ph-autocomplete__clear-btn">
+                <PhIconButton IconType="IconType.ModalClose"
+                              IconSize="IconSize.Md"
+                              Disabled="@Disabled"
+                              @onclick="ResetInput" />
+            </div>
+        </Anchor>
+
+        <Panel>
+            @if (ShowNotFound)
+            {
+                <div class="ph-autocomplete__notfound">
+                    @NoResultsText
+                </div>
+            }
+            else
+            {
+                <div class="ph-autocomplete__dropdown">
+                    <div class="ph-autocomplete__items">
+                        @for (var i = 0; i < ResultList.Length; i++)
+                        {
+                            var item = ResultList[i];
+
+                            <div @key="item" class="ph-autocomplete__dropdown-row @GetSelectedSuggestionClass(i)"
+                                 @onclick="@(_ => SelectResult(item))" @onclick:preventDefault>
+                                <div class="ph-autocomplete__dropdown-row-1">
+                                    @Highlight(Row1(item))
+                                </div>
+                                @if (!string.IsNullOrWhiteSpace(Row2(item)))
+                                {
+                                    <div class="ph-autocomplete__dropdown-row-2">
+                                        @Highlight(Row2(item))
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class="ph-autocomplete__dropdown-footer">
+                        @FooterText
+                    </div>
+                </div>
+            }
+        </Panel>
+    </PhPopover>
+</div>

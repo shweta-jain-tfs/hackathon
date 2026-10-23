@@ -1,0 +1,6 @@
+@use "../abstracts/typography";
+
+.ph-theme-japanese {
+    // TBD: the font could also be set via a CSS variable, but then this class must be set on the same element that sets the font-family property (see _base.scss).
+    font-family: typography.$font-family-noto-sans-jp, typography.$font-family-helvetica-neue, typography.$fallback-font-family;
+}

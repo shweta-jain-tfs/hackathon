@@ -1,0 +1,90 @@
+@use '../abstracts/colors';
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+
+.ph-popover {
+    anchor-name: --popout-anchor; // update this and the position-anchor in the razor code. Can be removed once the anchor attribute is released, or kept when anchor-scope is released.
+
+    > [popover] {
+        margin-top: 2px;
+        position-anchor: --popout-anchor;
+        position-area: end span-end;
+        position-try:
+            flip-block,
+            flip-inline,
+            flip-block flip-inline,
+            --popover-right-position,
+            --popover-right-position flip-inline;
+        box-shadow: 0px 18px 18px 0px colors.$dropdown-shadow;
+    }
+
+    // Appearance
+    
+    &--with-background {
+        > [popover] {
+            --ph-bg-color: #{colors.$layer-secondary}; // for trailing edge
+            max-height: 450px;
+            padding-block: spacing.$gap-xs;
+            border-width: 2px;
+            @include rounded.rounded;
+            background-color: var(--ph-bg-color);
+            overflow-y: auto;
+        }
+    }
+    
+    // Modifiers
+    
+    &--fill-width {
+        > [popover]:popover-open {
+            min-width: anchor-size(width);
+        }
+    }
+    
+    &--auto-hide {
+        > [popover]:popover-open {
+            position-visibility: anchors-visible;
+        }
+    }
+    
+    // Positioning
+    
+    &--dock-right {
+        > [popover] {
+            position-area: end span-start;
+        }
+    }
+
+    &--sidebar {
+        > [popover] {
+            max-height: 80vh;
+            position-area: span-end end;
+            position-try:
+                --popover-sidebar-offset-position,
+                --popover-sidebar-right-position,
+                flip-block;
+            margin-top: 0;
+            margin-left: calc(-1 * spacing.$gap-xs);
+        }
+    }
+
+}
+
+// try placing the popover to the right of the anchor when it doesn't fit anywhere else (e.g. date picker)
+@position-try --popover-right-position {
+    position-area: right;
+    margin-top: 0;
+    margin-left: 2px;
+}
+
+// try placing the sidebar popover slightly higher up if it fits
+@position-try --popover-sidebar-offset-position {
+    position-area: span-end end;
+    margin-top: -100px;
+}
+
+
+// try placing the sidebar popover centered on the right of the more button
+@position-try --popover-sidebar-right-position {
+    position-area: right;
+    margin-top: 0;
+}

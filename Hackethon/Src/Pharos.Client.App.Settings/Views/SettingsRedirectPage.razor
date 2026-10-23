@@ -1,0 +1,8 @@
+@using Pharos.Common.Web.Utilities.Redirect
+@attribute [Route(PageRoute.Settings)]
+@attribute [Authorize]
+
+@if (SettingsUri != null)
+{
+    <RedirectTo Uri="@SettingsUri" Replace/>
+}

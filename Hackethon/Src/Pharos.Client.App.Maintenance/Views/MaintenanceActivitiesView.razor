@@ -1,0 +1,16 @@
+﻿@using Pharos.Client.App.Maintenance.ViewModels
+@using Pharos.Client.Common.App.Constants
+
+<PhDataGrid TGridItem="MaintenanceActivityViewModel"
+            StateID="ondemand"
+            Items="@ViewModels"
+            SelectionType="SelectionTypeEnum.Off"
+            RowType="RowTypeEnum.LinesBetweenRows">
+    <Columns>
+        <Column Title="@Loc["MaintenancePage_Col_Name"]" Property="@(item => item!.Name)">
+            <PhHrefLink OnClick="() => ViewMaintenanceActivity(context)">@context.DisplayName</PhHrefLink>
+        </Column>
+        <Column Title="@Loc["MaintenancePage_Col_Duration"]" Property="@(item => item!.DurationString)" Align="ColumnAlignEnum.Right" />
+        <Column Title="@Loc["MaintenancePage_Col_LastCompleted"]" Property="@(item => item!.LastCompleted)" Format="@FormatStrings.ShortDateTime" />
+    </Columns>
+</PhDataGrid>

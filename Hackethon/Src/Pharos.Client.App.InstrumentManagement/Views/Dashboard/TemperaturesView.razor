@@ -1,0 +1,3 @@
+@using Pharos.Client.App.InstrumentManagement.ViewModels.Dashboard
+@using Pharos.Common.Web.Components.Status
+<PhStatus Status="@(SensorStatusHelper.ToStatusType(ViewModel.Status))" FontSize="StatusFontSize.Body1" Href="@PageRoute.DashboardTemperatures" Text="@Loc["DashboardPage_TemperaturesView_Header"]" Gap="StatusGap.Sm" />

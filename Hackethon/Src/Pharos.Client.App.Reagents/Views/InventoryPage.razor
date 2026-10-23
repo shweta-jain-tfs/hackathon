@@ -1,0 +1,29 @@
+@using Pharos.Common.Web.Components.TabControl
+@using Pharos.Client.App.Reagents.Views.Inventory.Carriers
+@using Pharos.Client.App.Reagents.Views.Inventory.Cartridges
+@using Pharos.Client.App.Reagents.Views.Inventory.Bottles
+@using Pharos.Client.App.Reagents.Views.Inventory.DilutionPlates
+
+@attribute [Route(PageRoute.Inventory)]
+
+<PhPage>
+    <ChildContent>
+        @if (!InstrumentFilterModel.IsBusy)
+        {
+            <PhTabControl DefaultTab="@DefaultTab">
+                <PhTabPage Text="@Loc["InventoryPage_CarriersTab_Title"]" TabId="1" HideTrailingEdge>
+                    <CarrierListView DisplayErrorFilters="@_applyErrorFilterForCarriers"></CarrierListView>
+                </PhTabPage>
+                <PhTabPage Text="@Loc["InventoryPage_CartridgesTab_Title"]" TabId="2" HideTrailingEdge>
+                    <CartridgesListView DisplayErrorFilters="@_applyErrorFilterForCartridges"></CartridgesListView>
+                </PhTabPage>
+                <PhTabPage Text="@Loc["InventoryPage_BottlesTab_Title"]" TabId="3" HideTrailingEdge>
+                    <BottlesListView></BottlesListView>
+                </PhTabPage>
+                <PhTabPage Text="@Loc["InventoryPage_DilutionPlatesTab_ListTitle"]" TabId="4" HideTrailingEdge>
+                    <DilutionPlatesView></DilutionPlatesView>
+                </PhTabPage>
+            </PhTabControl>
+        }
+    </ChildContent>
+</PhPage>

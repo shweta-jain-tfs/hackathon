@@ -1,0 +1,92 @@
+@use "sass:map";
+
+$desktopGap: (
+    "xs": 8px,
+    "sm": 8px,
+    "md": 16px,
+    "lg": 24px,
+    "xl": 32px,
+    "xxl": 40px,
+    "gutter": 16px,
+);
+
+$instrumentGap: (
+    "xs": 8px,
+    "sm": 16px,
+    "md": 24px,
+    "lg": 32px,
+    "xl": 40px,
+    "xxl": 56px,
+    "gutter": 20px,
+);
+
+$desktopPadding: (
+    "xs": 8px,
+    "sm": 16px,
+    "md": 16px,
+    "lg": 24px,
+    "xl": 32px,
+    "xxl": 40px,
+);
+
+$instrumentPadding: (
+    "xs": 8px,
+    "sm": 16px,
+    "md": 24px,
+    "lg": 32px,
+    "xl": 40px,
+    "xxl": 48px,
+);
+
+// TODO: Add correct indent values for desktop spacing. For now, using the same as desktop.
+$desktopIndent: (
+    "single": 40px,
+    "double": 80px,
+);
+
+$instrumentIndent: (
+    "single": 40px,
+    "double": 80px,
+);
+
+// Variables
+// =========
+
+// Scalable spacing (different size in desktop and instrument)
+// Note: use px values for smaller or constant spacings.
+
+// In Figma: Controls/General/Gap/md
+$gap-xs: var(--ph-gap-xs, map.get($desktopGap, "xs"));
+$gap-sm: var(--ph-gap-sm, map.get($desktopGap, "sm"));
+$gap-md: var(--ph-gap-md, map.get($desktopGap, "md"));
+$gap-lg: var(--ph-gap-lg, map.get($desktopGap, "lg"));
+$gap-xl: var(--ph-gap-xl, map.get($desktopGap, "xl"));
+$gap-xxl: var(--ph-gap-xxl, map.get($desktopGap, "xxl"));
+$gap-gutter: var(--ph-gap-gutter, map.get($desktopGap, "gutter"));
+
+// In Figma: Controls/General/Padding/md
+$padding-xs: var(--ph-padding-xs, map.get($desktopPadding, "xs"));
+$padding-sm: var(--ph-padding-sm, map.get($desktopPadding, "sm"));
+$padding-md: var(--ph-padding-md, map.get($desktopPadding, "md"));
+$padding-lg: var(--ph-padding-lg, map.get($desktopPadding, "lg"));
+$padding-xl: var(--ph-padding-xl, map.get($desktopPadding, "xl"));
+$padding-xxl: var(--ph-padding-xxl, map.get($desktopPadding, "xxl"));
+
+// In Figma: Layout/Indent
+$indent-single: var(--ph-indent-single, map.get($desktopIndent, "single"));
+$indent-double: var(--ph-indent-double, map.get($desktopIndent, "double"));
+
+// Theme mixin
+@mixin instrument-spacing-variables {
+    @each $spacingName, $spacingValue in $instrumentGap {
+        --ph-gap-#{$spacingName}: #{$spacingValue};
+    }
+
+    @each $spacingName, $spacingValue in $instrumentPadding {
+        --ph-padding-#{$spacingName}: #{$spacingValue};
+    }
+
+    @each $spacingName, $spacingValue in $instrumentIndent {
+        --ph-indent-#{$spacingName}: #{$spacingValue};
+    }
+}

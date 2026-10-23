@@ -1,0 +1,170 @@
+﻿@using Pharos.Common.Web.Components.DatePicker
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/DatePicker")]
+
+<Stories TComponent="PhDatePicker<DateTimeOffset>">
+    <Story Name="DatePicker">
+
+        <Template>
+            <PhDatePicker TValue="DateTimeOffset" @attributes="context.Args" />
+        </Template>
+
+    </Story>
+
+    <Story Name="Multiple">
+
+        <Template>
+            <div class="flex flex-wrap gap-md">
+                <PhDatePicker TValue="DateTimeOffset" @attributes="context.Args" />
+                <PhDatePicker TValue="DateTimeOffset" @attributes="context.Args" />
+                <PhDatePicker TValue="DateTimeOffset" @attributes="context.Args" />
+            </div>
+        </Template>
+
+    </Story>
+
+    <Story Name="Sizes">
+        <Template>
+            <PhStack>
+                @foreach (DatePickerSize size in Enum.GetValues(typeof(DatePickerSize)))
+                {
+                    <PhLabel Text="@size.ToString()">
+                        <PhDatePicker TValue="DateTimeOffset" @attributes="context.Args" Size="size" />
+                    </PhLabel>
+                }
+            </PhStack>
+        </Template>
+    </Story>
+
+    <Story Name="Regional formats">
+        <Template>
+            <PhStack>
+                @foreach (var culture in new string[] { "en-US", "ja-JP", "sv-SE", "es-ES" })
+                {
+                    <PhLabel Text="@culture">
+                        <PhDatePicker TValue="DateTimeOffset" @attributes="context.Args" Culture="@culture" />
+                    </PhLabel>
+                }
+            </PhStack>
+        </Template>
+    </Story>
+
+    <Story Name="Types and nullable vs not null">
+        <Template>
+            <div class="flex flex-col gap-lg">
+                <PhLabel Text="DateTimeOffset">
+                    <div class="flex flex-wrap gap-md">
+                        <PhDatePicker Label="Not Null" TValue="DateTimeOffset" @attributes="context.Args" @bind-Value="_dtoNotNull" />
+                        <PhDatePicker Label="Nullable" TValue="DateTimeOffset ?" @attributes="context.Args" @bind-Value="_dtoNullable" />
+                    </div>
+                </PhLabel>
+                <PhLabel Text="DateTime">
+                    <div class="flex flex-wrap gap-md">
+                        <PhDatePicker Label="Not Null" TValue="DateTime" @attributes="context.Args" @bind-Value="_dtNotNull" />
+                        <PhDatePicker Label="Nullable" TValue="DateTime ?" @attributes="context.Args" @bind-Value="_dtNullable" />
+                    </div>
+                </PhLabel>
+                <PhLabel Text="DateOnly">
+                    <div class="flex flex-wrap gap-md">
+                        <PhDatePicker Label="Not Null" TValue="DateOnly" @attributes="context.Args" @bind-Value="_doNotNull" />
+                        <PhDatePicker Label="Nullable" TValue="DateOnly ?" @attributes="context.Args" @bind-Value="_doNullable" />
+                    </div>
+                </PhLabel>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Validation">
+
+        <Template>
+            <EditForm Model="@ViewModel" Context="form" @ref="_form">
+                <pre>OnChange Value: [@ViewModel.PropertyOne]</pre>
+                <MockValidator @ref="_validator" />
+                <ValidationSummary />
+                <PhLabel Text="Change value to validate" ValidationFor="() => ViewModel.PropertyOne">
+                    <PhDatePicker TValue="DateTimeOffset ?" @attributes="context.Args" @bind-Value="ViewModel.PropertyOne" />
+                </PhLabel>
+            </EditForm>
+            <div class="flex gap-md">
+                <PhButton OnClick="ToggleValidation">@(_isValidated ? "Clear Validation" : "Validate Form")</PhButton>
+            </div>
+        </Template>
+
+    </Story>
+
+    <Story Name="Help Text and Error States">
+        <Template>
+            <PhStack>
+                <PhLabel Text="Birth Date" HelpText="Select your date of birth">
+                    <PhDatePicker TValue="DateTimeOffset ?" @attributes="context.Args" @bind-Value="@_birthDate" />
+                </PhLabel>
+
+                <PhLabel Text="Event Date" HelpText="Choose the date for the scheduled event">
+                    <PhDatePicker TValue="DateTimeOffset ?" @attributes="context.Args" @bind-Value="@_eventDate" />
+                </PhLabel>
+
+                <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e0e0e0;">
+                    <PhLabel Text="Deadline - Error State Example"
+                             HelpText="Select the project deadline"
+                             ErrorText="@(_showDateError ? "Please select a valid future date" : null)">
+                        <PhDatePicker TValue="DateTimeOffset ?" @attributes="context.Args"
+                                      Error="_showDateError"
+                                      @bind-Value="@_deadlineDate" />
+                    </PhLabel>
+
+                    <div class="flex gap-md" style="margin-top: 8px;">
+                        <PhButton OnClick="() => _showDateError = !_showDateError">
+                            @(_showDateError ? "Clear Error State" : "Show Error State")
+                        </PhButton>
+                    </div>
+                </div>
+            </PhStack>
+        </Template>
+    </Story>
+
+</Stories>
+
+@code {
+    private DateTimeOffset? _birthDate;
+    private DateTimeOffset? _eventDate;
+    private DateTimeOffset? _deadlineDate;
+
+    private DateTimeOffset _dtoNotNull = DateTimeOffset.Now;
+    private DateTimeOffset? _dtoNullable = null;
+
+    private DateTime _dtNotNull = DateTime.Now;
+    private DateTime? _dtNullable = null;
+
+    private DateOnly _doNotNull = DateOnly.FromDateTime(DateTime.Now);
+    private DateOnly? _doNullable = null;
+
+    private bool _showDateError = false;
+    private bool _isValidated = false;
+    private Model ViewModel { get; set; } = new Model();
+    private EditForm? _form;
+    private MockValidator? _validator;
+
+    public class Model
+    {
+        public DateTimeOffset? PropertyOne { get; set; }
+        public string? PropertyTwo { get; set; }
+    }
+
+    private void ToggleValidation()
+    {
+        if (_isValidated)
+        {
+            _validator?.ClearErrors();
+            _isValidated = false;
+        }
+        else
+        {
+            _form?.EditContext?.Validate();
+            _isValidated = true;
+        }
+    }
+}

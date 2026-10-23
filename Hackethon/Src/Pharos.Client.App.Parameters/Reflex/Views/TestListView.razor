@@ -1,0 +1,43 @@
+﻿@using Pharos.Client.App.Parameters.Reflex.ViewModels
+@using Pharos.Common.Web.Components.Icons
+@if (ViewModel?.ReflexTestViewModels is not null)
+{
+    <PhDockedButtonRow Justified="false" EnableButtons="ViewModel.CanEdit">
+        <ChildContent>
+            <PhDataGrid @ref="_dataGrid"
+                        TableTitle="@Loc["ReflexDetailPage_TestListView_TableTitle"]"
+                        StateID="@(ViewModel.IsNewEntity ? null : "reflextests")"
+                        TGridItem="ReflexTestViewModel"
+                        Items="ViewModel.ReflexTestViewModels.OrderBy(x => x.TestSortOrder).AsQueryable()"
+                        SelectionType="@(ViewModel.CanEdit ? SelectionTypeEnum.MultiSelectWithSelectAll : SelectionTypeEnum.Off)"
+                        RowType="RowTypeEnum.LinesBetweenRows"
+                        OnSelectedItemsChanged="SelectedItemsChanged">
+                <Columns>
+                    <Column Title="@Loc["ReflexDetailPage_TestListView_TestName"]" Property="@(item => item!.TestName)">
+                        <PhHrefLink OnClick="@(() => TestsEditViewOpen(context))">@context.TestName</PhHrefLink>
+                    </Column>
+                    <Column Title="@Loc["ReflexDetailPage_TestListView_MethodName"]" Property="@(item => item!.MethodName)" />
+                    <Column Title="@Loc["ReflexDetailPage_TestListView_RunOrder"]" Property="@(item => item!.TestSortOrder)" />
+                    <Column Title="@Loc["ReflexDetailPage_TestListView_Replicates"]" Property="@(item => item!.NumberOfReplicates)" />
+                    <Column Title="@Loc["ReflexDetailPage_TestListView_InstrumentDilution"]" Property="@(item => item!.InstrumentDilutionFactor)" />
+                </Columns>
+            </PhDataGrid>
+        </ChildContent>
+        <Buttons>
+            <PhIconButton Type="IconButtonType.SecondaryButton"
+                          IconType="IconType.ArrowUp"
+                          IconSize="IconSize.Md"
+                          OnClick="@(() => AddIndexToTestSortOrder(-1))"
+                          Disabled="MoveTestOrderUpDisabled()">
+            </PhIconButton>
+            <PhIconButton Type="IconButtonType.SecondaryButton"
+                          IconType="IconType.ArrowDown"
+                          IconSize="IconSize.Md"
+                          OnClick="@(() => AddIndexToTestSortOrder(1))"
+                          Disabled="MoveTestOrderDownDisabled()">
+            </PhIconButton>
+            <PhButton Disabled="IsEmptyDefinitionName() || HasAnyItemsSelected" OnClick="TestsAddViewOpen">@Loc["ReflexDetailPage_TestListView_AddTestsButton"]</PhButton>
+            <PhButton Disabled="!HasAnyItemsSelected" OnClick="TestsDeleteSelectedRows">@Loc["ReflexDetailPage_TestListView_DeleteButton"]</PhButton>
+        </Buttons>
+    </PhDockedButtonRow>
+}

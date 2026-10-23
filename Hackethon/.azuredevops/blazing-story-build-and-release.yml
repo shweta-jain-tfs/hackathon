@@ -1,0 +1,160 @@
+name: BlazingStory.$(Build.BuildId)
+
+trigger: none # No CI build
+
+pr: none # Not for pull requests
+
+schedules:
+- cron: '0 0 * * *'
+  displayName: Daily midnight build
+  branches:
+    include:
+    - main
+
+pool: 
+  name: 'Development'
+  
+resources:
+  repositories:
+    - repository: sharedPipeline # Name to reference this repository at a later step
+      type: git
+      name: "TetrisSoftware/SharedPipelineTemplates"
+
+variables:
+- group: JFrogArtifactory
+- name: dotNetVersion
+  value: '10.0.402'
+- name: nodeVersion
+  value: '20.11.0'
+- name: environment
+  value: 'vc01-mictfs7p'
+- name: project
+  value: '**/Pharos.Stories.csproj'
+- name: BlazingStoriesPath
+  value: 'C:\BlazingStory'
+- name: buildConfiguration
+  value: 'Release'
+- name: runtime
+  value: 'win-x64'
+- name: outputDir
+  value: '$(Build.ArtifactStagingDirectory)/publish'
+
+stages:
+- stage: Build
+  displayName: Build and Publish DLLs
+  jobs:
+    - job: BuildAndPublish
+      steps:
+
+      - template: .azuredevops/templates/build-npm-step.yml@sharedPipeline
+        parameters:
+          nodeVersion: '$(nodeVersion)'
+          webPath: '$(Build.SourcesDirectory)\Src\Pharos.Common.Web'
+          buildNumber: '$(Build.BuildId)'
+          jfNpmRepoName: '$(JF_NPM_REPO_NAME)'
+          jfXrayBuildName: '$(XRAY_BUILD_NAME)'
+
+      - template: .azuredevops/templates/build-dot-net-prerequisite-step.yml@sharedPipeline
+        parameters:
+          nugetConfigPath: '$(Build.SourcesDirectory)\nuget.config'
+          nugetRestoreProjects: '$(Build.SourcesDirectory)\Stories\Pharos.Stories.sln'
+          sdkVersion: '$(dotNetVersion)'
+          toolsDirectory: '$(Agent.ToolsDirectory)'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Run .net publish'
+        inputs:
+          command: 'publish'
+          publishWebProjects: false
+          projects: '$(project)'
+          arguments: '--configuration $(buildConfiguration) --runtime $(runtime) --output $(outputDir)'
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish DLLs as Build Artifact'
+        inputs:
+          PathtoPublish: '$(outputDir)'
+          ArtifactName: 'StoriesDlls'
+
+- stage: Deploy
+  displayName: Deploy to Server
+  dependsOn: Build
+  jobs:
+    - job: CopyJob
+      displayName: Copy DLLs to Server
+      steps:
+      - task: DownloadBuildArtifacts@0
+        displayName: 'Download Build Artifacts'
+        inputs:
+          buildType: 'current'
+          downloadType: 'single'
+          artifactName: 'StoriesDlls'
+          downloadPath: '$(System.ArtifactsDirectory)'
+
+      - task: PowerShell@2
+        displayName: 'Stop Service, Clean, Copy, Extract, Ensure Service'
+        inputs:
+          targetType: 'inline'
+          script: |
+            $session = New-PSSession -ComputerName $(environment)
+            try {
+                # --- Stop service if running ---
+                Invoke-Command -Session $session -ScriptBlock {
+                    $svc = Get-Service -Name "BlazingStoryService" -ErrorAction SilentlyContinue
+                    if ($svc -and $svc.Status -eq 'Running') {
+                        Write-Host "Stopping BlazingStoryService..."
+                        Stop-Service -Name "BlazingStoryService" -Force
+                    }
+                }
+
+                # --- Clean folder contents ---
+                 Invoke-Command -Session $session -ScriptBlock {
+                    if (Test-Path -Path "$(BlazingStoriesPath)") {
+                        Write-Host "Cleaning contents of: $(BlazingStoriesPath)"
+                        Get-ChildItem -Path "$(BlazingStoriesPath)" -Recurse -Force |
+                            Where-Object { $_.FullName -notlike "$(BlazingStoriesPath)\DataProtectionKeys*" } |
+                            Remove-Item -Recurse -Force
+                        if (-not (Test-Path "$(BlazingStoriesPath)\DataProtectionKeys")) {
+                            New-Item -Path "$(BlazingStoriesPath)\DataProtectionKeys" -ItemType Directory -Force
+                        }
+                    } else {
+                        New-Item -Path "$(BlazingStoriesPath)" -ItemType Directory -Force
+                    }
+
+                    # Ensure DataProtectionKeys folder exists
+                    if (-not (Test-Path "$(BlazingStoriesPath)\DataProtectionKeys")) {
+                        New-Item -Path "$(BlazingStoriesPath)\DataProtectionKeys" -ItemType Directory -Force
+                    }
+                }
+
+                # --- Copy zip artifact ---
+                $zipSource = "$(System.ArtifactsDirectory)\StoriesDlls\Pharos.Stories.zip"
+                $zipDest   = "$(BlazingStoriesPath)\Pharos.Stories.zip"
+                Copy-Item -Path $zipSource -Destination $zipDest -ToSession $session -Force -Verbose
+                Write-Host "Copied zip file to target environment: $zipDest"
+
+                # --- Extract zip ---
+                Invoke-Command -Session $session -ScriptBlock {
+                    $zipPath = "$(BlazingStoriesPath)\Pharos.Stories.zip"
+                    $extractPath = "$(BlazingStoriesPath)"
+                    Write-Host "Extracting $zipPath to $extractPath"
+                    Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+                    Remove-Item $zipPath -Force
+                }
+
+                # --- Ensure service exists ---
+                Invoke-Command -Session $session -ScriptBlock {
+                    $svc = Get-Service -Name "BlazingStoryService" -ErrorAction SilentlyContinue
+                    if (-not $svc) {
+                        Write-Host "Service 'BlazingStoryService' not found. Creating it..."
+                        $exePath = "$(BlazingStoriesPath)\Pharos.Stories.exe"
+                        sc.exe create BlazingStoryService binPath= "`"$exePath`"" start= auto
+                    }
+                    Write-Host "Starting BlazingStoryService..."
+                    Start-Service -Name "BlazingStoryService"
+                }
+
+                Write-Host "Deployment completed successfully."
+            }
+            finally {
+                Remove-PSSession $session
+            }

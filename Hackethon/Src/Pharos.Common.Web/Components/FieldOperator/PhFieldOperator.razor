@@ -1,0 +1,23 @@
+<div class="@GroupCssClasses">
+    <div class="ph-field-operator-row__field">
+        @if (string.IsNullOrWhiteSpace(OperatorText) && IsMissingOperatorAddSpacing)
+        {
+            <div class="ph-field-operator-row__field-spacing">
+                @ChildContent
+            </div>
+        }
+        else
+        {
+            @ChildContent
+        }
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(OperatorText))
+    {
+        <div class="ph-field-operator-row__operator">
+            <div class="ph-field-operator-row__operator-spacing">
+                @OperatorText
+            </div>
+        </div>
+    }
+</div>

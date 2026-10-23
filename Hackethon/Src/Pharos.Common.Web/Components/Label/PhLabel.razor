@@ -1,0 +1,71 @@
+﻿@if (IsBlankKeepDistance)
+{
+    <div class="@CssClasses">
+        <div class="ph-label__is_blank_keep_distance">
+            @ChildContent
+        </div>
+    </div>
+}
+else if (AllParametersAreEmpty)
+{
+    @* Render the child component, e.g. a text box, without a label wrapper if there's nothing in the label *@
+    @ChildContent
+}
+else if (RenderAsLabel)
+{
+    <label class="@CssClasses" for="@For">
+        @if (!string.IsNullOrEmpty(Text))
+        {
+            <span class="ph-label__text">
+                @Text
+            </span>
+        }
+        @if (HasFieldContent)
+        {
+            <span class="ph-label__field">
+                @ChildContent
+                @if (!string.IsNullOrEmpty(_errorText))
+                {
+                    <span class="ph-label__error-text">
+                        @_errorText
+                    </span>
+                }
+                else if (!string.IsNullOrEmpty(HelpText))
+                {
+                    <span class="ph-label__help-text">
+                        @HelpText
+                    </span>
+                }
+            </span>
+        }
+    </label>
+}
+else
+{
+    <div class="@CssClasses">
+        @if (!string.IsNullOrEmpty(Text))
+        {
+            <span class="ph-label__text">
+                @Text
+            </span>
+        }
+        @if (HasFieldContent)
+        {
+            <span class="ph-label__field">
+                @ChildContent
+                @if (!string.IsNullOrEmpty(_errorText))
+                {
+                    <span class="ph-label__error-text">
+                        @_errorText
+                    </span>
+                }
+                else if (!string.IsNullOrEmpty(HelpText))
+                {
+                    <span class="ph-label__help-text">
+                        @HelpText
+                    </span>
+                }
+            </span>
+        }
+    </div>
+}

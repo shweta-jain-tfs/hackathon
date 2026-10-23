@@ -1,0 +1,13 @@
+﻿<PhModalContent>
+	<Body>
+	<div>@Loc["SettingsExport_Failed"]</div>
+	<PhDataGrid TGridItem="string" StateID="" Items="ErrorMessages.AsQueryable()">
+		<Columns>
+			<Column Title="@Loc["SettingImport_IgnoredColumn_Error"]" Property="@(item => item)" />
+		</Columns>
+	</PhDataGrid>
+	</Body>
+	<Footer>
+		<PhButton OnClick="@(() => CloseModal(ModalResult.Ok()))">@Loc["SettingsSaveModal_Close"]</PhButton>
+	</Footer>
+</PhModalContent>

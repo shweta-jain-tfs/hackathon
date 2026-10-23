@@ -1,0 +1,18 @@
+﻿@typeparam TGridItem
+@typeparam TProp
+
+@inherits PhQuickColumnFilter<Pharos.Common.Web.Components.DataGrid.Filters.Models.KeyValueListColumnFilter<TGridItem, TProp>, TGridItem, TProp>
+
+<PhQuickFilter Title="@ColumnFilter.Column.EffectiveFilterTitle" ActiveFilterCount="@ColumnFilter.ActiveFilterCount" OnClearFilter="ClearFilter">
+
+    <ul>
+        @foreach (var item in ColumnFilter!.SelectableStringValues)
+        {
+            <li>
+                <PhCheckBox Label="@item.DisplayName" @bind-Value="@item.IsSelected" OnCheckChanged="@((args) => Callback(args, item))" />
+            </li>
+        }
+    </ul>
+
+</PhQuickFilter>
+

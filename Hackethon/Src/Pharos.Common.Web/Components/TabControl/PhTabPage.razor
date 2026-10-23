@@ -1,0 +1,13 @@
+﻿@using Pharos.Common.Web.Components.TrailingEdge
+<div class="@CssClasses">
+    @if (HideTrailingEdge)
+    {
+        @ChildContent
+    }
+    else
+    {
+        <PhTrailingEdge Fill="true">
+            @ChildContent
+        </PhTrailingEdge>
+    }
+</div>

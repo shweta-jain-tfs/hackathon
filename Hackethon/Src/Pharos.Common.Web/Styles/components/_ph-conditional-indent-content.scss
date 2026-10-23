@@ -1,0 +1,5 @@
+@use "../abstracts/spacing";
+
+.ph-conditional-indent-content {
+    margin-left: spacing.$indent-single;
+}

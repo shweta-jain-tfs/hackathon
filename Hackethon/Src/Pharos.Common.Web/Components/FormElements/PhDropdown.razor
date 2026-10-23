@@ -1,0 +1,124 @@
+﻿@using Pharos.Common.Web.Components.Status
+@using Pharos.Common.Web.Components.TrailingEdge
+@typeparam TValue
+
+<PhLabel Text="@Label"
+         HelpText="@HelpText"
+         ErrorText="@(HasErrorText ? ErrorText : null)"
+         Disabled="@Disabled"
+         RenderAsLabel="@(!DisplayOnly)"
+         SuppressAutoValidation="@DisplayOnly"
+         ValidationFor="@(DisplayOnly ? null : ValidationForExpression)">
+    <div class="@CssClasses" uiname="@AutomatedTestId">
+        @if (DisplayOnly)
+        {
+            var textToShow = SelectedOption?.Text;
+            <PhValueBox Disabled="@Disabled" Overflow="ValueBoxOverflow.Ellipsis">
+                @if (HasSelectedStatus)
+                {
+                    <span class="ph-dropdown__status-row">
+                        <span class="ph-dropdown__status-symbol">
+                            <PhStatus Status="@SelectedOption.StatusType" Size="StatusSize.Md" />
+                        </span>
+                        <span class="ph-dropdown__text-label">@textToShow</span>
+                    </span>
+                }
+                else
+                {
+                    @textToShow
+                }
+            </PhValueBox>
+        }
+        else
+        {
+            <PhPopover @ref="_popover" Appearance="PopoverStyle.Dropdown" FillWidth AutoHide OnToggle="SetOpenState">
+                <Anchor>
+                    <button class="ph-dropdown__btn" 
+                            popovertarget="@(_popover?.Id)" 
+                            disabled="@Disabled" 
+                            type="button"
+                            id="@Id">
+                        <span class="ph-dropdown__text">
+                            @{
+                                var textToShow = SelectedOption?.Text ?? Title;
+                            }
+
+                            @if (HasSelectedStatus)
+                            {
+                                <span class="ph-dropdown__status-row">
+                                    <span class="ph-dropdown__status-symbol">
+                                        <PhStatus Status="@SelectedOption.StatusType" Size="StatusSize.Md" />
+                                    </span>
+                                    <span class="ph-dropdown__text-label">@textToShow</span>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="ph-dropdown__text-label">@textToShow</span>
+                            }
+                        </span>
+                        @if (_error)
+                        {
+                            <span class="ph-dropdown__error-icon">
+                                <PhIcon IconType="IconType.Alert" Size="IconSize.Md" />
+                            </span>
+                        }
+                        <span class="ph-dropdown__icon">
+                            <PhIcon IconType="@(_isOpen ? IconType.ChevronUp : IconType.ChevronDown)" Size="IconSize.Sm"></PhIcon>
+                        </span>
+                    </button>
+                    @if (Size == DropdownSize.FitContent)
+                    {
+                        <aside aria-hidden="true" class="ph-dropdown__hidden-options">
+                            @if (!string.IsNullOrWhiteSpace(Title))
+                            {
+                                <div class="ph-dropdown__text">@Title</div>
+                            }
+                            @foreach (var option in Options)
+                            {
+                                <div class="ph-dropdown__text">@option.Text</div>
+                            }
+                        </aside>
+                    }
+                </Anchor>
+                <Panel>
+                    <div class="ph-dropdown__scroll">
+                        <PhTrailingEdge Mode="@(HasManyItems ? TrailingEdgeDisplayMode.VerticalOnly : TrailingEdgeDisplayMode.Disabled)">
+                            @if (Options?.Any() == true)
+                            {
+                                <ul class="ph-dropdown__content">
+                                        @foreach (var option in Options)
+                                        {
+                                            var isSelected = SelectedOption == option;
+                                            @* todo: make a clickable button or link inside the li element in webassembly. Buttons don't need preventDefault like the li does when used inside a label element. Also makes it focusable. *@
+                                            <li class="@(option.Disabled ? "ph-dropdown__option ph-dropdown__option--disabled" : "ph-dropdown__option")"
+                                                @onclick="@(() => SelectOption(option))"
+                                                aria-selected="@isSelected"
+                                                aria-disabled="@option.Disabled"
+                                                @onclick:preventDefault>
+                                                <div class="ph-dropdown__option-text">
+                                                    @if (SymbolsExists)
+                                                    {
+                                                        <div class="ph-dropdown__status-row">
+                                                            <div class="ph-dropdown__status-symbol">
+                                                                <PhStatus Status="option.StatusType" Size="StatusSize.Md" />
+                                                            </div>
+                                                            @option.Text
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        @option.Text
+                                                    }
+                                                </div>
+                                            </li>
+                                        }
+                                </ul>
+                            }
+                        </PhTrailingEdge>
+                    </div>
+                </Panel>
+            </PhPopover>
+        }
+    </div>
+</PhLabel>

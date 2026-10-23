@@ -1,0 +1,32 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+
+.ph-navigation-button {
+    $button-width: 86px;
+
+    padding: spacing.$padding-xs;
+    display: inline-flex;
+    color: colors.$icon-link;
+    background: colors.$background-tertiary;
+    height: size.$hit-area-md;
+    justify-content: center;
+    align-items: center;
+    border-radius: rounded.$rounded-default;
+
+    &--left {
+        min-width: $button-width;
+        flex: 1 1 auto;
+    }
+
+    &--right {
+        width: $button-width;
+        flex: 0 0 $button-width;
+    }
+
+    &:disabled {
+        cursor: default;
+        color: colors.$icon-disabled-01;
+    }
+}

@@ -1,0 +1,23 @@
+@use "../abstracts/scrollbar";
+@use "../abstracts/spacing";
+@use "../abstracts/size";
+
+.ph-task-card-list-view {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: size.$task-card-width;
+    width: 100%;
+    padding-block: 50px;
+    gap: spacing.$gap-xl;
+    overflow-x: auto;
+    overflow-y: hidden;
+    @include scrollbar.hideScrollbar;
+
+    &--centered {
+        justify-content: center;
+    }
+
+    &--hidden {
+        display: none;
+    }
+}

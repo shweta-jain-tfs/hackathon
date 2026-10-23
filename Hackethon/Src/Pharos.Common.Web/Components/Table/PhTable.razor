@@ -1,0 +1,40 @@
+﻿@typeparam TTableItem
+
+<div class="@CssClassGrid">
+
+    <table>
+
+        @if (ItemList is not null)
+        {
+            <thead>
+
+            <th>@* take up space for the checkbox column *@</th>
+
+            @foreach (var col in ItemList.Keys)
+            {
+                <th>@col</th>
+            }
+
+            <th>@*take up remaining space*@</th>
+
+            </thead>
+
+            <tbody>
+            
+
+            @for (int i = 0; i < ItemList.First().Value.Count; i++)
+            {
+                <tr>
+                    @foreach (var col in ItemList.Keys)
+                    {
+                        <td>@ItemList[col][i]</td>
+                    }
+                </tr>
+            }
+
+            </tbody>
+        }
+
+    </table>
+
+</div>

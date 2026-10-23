@@ -1,0 +1,43 @@
+﻿<CascadingValue Value="this" Name="ModalContent" IsFixed="true">
+    @if (Body is not null)
+    {
+        <div class="ph-modal__body">
+            @Body
+        </div>
+    }
+
+    @if (Footer is not null || !string.IsNullOrEmpty(SelectedText))
+    {
+        <div class="ph-modal__footer">
+            <ModalSelectedCounter SelectedText="@SelectedText" />
+            @Footer
+        </div>
+    }
+</CascadingValue>
+
+@code {
+    /// <summary>
+    /// The text representing the currently selected items.
+    /// </summary>
+    [Parameter] public string? SelectedText { get; set; }
+    /// <summary>
+    /// The content to display in the modal body.
+    /// </summary>
+    [Parameter] public RenderFragment? Body { get; set; }
+    /// <summary>
+    /// The content to display in the modal footer.
+    /// </summary>
+    [Parameter] public RenderFragment? Footer { get; set; }
+
+    /// <summary>
+    /// Event callback invoked when the selected count changes.
+    /// </summary>
+    public Action<int>? SelectedCountChanged { get; set; }
+    
+    // Called by PhDataGrid or other child logic
+    internal void RaiseSelectedCount(int count)
+    {
+        SelectedCountChanged?.Invoke(count);
+        // Do NOT call StateHasChanged here.
+    }
+}

@@ -1,0 +1,14 @@
+﻿<CascadingValue Value="this" Name="DockedButtonRow" IsFixed="true">
+    <div class="@ClassNames">
+        <div class="ph-docked-row__content">
+            @ChildContent
+        </div>
+        @if (EnableButtons)
+        {
+            <ButtonRowWithCount SelectedText="@SelectedText"
+                                Buttons="Buttons"
+                                Justified="Justified"
+                                LeftContent="LeftContent" />
+        }
+    </div>
+</CascadingValue>

@@ -1,0 +1,41 @@
+@using Pharos.Common.Web.Components.Reagent
+@using Pharos.Common.Web.Utilities
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/ReagentShape")]
+
+<Stories TComponent="ReagentShapeView">
+
+    <Story Name="Default">
+        <Arguments>
+            <Arg For="_ => _!.IsCarrierTypeReagent" Value="@false" />
+            <Arg For="_ => _!.Texts" Value="@(["sIgG", "sIgG4"])" />
+            <Arg For="_ => _!.Shape" Value="@ReagentIndicatorShape.Slanted" />
+            <Arg For="_ => _!.Colors" Value="@(["#DA6A27", "#66BD52"])" />
+        </Arguments>
+        <Template>
+            <ReagentShapeView @attributes="context.Args" />
+        </Template>
+    </Story>
+
+    <Story Name="Contrast - Dark">
+        <Template>
+            <TestReagentList Surface="ContrastSurface.Dark" />
+        </Template>
+    </Story>
+
+    <Story Name="Contrast - Light">
+        <Template>
+            <TestReagentList Surface="ContrastSurface.Light" />
+        </Template>
+    </Story>
+
+    <Story Name="Contrast - Print">
+        <Template>
+            <TestReagentList Surface="ContrastSurface.Print" />
+        </Template>
+    </Story>
+</Stories>
+
+@code
+{
+}

@@ -1,0 +1,59 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" >
+    
+    <!-- To create an upgrade installer package locally, change any of the <major>.<minor>.<patch> to a higher number, for example, 1.0.0.0 to 1.0.1.0. 
+    The fourth digit, the build number, is not considered by Windows Installer. New ProductCode is generated automatically by WiX Toolset. -->
+    <Package 
+      Name="Pharos" 
+      Manufacturer="Thermo Fisher Scientific" 
+      Version="1.0.0.0" 
+      UpgradeCode="d78cbabb-1014-4a6d-b3f2-813b25e65fd4" 
+      Scope = "perMachine">
+        
+        <?include Includes\InstallerArguments.wxi ?>
+        
+        <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)"
+                      AllowSameVersionUpgrades="yes"
+                      Schedule="afterInstallInitialize" />
+        
+        <MediaTemplate EmbedCab="yes"/>
+        
+        <Feature Id="Main">
+            <ComponentGroupRef Id="MainComponents" />
+            <ComponentGroupRef Id="ParameterUpdatePackageComponents" />
+        </Feature>
+
+        <Binary Id="CustomAction.CA" SourceFile="$(var.CustomAction.TargetDir)\$(var.CustomAction.TargetName).CA.dll" />
+
+        <InstallExecuteSequence>
+            <!-- Immediate custom actions -->
+            <Custom Action="SetAppSettingsPath" After="InstallInitialize" Condition="NOT REMOVE" />
+            <Custom Action="SetParamsForBackupDatabase" After="SetAppSettingsPath" Condition="NOT REMOVE" />
+            <Custom Action="SetParamsForAddWindowsServiceAccountAsSqlLogin" After="SetAppSettingsPath" Condition="NOT REMOVE" />
+            <Custom Action="SetParamsForEnableSecureEnclaveIfDisabled" After="SetAppSettingsPath" Condition="NOT REMOVE" />
+            <Custom Action="SetParamsForRestoreDatabaseBackup" After="SetAppSettingsPath" Condition="NOT REMOVE" />
+            <Custom Action="SetParamsForUpdateAppSettings" After="SetAppSettingsPath" Condition="NOT REMOVE" />
+            <Custom Action="SetParamsForRunInitDb" After="SetAppSettingsPath" Condition="NOT REMOVE" />
+
+            <!-- Deferred custom actions -->
+            <Custom Action="BackupDatabase" After="InstallFiles" Condition="NOT REMOVE" />
+            <Custom Action="AddWindowsServiceAccountAsSqlLogin" After="BackupDatabase" Condition="NOT REMOVE" />
+            <Custom Action="EnableSecureEnclaveIfDisabled" After="AddWindowsServiceAccountAsSqlLogin" Condition="NOT REMOVE" />
+            <Custom Action="UpdateAppSettings" After="EnableSecureEnclaveIfDisabled" Condition="NOT REMOVE" />
+            <Custom Action="RunInitDb" Before="InstallServices" Condition="NOT REMOVE" />
+
+            <!-- Test rollback custom action - scheduled as the very last action when TESTROLLBACK=true -->
+            <Custom Action="TestRollbackFailInstallation" After="UpdateAppSettings" Condition="NOT REMOVE AND TESTROLLBACK=&quot;true&quot;" />
+
+            <!-- Rollback custom actions -->
+            <Custom Action="RestoreDatabaseBackup" Before="BackupDatabase" Condition="NOT REMOVE" />
+        </InstallExecuteSequence>
+
+        <StandardDirectory Id="CommonAppDataFolder">
+          <Directory Id="ThermoFisherScientific" Name="Thermo Fisher Scientific">
+            <Directory Id="Pharos" Name="Pharos">
+              <Directory Id="PUP" Name="PUP" />
+            </Directory>
+          </Directory>
+        </StandardDirectory>
+    </Package>
+</Wix>

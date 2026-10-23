@@ -1,0 +1,64 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+
+.ph-panel-layout { // deprecated: to be replaced with PhStack
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$gap-md;
+    height: 100%;
+    background-color: colors.$background-secondary;
+}
+
+.ph-panel {
+    $root: &;
+    --ph-bg-color: #{colors.$background-secondary}; // Set bg color to match this surface.
+    display: flex;
+    flex-direction: column;
+    padding: spacing.$padding-sm;
+    @include rounded.rounded;
+    border: 2px solid colors.$border-subtle-01;
+    background-color: var(--ph-bg-color);
+
+    &:has(#{$root}__scroll-container) {
+        flex: 1;
+        min-height: 0; // allow shrinking height in flex layout
+    }
+
+    // todo: replace with other component + a scroll context
+    &__scroll-container {
+        display: flex;
+        flex-direction: column;
+        margin-top: spacing.$gap-xl;
+        gap: spacing.$gap-md;
+        overflow: auto;
+    }
+
+    // todo: break out into separate layout.
+    &__row {
+        width: 100%;
+        gap: 2rem;
+        display: flex;
+        flex-direction: row;
+    }
+
+    &:has(#{$root}__row) {
+        gap: spacing.$gap-lg;
+    }
+
+    &--grow {
+        flex: 1;
+    }
+
+    &--no-background {
+        --ph-bg-color: inherit;
+        background: none;
+        padding: 0;
+        border: none;
+    }
+
+    &--pad-md {
+        padding: spacing.$padding-md;
+    }
+}
+

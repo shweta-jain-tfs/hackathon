@@ -1,0 +1,27 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@attribute [Stories("Components/SwitchButton")]
+
+<Stories TComponent="PhSwitchButton">
+    <Story Name="SwitchButton">
+        <Arguments>
+            <Arg For="_ => _!.Label" Value="@("Label text")" />
+            <Arg For="_ => _!.LabelPosition" Value="@SwitchButtonLabelPosition.Left" />
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.DisplayOnly" Value="false" />
+            <Arg For="_ => _!.Size" Value="@SwitchButtonSize.Small" />
+        </Arguments>
+        <Template>
+            <PhSwitchButton @attributes="context.Args" @bind-Value="_value"></PhSwitchButton>
+            <div class="mt-md inline-flex flex-col gap-gutter">
+                <PhButton OnClick="() => _value = !_value">Toggle from outside</PhButton>
+                <span>Current: @_value</span>
+            </div>
+        </Template>
+
+    </Story>
+</Stories>
+
+@code {
+    private bool _value;
+}

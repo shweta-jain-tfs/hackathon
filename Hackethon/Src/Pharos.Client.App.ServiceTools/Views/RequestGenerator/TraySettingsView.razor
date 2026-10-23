@@ -1,0 +1,29 @@
+@using Pharos.Client.App.ServiceTools.ViewModels.RequestGenerator
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.FormElements
+
+<div class="flex flex-col">
+    <PhValidationSection SectionName="Trays" Model="ViewModel" RuleSets="TraySettingsView">
+        <PhPanel>
+            <h4 class="t-h3">@Loc["RequestGenerator_Trays"]</h4>
+            <div class="flex flex-col mt-sm">
+                <PhCheckBox Label="@Loc["RequestGenerator_PlaceSamplesInTrays"]"
+                            @bind-Value="ViewModel.PlaceSamplesInTrays"
+                            Size="CheckBoxSize.Small" />
+                <div class="flex flex-col gap-sm">
+                    <PhNumberField Label="@Loc["RequestGenerator_StartOffset"]"
+                                   @bind-Value="ViewModel.TrayStartOffset"
+                                   Disabled="!ViewModel.PlaceSamplesInTrays"
+                                   MaxNumberOfDigits="GeneratorViewModel.Trays_StartOffsetMaxNumberOfDigits"
+                                   Size="TextBoxSize.Small" />
+                            
+                    <PhNumberField Label="@Loc["RequestGenerator_SamplesPerTray"]"
+                                   @bind-Value="ViewModel.SamplesPerTray"
+                                   Disabled="!ViewModel.PlaceSamplesInTrays"
+                                   MaxNumberOfDigits="GeneratorViewModel.SamplesPerTrayMaxNumberOfDigits"
+                                   Size="TextBoxSize.Small" />
+                </div>
+            </div>
+        </PhPanel>
+    </PhValidationSection>
+</div>

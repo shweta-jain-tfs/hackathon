@@ -1,0 +1,89 @@
+/*
+Font faces. Only use woff2.
+*/
+@use "../abstracts/typography";
+
+// Latin font
+
+@font-face {
+    font-family: typography.$font-family-helvetica-neue;
+    src: url("../fonts/HelveticaNeueforTFS-Lt.woff2") format("woff2");
+    font-weight: typography.$font-light;
+    font-style: normal;
+    font-display: swap;
+    ascent-override: 100%; // Compensating for top align height in the ThermoFisher font.
+    descent-override: 25%; // Compensating for top align height in the ThermoFisher font.
+    line-gap-override: 0%;
+}
+
+@font-face {
+    font-family: typography.$font-family-helvetica-neue;
+    src: url("../fonts/HelveticaNeueforTFS.woff2") format("woff2");
+    font-weight: typography.$font-normal;
+    font-style: normal;
+    font-display: swap;
+    ascent-override: 100%;
+    descent-override: 25%;
+    line-gap-override: 0%;
+}
+
+@font-face {
+    font-family: typography.$font-family-helvetica-neue;
+    src: url("../fonts/HelveticaNeueforTFS-Bd.woff2") format("woff2");
+    font-weight: typography.$font-bold;
+    font-style: normal;
+    font-display: swap;
+    ascent-override: 100%;
+    descent-override: 25%;
+    line-gap-override: 0%;
+}
+
+
+@font-face {
+    font-family: typography.$font-family-noto-sans-jp;
+    src: url("../fonts/NotoSansJP-300.woff2") format("woff2");
+    font-weight: typography.$font-light;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: typography.$font-family-noto-sans-jp;
+    src: url("../fonts/NotoSansJP-400.woff2") format("woff2");
+    font-weight: typography.$font-normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: typography.$font-family-noto-sans-jp;
+    src: url("../fonts/NotoSansJP-700.woff2") format("woff2");
+    font-weight: typography.$font-bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+@font-face {
+    font-family: typography.$font-family-noto-sans-sc;
+    src: url("../fonts/NotoSansSC-300.woff2") format("woff2");
+    font-weight: typography.$font-light;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: typography.$font-family-noto-sans-sc;
+    src: url("../fonts/NotoSansSC-400.woff2") format("woff2");
+    font-weight: typography.$font-normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: typography.$font-family-noto-sans-sc;
+    src: url("../fonts/NotoSansSC-700.woff2") format("woff2");
+    font-weight: typography.$font-bold;
+    font-style: normal;
+    font-display: swap;
+}

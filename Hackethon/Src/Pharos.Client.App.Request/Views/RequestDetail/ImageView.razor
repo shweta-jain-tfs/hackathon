@@ -1,0 +1,36 @@
+﻿@using Pharos.Common.Web.Components.DetailsList
+@using Pharos.Common.Web.Components.Status
+@attribute [Authorize]
+
+<PhModalContent>
+    <Body>
+    <div class="flex gap-md items-start">
+        @if (_loadingImage)
+        {
+            <div style="width: 200px; height: 200px;" class="flex items-center justify-center">
+                <PhLoadingIndicator />
+            </div>
+            <PhLabel>@Loc["ImageView_LoadingImage"]</PhLabel>
+        }
+        else if (_imageFound)
+        {
+            <img width="200" height="200" src="data:image;base64, @Convert.ToBase64String(_imageData)"/>
+
+            <PhDetailsList RowGap="DetailsListGap.Lg">
+                @if (_showTubeId)
+                {
+                    <PhDetailsListItem Label="@Loc["ImageView_TubeId"]">@_tubeId</PhDetailsListItem>
+                }
+                <PhDetailsListItem Label="@Loc["ImageView_Time"]">@_time.ToShortDateTimeString()</PhDetailsListItem>
+            </PhDetailsList>
+        }
+        else
+        {
+            <PhStatus Status="StatusType.Warning" Text="@Loc["ImageView_UnableToRetrieveImage"]" Size="StatusSize.Lg"/>
+        }
+    </div>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(CloseModal)">@Loc["ImageView_Close"]</PhButton>
+    </Footer>
+</PhModalContent>

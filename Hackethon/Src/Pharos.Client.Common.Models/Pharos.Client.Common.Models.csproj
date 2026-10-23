@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Pharos.Client.Common.Localization\Pharos.Client.Common.Localization.csproj" />
+		<ProjectReference Include="..\Pharos.Contracts\Pharos.Contracts.csproj" />
+	</ItemGroup>
+
+</Project>

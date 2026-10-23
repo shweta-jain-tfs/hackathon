@@ -1,0 +1,17 @@
+@using Pharos.Common.Web.Components.QuickFilter
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/QuickFilter/FilterActions")]
+
+<Stories TComponent="PhFilterActions">
+    <Story Name="Filter actions">
+        <Template>
+            <MockedUiContext>
+                <PhFilterActions @attributes="context.Args" />
+            </MockedUiContext>
+        </Template>
+    </Story>
+</Stories>
+
+@code
+{
+}

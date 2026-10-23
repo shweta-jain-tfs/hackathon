@@ -1,0 +1,38 @@
+@attribute [Authorize]
+
+<PhDockedButtonRow>
+    <ChildContent>
+        <PhDataGrid DefaultSortColumn="@nameof(MethodQualityControlsOverview.MethodName)"
+                    StateID="qualitycontrols"
+                    TableTitle="@Loc["MethodQualityControlOverview_Title"]"
+                    TGridItem="MethodQualityControlsOverview"
+                    ItemsProvider="ViewModel.ProvideGridItems"
+                    RowType="RowTypeEnum.LinesBetweenRows">
+            <Columns>
+                <Column Title="@Loc["MethodQualityControlOverview_MethodName"]" Property="@(x => x.MethodName)" QuickFilter="true" MultiSelectFilterItems="_qualityControlMethodNameDict" Grouped="true">
+                    @context.MethodName
+                </Column>
+                
+                <Column Title="@Loc["MethodQualityControlOverview_Type"]" Property="@(x => x.QcType)" Grouped="true">
+                    @QualityControlTypeString(context.QcType)
+                </Column>
+                
+                <Column Title="@Loc["MethodQualityControlOverview_QCName"]" Property="@(x => x.QualityControlName)" Grouped="true"/>
+                
+                <Column Title="@Loc["MethodQualityControlOverview_TestName"]" Property="@(x => x.TestName)">
+                    <PhHrefLink Href="@($"{PageRoute.Quality.MethodQualityControl.Default}/{context.Id}")">@context.TestName</PhHrefLink>
+                </Column>
+                
+                <Column Title="@Loc["MethodQualityControlOverview_CurrentLots"]" Property="@(x => x.CurrentLot)">
+                    <PhHrefLink Href="@($"{PageRoute.Quality.MethodQualityControl.Default}/{context.Id}")">@context.CurrentLot</PhHrefLink>
+                </Column>
+                
+                <Column Title="@Loc["MethodQualityControlOverview_LimitsDefinedBy"]" Property="@(x => x.LimitDefinition)" />
+
+                <Column Title="@Loc["MethodQualityControlOverview_Issues"]" Property="@(x => x.CurrentIssue)" />
+            </Columns>
+        </PhDataGrid>
+    </ChildContent>
+    <Buttons>
+    </Buttons>
+</PhDockedButtonRow>

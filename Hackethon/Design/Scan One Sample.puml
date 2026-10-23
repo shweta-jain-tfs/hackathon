@@ -1,0 +1,81 @@
+@startuml ScanOneSample
+skinparam BoxPadding 20
+
+actor User as user
+
+box "Instrument" #LightGrey
+	participant Pharos.Gui #LightSkyBlue
+	participant gRPC
+end box
+
+box "Pharos-Server" #LightSkyBlue
+	participant Api
+	participant Application.Instrument
+	participant Application.Infrastructure
+	participant Application.TestOrder
+	participant Application.Result
+	participant Application.Lis
+	participant Application.Lis.Astm
+end box
+
+box "LIS" #LightCyan
+	participant Lis
+end box
+
+'Scan one Sample'
+user -> gRPC : Scan one Sample
+
+'Send instrument storage'
+gRPC -> Application.Instrument : grpc SendInstrumentStorageInformation
+Application.Instrument -> Application.Instrument : Send ProcessInstrumentStorageInformationCommand
+note over Application.Instrument: Save instrument.StorageInfo.
+Application.Instrument -> Application.Infrastructure : _instrumentStorageHub.SampleDrawerContentsChanged()
+Application.Infrastructure --> Pharos.Gui
+
+'Send barcode'
+gRPC -> Application.Instrument : grpc SendSampleBarcodeScanned
+Application.Instrument -> Application.Instrument : Send ProcessSampleBarcodeCommand
+Application.Instrument -> Application.TestOrder : Publish SampleScannedEvent
+note over Application.TestOrder #White: SampleScannedEventHandler
+note over Application.TestOrder: Save Sample.
+Application.TestOrder -> Application.Lis : Send RequestTestOrdersCommand
+note over Application.Lis: Send to each LisChannel.
+Application.Lis -> Application.Lis.Astm : _messageDispatcher.PostMessage()
+Application.Lis.Astm -> Lis : SendMessage()
+
+'Receive message from LIS'
+Lis -> Application.Lis.Astm : ReceiveMessage()
+Application.Lis.Astm -> Application.Lis : OnLisMessageReceived()
+Application.Lis -> Application.TestOrder : Publish TestOrderLisMessage\n(With DB-entities).
+note over Application.TestOrder #White: TestOrderLisMessageHandler
+note over Application.TestOrder: Add/update Samples, TestOrders, Patients.\nRemove all Samples in Patients??
+Application.TestOrder -> Application.TestOrder : Send TryStartProcessingSamplesCommand
+note over Application.TestOrder: Add Replicates
+Application.TestOrder -> Application.Instrument : Send SendUpdateTestOrderCommand
+note over Application.Instrument #White: SendUpdateTestOrderHandler
+Application.Instrument -> gRPC : grpc UpdateTestOrderAsync
+gRPC -> Application.Instrument : grpc SendAssayResultAsync
+Application.Instrument -> Application.Result : Send SampleResultInformationCommand
+note over Application.Result #White: SampleResultInformationCommandHandler
+note over Application.Result: Save SampleTestOrder.
+
+'Refresh page'
+user -> Pharos.Gui : Refresh Result Page
+Pharos.Gui -> Api : [HttpGet]\nGetSampleTestResultSummary
+Api -> Application.Result : Send GetResultsQuery
+Application.Result --> Api : 
+Api --> Pharos.Gui : IEnumerable<SampleTestResultSummaryDto>
+
+'Approve Results'
+user -> Pharos.Gui : Approve Result
+Pharos.Gui -> Api : [HttpPost]\nUpdateTestOrderStatus
+note over Api: api/results
+Api -> Application.Result : Send ApproveTestResultsCommand
+note over Application.Result #White: ApproveTestResultsCommandHandler
+note over Application.Result: Save updated status.
+Application.Result -> Application.Lis : Send SendTestResultsToLisCommand
+note over Application.Lis #White: SendTestResultsToLisCommandHandler
+Application.Lis -> Application.Lis.Astm : _messageDispatcher.PostMessage()
+Application.Lis.Astm -> Lis : SendMessage()
+
+@enduml

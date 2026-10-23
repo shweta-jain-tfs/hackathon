@@ -1,0 +1,35 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-delete-tube-types-outcome {
+    @include text.body2;
+
+    &__header {
+        margin: 0;
+        color: colors.$text-secondary;
+        @include text.h3;
+        font-weight: text.$font-normal;
+    }
+
+    &__list {
+        display: grid;
+        row-gap: spacing.$gap-xs;
+    }
+
+    &__row {
+        display: grid;
+        grid-template-columns: minmax(10ch, max-content) minmax(0, 1fr);
+        column-gap: spacing.$gap-xl;
+    }
+
+    &__name {
+        color: colors.$text-secondary;
+        white-space: nowrap;
+    }
+
+    &__reason {
+        color: colors.$text-hint;
+        overflow-wrap: break-word;
+    }
+}

@@ -1,0 +1,31 @@
+@typeparam TValue
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.QuickFilter
+
+<PhQuickFilter Title="@ColumnFilter.Title"
+               ActiveFilterCount="@ColumnFilter.ActiveFilterCount"
+               OnClearFilter="ClearFilter">
+    @if (HasChoiceOptions)
+    {
+        <PhDropdown TValue="TValue"
+                    Title="@ColumnFilter.Title"
+                    Options="@DropdownOptions"
+                    @bind-Value="SelectedValue" />
+    }
+    else if (IsStringValue)
+    {
+        <PhFilterTextBox Placeholder="@ColumnFilter.Title"
+                         @bind-Value="TextValue" />
+    }
+    else if (IsNumericValue)
+    {
+        <PhNumberField TValue="TValue"
+                       PlaceHolder="@ColumnFilter.Title"
+                       @bind-Value="SelectedValue" />
+    }
+    else if (IsDateValue)
+    {
+        <PhDatePicker TValue="TValue"
+                      @bind-Value="SelectedValue" />
+    }
+</PhQuickFilter>

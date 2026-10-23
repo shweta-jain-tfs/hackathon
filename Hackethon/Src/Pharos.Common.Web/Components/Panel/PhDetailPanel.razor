@@ -1,0 +1,15 @@
+<div class="ph-detail-panel" style="@InlineStyle">
+    @if (ShowLimiter)
+    {
+        <div class="ph-detail-panel__limiter"></div>
+    }
+    <div class="ph-detail-panel__surface">
+        @if (ShouldShowCloseButton)
+        {
+            <div class="ph-detail-panel__close-button">
+                <PhIconButton IconType="IconType.ModalClose" IconSize="IconSize.Lg" OnClick="HandleCloseClicked" Type="IconButtonType.Blank" />
+            </div>
+        }
+        @ChildContent
+    </div>
+</div>

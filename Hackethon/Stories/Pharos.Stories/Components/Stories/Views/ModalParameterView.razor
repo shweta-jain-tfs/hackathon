@@ -1,0 +1,22 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.Modal
+@inject IModalService ModalService
+
+<PhButton OnClick="@(() => Close(ModalResult.Ok(_input)))">Close</PhButton>
+<p>This modal dialog has a groovy backdrop!</p>
+<p>@Message</p>
+<PhTextBox @bind-Value="@_input" />
+
+@code
+{
+    [CascadingParameter] public ModalInstance? Modal { get; set; }
+    
+    [Parameter] public string? Message { get; set; }
+
+    private string? _input;
+
+    private void Close(ModalResult result)
+    {
+        Modal?.CloseAsync(result);
+    }
+}

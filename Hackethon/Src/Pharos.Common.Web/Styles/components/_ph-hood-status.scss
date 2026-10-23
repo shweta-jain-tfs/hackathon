@@ -1,0 +1,44 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+
+.ph-hood-status {
+    --ph-hood-outline: #{colors.$icon-secondary};
+    --ph-hood-fill: #{colors.$icon-secondary};
+    --ph-hood-stroke: none;
+    display: flex;
+    align-items: center;
+    gap: spacing.$gap-md;
+
+    &--action {
+        --ph-hood-outline: #{colors.$icon-link};
+        --ph-hood-fill: #{colors.$icon-link};
+        gap: 4px;
+    }
+
+    &--unlocking {
+        --ph-hood-fill: #{colors.$status-success};
+
+        svg > :last-child {
+            animation: blink 500ms infinite alternate;
+        }
+    }
+
+    &--unlocked {
+        --ph-hood-fill: #{colors.$status-success};
+    }
+
+    &--open {
+        --ph-hood-fill: none;
+        --ph-hood-stroke: #{colors.$icon-secondary};
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

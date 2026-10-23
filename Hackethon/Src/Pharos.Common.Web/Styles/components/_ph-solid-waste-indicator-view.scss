@@ -1,0 +1,37 @@
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+@use "../abstracts/colors";
+
+.ph-solid-waste-indicator-view {
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$gap-md;
+    margin-top: spacing.$gap-sm;
+    margin-left: 41px;
+
+    &__wrapper {
+        display: flex;
+        justify-content: flex-end;
+        gap: spacing.$gap-sm;
+    }
+
+    &__text {
+        writing-mode: vertical-lr;
+        transform: rotate(180deg);
+        margin: auto;
+        @include text.body1;
+    }
+
+    &__indicator {
+        width: 8px;
+        height: 240px;
+
+        &--biohazard {
+            background-color: colors.$liquid-waste-indicator;
+        }
+
+        &--recyclable {
+            background-color: colors.$text-secondary;
+        }
+    }
+}

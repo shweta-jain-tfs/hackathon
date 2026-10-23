@@ -1,0 +1,183 @@
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.FieldOperator
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Common.Web.Components.Label
+@attribute [Stories("Components/FieldOperatorRow")]
+
+<Stories TComponent="PhFieldOperatorRow">
+    <Story Name="Row width inherited by all children">
+        <Template>
+            <PhFieldOperatorRow Width="FieldOperatorWidth.Medium">
+                <PhFieldOperator OperatorText="x">
+                    <PhNumberField Size="TextBoxSize.Small" TValue="int" Label="Pre-dilution" HelpText="1 - 1000" Value="2" />
+                </PhFieldOperator>
+
+                <PhFieldOperator OperatorText="=">
+                    <PhDropdown TValue="int" Size="DropdownSize.Default" Label="Instrument dilution" Options="@_instrumentDilutionFactors" Value="10" />
+                </PhFieldOperator>
+
+                <PhFieldOperator IsMissingOperatorAddSpacing="true">
+                    <PhValueBox Size="TextBoxSize.Default">20</PhValueBox>
+                </PhFieldOperator>
+            </PhFieldOperatorRow>
+        </Template>
+    </Story>
+
+    <Story Name="One child overriding row width">
+        <Template>
+            <PhFieldOperatorRow Width="FieldOperatorWidth.Small">
+                <PhFieldOperator OperatorText="x">
+                    <PhNumberField Size="TextBoxSize.Small" TValue="int" Label="Pre-dilution" HelpText="1 - 1000" Value="2" />
+                </PhFieldOperator>
+
+                <PhFieldOperator Width="FieldOperatorWidth.Large" OperatorText="=">
+                    <PhDropdown TValue="int" Size="DropdownSize.Default" Label="Instrument dilution" Options="@_instrumentDilutionFactors" Value="10" />
+                </PhFieldOperator>
+
+                <PhFieldOperator IsMissingOperatorAddSpacing="true">
+                    <PhValueBox Size="TextBoxSize.Default">20</PhValueBox>
+                </PhFieldOperator>
+            </PhFieldOperatorRow>
+        </Template>
+    </Story>
+
+    <Story Name="Multiple children overriding row width">
+        <Template>
+            <PhFieldOperatorRow Width="FieldOperatorWidth.Small">
+                <PhFieldOperator Width="FieldOperatorWidth.XSmall" OperatorText="x">
+                    <PhNumberField Size="TextBoxSize.Small" TValue="int" Label="Factor A" HelpText="1 - 1000" Value="2" />
+                </PhFieldOperator>
+
+                <PhFieldOperator Width="FieldOperatorWidth.Large" OperatorText="=">
+                    <PhDropdown TValue="int" Size="DropdownSize.Default" Label="Factor B" Options="@_instrumentDilutionFactors" Value="10" />
+                </PhFieldOperator>
+
+                <PhFieldOperator Width="FieldOperatorWidth.XLarge" IsMissingOperatorAddSpacing="true">
+                    <PhValueBox Size="TextBoxSize.Default">20</PhValueBox>
+                </PhFieldOperator>
+            </PhFieldOperatorRow>
+        </Template>
+    </Story>
+
+    <Story Name="Child without operator">
+        <Template>
+            <p class="t-body2 text-secondary">
+                Use <code>IsMissingOperatorAddSpacing="true"</code> when a child has no <code>OperatorText</code> and its content has no label (for example a plain <code>PhValueBox</code>), so it aligns with labeled fields.
+            </p>
+
+            <PhFieldOperatorRow Width="FieldOperatorWidth.Small">
+                <PhFieldOperator OperatorText="x">
+                    <PhNumberField Size="TextBoxSize.Small" TValue="int" Label="Pre-dilution" HelpText="1 - 1000" Value="2" />
+                </PhFieldOperator>
+
+                <PhFieldOperator OperatorText="=">
+                    <PhDropdown TValue="int" Size="DropdownSize.Default" Label="Instrument dilution" Options="@_instrumentDilutionFactors" Value="10" />
+                </PhFieldOperator>
+
+                <PhFieldOperator>
+                    <PhLabel Text="Total dilution">
+                        <PhValueBox Size="TextBoxSize.Default">20</PhValueBox>
+                    </PhLabel>
+                </PhFieldOperator>
+            </PhFieldOperatorRow>
+
+            <PhFieldOperatorRow Width="FieldOperatorWidth.Small">
+                <PhFieldOperator OperatorText="x">
+                    <PhNumberField Size="TextBoxSize.Small" TValue="int" Label="Pre-dilution" HelpText="1 - 1000" Value="2" />
+                </PhFieldOperator>
+
+                <PhFieldOperator OperatorText="=">
+                    <PhDropdown TValue="int" Size="DropdownSize.Default" Label="Instrument dilution" Options="@_instrumentDilutionFactors" Value="10" />
+                </PhFieldOperator>
+
+                <PhFieldOperator IsMissingOperatorAddSpacing="true">
+                    <PhValueBox Size="TextBoxSize.Default">20</PhValueBox>
+                </PhFieldOperator>
+            </PhFieldOperatorRow>
+        </Template>
+    </Story>
+
+    <Story Name="Operator alignment with labelled fields">
+        <Template>
+            <PhFieldOperatorRow Width="FieldOperatorWidth.Medium">
+                <PhFieldOperator OperatorText="+" Width="FieldOperatorWidth.Small">
+                    <PhTextBox Label="Small control" Size="TextBoxSize.Small" @bind-Value="_smallControlValue" />
+                </PhFieldOperator>
+
+                <PhFieldOperator OperatorText="=">
+                    <PhTextBox Label="Large control" Size="TextBoxSize.Medium" @bind-Value="_largeControlValue" />
+                </PhFieldOperator>
+
+                <PhFieldOperator IsMissingOperatorAddSpacing="true">
+                    <PhValueBox Size="TextBoxSize.ExtraLarge">AB</PhValueBox>
+                </PhFieldOperator>
+            </PhFieldOperatorRow>
+        </Template>
+    </Story>
+
+    <Story Name="All supported width values">
+        <Template>
+            <PhStack Gap="StackGap.Md">
+                <PhFieldOperatorRow Width="FieldOperatorWidth.XSmall">
+                    <PhFieldOperator OperatorText="=">
+                        <PhDropdown TValue="int" Size="DropdownSize.Default" Label="X-Small" Options="@_instrumentDilutionFactors" Value="2" />
+                    </PhFieldOperator>
+                    <PhFieldOperator IsMissingOperatorAddSpacing="true">
+                        <PhValueBox Size="TextBoxSize.Default">2</PhValueBox>
+                    </PhFieldOperator>
+                </PhFieldOperatorRow>
+
+                <PhFieldOperatorRow Width="FieldOperatorWidth.Small">
+                    <PhFieldOperator OperatorText="=">
+                        <PhDropdown TValue="int" Size="DropdownSize.Default" Label="Small" Options="@_instrumentDilutionFactors" Value="2" />
+                    </PhFieldOperator>
+                    <PhFieldOperator IsMissingOperatorAddSpacing="true">
+                        <PhValueBox Size="TextBoxSize.Default">3</PhValueBox>
+                    </PhFieldOperator>
+                </PhFieldOperatorRow>
+
+                <PhFieldOperatorRow Width="FieldOperatorWidth.Medium">
+                    <PhFieldOperator OperatorText="=">
+                        <PhDropdown TValue="int" Size="DropdownSize.Default" Label="Medium" Options="@_instrumentDilutionFactors" Value="5" />
+                    </PhFieldOperator>
+                    <PhFieldOperator IsMissingOperatorAddSpacing="true">
+                        <PhValueBox Size="TextBoxSize.Default">4</PhValueBox>
+                    </PhFieldOperator>
+                </PhFieldOperatorRow>
+
+                <PhFieldOperatorRow Width="FieldOperatorWidth.Large">
+                    <PhFieldOperator OperatorText="=">
+                        <PhDropdown TValue="int" Size="DropdownSize.Default" Label="Large" Options="@_instrumentDilutionFactors" Value="10" />
+                    </PhFieldOperator>
+                    <PhFieldOperator IsMissingOperatorAddSpacing="true">
+                        <PhValueBox Size="TextBoxSize.Default">5</PhValueBox>
+                    </PhFieldOperator>
+                </PhFieldOperatorRow>
+
+                <PhFieldOperatorRow Width="FieldOperatorWidth.XLarge">
+                    <PhFieldOperator OperatorText="=">
+                        <PhDropdown TValue="int" Size="DropdownSize.Default" Label="X-Large" Options="@_instrumentDilutionFactors" Value="10" />
+                    </PhFieldOperator>
+                    <PhFieldOperator IsMissingOperatorAddSpacing="true">
+                        <PhValueBox Size="TextBoxSize.Default">6</PhValueBox>
+                    </PhFieldOperator>
+                </PhFieldOperatorRow>
+            </PhStack>
+        </Template>
+    </Story>
+</Stories>
+
+@code
+{
+    private string? _smallControlValue = "A";
+    private string? _largeControlValue = "B";
+
+    private readonly List<DropDownOption<int>> _instrumentDilutionFactors =
+    [
+        new() { Value = 1, Text = "1" },
+        new() { Value = 2, Text = "2" },
+        new() { Value = 5, Text = "5" },
+        new() { Value = 10, Text = "10" }
+    ];
+}

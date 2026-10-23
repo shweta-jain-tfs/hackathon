@@ -1,0 +1,23 @@
+@using Pharos.Common.Web.Components.Drawer
+
+<div class="liquid-drawer-view">
+	<LiquidIndicatorView />
+	<div class="liquid-drawer-view__content">
+		<PhDrawer ActionName="@Loc["NavMenu_LiquidWasteDrawer"]" 
+				  DoorState="@ViewModel.PhDrawerLockState"
+				  IsButtonVisible="false"
+				  OnUnlockDrawerClick="() => {}"
+				  HasManageSamplePermission="@ViewModel.ShowIndicator"
+				  IsScanningOngoing="false">
+			@foreach (var container in ViewModel.Containers)
+			{
+				<LiquidBottleView Container="@container" SelectedLegendStatus="@ViewModel.SelectedLegendStatus" />
+			}
+		</PhDrawer>
+		@if (ViewModel.PhDrawerLockState == PhDrawerLockState.Open)
+		{
+			<div class="liquid-drawer-view__bottom-text">@Loc["Liquid_DrawerOpen"]</div>
+		}
+	</div>
+	<LiquidPositionView Positions="@ViewModel.Containers" />
+</div>

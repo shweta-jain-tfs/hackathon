@@ -1,0 +1,29 @@
+@using Pharos.Common.Web.Components.Icons
+@attribute [Stories("Components/Icon")]
+
+<Stories TComponent="PhIcon">
+    <Story Name="Icons">
+        <Template>
+            <div style="overflow: auto;">
+                @foreach (IconType icon in Enum.GetValues(typeof(IconType)))
+                {
+                    <br />
+                    <h5><b>@icon</b></h5>
+                    <div class="flex gap-xxl">
+                        @foreach (IconSize size in Enum.GetValues(typeof(IconSize)))
+                        {
+                            <br />
+                            <h5>@size</h5>
+                            <PhIcon IconType="@icon" Size="size"></PhIcon>
+                        }
+                    </div>
+                }
+            </div>
+        </Template>
+    </Story>
+</Stories>
+
+
+@code
+{
+}

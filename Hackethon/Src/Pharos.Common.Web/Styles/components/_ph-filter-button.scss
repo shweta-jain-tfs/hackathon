@@ -1,0 +1,91 @@
+@use '../abstracts/colors';
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+@use "../abstracts/mixins";
+
+.ph-filter-button {
+    $root: &;
+    --_inline-padding: #{spacing.$padding-md};
+    --_toggle-left-padding: #{spacing.$padding-xs};
+    --_toggle-icon-size: #{size.$icon-sm};
+    --_toggle-gap: 4px;
+
+    display: inline-flex;
+    align-items: center;
+    min-width: fit-content;
+    border: 2px solid colors.$border-active;
+    gap: spacing.$gap-xs;
+    min-height: size.$hit-area-md;
+    padding: 0px var(--_inline-padding);
+    color: colors.$text-secondary;
+    text-align: start;
+    @include text.body2;
+    @include rounded.rounded-full;
+    user-select: none;
+
+    // disable hover for filter buttons until can prevent sticky hover on touch screen properly.
+    // @include mixins.non-stick-hover {
+    //     background: colors.$layer-selected-hover;
+    //     border-color: colors.$border-hover;
+    // }
+
+    &:active,
+    &:focus-visible {
+        background-color: colors.$layer-selected-01;
+        border-color: colors.$border-active;
+    }
+
+    &__text {
+        white-space: nowrap;
+    }
+    
+    &__placeholder {
+        // reserve width for filter title including number of active filters
+        display: block;
+        height: 0;
+        overflow: hidden;
+        visibility: hidden;
+    }
+
+    &__icon {
+        display: flex;
+        color: colors.$icon-link;
+    }
+
+    &__toggle-icon {
+        color: colors.$icon-on-color-selected;
+
+        svg {
+            display: none;
+        }
+    }
+
+    &--selected {
+        background-color: colors.$layer-selected-01;
+    }
+
+    &--icon {
+        --_inline-padding: #{spacing.$padding-sm};
+        color: colors.$icon-link;
+
+        &:hover {
+            color: colors.$icon-link-pressed;
+        }
+    }
+
+    &--toggle {
+        gap: var(--_toggle-gap);
+        --ph-icon-size: var(--_toggle-icon-size);
+        
+        &#{$root}--selected {
+            padding-left: var(--_toggle-left-padding);
+            padding-right: calc((var(--_inline-padding) * 2) - var(--_toggle-left-padding) - var(--_toggle-icon-size) - var(--_toggle-gap));
+
+            #{$root}__toggle-icon svg {
+                display: block;
+            }
+        }
+    }
+}

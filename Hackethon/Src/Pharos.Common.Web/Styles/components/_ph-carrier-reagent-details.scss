@@ -1,0 +1,55 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-carrier-reagent-details {
+    display: flex;
+    flex-direction: column;
+
+    &__carrier-icon {
+        display: flex;
+        justify-content: center;
+        margin-top: spacing.$gap-xs;
+        color: colors.$layer-hover-02;
+    }
+
+    &__details-section {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-gutter;
+        margin-top: spacing.$gap-lg;
+    }
+
+    &__name-quantity {
+        display: flex;
+        gap: spacing.$gap-xl;
+    }
+
+    &__item-details {
+        display: flex;
+        gap: spacing.$gap-xl;
+
+        > label {
+            flex: 1;
+            color: colors.$text-secondary;
+        }
+    }
+
+    &__close-button {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: spacing.$gap-lg;
+    }
+
+    &__shape-wrapper {
+        display: flex;
+        align-items: center;
+        height: size.$hit-area-lg;
+        background-color: colors.$layer-subtle;
+        padding-left: spacing.$gap-sm;
+        border-radius: rounded.$rounded-default;
+        @include text.body1;
+    }
+}

@@ -1,0 +1,81 @@
+@using Pharos.Common.Web.Components.DropdownButton
+@using Pharos.Common.Web.Components.Subnavigation
+@attribute [Stories("Components/Subnavigation")]
+
+<Stories TComponent="PhSubnavItem">
+
+    <Story Name="Single">
+        <Template>
+            <div style="height: 100vh">
+                <PhSubnavMenu>
+                    <PhSubnavItem Uri="#a" Text="Methods (can be modified)" ForceActive="true" @attributes="context.Args" />
+                </PhSubnavMenu>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Few items">
+        <Template>
+            <div style="height: 100vh">
+                <PhSubnavMenu>
+                    <PhSubnavItem Uri="#a" Text="Methods (can be modified)" @attributes="context.Args" />
+                    <PhSubnavItem Uri="." Text="Articles (active)" />
+                    <PhSubnavItem Uri="#c" Text="Test panels" />
+                    <PhSubnavItem Uri="#d" Text="Reflex tests" />
+                </PhSubnavMenu>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="With bottom content">
+        <Template>
+            <div style="height: 100vh">
+                <PhSubnavMenu>
+                    <ChildContent>
+                    <PhSubnavItem Uri="#a" Text="Methods (can be modified)" @attributes="context.Args" />
+                    <PhSubnavItem Uri="." Text="Articles (active)" />
+                    <PhSubnavItem Uri="#c" Text="Test panels" />
+                    <PhSubnavItem Uri="#d" Text="Reflex tests" />
+                    </ChildContent>
+                    <BottomElement>
+                        <PhDropdownButton Text="More">
+                            <PhDropdownButtonItem Text="An option" />
+                        </PhDropdownButton>
+                    </BottomElement>
+                </PhSubnavMenu>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Many items">
+        <Template>
+            <div style="height: 100vh">
+                <PhSubnavMenu>
+                    <PhSubnavItem Uri="#a" Text="Methods (can be modified)" @attributes="context.Args" />
+                    <PhSubnavItem Uri="." Text="Articles (active)" />
+                    <PhSubnavItem Uri="#c" Text="Test panels" />
+                    <PhSubnavItem Uri="#d" Text="Reflex tests" />
+                    <PhSubnavItem Uri="#e" Text="Methods" />
+                    <PhSubnavItem Uri="#f" Text="Articles" />
+                    <PhSubnavItem Uri="#g" Text="Test panels" />
+                    <PhSubnavItem Uri="#h" Text="Reflex tests" />
+                    <PhSubnavItem Uri="#i" Text="Methods" />
+                    <PhSubnavItem Uri="#j" Text="Articles" />
+                    <PhSubnavItem Uri="#k" Text="Test panels" />
+                    <PhSubnavItem Uri="#l" Text="Reflex tests" />
+                    <PhSubnavItem Uri="#m" Text="Methods" />
+                    <PhSubnavItem Uri="#n" Text="Articles" />
+                    <PhSubnavItem Uri="#o" Text="Test panels" />
+                    <PhSubnavItem Uri="#p" Text="Reflex tests" />
+                </PhSubnavMenu>
+            </div>
+        </Template>
+    </Story>
+
+</Stories>
+
+
+
+@code
+{
+}

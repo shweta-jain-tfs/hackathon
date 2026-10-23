@@ -1,0 +1,17 @@
+@typeparam TValue
+@using Pharos.Common.Web.Components.DataGrid.Filters.Models
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.QuickFilter
+
+<PhQuickFilter Title="@ColumnFilter.Title"
+               ActiveFilterCount="@ColumnFilter.ActiveFilterCount"
+               OnClearFilter="ClearFilter">
+    @foreach (var selectable in ColumnFilter.SelectableValues)
+    {
+        <div>
+            <PhCheckBox Label="@selectable.DisplayName"
+                        Value="@selectable.IsSelected"
+                        OnCheckChanged="@(value => SelectionChanged(selectable, value))" />
+        </div>
+    }
+</PhQuickFilter>

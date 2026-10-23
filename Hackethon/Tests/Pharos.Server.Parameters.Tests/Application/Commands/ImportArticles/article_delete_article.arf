@@ -1,0 +1,10 @@
+[FILE]
+Type=Phadia E ARTICLE FILE
+FormatVersion=1.0
+Version=2
+[ARTICLE]
+350;-1;Timothy;16;;g6;0;;;;;;;;;;;;;
+351;1;Cultivated rye;16;;g12;0;;;;;;;;;;;;;
+[PACKAGE]
+351;14-4101-01;Cultivated rye;351;1;0
+[END]

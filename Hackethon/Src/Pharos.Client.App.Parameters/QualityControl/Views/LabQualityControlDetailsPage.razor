@@ -1,0 +1,57 @@
+@layout ParametersLayout
+@attribute [Route(PageRoute.Parameters.LabQualityControlDetails.IdParameter)]
+@attribute [Route(PageRoute.Parameters.LabQualityControlDetails.Create)]
+@attribute [Authorize(Permissions.EditTestSettings)]
+@using Pharos.Client.App.Parameters.Layout
+@using Pharos.Client.Common.App.Validation
+@using Pharos.Common.Web.Components.NavigationLock
+@using Pharos.Contracts.Security
+@inherits DetailsPageBase<Pharos.Client.App.Parameters.QualityControl.ViewModels.LabQualityControlDetailViewModel, LabQualityControlDetail>
+
+@if (DetailViewModel is not null)
+{
+    <PhNavigationLock Modified="@DetailViewModel.IsModified" OnSave="() => SaveChanges(true)"/>
+
+    <SectionContent SectionName="page-header">
+        <Breadcrumb Items="@Breadcrumbs"/>
+        <div class="flex gap-md">
+            <PhButton Disabled="@(!DetailViewModel.IsModified)" OnClick="DiscardChanges">@Loc["LabQualityControlDetailsPage_DiscardChanges"]</PhButton>
+            <PhButton Type="ButtonType.Primary" Disabled="@(!DetailViewModel.IsModified)" OnClick="() => SaveChanges(false)">@Loc["LabQualityControlDetailsPage_Save"]</PhButton>
+        </div>
+    </SectionContent>
+
+    <PhSimpleValidationContext @ref="_validation" Model="@DetailViewModel">
+        <PhStack Gap="StackGap.Lg">
+            <PhPanel>
+                <PhGrid>
+                    <PhGridColumn Span="ColumnSpan.Half">
+                        <PhInputColumn Spacing="InputSpacing.Compact">
+                            @if (DetailViewModel.IsNewEntity)
+                            {
+                                <PhTextBox Size="TextBoxSize.Medium" Label="@Loc["LabQualityControlDetailsPage_QualityControlName"]" MaxLength="16" @bind-Value="@DetailViewModel.Name"/>
+                            }
+
+                            <PhDropdown TValue="int" Size="DropdownSize.MediumInputWidth" Label="@Loc["LabQualityControlDetailsPage_TubeType"]" Options="@DetailViewModel.TubeDefinitions" @bind-Value="@DetailViewModel.TubeTypeId" />
+                        </PhInputColumn>
+                    </PhGridColumn>
+                    
+                    <PhGridColumn Span="ColumnSpan.Half">
+                        <PhInputColumn Spacing="InputSpacing.Compact">
+                            <PhTextBox Label="@Loc["LabQualityControlDetailsPage_BarcodeId"]" MaxLength="32" @bind-Value="@DetailViewModel.IdOnBarcode"/>
+
+                            <PhLabel Text="@Loc["LabQualityControlDetailsPage_BarcodeFormat"]">
+                                <PhDropdown TValue="int?" Size="DropdownSize.MediumInputWidth" Options="@DetailViewModel.BarcodeFormats" @bind-Value="@DetailViewModel.BarcodeFormatId"/>
+                            </PhLabel>
+                            
+                            <PhHrefLink OnClick="EditBarcodeFormats" LinkSize="LinkSize.Body1">@Loc["LabQualityControlDetailsPage_EditBarcodeFormats"]</PhHrefLink>
+                        </PhInputColumn>
+                    </PhGridColumn>
+                </PhGrid>
+            </PhPanel>
+            
+            <PhPanel>
+                <LabQualityControlTestListView ViewModel="DetailViewModel"/>
+            </PhPanel>
+        </PhStack>
+    </PhSimpleValidationContext>
+}

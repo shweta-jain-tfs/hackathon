@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Quartz" />
+    <PackageReference Include="Riok.Mapperly" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pharos.Server.Application.Modules\Pharos.Server.Application.Modules.csproj" />
+    <ProjectReference Include="..\Pharos.Server.Infrastructure.Abstractions\Pharos.Server.Infrastructure.Abstractions.csproj" />
+    <ProjectReference Include="..\Pharos.Server.Localization\Pharos.Server.Localization.csproj" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="$(AssemblyName).Tests" />
+		<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<Compile Include="..\_MapperDefaults.cs" Link="Application\Mapping\_MapperDefaults.cs" />
+	</ItemGroup>
+
+	</Project>

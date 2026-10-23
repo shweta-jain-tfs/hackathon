@@ -1,0 +1,134 @@
+@using Pharos.Client.App.InstrumentManagement.ViewModels.AssayScheduler
+@using Pharos.Client.Common.Models
+@using Pharos.Common.Web.Components.Popover
+@attribute [Route(PageRoute.InstrumentsAssayScheduler)]
+@attribute [Authorize]
+
+<PhPage>
+    <PageHeader>
+        <Breadcrumb Items="@Breadcrumbs" />
+    </PageHeader>
+    <ChildContent>
+        <PhStack>
+            <div class="ph-assay-scheduler">
+                <PhScroll>
+                    <table class="ph-assay-scheduler__table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                @foreach (var day in AssaySchedulerViewModel.GetDaysOfWeek())
+                                {
+                                    <th>
+                                        <PhPopover @ref="_popovers[day]"
+                                                   Appearance="PopoverStyle.Dropdown"
+                                                   Position="PopoverPosition.BottomRight"
+                                                   AutoHide
+                                                   OnToggle="@((isOpen) => CopyDayOpen(isOpen, day))">
+                                            <Anchor>
+                                                <span class="ph-assay-scheduler__copy-day">
+                                                    <span>@day.GetDayName()</span>
+                                                    <button type="button"
+                                                            class="ph-assay-scheduler__copy-icon @(!IsCopyEnabled(day) ? "ph-assay-scheduler__copy-icon--disabled" : "")"
+                                                            disabled="@(!IsCopyEnabled(day))"
+                                                            popovertarget="@(_popovers[day].Id)">
+                                                        <PhIcon IconType="IconType.Copy" Size="IconSize.Sm" />
+                                                    </button>
+                                                </span>
+                                            </Anchor>
+                                            <Panel>
+                                                <div class="ph-assay-scheduler__copy-content">
+                                                    <PhLabel Text="@Loc["AssaySchedulerPage_Copy_To"]" Size="LabelSize.Body1" Disabled="true"></PhLabel>
+                                                    @foreach (var targetDay in AssaySchedulerViewModel.GetDaysOfWeek())
+                                                    {
+                                                        <div class="ph-assay-scheduler__copy-content-day">
+                                                            <PhCheckBox Label="@targetDay.GetDayName()"
+                                                                        Value="_daySelections[(day, targetDay)]"
+                                                                        ValueChanged="@(v => _daySelections[(day, targetDay)] = v)" Disabled="@(targetDay == day)"
+                                                                        OnCheckChanged="@((checkedValue) => ViewModel.OnCopyDayChecked(day, targetDay, checkedValue))" />
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </Panel>
+                                        </PhPopover>
+                                    </th>
+                                }
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var assayScheduler in ViewModel)
+                            {
+                                <tr>
+                                    <td class="ph-assay-scheduler__instrument-name">@assayScheduler.InstrumentName</td>
+                                    @foreach (var day in AssaySchedulerViewModel.GetDaysOfWeek())
+                                    {
+                                        var schedulerDay = assayScheduler.AssaySchedulerDays.FirstOrDefault(d => d.Day.Equals(day));
+                                        <td class="@CssClassCell">
+                                            <div>
+
+                                                @if (schedulerDay is { StartTime: not null } or { EndTime: not null })
+                                                {
+                                                    <PhHrefLink Disabled="@(!IsAuthorized)" OnClick="@(() => OpenAssayScheduler(assayScheduler, day))">
+                                                        @schedulerDay.StartTime?.ToShortTimeString()@(" - ")
+                                                        <span class="ph-assay-scheduler__time-range-group">
+                                                            @schedulerDay.EndTime?.ToShortTimeString()
+                                                        </span>
+                                                    </PhHrefLink>
+                                                }
+                                                else
+                                                {
+                                                    <PhHrefLink Disabled="@(!IsAuthorized)"
+                                                                OnClick="@(() => OpenAssayScheduler(assayScheduler, day))">
+                                                        <span class="ph-assay-scheduler__plus-link">
+                                                            @("+")
+                                                        </span>
+                                                    </PhHrefLink>
+                                                }
+                                            </div>
+
+                                            @if (schedulerDay != null && (schedulerDay.StartTime.HasValue || schedulerDay.EndTime.HasValue)
+                                                                      && schedulerDay.ScheduledMethods.Any(m => m.IsActive))
+                                            {
+                                                <div class="ph-assay-scheduler__method-info">
+                                                    @foreach (var method in schedulerDay.ScheduledMethods.Where(m => m.IsActive))
+                                                    {
+                                                        <span class="ph-assay-scheduler__dot-icon-text">
+                                                            @if ((InstrumentMethodWhenToRun)method.WhenToRun == InstrumentMethodWhenToRun.Directly)
+                                                            {
+                                                                <span class="ph-assay-scheduler__dot-icon">
+                                                                    <PhIcon IconType="IconType.Dot" Size="null" />
+                                                                </span>
+                                                            }
+                                                            <span>
+                                                                @method.MethodName
+                                                                @if (method != schedulerDay.ScheduledMethods.Last(m => m.IsActive))
+                                                                {
+                                                                    <text>, </text>
+                                                                }
+                                                            </span>
+                                                        </span>
+                                                    }
+                                                </div>
+                                            }
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </PhScroll>
+            </div>
+            @if (AnyDirectlyScheduled)
+            {
+                <div class="ph-assay-scheduler__dot-help-row">
+                    <div class="ph-assay-scheduler__dot-icon-text ph-assay-scheduler__dot-icon-text-help">
+                        <span class="ph-assay-scheduler__dot-icon">
+                            <PhIcon IconType="IconType.Dot" Size="null" />
+                        </span>
+                        <p class="t-helper-text">@Loc["AssaySchedulerPage_Dot_Help_Text"]</p>
+                    </div>
+                </div>
+            }
+        </PhStack>
+    </ChildContent>
+</PhPage>

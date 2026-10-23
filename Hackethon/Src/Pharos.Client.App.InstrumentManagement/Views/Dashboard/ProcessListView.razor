@@ -1,0 +1,38 @@
+@using Pharos.Client.App.InstrumentManagement.ViewModels.Dashboard
+@using Pharos.Client.Common.App.Helpers
+@using Pharos.Client.Common.Localization
+@using Pharos.Client.Common.Models
+
+<PhDataGrid TableTitle="@Loc["DashboardPage_ProcessList_Header"]"
+            StateID=""
+            TGridItem="ProcessListItem"
+            ItemsProvider="ViewModel.ProvideGridItems">
+    <Columns>
+        <Column Title="@Loc["DashboardPage_ProcessList_Col_SequenceNumber"]" Property="@(x => x.SequenceNumber)" />
+        <Column Title="@Loc["DashboardPage_ProcessList_Col_Id"]" Property="@(x => x.Identification)" />
+        <Column Title="@Loc["DashboardPage_ProcessList_Col_Method"]" Property="@(x => x.Method)" />
+        <Column Title="@Loc["DashboardPage_ProcessList_Col_Test"]" Property="@(x => x.Test)" />
+        <Column Title="@Loc["DashboardPage_ProcessList_Col_Time"]" Property="@(x => x.Time)">
+            @if (ProcessListLogic.ShouldDisplayProcessTime(context, InstrumentModel.State))
+            {
+                var time = context.Time!.Value;
+                <PhDateTime DateToShow="@(time)" />
+                <span>(@DateTimeHelper.GetTimeLeft(time))</span>
+            }
+            else
+            {
+                <span>-</span>
+            }
+        </Column>
+        <Column Title="@Loc["DashboardPage_ProcessList_Col_Status"]" Property="x => x.State">
+            @if (context.State == ProcessingState.UnableToStart)
+            {
+                <PhHrefLink Href="@($"{PageRoute.Tasks}")">@context.State.ToLocalizedString("DashboardPage_ProcessList")</PhHrefLink>
+            }
+            else
+            {
+                @context.State.ToLocalizedString("DashboardPage_ProcessList")
+            }
+        </Column>
+    </Columns>
+</PhDataGrid>

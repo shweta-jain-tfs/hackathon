@@ -1,0 +1,74 @@
+@using Pharos.Client.App.InstrumentManagement.ViewModels.AssayScheduler
+@using Pharos.Client.Common.Localization
+@using Pharos.Common.Web.Components.DetailsList
+@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhModalContent>
+    <Body>
+        <PhStack Gap="StackGap.Lg">
+            <div class="flex gap-xl">
+                <PhDetailsList Columns="2">
+                    <PhDetailsListItem Label="@Loc["AssaySchedulerPage_AssaySchedulerDayModal_InstrumentName"]">@ViewModel.InstrumentName</PhDetailsListItem>
+                    <PhDetailsListItem Label="@Loc["AssaySchedulerPage_AssaySchedulerDayModal_Day"]">@ViewModel.Day.GetDayName()</PhDetailsListItem>
+                </PhDetailsList>
+            </div>
+            <div class="flex flex-row gap-xxl">
+                <PhLabel Text="@Loc["AssaySchedulerPage_AssaySchedulerDayModal_StartTime"]" HelpText="@Loc["AssaySchedulerPage_AssaySchedulerDayModal_StartTime_HelpText"]">
+                    <PhTimePicker MinuteInterval="60" @bind-Value="ViewModel.StartTime"></PhTimePicker>
+                </PhLabel>
+                <PhLabel Direction="LabelDirection.Vertical" Text="@Loc["AssaySchedulerPage_AssaySchedulerDayModal_EndTime"]" HelpText="@Loc["AssaySchedulerPage_AssaySchedulerDayModal_EndTime_HelpText"]">
+                    <PhTimePicker MinuteInterval="60" @bind-Value="ViewModel.EndTime"></PhTimePicker>
+                </PhLabel>
+            </div>
+            <div class="flex flex-col gap-sm">
+                <p class="t-body2">@Loc["AssaySchedulerPage_AssaySchedulerDayModal_GridHeader"]</p>
+                <PhScroll>
+                    <PhDataGrid TableTitle="@TableHeader" StateID="" TGridItem="AssaySchedulerMethodViewModel" Items="ViewModel.ScheduledMethods?.AsQueryable()" RowType="RowTypeEnum.NoDivisions">
+                        <Columns>
+                            <Column Title="Method" Property="@(x => x.MethodName)" />
+
+                            <Column Title="Active" Property="@(x => x.IsActive)">
+                                <PhSwitchButton @bind-value="@context.IsActive" />
+                            </Column>
+
+                            <Column Title="When to run" Property="x => x.WhenToRun">
+                                @if (context.IsActive)
+                                {
+                                    <PhHrefLink OnClick="@(() => ChangeRunOptions(ViewModel.InstrumentName, ViewModel.Day, context))">@context.WhenToRun.ToLocalizedString("AssaySchedulerPage_AssaySchedulerDayModal")</PhHrefLink>
+                                }
+                                else
+                                {
+                                    @context.WhenToRun.ToLocalizedString("AssaySchedulerPage_AssaySchedulerDayModal")
+                                }
+                            </Column>
+                        </Columns>
+                    </PhDataGrid>
+                </PhScroll>
+            </div>
+            <PhDetailsList TextSize="DetailsListTextSize.HelperText">
+                <PhDetailsListItem Label="@Loc["AssaySchedulerPage_AssaySchedulerDayModal_SelectedMethods"]">
+                    @{
+                        var selectedMethods = ViewModel.ScheduledMethods?.Where(m => m.IsActive).Select(m => m.MethodName).ToList();
+                    }
+                    @(selectedMethods != null && selectedMethods.Any()
+                                        ? string.Join(", ", selectedMethods)
+                                        : Loc["AssaySchedulerPage_AssaySchedulerDayModal_SelectedMethods_None"])
+                </PhDetailsListItem>
+            </PhDetailsList>
+        </PhStack>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">
+            @Loc["AssaySchedulerPage_AssaySchedulerDayModal_Cancel"]
+        </PhButton>
+        <PhButton OnClick="@(() => ClearModal())"
+                  Disabled="@(!ViewModel.HasAnyValues)">
+            @Loc["AssaySchedulerPage_AssaySchedulerDayModal_Clear"]
+        </PhButton>
+        <PhButton Type="ButtonType.Primary"
+                  Disabled="@(!ViewModel.IsModified)"
+                  OnClick="@(() => CloseModal(ModalResult.Ok(ViewModel)))">
+            @Loc["AssaySchedulerPage_AssaySchedulerDayModal_Save"]
+        </PhButton>
+    </Footer>
+</PhModalContent>

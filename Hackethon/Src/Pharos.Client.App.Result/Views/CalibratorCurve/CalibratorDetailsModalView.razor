@@ -1,0 +1,71 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Models.DataGrid
+
+<PhModalContent>
+
+    <Body>
+        <PhStack>
+
+            <div class="grid grid-cols-2 mr-auto items-center gap-sm">
+
+                <PhLabel Text="@Loc["CalibratorDetailsModal_Identity"]" Direction="LabelDirection.Horizontal" />
+                <PhValueBox>@CalibratorTestResult.CalibratorPointName</PhValueBox>
+
+                <PhLabel Text="@Loc["CalibratorDetailsModal_Method"]" Direction="LabelDirection.Horizontal"/>
+                <PhValueBox> @CalibratorTestResult.MethodName</PhValueBox>
+
+                <PhLabel Text="@Loc["CalibratorDetailsModal_Test"]" Direction="LabelDirection.Horizontal"/>
+                <PhValueBox> @CalibratorTestResult.TestName</PhValueBox>
+
+                <PhLabel Text="@Loc["CalibratorDetailsModal_Comment"]" Direction="LabelDirection.Horizontal"/>
+                <PhTextBox Size="TextBoxSize.ExtraLarge" MaxLength="40" @bind-Value="CalibratorTestResult.Comment" DisplayOnly="@(!CanEdit)"/>
+
+            </div>
+
+        @if (CalibratorTestResult.Replicates != null)
+        {
+                <PhDataGrid DefaultSortColumn="@nameof(CalibratorTestReplicate.ReplicateNumber)" DefaultSortDirection="SortDirection.Ascending"
+                        StateID=""
+                        RowType="RowTypeEnum.LinesBetweenRows" TGridItem="CalibratorTestReplicate"
+                        Items="CalibratorTestResult.Replicates.AsQueryable()" RowHeight="RowHeightEnum.Relaxed">
+                <Columns>
+                    <Column Title="@Loc["CalibratorDetailsModal_Replicate"]" Property="@(x => x.Id)" Align="ColumnAlignEnum.Left">
+                        <PhHrefLink OnClick="@(() => ReplicateDetailsView(context.Id))"> @context.ReplicateNumber </PhHrefLink>
+                    </Column>
+                    <Column Title="@Loc["CalibratorDetailsModal_Status"]" Property="@(x => x.IsAborted)">
+                        @GetStatusText(context)
+                    </Column>
+                    <Column Title="@Loc["CalibratorDetailsModal_Measured"]" Property="@(x => x.MeasurementDateTime)" Sortable="true">
+                        <PhDateTime DateToShow="@context.MeasurementDateTime"/>
+                    </Column>
+                    <Column Title="@Loc["CalibratorDetailsModal_Response"]" Property="@(x => x.ResponseAsText)" Align="ColumnAlignEnum.Right"/>
+                    <Column Title="@Loc["CalibratorDetailsModal_Calculated"]" Property="@(x => x.ConcentrationAsText)" Align="ColumnAlignEnum.Right">
+                        @GetConcentrationText(context)
+                    </Column>
+                    <Column Title="@Loc["CalibratorDetailsModal_Judgement"]" Property="@(x => x.NormDoseCheckResult)">
+                        @if (context.NormDoseCheckResult != NormDoseCheckResult.NotDefined)
+                        {
+                            @context.NormDoseCheckResult.ToLocalizedString("CalibratorDetailsModal")
+                        }
+                    </Column>
+                </Columns>
+            </PhDataGrid>
+        }
+
+        </PhStack>
+
+    </Body>
+
+    <Footer>
+        @if (CanEdit)
+        {
+            <PhButton OnClick="@(() => OnClose(ModalResult.Cancel()))">@Loc["CalibratorDetailsModal_Cancel"]</PhButton>
+            <PhButton OnClick="@(() => OnClose(ModalResult.Ok()))" Type="ButtonType.Primary">@Loc["CalibratorDetailsModal_Save"]</PhButton>
+        }
+        else
+        {
+            <PhButton OnClick="@(() => OnClose(ModalResult.Cancel()))" Type="ButtonType.Primary">@Loc["CalibratorDetailsModal_Close"]</PhButton>
+        }
+    </Footer>
+
+</PhModalContent>

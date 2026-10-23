@@ -1,0 +1,169 @@
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Template/Story template")]
+
+@* Template stories: copy this structure for new components,
+   replace PhButton with your component, and keep the stories that make sense. *@
+<Stories TComponent="PhButton">
+
+    <Story Name="Default">
+        <Description>Default usage with core parameters as controls.</Description>
+        <Arguments>
+            <Arg For="_ => _!.ChildContent" Value="_childContentDefault" />
+            <Arg For="_ => _!.Type" Value="@ButtonType.Secondary" />
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.Selected" Value="false" />
+            <Arg For="_ => _!.Size" Value="@ButtonSize.Standard" />
+            <Arg For="_ => _!.IgnoreMaxWidth" Value="false" />
+            <Arg For="_ => _!.StartIconType" Value="null" />
+            <Arg For="_ => _!.EndIconType" Value="null" />
+        </Arguments>
+        <Template>
+            <PhButton @attributes="context.Args" />
+        </Template>
+    </Story>
+
+    <Story Name="Variants">
+        <Description>Main visual variants (types, states, sizes). Add a story for special modes if needed.</Description>
+        <Arguments>
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.Selected" Value="false" />
+            <Arg For="_ => _!.Size" Value="@ButtonSize.Standard" />
+            <Arg For="_ => _!.IgnoreMaxWidth" Value="false" />
+            <Arg For="_ => _!.StartIconType" Value="null" />
+            <Arg For="_ => _!.EndIconType" Value="null" />
+        </Arguments>
+        <Template>
+            <div class="flex flex-col gap-sm">
+                @foreach (var type in Enum.GetValues<ButtonType>())
+                {
+                    <div>
+                        <PhButton @attributes="context.Args" Type="@type">@type.ToString()</PhButton>
+                    </div>
+                }
+                <div>
+                    <PhButton @attributes="context.Args" Disabled="true">Disabled</PhButton>
+                </div>
+                <div>
+                    <PhButton @attributes="context.Args" EndIconType="IconType.Hamburger">Icon</PhButton>
+                </div>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Interactive">
+        <Description>Shows event handling and external state updates (adapt for lists/selection).</Description>
+        <Arguments>
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.Selected" Value="false" />
+            <Arg For="_ => _!.Size" Value="@ButtonSize.Standard" />
+            <Arg For="_ => _!.IgnoreMaxWidth" Value="false" />
+            <Arg For="_ => _!.StartIconType" Value="null" />
+            <Arg For="_ => _!.EndIconType" Value="null" />
+        </Arguments>
+        <Template>
+            <PhButton @attributes="context.Args"
+                      OnClick="@ToggleButton"
+                      StartIconType="@( _toggled ? IconType.Checkmark : IconType.More )">
+                @(_toggled ? "Clicked!" : "Click me")
+            </PhButton>
+            <div class="t-body2 mt-sm">Try: click/keyboard. Expect: label and icon change.</div>
+        </Template>
+    </Story>
+
+    <Story Name="Validation">
+        <Description>Validation behavior within forms (add this story only if the component has validation).</Description>
+        <Template>
+            <EditForm Model="@ViewModel" Context="form" @ref="_form">
+                <MockValidator @ref="_validator" />
+                <PhTextBox Label="Validation example"
+                           Placeholder="Change to validate"
+                           HelpText="Click Validate to show errors"
+                           @bind-Value="@ViewModel.PropertyOne" />
+            </EditForm>
+            <div class="flex gap-gutter">
+                <PhButton Type="@ButtonType.Primary" OnClick="@ValidateForm">Validate</PhButton>
+                <PhButton OnClick="@ResetValidation">Reset</PhButton>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Context">
+        <Description>Example in common usage in the UI.</Description>
+        <Template>
+            <div class="flex flex-col gap-xl">
+                <div class="flex items-center gap-gutter">
+                    <PhButton>Discard changes</PhButton>
+                    <PhButton Type="@ButtonType.Primary">Save</PhButton>
+                </div>
+                <div>
+                    <PhButton Type="@ButtonType.Text" StartIconType="IconType.UserProfile">Lisa</PhButton>
+                </div>
+                <div class="flex items-center gap-gutter">
+                    <PhButton>Add</PhButton>
+                    <PhButton Disabled="true">Delete</PhButton>
+                </div>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Stress">
+        <Description>Tests long text in small layouts (truncation & overflow).</Description>
+        <Arguments>
+            <Arg For="_ => _!.ChildContent" Value="_stressContentDefault" />
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.Selected" Value="false" />
+            <Arg For="_ => _!.Size" Value="@ButtonSize.Standard" />
+            <Arg For="_ => _!.IgnoreMaxWidth" Value="false" />
+            <Arg For="_ => _!.StartIconType" Value="null" />
+            <Arg For="_ => _!.EndIconType" Value="null" />
+        </Arguments>
+
+        <Template>
+            <div style="width: 140px; border: 1px dashed #ccc; padding: 0.5rem;">
+                <div class="t-helper-text mb-xs">Narrow container</div>
+                <PhButton @attributes="context.Args" />
+                <div class="t-helper-text mt-xs">Expect: truncation or overflow here</div>
+            </div>
+            <div class="t-body2 my-xs">Inline component — resize the window to test responsiveness</div>
+            <PhButton @attributes="context.Args" />
+        </Template>
+    </Story>
+</Stories>
+
+@code
+{
+    RenderFragment _childContentDefault = @<text>Button</text>;
+    RenderFragment _stressContentDefault = @<text>This is a very very very long text label used to stress test the component</text>;
+
+    // ---- Interactive ----
+    
+    private bool _toggled = false;
+    private void ToggleButton()
+    {
+        _toggled = !_toggled;
+    }
+
+    // ---- Validation ----
+    
+    public class Model
+    {
+        public string? PropertyOne { get; set; } = "Change to validate";
+    }
+
+    private Model ViewModel { get; set; } = new Model();
+    private EditForm? _form;
+    private MockValidator? _validator;
+
+    private void ValidateForm()
+    {
+        _form?.EditContext?.Validate();
+    }
+
+    private void ResetValidation()
+    {
+        _validator?.ClearErrors();
+    }
+}

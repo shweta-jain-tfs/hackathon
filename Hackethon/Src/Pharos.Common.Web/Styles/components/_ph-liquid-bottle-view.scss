@@ -1,0 +1,111 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+
+.ph-liquid-bottle-view {
+    width: 336px;
+    height: 176px;
+    border-radius: rounded.$drawer-rounded;
+    border: 2px dashed colors.$liquid-bottle-border;
+    position: relative;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: colors.$icon-primary;
+
+    &--empty {
+        background-color: transparent;
+    }
+
+    &--piped {
+        border: 4px dashed colors.$background-tertiary;
+    }
+
+    &--disabled {
+        background-color: colors.$background-tertiary;
+        border: none;
+    }
+
+    &--present {
+        background-color: colors.$background-tertiary;
+        border: none;
+    }
+
+    &--error {
+        background-color: colors.$background-tertiary;
+        border: 4px solid colors.$loader-error-border;
+        padding: 0;
+    }
+
+    &--indicator {
+        border: 4px solid colors.$border-active;
+        padding: 0;
+    }
+
+    &--alarm {
+        border: 4px solid colors.$status-alarm;
+        padding: 0;
+    }
+
+    &--highlighted {
+        position: relative;
+        z-index: 1;
+
+        &::before {
+            content: "";
+            position: absolute;
+            background: colors.$highlighted-tube-background;
+            border-radius: rounded.$drawer-rounded;
+            z-index: -1;
+            inset: -10px;
+        }
+    }
+
+    &--dim {
+        position: relative;
+
+        &::before {
+            content: "";
+            position: absolute;
+            background: colors.$tube-dim-overlay;
+            border-radius: rounded.$drawer-rounded;
+            pointer-events: none;
+            z-index: 2;
+            inset: -10px;
+        }
+    }
+
+    &__liquid-fill {
+        width: 100%;
+        height: var(--liquid-bottle-fill-level, 0%);
+        background-color: colors.$reagent-bottle-content-dim;
+        @include rounded.rounded;
+    }
+
+    &__center-icon-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        z-index: 1;
+    }
+
+    &__error-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: spacing.$gap-xs;
+    }
+
+    &__text-content {
+        display: flex;
+        gap: spacing.$gap-xs;
+    }
+}

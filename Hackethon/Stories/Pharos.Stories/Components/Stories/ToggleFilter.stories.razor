@@ -1,0 +1,20 @@
+@using Pharos.Common.Web.Components.QuickFilter
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/QuickFilter/ToggleFilter")]
+
+<Stories TComponent="PhToggleFilter">
+    <Story Name="Toggle filter">
+        <Arguments>
+            <Arg For="_ => _!.Label" Value="@("Show all")" />
+        </Arguments>
+        <Template>
+            <PhToggleFilter @attributes="context.Args" @bind-Value="@Value" />
+            <div class="t-body2 mt-sm">Current value: @Value</div>
+        </Template>
+    </Story>
+</Stories>
+
+@code
+{
+    private bool Value = true;
+}

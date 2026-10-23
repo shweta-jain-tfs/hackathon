@@ -1,0 +1,9 @@
+@startuml Pharos clean install flow
+
+start
+:Harvest;
+:hello;
+:goodbye;
+stop
+
+@enduml

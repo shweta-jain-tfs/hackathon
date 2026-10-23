@@ -1,0 +1,54 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+
+.ph-mute-button {
+    display: flex;
+    color: colors.$button-primary;
+
+    &--muted {
+        color: colors.$icon-disabled-02;
+    }
+
+    &--primary {
+        align-items: center;
+        min-width: 140px;
+        height: size.$hit-area-md;
+        padding: 0 spacing.$gap-sm;
+        gap: spacing.$gap-xs;
+        @include rounded.rounded;
+        color: colors.$text-primary;
+        background: colors.$status-alarm-bg;
+        cursor: pointer;
+        overflow: clip;
+    }
+
+    &__label {
+        @include text.body2;
+    }
+
+    &__lockscreen-actions {
+        min-width: 0;
+    }
+
+    &__icon {
+        display: inline-flex;
+        transform-origin: top center;
+    }
+
+    &__icon--swing {
+        animation: bell-swing 120ms ease-in-out infinite alternate;
+    }
+}
+
+@keyframes bell-swing {
+    0% {
+        transform: rotate(-15deg);
+    }
+    100% {
+        transform: rotate(15deg);
+    }
+}

@@ -1,0 +1,25 @@
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.RichText
+@if (_helpContent is not null)
+{
+    <PhModalContent>
+        <Body>
+            <PhRichText ContextHelp="true">
+                @_body
+            </PhRichText>
+        </Body>
+        <Footer>
+            <PhButtonRow>
+                <LeftContent>
+                    <PhButton Type="ButtonType.Secondary" OnClick="@(() => NavigateTo($"{PageRoute.Help}/#{_helpContent.ChapterId}"))">@Loc["TaskCard_Help_GoToManual"]</PhButton>
+                </LeftContent>
+                <Buttons>
+                    @if (!string.IsNullOrEmpty(ConnectedPageUri))
+                    {
+                        <PhButton Type="ButtonType.Primary" OnClick="@(() => NavigateTo(ConnectedPageUri))">@ConnectedPageTitle</PhButton>
+                    }
+                </Buttons>
+            </PhButtonRow>
+        </Footer>
+    </PhModalContent>
+}

@@ -1,0 +1,40 @@
+@using Pharos.Common.Web.Components.TabControl
+@using Pharos.Common.Web.Components.Panel
+@using Pharos.Client.App.Logs.Views.Errors
+@using Pharos.Client.App.Logs.Views.AuditTrail
+
+@attribute [Route(PageRoute.Logs)]
+@attribute [Authorize]
+<PhPage>
+    @{ var errorIdForPanel = _errorIdForPanel; }
+    <div class="ph-system-errors-page">
+        <div class="ph-system-errors-page__content">
+            <PhStack>
+                <PhTabControl OnSelectedTabChanged="SelectedTabChanged">
+                    <PhTabPage TabId="@_errorsTabId" Text="@Loc["NavMenu_Errors"]" HideTrailingEdge="true">
+                        <SystemErrorsView OnErrorSelected="ErrorSelected"
+                                          IsPanelOpen="IsErrorPanelOpen"
+                                          HighlightedErrorId="_errorIdForPanel"
+                                          RespondedErrorId="_respondedErrorIdInPanel" />
+                    </PhTabPage>
+                    <PhTabPage TabId="@_eventsTabId" Text="@Loc["LogsPage_Events"]" HideTrailingEdge="true">
+                        <PhPlaceHolder Title="@Loc["LogsPage_Events"]" />
+                    </PhTabPage>
+                    @if (_canViewAuditTrail)
+                    {
+                        <PhTabPage TabId="@_auditTrailTabId" Text="@Loc["LogsPage_AuditTrail"]" HideTrailingEdge="true">
+                            <AuditTrailView />
+                        </PhTabPage>
+                    }
+                </PhTabControl>
+            </PhStack>
+        </div>
+
+        @if (errorIdForPanel.HasValue)
+        {
+            <PhDetailPanel Width="70%" OnCloseClick="ErrorPanelCloseClicked">
+                <SystemErrorDetailsView Id="@errorIdForPanel.Value" IsPanel="true" OnResponseSubmitted="ResponseSubmitted" />
+            </PhDetailPanel>
+        }
+    </div>
+</PhPage>

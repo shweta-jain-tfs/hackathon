@@ -1,0 +1,116 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-radio-button {
+    $root: &;
+
+    --_border: #{colors.$border-active};
+    --_bg: transparent;
+    --_bg-checked: #{colors.$layer-selected-01};
+    --_bg-override: initial; // clears inherited override; var(--_bg-override, fallback) will use fallback unless overridden
+    --_indicator-color: #{colors.$icon-on-color-selected};
+    --_indent: #{spacing.$indent-single};
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$gap-sm;
+
+    &__label {
+        display: inline-flex;
+        align-items: center;
+        min-height: size.$hit-area-md;
+        cursor: pointer;
+        gap: spacing.$gap-xs;
+        @include text.body1;
+
+        &:hover {
+            --_bg: #{colors.$layer-hover-01};
+        }
+
+        &:active {
+            --_bg: #{colors.$layer-selected-01};
+        }
+    }
+
+    &__input {
+        position: absolute;
+        appearance: none;
+        opacity: 0;
+    }
+
+    &__circle {
+        min-height: size.$icon-md;
+        min-width: size.$icon-md;
+        border: 2px solid var(--_border);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--_bg-override, var(--_bg));
+
+        :checked + &,
+        &--checked {
+            background-color: var(--_bg-override, var(--_bg-checked));
+
+            &::before {
+                content: "";
+                width: size.$icon-xs;
+                height: size.$icon-xs;
+                background-color: var(--_indicator-color);
+                border-radius: 50%;
+            }
+        }
+
+        input:focus-visible + & {
+            outline: 2px solid currentColor;
+            outline-offset: -2px;
+        }
+    }
+
+    &__help-text {
+        color: colors.$text-hint;
+        padding-left: var(--_indent);
+        @include text.helper-text;
+    }
+
+    &__child-content {
+        margin-left: var(--_indent);
+    }
+
+    &--error {
+        --_border: #{colors.$status-validation};
+    }
+
+    &--disabled {
+        --_border: #{colors.$border-disabled};
+        --_bg-override: transparent;
+        --_indicator-color: #{colors.$icon-disabled-02};
+
+        // Scope text color to this instance only (avoid nested radios in __child-content)
+        > #{$root}__radio {
+            color: colors.$text-disabled;
+        }
+    }
+
+    &--display-only {
+        --_border: transparent;
+        --_bg-override: #{colors.$layer-subtle};
+        --_indicator-color: #{colors.$icon-secondary};
+        // label color from disabled is allowed to bleed through
+
+        &#{$root}--disabled {
+            --_indicator-color: #{colors.$icon-disabled-02};
+        }
+    }
+
+    &--disabled,
+    &--display-only {
+        // Scope cursor change to this instance only
+        > #{$root}__radio > #{$root}__label {
+            cursor: default;
+        }
+    }
+}

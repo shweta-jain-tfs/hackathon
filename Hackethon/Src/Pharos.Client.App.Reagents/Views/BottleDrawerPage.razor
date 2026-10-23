@@ -1,0 +1,39 @@
+@attribute [Route(PageRoute.Bottle)]
+@attribute [Authorize]
+
+@using Pharos.Client.App.Reagents.Views.BottleDrawer
+@using Pharos.Client.App.Reagents.ViewModels.BottleDrawer
+@using Pharos.Common.Web.Components.TrailingEdge
+
+<PhPage>
+    <ChildContent>
+        @if (!ViewModel.IsBusy)
+        {
+            <div class="bottle-drawer-page" @onclick="ViewModel.ClearLegendSelection">
+
+                <div class="bottle-drawer-page__content">
+                    @if (ViewModel.IsPanelOpen)
+                    {
+                        <div class="bottle-drawer-page__panel">
+                            <BottleDrawerPanel BottlePanel="ViewModel.BottleDrawerViewModel.BottlePanelViewModel" OnCloseClick="ViewModel.CloseClicked" />
+                        </div>
+                    }
+                    else
+                    {
+                        <PhTrailingEdge Mode="TrailingEdgeDisplayMode.VerticalOnly">
+                            <div class="bottle-drawer-page__legend" @onclick:stopPropagation="true">
+                                <BottleLegendView ViewModel="ViewModel.BottleDrawerViewModel.BottleLegendViewModel" />
+                            </div>
+                        </PhTrailingEdge>
+                    }
+                </div>
+
+                <div class="bottle-drawer-page__drawer">
+                    <BottleDrawerView ViewModel="ViewModel.BottleDrawerViewModel"
+                                      OnBottleSelected="ViewModel.BottleSelected" />
+
+                </div>
+            </div>
+        }
+    </ChildContent>
+</PhPage>

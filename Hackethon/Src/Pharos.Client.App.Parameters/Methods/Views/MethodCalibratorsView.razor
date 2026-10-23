@@ -1,0 +1,31 @@
+﻿<PhStack Gap="StackGap.Md">
+    <PhNumberField Label="@Loc["MethodDetailsCalibratorsTab_ValidForDays"]"
+        HelpText="@GetManufacturerDefaultForMaxNumberOfDays()"
+        DisplayOnly="@IsMaxNumberOfDaysEditingDisabled"
+        @bind-Value="@ViewModel.DisplayedMaxNumberOfDays"/>
+    <div class="ph-methods-page__calibrator-tab-numeric-field">
+        <PhLabel Text="@Loc["MethodDetailsCalibratorTab_TestName"]"/>
+        <PhValueBox Size="TextBoxSize.Small"> @ViewModel.Model.TestName </PhValueBox>
+    </div>
+    <div class="ph-methods-page__calibrator-tab-numeric-field">
+        <PhLabel Text="@Loc["MethodDetailsCalibratorTab_QuotientIndex"]" />
+        <PhValueBox Size="TextBoxSize.ExtraSmall">@ViewModel.Model.QuotientIndex</PhValueBox>
+    </div>
+    <div class="ph-methods-page__calibrator-tab-grid-container">
+    <PhDataGrid TableTitle="@Loc["MethodDetailsCalibratorPointsTable_Title"]" StateID="calibrators" TGridItem="MethodCalibrationPoint" Items="ViewModel.Model.MethodCalibrationPoint.AsQueryable().OrderBy(x => x.ExpectedConcentration)" RowType="RowTypeEnum.LinesBetweenRows">
+        <Columns>
+            <Column Title="@Loc["MethodDetailsCalibratorTab_CalibratorName"]" Property="@(x => x.CalibratorName)"/>
+            <Column Title="@Loc["MethodDetailsCalibratorTab_ExpectedConcentration"]" Property="@(x => x.ExpectedConcentration)"/>
+            <Column Title="@Loc["MethodDetailsCalibratorTab_Replicates"]" Property="@(x => x.Replicates)"/>
+            <Column Title="@Loc["MethodDetailsCalibratorTab_IdealResponse"]" Property="@(x => x.IdealResponse)" Size="ColumnSizeEnum.WrapTitle" />
+            <Column Title="@Loc["MethodDetailsCalibratorTab_ExpectedStdDev"]" Property="@(x => x.ExpectedStdDev)" Size="ColumnSizeEnum.WrapTitle" />
+            <Column Title="@Loc["MethodDetailsCalibratorTab_StdDevPrecisionLimit"]" Property="@(x => x.StdDevPrecisionLimit)" Size="ColumnSizeEnum.WrapTitle" />
+            <Column Title="@Loc["MethodDetailsCalibratorTab_StdDevLimit"]" Property="@(x => x.StdDevLimit)" Size="ColumnSizeEnum.WrapTitle" />
+            <Column Title="@Loc["MethodDetailsCalibratorTab_LowerResponseLimit"]" Property="@(x => x.LowerResponseLimit)" Size="ColumnSizeEnum.WrapTitle" />
+            <Column Title="@Loc["MethodDetailsCalibratorTab_UpperResponseLimit"]" Property="@(x => x.UpperResponseLimit)" Size="ColumnSizeEnum.WrapTitle" />
+            <Column Title="@Loc["MethodDetailsCalibratorTab_LowerLogarithmicLimit"]" Property="@(x => x.LowerLogarithmicLimit)" Size="ColumnSizeEnum.WrapTitle" />
+            <Column Title="@Loc["MethodDetailsCalibratorTab_UpperLogarithmicLimit"]" Property="@(x => x.UpperLogarithmicLimit)" Size="ColumnSizeEnum.WrapTitle" />
+        </Columns>
+    </PhDataGrid>
+    </div>
+</PhStack>

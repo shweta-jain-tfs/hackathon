@@ -1,0 +1,9 @@
+@use "../abstracts/colors";
+
+.ph-bottle-drawer-indicator-container {
+    color: colors.$reagent-bottle-slot-background;
+
+    &--not-visible {
+        visibility: hidden;
+    }
+}

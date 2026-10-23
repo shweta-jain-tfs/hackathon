@@ -1,0 +1,24 @@
+@attribute [Route(PageRoute.SolidWaste)]
+@attribute [Authorize]
+
+@using Pharos.Client.App.Reagents.Views.SolidWasteDrawer
+@using Pharos.Client.App.Reagents.ViewModels.SolidWasteDrawer
+@using Pharos.Common.Web.Components.TrailingEdge
+
+<PhPage>
+    <ChildContent>
+        @if (!ViewModel.IsBusy)
+        {
+            <div class="ph-solid-waste-drawer-page">
+                <div class="ph-solid-waste-drawer-page__drawer">
+                    <SolidWasteDrawerView ViewModel="@ViewModel.WasteDrawerViewModel" />
+                </div>
+                <div class="ph-solid-waste-drawer-page__legend" @onclick:stopPropagation="true">
+                    <PhTrailingEdge Mode="TrailingEdgeDisplayMode.VerticalOnly">
+                        <SolidWasteLegendView ViewModel="@ViewModel.SolidWasteLegendViewModel" />
+                    </PhTrailingEdge>
+                </div>
+            </div>
+        }
+    </ChildContent>
+</PhPage>

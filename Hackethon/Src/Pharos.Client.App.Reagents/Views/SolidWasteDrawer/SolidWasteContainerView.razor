@@ -1,0 +1,40 @@
+@using Pharos.Client.Common.Models
+@using Pharos.Common.Web.Utilities
+@using Pharos.Common.Web.Components.Icons
+
+<div class="@WasteContainerCss">
+    @if (ShowWasteFill)
+    {
+        <div class="ph-solid-waste-container-view__fill" style="@FillStyle"></div>
+        <div class="ph-solid-waste-container-view__content">
+            <span class="t-body1">@Container.Percentage %</span>
+        </div>
+    }
+    <div class="ph-solid-waste-container-view__center-icon-text">
+        @if (IsErrorStatus)
+        {
+            <div class="ph-solid-waste-container-view__error-content">
+                <PhStatusIcon Icon="StatusIconType.Warning" Size="StatusIconSize.Lg" />
+                <span class="t-body1 font-bold">@GetErrorText()</span>
+            </div>
+        }
+        else if (Container.EmptyIndicationType != FillOrEmptyIndicationType.None)
+        {
+            <div class="ph-solid-waste-container-view__empty-waste">
+                @if (Container.EmptyIndicationType == FillOrEmptyIndicationType.Alarm)
+                {
+                    <PhStatusIcon Icon="StatusIconType.Alarm" Size="StatusIconSize.Lg" />
+                }
+                else if (Container.EmptyIndicationType == FillOrEmptyIndicationType.Pending)
+                {
+                    <PhStatusIcon Icon="StatusIconType.PendingAction" Size="StatusIconSize.Lg" />
+                }
+                else if (Container.EmptyIndicationType == FillOrEmptyIndicationType.Warning)
+                {
+                    <PhStatusIcon Icon="StatusIconType.Warning" Size="StatusIconSize.Lg" />
+                }
+                <span class="t-body1 font-bold">@Loc["Waste_EmptyWaste"]</span>
+            </div>
+        }
+    </div>
+</div>

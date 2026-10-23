@@ -1,0 +1,113 @@
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+// ph-aligned-tables wrapper structure:
+// - The default column count is 8, but other counts can be selected using modifier classes.
+// - Use .ph-aligned-tables as the outer wrapper. It can contain section titles and tables.
+// - Table cells should use colspan="2" to span columns where needed.
+// - To allow text wrapping in a column, add the .ph-aligned-tables__cell-wrap class to the cell.
+// - The last column in each table row should be empty for layout consistency.
+
+.ph-aligned-tables {
+    // avoid layout flicker for time left in load list status column
+    --_first-col-width: 16ch;
+
+    display: grid;
+    width: fit-content(100%); // fill container width but shrink to fit content
+
+    // 8 columns by default (use modifiers for other counts)
+    grid-template-columns:
+        minmax(var(--_first-col-width), max-content)
+        repeat(7, auto)
+        1fr; // empty filler column
+
+    row-gap: spacing.$gap-gutter;
+    @include text.body2;
+
+    // Tables to align to grid must be direct children of this container
+    > table {
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-column: 1 / -1;
+        border-collapse: collapse;
+    }
+
+    // Flatten thead/tbody so rows align directly
+    thead,
+    tbody {
+        display: contents;
+    }
+
+    tr {
+        display: grid;
+        grid-template-columns: subgrid;
+        grid-column: 1 / -1;
+        align-items: stretch;
+    }
+
+    th,
+    td {
+        --_span: 1;
+        min-width: max-content; // only allow columns to wrap if specified
+        justify-self: stretch; // stretch to fill grid cell
+        white-space: nowrap; // default no wrap
+        grid-column: span var(--_span);
+
+        &[colspan="2"] {
+            --_span: 2;
+        }
+
+        &[colspan="3"] {
+            --_span: 3;
+        }
+
+        &[colspan="4"] {
+            --_span: 4;
+        }
+    }
+
+    // cell content that might need wrapping (longer text, not dates/numbers)
+    &__cell-wrap:is(td) {
+        min-width: 18ch; // avoid wrapping to too many lines
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    &__section-title {
+        grid-column: 1 / -1;
+        @include text.h3;
+
+        table + & {
+            margin-top: spacing.$gap-sm;
+        }
+    }
+
+    &--cols-4 {
+        grid-template-columns:
+            minmax(var(--_first-col-width), max-content)
+            repeat(3, auto)
+            1fr;
+    }
+
+    &--cols-5 {
+        grid-template-columns:
+            minmax(var(--_first-col-width), max-content)
+            repeat(4, auto)
+            1fr;
+    }
+
+    &--cols-6 {
+        grid-template-columns:
+            minmax(var(--_first-col-width), max-content)
+            repeat(5, auto)
+            1fr;
+    }
+
+    &--cols-7 {
+        grid-template-columns:
+            minmax(var(--_first-col-width), max-content)
+            repeat(6, auto)
+            1fr;
+    }
+}

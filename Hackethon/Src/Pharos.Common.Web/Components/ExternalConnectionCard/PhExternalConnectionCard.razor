@@ -1,0 +1,50 @@
+@using IconType = Pharos.Common.Web.Components.Icons.IconType
+@using Pharos.Common.Web.Components.Health
+@using Pharos.Common.Web.Components.PlaceHolder
+
+<div class="@ClassConnectionCard">
+
+    <div class="ph-external-connection-card__header">
+
+        <span class="ph-external-connection-card__header-title">@NameTitle @Name</span>
+        @if (!IsExpanded)
+        {
+            <button class="ph-external-connection-card__toggle"
+                    aria-expanded="@(_isExpanded.ToString().ToLower())"
+                    aria-label="@(_isExpanded ? "Collapse" : "Expand")"
+                    @onclick="ToggleExpansion"
+                    type="button">
+                <PhIcon IconType="@(_isExpanded? IconType.ChevronUp: IconType.ChevronDown)" Size="IconSize.Sm" />
+            </button>
+        }
+
+        <div class="ph-external-connection-card__header-content">
+
+            <div class="ph-external-connection-card__status-label-group">
+                @if (ShowHealthStatus)
+                {
+                    <PhHealth Status="@HealthStatus" Size="HealthSize.Sm" />
+                }
+                <span class="ph-external-connection-card__status-label">@StateTitle</span>
+            </div>
+            <span class="ph-external-connection-card__status-value">@State</span>
+
+            @if (ShowExportPortDetail)
+            {
+                <div class="ph-external-connection-card__status-label-group">
+                    @if (ShowExportPortHealthStatus)
+                    {
+                        <PhHealth Status="@ExportPortHealthStatus" Size="HealthSize.Sm" />
+                    }
+                    <span class="ph-external-connection-card__status-label">@ExportPortStateTitle</span>
+                </div>
+                <span class="ph-external-connection-card__status-value">@ExportPortState</span>
+            }
+
+        </div>
+    </div>
+
+    <div class="ph-external-connection-card__body">
+        @ChildContent
+    </div>
+</div>

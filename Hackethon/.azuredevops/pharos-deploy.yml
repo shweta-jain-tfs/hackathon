@@ -1,0 +1,341 @@
+# Handles required installations and deploys Pharos to a targeted test environment provided in the parameter "environment". See Wiki -> Pharos Wiki -> Pipelines -> pharos-release for Docs. 
+name: $(Build.SourceBranchName).$(Build.BuildId) Deploy
+trigger: none
+
+# Schedule to deploy latest main each friday, so Qualys application scan will scan a new version
+schedules:
+- cron: '0 20 * * 5'
+  displayName: Friday qualys preparation
+  branches:
+    include:
+    - main
+
+pool: 
+  name: 'Development'
+
+parameters:
+- name: pwd
+  type: string
+  default: $(localUserPassword)
+- name: environment
+  type: string
+  displayName: Select Environment to Deploy
+  default: 'vc01-mictfs30p'
+  values:
+    - 'vc01-mictfs7p'
+    - 'vc01-mictfs21p'
+    - 'vc01-mictfs22p'
+    - 'vc01-mictfs23p'
+    - 'vc01-mictfs24p'
+    - 'vc01-mictfs25p'
+    - 'vc01-mictfs26p'
+    - 'vc01-mictfs27p'
+    - 'vc01-mictfs28p'
+    - 'vc01-mictfs29p'
+    - 'vc01-mictfs30p'
+    - 'vc01-mictfs31p'
+    - 'vc01-mictfs32p'
+    - 'vc01-mictfs33p'
+    - 'vc01-mictfs34p'
+    - 'vc01-mictfs35p'
+
+variables: 
+- group: ${{ parameters.environment }}
+- group: VMBase
+- name: dotNetVersion
+  value: '10.0.402'
+
+stages:
+- stage: DownloadAndCopyStage
+  displayName: Download and Copy Pharos Installer to Test Environment
+  jobs:
+  - job: CopyJob
+    displayName: Download and Copy Installer
+    steps:
+    - checkout: none
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'specific'
+        project: '9cf08cd5-ca79-4406-9862-a982d0b254b6'
+        pipeline: '11'
+        branchName: '$(Build.SourceBranch)'
+        buildVersionToDownload: 'latestFromBranch'
+        downloadType: 'single'
+        artifactName: 'PharosTestInstaller'
+        downloadPath: '$(System.ArtifactsDirectory)'
+      displayName: 'Download latest Pharos Installer'
+
+    - task: PowerShell@2
+      inputs:
+        targetType: 'inline'
+        script: |
+          $session = New-PSSession -ComputerName $(EnvironmentName)
+          try {
+              # Stop and remove existing service if it exists
+              Invoke-Command -Session $session -ScriptBlock {
+                $service = Get-Service -Name "PharosService" -ErrorAction SilentlyContinue
+                if ($service -and $service.Length -gt 0) {
+                    Write-Host "Stopping PharosService..."
+                    sc.exe stop PharosService
+                }
+
+                # Remove existing installer directory and its contents
+                if (Test-Path -Path "$(PharosDropPath)") {
+                    Write-Host "Removing existing installer directory: $(PharosDropPath)"
+                    Remove-Item -Path "$(PharosDropPath)" -Recurse -Force
+                }
+
+                # Create fresh installer directory
+                New-Item -Path "$(PharosDropPath)" -ItemType Directory
+                Write-Host "Created fresh installer directory: $(PharosDropPath)"
+              }
+
+              # Copy installer files to target environment
+              Copy-Item -Path "$(System.ArtifactsDirectory)\PharosTestInstaller\*" -Destination "$(PharosDropPath)" -ToSession $session -Recurse -Force -Verbose
+              Write-Host "Copied installer files to target environment"
+
+          } finally {
+              Remove-PSSession $session
+          }
+      displayName: 'Clean and Copy Installer to Test Environment'
+    
+    - task: PowerShell@2
+      name: getInstallerPharosVersion               
+      displayName: 'Extract installer version from file name'
+      inputs:
+        targetType: 'inline'
+        script: |
+              $path = "$(System.ArtifactsDirectory)\PharosTestInstaller"
+              Write-Host "Looking for installer in: $path"
+
+              $installerFile = Get-ChildItem -Path $path -Filter "Pharos-TestEnvironment-*" | Select-Object -First 1
+
+              if (-not $installerFile) {
+                Write-Error "No installer file found in $path"
+                exit 1
+              }
+
+              if ($installerFile.Name -match '\d+\.\d+\.\d+\.\d+') {
+                $version = $matches[0]
+                Write-Host "Detected installer version: $version"
+
+                # Make it available to later stages as an output variable
+                Write-Host "##vso[task.setvariable variable=PharosInstallerVersion;isOutput=true]$version"
+              }
+              else {
+                Write-Error "Could not find version pattern in file name: $($installerFile.Name)"
+                exit 1
+              }
+
+- stage: InstallPharosStage
+  displayName: Install Pharos on Test Environment
+  dependsOn: DownloadAndCopyStage
+  variables:
+    PharosInstallerVersion: $[ stageDependencies.DownloadAndCopyStage.CopyJob.outputs['getInstallerPharosVersion.PharosInstallerVersion'] ]
+  jobs:
+  - deployment: Deployment
+    environment: 
+      name: $(EnvironmentName)
+      resourceType: VirtualMachine
+    strategy:
+        runOnce:
+            deploy:
+                steps:
+                - checkout: none
+                - task: UseDotNet@2
+                  inputs:
+                    packageType: 'sdk'
+                    version: '$(dotNetVersion)'
+                    installationPath: $(NetInstallPath)
+                  displayName: 'Assert .Net version or Download'
+                  
+                
+                - task: PowerShell@2
+                  displayName: 'Clean service and databases for downgrade or to/from main installs'
+                  inputs:
+                    targetType: 'inline'
+                    script: | 
+                        $productName = "Pharos"  
+                        $product = Get-WmiObject -Class Win32_Product | Where-Object { $_.Name -like "*$productName*" }
+                        $sourceBranchName = "$(Build.SourceBranchName)"
+                        $sourceBranch = "$(Build.SourceBranch)"
+                        $isSourceMain = ($sourceBranchName -ieq "main" -or $sourceBranch -imatch "/main$")
+
+                        $installedFromMain = $false
+                        $installedVersion = $null
+                        $newVersion = $null
+
+                        if ($null -ne $product) {
+                            Write-Host "Found installed product: $($product.Name)"
+
+                            $installedVersionStr = $product.Version
+                            $newVersionStr = "$(PharosInstallerVersion)"
+
+                            Write-Host "Installed version $($installedVersionStr)"
+                            Write-Host "New version $($newVersionStr)"
+
+                            try {
+                                $installedVersion = [version]$installedVersionStr
+                                $newVersion = [version]$newVersionStr
+                            }
+                            catch {
+                                Write-Error "Could not parse versions. Installed='$installedVersionStr', New='$newVersionStr'"
+                                exit 1
+                            }
+
+                            $installedFromMain = $installedVersion.Major -eq 0 -and $installedVersion.Minor -eq 1
+                        }
+
+                        if (($isSourceMain -and -not $installedFromMain) -or (-not $isSourceMain -and $installedFromMain)) {
+                            Write-Host "Master/main cross-install detected. Stopping PharosService and removing Pharos database."
+
+                            $service = Get-Service -Name "PharosService" -ErrorAction SilentlyContinue
+                            if ($null -eq $service) {
+                                Write-Host "PharosService does not exist. Skipping service stop."
+                            }
+                            elseif ($service.Status -ne [System.ServiceProcess.ServiceControllerStatus]::Stopped) {
+                                Stop-Service -Name "PharosService" -Force -ErrorAction Stop
+                                $service.WaitForStatus([System.ServiceProcess.ServiceControllerStatus]::Stopped, [TimeSpan]::FromSeconds(30))
+                                Write-Host "PharosService stopped."
+                            }
+                            else {
+                                Write-Host "PharosService is already stopped."
+                            }
+
+                            $sqlcmd = Get-Command "sqlcmd.exe" -ErrorAction SilentlyContinue
+                            if ($null -eq $sqlcmd) {
+                                Write-Error "sqlcmd.exe is required to remove the Pharos database but was not found."
+                                exit 1
+                            }
+
+                            & $sqlcmd.Source -S "localhost" -E -Q "IF DB_ID(N'Pharos') IS NOT NULL BEGIN ALTER DATABASE [Pharos] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [Pharos]; END"
+                            if ($LASTEXITCODE -ne 0) {
+                                Write-Error "Failed to remove Pharos database. sqlcmd exited with code $LASTEXITCODE."
+                                exit 1
+                            }
+
+                            & $sqlcmd.Source -S "localhost" -E -Q "IF DB_ID(N'AuditTrail') IS NOT NULL BEGIN ALTER DATABASE [AuditTrail] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [AuditTrail]; END"
+                            if ($LASTEXITCODE -ne 0) {
+                                Write-Error "Failed to remove AuditTrail database. sqlcmd exited with code $LASTEXITCODE."
+                                exit 1
+                            }
+
+                            Write-Host "Pharos and audit trail databases cleanup completed."
+                        }
+
+                        if ($null -eq $product) {
+                            Write-Host "Product '$productName' is not installed. No uninstall possible."
+                            return
+                        }
+
+                        if ($newVersion -lt $installedVersion) {
+                            Write-Host "New version ($newVersion) is LOWER than installed version ($installedVersion). Downgrade detected. Removing databases and uninstalling..."
+
+                            $sqlcmd = Get-Command "sqlcmd.exe" -ErrorAction SilentlyContinue
+                            if ($null -ne $sqlcmd) {
+                                & $sqlcmd.Source -S "localhost" -E -Q "IF DB_ID(N'Pharos') IS NOT NULL BEGIN ALTER DATABASE [Pharos] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [Pharos]; END"
+                                if ($LASTEXITCODE -eq 0) {
+                                    Write-Host "Pharos database removed for downgrade."
+                                }
+                                else {
+                                    Write-Host "Warning: Failed to remove Pharos database for downgrade."
+                                }
+
+                                & $sqlcmd.Source -S "localhost" -E -Q "IF DB_ID(N'AuditTrail') IS NOT NULL BEGIN ALTER DATABASE [AuditTrail] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [AuditTrail]; END"
+                                if ($LASTEXITCODE -eq 0) {
+                                    Write-Host "AuditTrail database removed for downgrade."
+                                }
+                                else {
+                                    Write-Host "Warning: Failed to remove AuditTrail database for downgrade."
+                                }
+                            }
+                            else {
+                                Write-Host "Warning: sqlcmd.exe not found. Proceeding with uninstall without database cleanup."
+                            }
+
+                            Write-Host "Uninstalling..."
+                            $product.Uninstall()
+                            Write-Host "Uninstall command issued."
+                        }
+                        else {
+                            Write-Host "New version ($newVersion) is NOT lower than installed version ($installedVersion)."
+                            Write-Host "No uninstall performed."
+                        }
+                    
+
+                - task: PowerShell@2
+                  inputs:
+                    targetType: 'inline'
+                    script: |
+                      function Is-SQLInstanceInstalled {
+                          $instanceCheck = Get-Service -Name "$(SQLInstanceName)" -ErrorAction SilentlyContinue
+                          return $instanceCheck -ne $null
+                      }
+                      
+                      if (Is-SQLInstanceInstalled) {
+                          Write-Host "SQL Server instance $(SQLInstanceName) is already installed. Skipping instance installation."
+                      } else {
+                          Write-Host "Installing SQL Server instance $(SQLInstanceName)..."
+                          
+                          if (-not (Test-Path -Path "$(SQLInstallerFile)")) {
+                              Write-Host "Could not find SQL Installer File at $(SQLInstallerFile), could not proceed"
+                              exit 1 
+                          }
+
+                          Write-Host "Starting install at $(SQLInstallerFile) with arguments $(SQLInstallArgs)"
+                          & "$(SQLInstallerFile)" $(SQLInstallArgs)
+
+                          if ($LASTEXITCODE -ne 0) {
+                              Write-Error "SQL Server installation failed with exit code $LASTEXITCODE"
+                              exit 1
+                          }
+
+                          if (Is-SQLInstanceInstalled) {
+                              Write-Host "SQL Server Instance $(SQLInstanceName) was successfully installed. Service is running"
+                          }
+                      }
+                  displayName: Assert SQL Server integration  
+                
+                - task: PowerShell@2
+                  inputs:
+                    targetType: 'inline'
+                    script: |
+                      $installerPath = "$(PharosDropPath)"
+                      $exeFile = Get-ChildItem -Path $installerPath -Filter "Pharos-TestEnvironment-*.exe" -File -Recurse | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+                      if (-not $exeFile) {
+                          Write-Error "No Pharos-TestEnvironment-*.exe installer found in $installerPath"
+                          exit 1
+                      }
+
+                      Write-Host "Found Pharos installer: $($exeFile.FullName)"
+                      try {
+                          & $exeFile.FullName "secureenclavesenabled=false"
+                          $code = $LASTEXITCODE
+                          if ($code -ne 0) {
+                              Write-Error "$($exeFile.Name) failed with exit code $code"
+                              exit 1
+                          }
+                          Write-Host "$($exeFile.Name) executed successfully"
+                      } catch {
+                          Write-Error "Exception occurred while executing $($exeFile.Name): $($_.Exception.Message)"
+                          exit 1
+                      }
+                  displayName: 'Execute Pharos .exe installer'
+                
+                - task: PowerShell@2
+                  inputs:
+                    targetType: 'inline'
+                    script: |
+                      # Create and start Pharos service after configuration transformation
+                      Write-Host "Creating and starting Pharos service after configuration update..."
+                      $service = Get-Service -Name "PharosService" -ErrorAction SilentlyContinue
+                      if ($service) {
+                          Write-Host "PharosService already exists, stopping it..."
+                          Stop-Service -Name "PharosService" -Force
+                          Write-Host "Starting PharosService..."
+                          Start-Service -Name "PharosService"
+                          Write-Host "PharosService restarted successfully."
+                      } else {
+                          Write-Host "PharosService does not exist!"   
+                      }
+                  displayName: 'Restart Pharos Service After Configuration Update'

@@ -1,0 +1,149 @@
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Icons
+@attribute [Stories("Components/Button")]
+
+<Stories TComponent="PhButton">
+
+    @* <ArgType For="_ => _!.Color" Control="ControlType.Color" /> *@
+
+
+
+    <Story Name="Primary">
+
+        <Arguments>
+            <Arg For="_ => _!.ChildContent" Value="_childContentPrimary" />
+            <Arg For="_ => _!.StopPropagation" Value="true" />
+            <Arg For="_ => _!.PreventDefault" Value="true" />
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.ButtonType" Value="@string.Empty" />
+            <Arg For="_ => _!.StartIconType" Value="null" />
+            <Arg For="_ => _!.EndIconType" Value="null" />
+        </Arguments>
+
+        <Template>
+            <PhButton Type="@ButtonType.Primary" OnClick="@(() => ButtonClick(_primary))" @attributes="context.Args">
+            </PhButton>
+        </Template>
+    </Story>
+
+    <Story Name="Secondary">
+
+        <Arguments>
+            <Arg For="_ => _!.ChildContent" Value="_childContentSecondary" />
+            <Arg For="_ => _!.StopPropagation" Value="true" />
+            <Arg For="_ => _!.PreventDefault" Value="true" />
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.ButtonType" Value="@string.Empty" />
+            <Arg For="_ => _!.StartIconType" Value="null" />
+            <Arg For="_ => _!.EndIconType" Value="null" />
+        </Arguments>
+
+        <Template>
+
+            <PhButton Type="@ButtonType.Secondary" OnClick="@(() => ButtonClick(_secondary))" @attributes="context.Args">
+            </PhButton>
+
+        </Template>
+    </Story>
+
+    <Story Name="Text">
+
+        <Arguments>
+            <Arg For="_ => _!.ChildContent" Value="_childContentText" />
+            <Arg For="_ => _!.StopPropagation" Value="true" />
+            <Arg For="_ => _!.PreventDefault" Value="true" />
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.ButtonType" Value="@string.Empty" />
+            <Arg For="_ => _!.StartIconType" Value="null" />
+            <Arg For="_ => _!.EndIconType" Value="null" />
+        </Arguments>
+
+        <Template>
+            <PhButton Type="@ButtonType.Text" OnClick="@(() => ButtonClick(_text))" @attributes="context.Args">
+            </PhButton>
+        </Template>
+    </Story>
+
+
+    <Story Name="Disabled">
+
+        <Arguments>
+            <Arg For="_ => _!.ChildContent" Value="_childContentDisabled" />
+            <Arg For="_ => _!.StopPropagation" Value="true" />
+            <Arg For="_ => _!.PreventDefault" Value="true" />
+            <Arg For="_ => _!.Disabled" Value="true" />
+            <Arg For="_ => _!.ButtonType" Value="@string.Empty" />
+            <Arg For="_ => _!.StartIconType" Value="null" />
+            <Arg For="_ => _!.EndIconType" Value="null" />
+        </Arguments>
+
+        <Template>
+            <PhButton Type="@ButtonType.Primary" OnClick="@(() => ButtonClick($"{_disabled} {_primary}"))" @attributes="context.Args">
+            </PhButton>
+            <PhButton Type="@ButtonType.Text" OnClick="@(() => ButtonClick($"{_disabled} {_text}"))" @attributes="context.Args">
+            </PhButton>
+            <PhButton Type="@ButtonType.Secondary" OnClick="@(() => ButtonClick($"{_disabled} {_secondary}"))" @attributes="context.Args">
+            </PhButton>
+            
+        </Template>
+
+    </Story>
+
+    <Story Name="Icon">
+
+        <Arguments>
+            <Arg For="_ => _!.ChildContent" Value="_childContentIcon" />
+            <Arg For="_ => _!.StopPropagation" Value="true" />
+            <Arg For="_ => _!.PreventDefault" Value="true" />
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.ButtonType" Value="@string.Empty" />
+        </Arguments>
+
+        <Template>
+            <div class="flex flex-col gap-md">
+                <div>
+                    <PhButton Type="@ButtonType.Primary" StartIconType="IconType.ArrowLeft" EndIconType="IconType.ArrowRight" OnClick="@(() => ButtonClick($"{_icon} {_primary} 1"))" @attributes="context.Args" />
+                    <PhButton Type="@ButtonType.Primary" StartIconType="IconType.ArrowLeft" OnClick="@(() => ButtonClick($"{_icon} {_primary} 2"))" @attributes="context.Args" />
+                    <PhButton Type="@ButtonType.Primary" EndIconType="IconType.ArrowRight" OnClick="@(() => ButtonClick($"{_icon} {_primary} 3"))" @attributes="context.Args" />
+                </div>
+                <div>
+                    <PhButton Type="@ButtonType.Secondary" StartIconType="IconType.ArrowLeft" EndIconType="IconType.ArrowRight" OnClick="@(() => ButtonClick($"{_icon} {_secondary} 1"))" @attributes="context.Args" />
+                    <PhButton Type="@ButtonType.Secondary" StartIconType="IconType.ArrowLeft" OnClick="@(() => ButtonClick($"{_icon} {_secondary} 2"))" @attributes="context.Args" />
+                    <PhButton Type="@ButtonType.Secondary" EndIconType="IconType.ArrowRight" OnClick="@(() => ButtonClick($"{_icon} {_secondary} 3"))" @attributes="context.Args" />
+                </div>
+                <div>
+                    <PhButton Type="@ButtonType.Text" StartIconType="IconType.ArrowLeft" EndIconType="IconType.ArrowRight" OnClick="@(() => ButtonClick($"{_icon} {_text} 1"))" @attributes="context.Args" />
+                    <PhButton Type="@ButtonType.Text" StartIconType="IconType.ArrowLeft" OnClick="@(() => ButtonClick($"{_icon} {_text} 2"))" @attributes="context.Args" />
+                    <PhButton Type="@ButtonType.Text" EndIconType="IconType.ArrowRight" OnClick="@(() => ButtonClick($"{_icon} {_text} 3"))" @attributes="context.Args" />
+                </div>
+            </div>
+        </Template>
+
+    </Story>
+
+</Stories>
+
+
+
+@code
+{
+    private static string _primary = "Primary Button";
+    private static string _secondary = "Secondary Button";
+    private static string _text = "Text Button";
+    private static string _disabled = "Disabled Button";
+    private static string _icon = "Icon Button";
+
+    RenderFragment _childContentPrimary = @<text>@_primary</text>;
+    RenderFragment _childContentSecondary = @<text>@_secondary</text>;
+    RenderFragment _childContentText = @<text>@_text</text>;
+    RenderFragment _childContentDisabled = @<text>@_disabled</text>;
+    RenderFragment _childContentIcon = @<text>@_icon</text>;
+
+
+
+    private void ButtonClick(string buttonName)
+    {
+        Console.WriteLine($"{buttonName} Button clicked");
+    }
+}

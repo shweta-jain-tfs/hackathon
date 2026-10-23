@@ -1,0 +1,23 @@
+﻿@using Pharos.Common.Web.Components.Icons;
+@using Pharos.Client.Common.Localization
+
+@namespace Pharos.Client.App.Reagents.Views.Drawer
+
+<div class="@_loaderSelectionCss">
+    <div class="@_loaderCss" @onclick="OnLoaderClicked">
+
+        @if (ShowLoaderError())
+        {
+            <PhStatusIcon Icon="StatusIconType.Warning" Size="StatusIconSize.Lg" />
+            <span class="reagent-loader__error-text">@Loc["ReagentLoader_ReagentLoaderErrorUnknownObject"]</span>
+        }
+        else
+        {
+            @foreach (var compartment in Loader.Compartments)
+            {
+                <ReagentLoaderSlotView Compartment="compartment" LegendSelectedStatus="@LegendSelectedStatus"></ReagentLoaderSlotView>
+            }
+        }
+
+    </div>
+</div>

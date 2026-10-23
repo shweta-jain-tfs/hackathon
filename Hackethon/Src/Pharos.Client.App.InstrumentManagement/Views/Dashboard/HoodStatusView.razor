@@ -1,0 +1,19 @@
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+
+@if (CanUnlock)
+{
+    <PhButton Type="ButtonType.Secondary" OnClick="OnUnlockHoodClick">
+        <div class="@CssClasses">
+            <PhIcon IconType="IconType.Hood" Size="IconSize.Md" />
+            @HoodStatusText
+        </div>
+    </PhButton>
+}
+else
+{
+    <div class="@CssClasses t-body1">
+        <PhIcon IconType="IconType.Hood" Size="IconSize.Lg" />
+        @HoodStatusText
+    </div>
+}

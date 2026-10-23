@@ -1,0 +1,208 @@
+[
+  {
+    "key": "Cleaning",
+    "title": "Rengöring",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "Översikt",
+        "title": null,
+        "content": "Kör eller schemalägg.."
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "Ta bort flaska",
+        "title": "Steg 1: Ta bort underhållslösningsflaskan",
+        "content": "Lossa och ta bort underhållslösningsflaskan från reagensflasklådan. Efter att ha kopplat loss de två slangarna kan flaskan lyftas ut."
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "Rengör flaskan",
+        "title": "Steg 2: Rengör flaskan",
+        "content": "Ta bort slanganslutningslocket och se till att slangarna och flaskan är rena. Om inte, tvätta i varmt vatten tills fasta rester har lösts upp."
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "Tillsätt underhållslösning",
+        "title": "Steg 3: Tillsätt underhållslösning",
+        "content": "Häll innehållet från tre 200 ml Phadia underhållslösningsflaskor, totalt 600 ml, i underhållslösningsflaskan."
+      },
+      {
+        "key": "4",
+        "NavigationTitle": "Återställ flaskan",
+        "title": "Steg 4: Återställ flaskan",
+        "content": "Sätt på slanglocket på underhållslösningsflaskan. Placera flaskan tillbaka på sin plats i flasklådan. Anslut de två slangkontakterna till flaskan. Kontakterna är kodade och passar bara åt ett håll. Följ färgmarkeringarna."
+      },
+      {
+        "key": "5",
+        "NavigationTitle": "Starta procedur",
+        "title": "Steg 5: Starta procedur",
+        "content": "När underhållslösningsflaskan är fylld med Phadia underhållslösning kan du starta underhållsproceduren genom att trycka på startknappen. Proceduren tar cirka 20 minuter. När den är klar kommer instrumentet automatiskt att gå in i standby-läge och det gröna ljuset på signaltornet släcks."
+      }
+    ]
+  },
+  {
+    "key": "ManualCleaning",
+    "title": "Manuell rengöring",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "Slutför",
+        "title": "Slutför",
+        "content": "Detta är bekräftelsesteget för manuell rengöring"
+      }
+    ]
+  },
+  {
+    "key": "ExtendedRinse",
+    "title": "Utökad sköljning",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "Översikt",
+        "title": "",
+        "content": "Utökad sköljning"
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "Ett",
+        "title": "Steg 1: Viss text kommer här",
+        "content": ""
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "Två",
+        "title": "Steg 2: En annan text",
+        "content": ""
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "Starta procedur",
+        "title": "Steg 3: Starta procedur",
+        "content": ""
+      }
+    ]
+  },
+  {
+    "key": "PipetteCleaning",
+    "title": "Pipettrengöring",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "Översikt",
+        "title": "Översikt",
+        "content": "Översikt över pipettrengöring"
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "Steg 1",
+        "title": "Steg 1: Förbered pipetten",
+        "content": "Se till att pipetten är frånkopplad och redo för rengöring."
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "Steg 2",
+        "title": "Steg 2: Torka av pipetten",
+        "content": "Torka av pipetten med pappershandduk."
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "Bekräfta",
+        "title": "Bekräfta",
+        "content": "Detta är bekräftelsesteget för pipettrengöring"
+      }
+    ]
+  },
+  {
+    "key": "CleanRinseContainer",
+    "title": "Rengör sköljbehållare",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "Översikt",
+        "title": "Översikt",
+        "content": "Översikt över rengöring av sköljbehållare"
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "Steg 1",
+        "title": "Steg 1: Öppna lådan",
+        "content": "Öppna lådan för sköljbehållarna"
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "Steg 2",
+        "title": "Steg 2: Torka av lådan",
+        "content": "Torka av med pappershandduk."
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "Bekräfta",
+        "title": "Bekräfta",
+        "content": "Detta är bekräftelsesteget för rengöring av sköljbehållare"
+      }
+    ]
+  },
+  {
+    "key": "CleanSolidWasteBins",
+    "title": "Rengör fast avfallsbehållare",
+    "steps": [
+      {
+        "key": "0",
+        "NavigationTitle": "Översikt",
+        "title": "Översikt",
+        "content": "Översikt över rengöring av fast avfallsbehållare"
+      },
+      {
+        "key": "1",
+        "NavigationTitle": "Steg 1",
+        "title": "Steg 1: Öppna lådan",
+        "content": "Öppna lådan för de fasta avfallsbehållarna"
+      },
+      {
+        "key": "2",
+        "NavigationTitle": "Steg 2",
+        "title": "Steg 2: Torka av lådan",
+        "content": "Torka av med pappershandduk."
+      },
+      {
+        "key": "3",
+        "NavigationTitle": "Bekräfta",
+        "title": "Bekräfta",
+        "content": "Detta är bekräftelsesteget för rengöring av fast avfallsbehållare"
+      }
+    ]
+  },
+  {
+    "key": "CleanWashStations",
+    "title": "Rengör tvättstationer"
+  },
+  {
+    "key": "CleanTransferUnitTips",
+    "title": "Rengör överföringsenhetens spetsar"
+  },
+  {
+    "key": "CleanEjectUnitTips",
+    "title": "Rengör utkastarens spetsar"
+  },
+  {
+    "key": "InspectDispenseUnit",
+    "title": "Inspektera doseringsenhet"
+  },
+  {
+    "key": "InspectCapWellRemovers",
+    "title": "Inspektera lock- och brunnsborttagare"
+  },
+  {
+    "key": "CleanWasteChute",
+    "title": "Rengör avfallsränna"
+  },
+  {
+    "key": "CleanLiquidWasteContainer",
+    "title": "Rengör flytande avfallsbehållare"
+  },
+  {
+    "key": "Rinse",
+    "title": "Sköljning"
+  }
+]

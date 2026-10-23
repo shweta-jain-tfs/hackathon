@@ -1,0 +1,148 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-task-card {
+    $root: &;
+    display: flex;
+    flex-direction: column;
+    width: var(--ph-task-card-width, #{size.$task-card-width});
+    height: var(--ph-task-card-height, 312px);
+    background: colors.$background-secondary;
+    border: var(--ph-task-card-border, 2px solid colors.$border-subtle-01);
+    @include rounded.rounded;
+    overflow: hidden;
+
+    &__body {
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        overflow: hidden;
+        gap: spacing.$gap-sm;
+        align-items: flex-end;
+        max-height: 148px;
+    }
+
+    &__container {
+        display: flex;
+        height: 100%;
+    }
+
+    &__header {
+        display: flex;
+        align-items: start;
+        gap: spacing.$gap-xs;
+        min-height: 68px;
+    }
+
+    &__header-title {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: clip;
+        padding-top: 4px;
+        @include text.h3;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: spacing.$padding-xs spacing.$padding-sm;
+    }
+
+    &__divider {
+        border: 2px solid colors.$background-tertiary;
+        margin-top: spacing.$gap-sm;
+        @include rounded.rounded-full;
+    }
+
+    &__footer {
+        --ph-icon-size: #{size.$icon-lg};
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: spacing.$gap-xs;
+    }
+
+    &__image-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        aspect-ratio: 1;
+        flex-shrink: 0; // don't shrink the image when there's text next to it
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    &__text-container {
+        flex: 1;
+        max-height: 100%;
+        @include text.body2;
+        color: colors.$icon-secondary;
+        overflow: auto;
+    }
+
+    &__information-icon {
+        color: colors.$icon-link;
+    }
+
+    &__information-icon-btn {
+        cursor: pointer;
+        display: flex;
+        text-decoration: none;
+
+        &:hover, &:focus-visible {
+            color: colors.$icon-link-hover;
+        }
+    }
+
+    &__time {
+        @include text.body2;
+    }
+
+    &__indicator {
+        width: 16px;
+        padding: 0;
+        background: colors.$status-info;
+    }
+
+    &--clickable {
+        cursor: pointer;
+    }
+
+    &--info {
+        #{$root}__image-container svg {
+            color: colors.$status-info;
+        }
+
+        #{$root}__indicator {
+            background: colors.$status-info;
+        }
+    }
+
+    &--warning {
+        #{$root}__image-container svg {
+            color: colors.$status-warning;
+        }
+
+        #{$root}__indicator {
+            background: colors.$status-warning;
+        }
+    }
+
+    &--alarm {
+        #{$root}__image-container svg {
+            color: colors.$status-alarm;
+        }
+
+        #{$root}__indicator {
+            background: colors.$status-alarm;
+        }
+    }
+}

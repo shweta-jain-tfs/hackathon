@@ -1,0 +1,146 @@
+@use "../abstracts/size";
+
+:has(> .ph-trailing-edge) {
+    --ph-trailing-edge-size: #{size.$trailing-edge-default};
+    // Use container-type: scroll-state instead of scroll-timeline to avoid Chrome rendering bugs
+    // that can freeze the UI when rapidly changing scroll direction.
+    container-type: scroll-state;
+
+    // Reserve space for programmatic scrolling so targets are not hidden beneath
+    // the trailing-edge gradient.
+    scroll-padding-block: var(--ph-trailing-edge-size);    
+}
+
+:has(> .ph-trailing-edge--wide) {
+    --ph-trailing-edge-size: #{size.$trailing-edge-wide};
+}
+
+:has(> .ph-trailing-edge--extra-wide) {
+    --ph-trailing-edge-size: #{size.$trailing-edge-extra-wide};
+}
+
+.ph-trailing-edge {
+    $root: &;
+    --ph-trailing-edge-margin: calc(-1 * var(--ph-trailing-edge-size, 0));
+    $trailing-edge-gradient: var(--ph-bg-color) 0%, transparent 100%;
+
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, auto) 1fr minmax(0, auto);
+    grid-template-rows: minmax(0, auto) 1fr minmax(0, auto);
+    grid-template-areas: "top top top"
+                         "left content right"
+                         "bottom bottom bottom";
+    min-width: fit-content; // allow sticky positioning across the entire width of the div
+    min-height: max-content;
+    height: auto;
+
+    &__content {
+        // Layout styling for the content area is set in the PhTrailingEdge Blazor component.
+        min-height: var(--ph-trailing-edge-size);
+        grid-area: content;
+    }
+
+    &__top,
+    &__left,
+    &__bottom,
+    &__right {
+        position: sticky;
+        inset: -1px; // -1 to avoid gap due to Chrome rounding error on scaled displays. Otherwise zero would be used.
+        pointer-events: none;
+        z-index: 5;
+        opacity: 0; // hide until scrollbar appears
+        transition: opacity 100ms ease;
+    }
+
+    &__top,
+    &__bottom {
+        height: var(--ph-trailing-edge-size);
+    }
+
+    &__left,
+    &__right {
+        width: var(--ph-trailing-edge-size);
+    }
+
+    &__top {
+        grid-area: top;
+        bottom: auto;
+        margin-bottom: var(--ph-trailing-edge-margin);
+        background: linear-gradient(180deg, $trailing-edge-gradient);
+
+        @container scroll-state(scrollable: top) {        
+            opacity: 1;
+            transition: none; // Appear immediately, then fade out.
+        }
+    }
+
+    &__bottom {
+        grid-area: bottom;
+        top: auto;
+        margin-top: var(--ph-trailing-edge-margin);
+        background: linear-gradient(0deg, $trailing-edge-gradient);
+
+        @container scroll-state(scrollable: bottom) {
+            opacity: 1;
+            transition: none;
+        }
+    }
+
+    &__left {
+        grid-area: left;
+        right: auto;
+        margin-right: var(--ph-trailing-edge-margin);
+        background: linear-gradient(90deg, $trailing-edge-gradient);
+
+        @container scroll-state(scrollable: left) {
+            opacity: 1;
+            transition: none;
+        }
+    }
+
+    &__right {
+        grid-area: right;
+        left: auto;
+        margin-left: var(--ph-trailing-edge-margin);
+        background: linear-gradient(270deg, $trailing-edge-gradient);
+
+        @container scroll-state(scrollable: right) {
+            opacity: 1;
+            transition: none;
+        }
+    }
+
+    &--hide-top {
+        > #{$root}__top {
+            display: none;
+        }
+    }
+
+    &--hide-left {
+        > #{$root}__left {
+            display: none;
+        }
+    }
+
+    &--vertical-only {
+        min-width: auto;
+
+        > #{$root}__left {
+            display: none;
+        }
+
+        > #{$root}__right {
+            display: none;
+        }
+    }
+
+    &--clip-content {
+        // Allow center column to shrink below content width, enabling text ellipsis when space is constrained.
+        grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
+    }
+
+    &--fill-height {
+        flex-grow: 1;
+    }
+}

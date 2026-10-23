@@ -1,0 +1,11 @@
+// Base styles
+// ===========
+
+// Normalize and preflight first
+@use "normalize";
+@use "preflight";
+
+// Then the rest of the base styles
+@use "base";
+@use "fonts";
+@use "blazor";

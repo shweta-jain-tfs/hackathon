@@ -1,0 +1,50 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.Modal
+@inject IModalService ModalService
+
+<PhModalContent>
+
+    <Body>
+        <p>This modal is a html dialog element!</p>
+        <PhTextBox Label="The text you add here will be sent to the parent" @bind-Value="@_input" />
+
+        @_output
+    </Body>
+
+    <Footer>
+
+
+        <PhButtonGroup Justified>
+            <PhButton OnClick="@(() => Close(ModalResult.Ok(_input)))">Save</PhButton>
+            <PhButton OnClick="@(() => Close(ModalResult.Cancel()))">Cancel</PhButton>
+        </PhButtonGroup>
+    </Footer>
+
+</PhModalContent>
+
+
+
+@code
+{
+    [CascadingParameter] public ModalInstance? Modal { get; set; }
+
+    private string? _output;
+    private string? _input;
+
+    private void Close(ModalResult result)
+    {
+        Modal?.CloseAsync(result);
+    }
+
+    private async Task InnerModal()
+    {
+        var modal = ModalService.Show<ModalViewChild>(new ModalOptions() { Title = "This is the Child Dialog" });
+
+        var result = await modal.Result;
+
+        if (!result.Canceled)
+        {
+            _output = result.Data?.ToString();
+        }
+    }
+}

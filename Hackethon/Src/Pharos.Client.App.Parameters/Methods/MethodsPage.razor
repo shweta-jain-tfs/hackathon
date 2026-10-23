@@ -1,0 +1,55 @@
+@layout ParametersLayout
+@using Pharos.Client.App.Parameters.Common.Views
+@using Pharos.Client.App.Parameters.Layout
+@using Pharos.Client.Common.App.Auth
+@using Pharos.Contracts.Security
+@attribute [Route(PageRoute.Parameters.Methods)]
+@attribute [Authorize]
+
+<SectionContent SectionName="page-header">
+    <Breadcrumb Items="@Breadcrumbs" />
+</SectionContent>
+
+<PhPage>
+    <PhDockedButtonRow>
+        <ChildContent>
+            <PhDataGrid TableTitle="@Loc["MethodsPage_MethodHeader"]" TGridItem="Method"
+                        StateID="methods"
+                        ItemsProvider="ViewModel.ProvideGridItems">
+                <Columns>
+                    <Column Title="@Loc["MethodsPage_Method"]" Property="@(x => x.MethodName)">
+                        <PhHrefLink Href="@($"{PageRoute.Parameters.MethodDetails.Default}/{context?.Id}")">@context?.MethodName</PhHrefLink>
+                    </Column>
+                    <Column Title="@Loc["MethodsPage_FullName"]" Property="@(x => x.FullMethodName)">
+                        @context.FullMethodName
+                    </Column>
+                    <Column Title="@Loc["MethodsPage_LISmethodID"]" Property="@(x => x.MethodNameLis)">
+                        @context.MethodNameLis
+                    </Column>
+                    <Column Title="@Loc["MethodsPage_Enabled"]" Property="@(x => x.Enabled)">
+                        @if (!context.Enabled)
+                        {
+                            @Loc["MethodDetailsTestTab_No"]
+                        }
+                        else
+                        {
+                            @Loc["MethodDetailsTestTab_Yes"]
+                        }
+                    </Column>
+                </Columns>
+            </PhDataGrid>
+        </ChildContent>
+
+        <Buttons>
+            <PhAuthorize Permission="@Permissions.EditServiceSettings">
+                <PhButtonRow Justified="false">
+                    <Buttons>
+                        <PhButton Type="ButtonType.Secondary" IgnoreMaxWidth OnClick="OpenSpecializedMethodsAndTests">
+                            @Loc["MethodsPage_SpecializedMethodsAndTests"]
+                        </PhButton>
+                    </Buttons>
+                </PhButtonRow>
+            </PhAuthorize>
+        </Buttons>
+    </PhDockedButtonRow>
+</PhPage>

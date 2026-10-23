@@ -1,0 +1,62 @@
+﻿
+<div class="ph-datepicker-panel">
+    @if (_pickerMode == PickerMode.Year)
+    {
+        <PhDatePickerPanelYear SelectedYear="@_visibleMonth.Year"
+                               MinDate="MinDate"
+                               MaxDate="MaxDate"
+                               YearSelected="OnYearSelected" />
+    }
+    else if (_pickerMode == PickerMode.Month)
+    {
+        <PhDatePickerPanelMonth SelectedYear="@_visibleMonth.Year"
+                                SelectedMonth="@_visibleMonth.Month"
+                                MinDate="MinDate"
+                                MaxDate="MaxDate"
+                                Culture="@_culture"
+                                MonthSelected="OnMonthSelected"
+                                ShowYearPicker="@(() => SetPickerMode(PickerMode.Year))" />
+    }
+    else
+    {
+        <div class="ph-datepicker-panel__header">
+            <button type="button" class="ph-datepicker-panel__mode-switch" @onclick="@(() => SetPickerMode(PickerMode.Month))">
+                @_visibleMonth.ToString("MMMM", _culture)
+                @_visibleMonth.ToString("yyyy", _culture)
+            </button>
+            <div class="ph-datepicker-panel__nav">
+                <PhIconButton IconType="IconType.ChevronUp" IconSize="IconSize.Xl" OnClick="() => OnChangeMonth(-1)" Disabled="IsPreviousMonthDisabled" />
+                <PhIconButton IconType="IconType.ChevronDown" IconSize="IconSize.Xl" OnClick="() => OnChangeMonth(1)" Disabled="IsNextMonthDisabled" />
+            </div>
+        </div>
+        
+        <div class="ph-calendar">
+            <div class="ph-calendar__header">
+                @foreach (var dayOfWeek in _daysOfWeek)
+                {
+                    <div>@dayOfWeek</div>
+                }
+            </div>
+            <div class="ph-calendar__grid">
+                @foreach (var day in _calendar)
+                {
+                    var ariaCurrent = day.IsToday ? "date" : null;
+                    var isSelected = SelectedDate == day.Date;
+                    var isOutOfRange =
+                        (MinDate is { } minDate && day.Date < minDate) ||
+                        (MaxDate is { } maxDate && day.Date > maxDate);
+
+                    var isDisabled = !day.IsVisibleMonth || isOutOfRange;
+
+                    var cssClass = isOutOfRange
+                        ? "ph-calendar__day ph-calendar__day--out-of-range"
+                        : "ph-calendar__day";
+
+                    <button type="button" class="@cssClass" @onclick="@(() => OnDayClicked(day.Date))" disabled="@isDisabled" aria-current="@ariaCurrent" aria-selected="@isSelected">
+                        @day.Date.Day
+                    </button>
+                }
+            </div>
+        </div>
+    }
+</div>

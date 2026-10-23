@@ -1,0 +1,59 @@
+@namespace Pharos.Client.App.Quality.Views.QualityControls
+@using Pharos.Client.App.Quality.ViewModels
+@using Pharos.Client.Common.App.Constants
+@using Pharos.Common.Web.Components.FormElements.Enums
+
+<PhDockedButtonRow>
+    <ChildContent>
+        <PhDataGrid TableTitle="@Loc["MethodQualityControlTubesTabContent_Tubes"]"
+                    StateID="tubes"
+                    TGridItem="QualityControlTubeViewModel"
+                    ItemsProvider="ViewModel.TubesProvider"
+                    SelectionType="SelectionTypeEnum.MultiSelect"
+                    OnSelectedItemsChanged="OnSelectedItemsChanged"
+                    @ref="_dataGrid">
+            <Columns>
+                <Column Title="@Loc["MethodQualityControlTubesTabContent_DetectedDateTime"]" Property="@(x => x.DetectedDateTime)" Format="@FormatStrings.ShortDateTime" QuickFilter="true" />
+
+                <Column Title="@Loc["MethodQualityControlTubesTabContent_Lot"]" Property="@(x => x.Lot)" />
+
+                <Column Title="@Loc["MethodQualityControlTubesTabContent_Instrument"]" Property="@(x => x.InstrumentText)">
+                    @if (context.ShowInstrumentLink)
+                    {
+                        <PhHrefLink Href="@PageRoute.Samples">@context.InstrumentText</PhHrefLink>
+                    }
+                    else
+                    {
+                        @context.InstrumentText
+                    }
+                </Column>
+
+                <Column Title="@Loc["MethodQualityControlTubesTabContent_TrayId"]" Property="@(x => x.TrayPosition)">
+                    @if (context.ShowPositionLink)
+                    {
+                        <PhHrefLink Href="@($"{PageRoute.Trays.SelectedPosition(context.TrayId!, context.TubePosition!.Value)}")">@context.TrayPosition</PhHrefLink>
+                    }
+                    else
+                    {
+                        @context.TrayPosition
+                    }
+                </Column>
+
+                <Column Title="@Loc["MethodQualityControlTubesTabContent_State"]" Property="@(x => x.TubeStatus)">
+                    <PhStatus Status="@context.TubePhStatus" Size="StatusSize.Xs" Text="@context.GetTubeStatusText()" />
+                </Column>
+
+                <Column Title="@Loc["MethodQualityControlTubesTabContent_Issue"]" Property="@(x => x.Error)">
+                    <PhStatus Status="@context.ErrorPhStatus" Size="StatusSize.Sm" Text="@context.GetErrorText()" />
+                </Column>
+
+                <Column Title="@Loc["MethodQualityControlTubesTabContent_RemainingVolume"]" Property="@(x => x.SampleVolumeToDisplay)" />
+            </Columns>
+        </PhDataGrid>
+    </ChildContent>
+    <Buttons>
+        <PhButton HasPermission="_hasUnloadPermission" Type="ButtonType.Secondary" Disabled="!IsUnloadEnabled" OnClick="Unload">
+            @Loc["MethodQualityControlTubesTabContent_UnloadTubes"]
+        </PhButton>
+    </Buttons>
+</PhDockedButtonRow>

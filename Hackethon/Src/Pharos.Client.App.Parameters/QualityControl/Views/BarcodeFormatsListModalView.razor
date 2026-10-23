@@ -1,0 +1,97 @@
+@using Pharos.Client.Common.App.Validation
+@using Pharos.Common.Web.Components.ConditionalIndentContent
+
+@attribute [Authorize]
+
+<PhModalContent>
+    <Body>
+        @if (_currentView == ViewMode.List)
+        {
+            <PhDockedButtonRow>
+                <ChildContent>
+                    <PhDataGrid @ref="_dataGrid"
+                                StateID=""
+                                TGridItem="QualityControlBarcodeFormatDetail"
+                                Items="_barcodeFormats.AsQueryable()"
+                                SelectionType="SelectionTypeEnum.MultiSelectWithSelectAll"
+                                RowType="RowTypeEnum.LinesBetweenRows"
+                                OnSelectedItemsChanged="SelectedItemsChanged">
+                        <Columns>
+                            <Column Title="@Loc["BarcodeFormatsListModal_Name"]" Property="@(item => item!.Name)">
+                                <PhHrefLink OnClick="@(() => EditBarcodeFormat(context.Id))">@context.Name</PhHrefLink>
+                            </Column>
+                            <Column Title="@Loc["BarcodeFormatsListModal_Format"]" Property="@(item => item!.Name)">
+                                @ConstructFormat(context)
+                            </Column>
+                        </Columns>
+                    </PhDataGrid>
+                </ChildContent>
+                <Buttons/>
+            </PhDockedButtonRow>
+        }
+        else if ((_currentView == ViewMode.Create || _currentView == ViewMode.Edit) && _editViewModel is not null)
+        {
+            <PhSimpleValidationContext @ref="_validationContext" OnValidationStateChanged="ValidationChanged" Model="_editViewModel">
+                <PhStack Gap="StackGap.Lg">
+                    <PhTextBox Label="@Loc["BarcodeFormatEditModal_Name"]" Size="TextBoxSize.ExtraLarge" MaxLength="15" @bind-Value="@_editViewModel.Name" />
+                    
+                    <PhLabel Text="@Loc["BarcodeFormatEditModal_Format"]">
+                        <PhValueBox Size="TextBoxSize.ExtraLarge">
+                            @foreach (var letter in _editViewModel.Format)
+                            {
+                                if (letter.Valid)
+                                {
+                                    <span>@letter.DisplayValue</span>
+                                }
+                                else
+                                {
+                                    <span class="text-warning">@letter.DisplayValue</span>
+                                } 
+                            }
+                        </PhValueBox>
+                    </PhLabel>
+
+                    <PhNumberField TValue="int" Size="TextBoxSize.Small" Label="@Loc["BarcodeFormatEditModal_TotalLength"]" @bind-Value="@_editViewModel.TotalLength"/>
+
+                    <PhConditionalIndentContent ShowContent="true">
+                        <ParentContent>
+                            <PhLabel Text="@Loc["BarcodeFormatEditModal_QcTitle"]"/>
+                        </ParentContent>
+
+                        <ConditionalContent>
+                            <div class="flex gap-gutter">
+                                <PhNumberField TValue="int" Size="TextBoxSize.Small" Label="@Loc["BarcodeFormatEditModal_QcStartPosition"]" @bind-Value="@_editViewModel.QcStartPosition"/>
+                                <PhNumberField TValue="int" Size="TextBoxSize.Small" Label="@Loc["BarcodeFormatEditModal_QcLength"]" @bind-Value="@_editViewModel.QcLength"/>
+                            </div>
+                        </ConditionalContent>
+                    </PhConditionalIndentContent>
+
+                    <PhConditionalIndentContent ShowContent="@_editViewModel.ContainsLotInformation">
+                        <ParentContent>
+                            <PhCheckBox Label="@Loc["BarcodeFormatEditModal_ContainsLotInformation"]" @bind-Value="@_editViewModel.ContainsLotInformation"/>
+                        </ParentContent>
+
+                        <ConditionalContent>
+                            <div class="flex gap-gutter">
+                                <PhNumberField TValue="int" Size="TextBoxSize.Small" Label="@Loc["BarcodeFormatEditModal_LotStartPosition"]" @bind-Value="@_editViewModel.LotStartPosition"/>
+                                <PhNumberField TValue="int" Size="TextBoxSize.Small" Label="@Loc["BarcodeFormatEditModal_LotLength"]" @bind-Value="@_editViewModel.LotLength"/>
+                            </div>
+                        </ConditionalContent>
+                    </PhConditionalIndentContent>
+                </PhStack>
+            </PhSimpleValidationContext>
+        }
+    </Body>
+    <Footer>
+        @if (_currentView == ViewMode.List)
+        {
+            <PhButton OnClick="CreateBarcodeFormat">@Loc["BarcodeFormatsListModal_NewFormat"]</PhButton>
+            <PhButton Disabled="@(_selectedItems.Count == 0)" OnClick="DeleteBarcodeFormats">@Loc["BarcodeFormatsListModal_Delete"]</PhButton>
+        }
+        else
+        {
+            <PhButton OnClick="CancelEdit">@Loc["BarcodeFormatEditModal_Cancel"]</PhButton>
+            <PhButton Type="ButtonType.Primary" Disabled="!_isValid" OnClick="SaveBarcodeFormat">@Loc["BarcodeFormatEditModal_Save"]</PhButton>
+        }
+    </Footer>
+</PhModalContent>

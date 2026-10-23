@@ -1,0 +1,92 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-textarea {
+    $root: &;
+    position: relative;
+
+    max-width: 100%;
+    min-width: size.$input-width-xsmall;
+
+    textarea {
+        display: block;
+        width: 100%;
+        min-height: size.$control-height;
+        padding: 4px spacing.$padding-sm;
+        border: 2px solid colors.$border-active;
+        background-color: colors.$layer-secondary;
+        color: colors.$text-secondary;
+        resize: none;
+        @include rounded.rounded;
+        @include text.body1;
+
+        &::placeholder {
+            color: colors.$text-hint;
+        }
+
+        &::selection {
+            background-color: colors.$layer-accent;
+        }
+
+        &:hover {
+            background-color: colors.$layer-hover-01;
+        }
+
+        &:focus-visible {
+            outline: none;
+            background-color: colors.$layer-selected-01;
+        }
+
+        &:disabled {
+            border-color: colors.$border-disabled;
+            background-color: colors.$layer-secondary;
+            color: colors.$text-disabled;
+            cursor: default;
+
+            &::placeholder {
+                color: currentColor;
+            }
+        }
+    }
+
+    &__error-icon {
+        display: none;
+        position: absolute;
+        right: size.$scrollbar-width;
+        bottom: spacing.$padding-xs;
+        color: colors.$status-validation;
+    }
+
+    &--size-small {
+        width: size.$input-width-small;
+    }
+
+    &--size-medium {
+        width: size.$input-width-medium;
+    }
+
+    &--size-large {
+        width: size.$input-width-large;
+    }
+
+    &--size-xlarge {
+        width: 100%;
+        min-width: size.$input-width-large;
+        max-width: size.$input-width-xlarge;
+    }
+
+    &--error {
+        textarea {
+            border-color: colors.$status-validation;
+        }
+
+        &:not(:focus-within) {
+            #{$root}__error-icon {
+                display: flex;
+            }
+        }
+    }
+}

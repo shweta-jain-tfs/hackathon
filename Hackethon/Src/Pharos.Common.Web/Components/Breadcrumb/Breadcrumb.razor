@@ -1,0 +1,55 @@
+﻿@using Pharos.Common.Web.Components.DropdownButton;
+
+<ul class="ph-breadcrumb">
+    @{
+        var hasFoldedItems = _foldedItems.Count > 0;
+    }
+    @if (hasFoldedItems)
+    {
+        <li>
+            <PhDropdownButton IconType="IconType.More" DropdownButtonType="DropdownButtonType.Icon">
+                @foreach(var item in _foldedItems)
+                {
+                    if (item.Action == null)
+                    {
+                        <PhDropdownButtonItemLink Uri="@item.Href" Text="@item.Text" />
+                    }
+                    else
+                    {
+                        <PhDropdownButtonItem Text="@item.Text" OnClick="item.Action" />
+                    }
+                }
+            </PhDropdownButton>
+        </li>
+    }
+
+    @for (var count = 0; count < _visibleItems.Count; count++)
+    {
+        var item = _visibleItems[count];
+        var isCurrentPage = (count + 1) == _visibleItems.Count;
+        var isFirstPage = count == 0 && !hasFoldedItems;
+
+        <li class="ph-breadcrumb__item">
+            @if (!isFirstPage)
+            {
+                <span>
+                    @Separator
+                </span>
+            }
+
+            @if (isCurrentPage)
+            {
+                <h2>@item.Text</h2>
+            }
+            else if (@item.Action == null)
+            {
+                <PhHrefLink Href="@item.Href">@item.Text</PhHrefLink>
+            }
+            else
+            {
+                <PhHrefLink OnClick="item.Action">@item.Text</PhHrefLink>
+            }
+        </li>
+    }
+
+</ul>

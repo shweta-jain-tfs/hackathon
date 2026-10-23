@@ -1,0 +1,25 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+
+.ph-dropdown-button {
+    &__separator {
+        display: flex;
+        align-items: center;
+        padding: 4px spacing.$padding-xs;
+        list-style: none;
+
+        // Hide invalid separators: first, last, or consecutive.
+        &:first-child,
+        &:last-child,
+        & + & {
+            display: none;
+        }
+
+        &::before {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: colors.$border-subtle-02;
+        }
+    }
+}

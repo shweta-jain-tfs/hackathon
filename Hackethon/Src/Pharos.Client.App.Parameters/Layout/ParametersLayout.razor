@@ -1,0 +1,16 @@
+﻿@using Pharos.Client.Common.App.Layout
+@inherits LayoutComponentBase
+@layout MainLayout
+
+@*
+    Legacy shared page layout retained during the navigation migration.
+    Sub-navigation now lives in the main sidebar.
+*@
+<PhPage>
+    <PageHeader>
+        <SectionOutlet SectionName="page-header" />
+    </PageHeader>
+    <ChildContent>
+        @Body
+    </ChildContent>
+</PhPage>

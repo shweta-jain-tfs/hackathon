@@ -1,0 +1,35 @@
+@use "../abstracts/spacing";
+
+.ph-collect-log-files {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: spacing.$gap-md;
+
+    &__date-selection {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-sm;
+    }
+
+    &__date-range {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-md;
+    }
+
+    &__separator {
+        margin-top: auto;
+    }
+
+    &__collection-selection {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    &__file-selection {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-sm;
+    }
+}

@@ -1,0 +1,124 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-searchbox {
+    --_bg-color: #{colors.$layer-secondary};
+    --_border-color: #{colors.$border-subtle-02};
+    --_button-bg-color: #{colors.$button-disabled};
+    --_button-icon-color: #{colors.$icon-disabled-01};
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+
+    &:focus-within {
+        --_bg-color: #{colors.$layer-selected-01};
+    }
+
+    &:focus-within,
+    &:has(.is-filled) {
+        --_border-color: #{colors.$border-active};
+        --_button-bg-color: #{colors.$button-primary};
+        --_button-icon-color: #{colors.$text-primary};
+    }
+
+    input {
+        width: 100%;
+        min-height: size.$control-height;
+        border: 2px solid var(--_border-color);
+        padding-inline: spacing.$padding-sm;
+        background-color: var(--_bg-color);
+        @include rounded.rounded;
+        @include text.body1;
+
+        &:focus-visible {
+            outline: none;
+        }
+
+        &:disabled {
+            border-color: transparent;
+            color: colors.$text-disabled;
+            &::placeholder {
+                color: inherit;
+            }
+        }
+
+        &::placeholder {
+            color: colors.$text-hint;
+        }
+        // Hide browser default clear button
+        &::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+            appearance: none;
+            display: none;
+        }
+
+        &::-ms-clear {
+            display: none;
+        }
+
+        &::selection {
+            background-color: colors.$layer-accent;
+        }
+    }
+    // Only add padding-right when there is text in input field
+    input.is-filled {
+        padding-right: 150px;
+    }
+
+    &__clear {
+        position: absolute;
+        inset-block: 0;
+        right: 105px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        color: colors.$icon-link;
+        cursor: pointer;
+        z-index: 2;
+
+        &:active {
+            color: colors.$icon-link-pressed;
+        }
+
+        &:disabled {
+            color: colors.$icon-disabled-01;
+            cursor: default;
+        }
+    }
+
+    &__button {
+        position: absolute;
+        inset: 0;
+        left: auto;
+        padding: 0 spacing.$padding-lg;
+        border: 2px solid var(--_border-color);
+        border-left: none;
+        @include rounded.rounded-right;
+        cursor: pointer;
+        background: var(--_button-bg-color);
+        color: var(--_button-icon-color);
+
+        .ph-icon {
+            margin-top: 2px;
+            display: inline-block;
+        }
+
+        &:active {
+            background: colors.$button-primary-pressed;
+            border-color: transparent;
+        }
+
+        &:disabled {
+            background: colors.$button-disabled;
+            border-color: transparent;
+            color: colors.$icon-disabled-01;
+            cursor: default;
+        }
+    }
+}

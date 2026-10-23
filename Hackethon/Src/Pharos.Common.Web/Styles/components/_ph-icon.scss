@@ -1,0 +1,48 @@
+@use "../abstracts/colors";
+@use "../abstracts/size";
+
+.ph-icon {
+    display: contents;
+
+    > svg {
+        width: var(--ph-icon-size);
+        height: var(--ph-icon-size);
+        flex-shrink: 0;
+    }
+
+    &--color-alarm {
+        color: colors.$status-alarm;
+    }
+
+    &--color-success {
+        color: colors.$status-success;
+    }
+
+    &--color-warning {
+        color: colors.$status-validation;
+    }
+
+    &--size-xs {
+        --ph-icon-size: #{size.$icon-xs};
+    }
+
+    &--size-sm {
+        --ph-icon-size: #{size.$icon-sm};
+    }
+
+    &--size-md {
+        --ph-icon-size: #{size.$icon-md};
+    }
+
+    &--size-lg {
+        --ph-icon-size: #{size.$icon-lg};
+    }
+
+    &--size-xl {
+        --ph-icon-size: #{size.$icon-xl};
+    }
+
+    &--size-xxl {
+        --ph-icon-size: #{size.$icon-xxl};
+    }
+}

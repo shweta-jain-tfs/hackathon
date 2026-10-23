@@ -1,0 +1,50 @@
+﻿@page "/Account/Register"
+@using Pharos.Contracts.Security
+
+<div class="ph-server-page">
+
+        <section>
+            @if (!string.IsNullOrEmpty(Message))
+            {
+                var statusMessageClass = Message.StartsWith("Error") ? "danger" : "success";
+                <div class="alert alert-@statusMessageClass" role="alert">
+                    @Message
+                </div>
+            }
+            <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
+                <DataAnnotationsValidator />
+
+                <div class="ph-server-page__content">
+                    <div class="ph-server-page__header">
+                        <h1 class="t-h1">@Translations.Register_Title</h1>
+                    </div>
+
+                    <PhTextBox @bind-Value="Input.UserName" Label="@Translations.UserName" Size="TextBoxSize.Default" MaxLength="UserContract.MaximumNameLength" autofocus />
+                    <PhTextBox @bind-Value="Input.Password" Label="@Translations.Password" Type="TextBoxType.Password" Size="TextBoxSize.Default" Error="@HasPasswordComplexityError" ErrorText="@PasswordError" />
+                    <PhTextBox @bind-Value="Input.ConfirmPassword" Label="@Translations.Register_ConfirmPassword" Type="TextBoxType.Password" Size="TextBoxSize.Default" />
+                    @if (UserManager.PasswordComplexityDisplayList != null && UserManager.PasswordComplexityDisplayList.Any())
+                    {
+                        <PhValueBox Size="TextBoxSize.Default">
+                            @foreach (var complexityString in UserManager.PasswordComplexityDisplayList)
+                            {
+                                @complexityString
+                                @if (complexityString != UserManager.PasswordComplexityDisplayList.Last())
+                                {
+                                    <br />
+                                }
+                            }
+                        </PhValueBox>
+                    }
+                    <div class="ph-server-page__footer">
+                        <a href="/" class="ph-button ph-button--secondary ph-button--no-max-width">@Translations.Login_CancelButton</a>
+                        <PhButton Type="ButtonType.Primary" ButtonType="submit">@Translations.Register_RegisterButton</PhButton>
+                    </div>
+                </div>
+
+            </EditForm>
+
+
+        </section>
+        
+</div>
+

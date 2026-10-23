@@ -1,0 +1,30 @@
+﻿@using Pharos.Client.Common.App.Validation
+@inherits ComponentBase
+
+<div class="flex flex-wrap gap-gutter">
+    <div class="flex-1">
+        <PhInputColumn>
+            <PhTextBox Debounce="500" Label="@Loc["PatientPage_PatientId"]" OnInput="ViewModel.PatientIdChanged" @bind-Value="@ViewModel.PatientId" DisplayOnly="@NotAuthorized" Disabled="@IsEmptySampleId()" MaxLength="75" Size="TextBoxSize.Large" />
+            <PhTextBox Label="@Loc["PatientPage_PatientNumber"]" @bind-Value="@ViewModel.PatientNumber" DisplayOnly="@NotAuthorized" Disabled="@PatientInputsDisabled" MaxLength="12" Size="TextBoxSize.Large" />
+            <PhTextBox Label="@Loc["PatientPage_MedicalRecordNumber"]" @bind-Value="@ViewModel.MedicalRecordNumber" DisplayOnly="@NotAuthorized" Disabled="@PatientInputsDisabled" MaxLength="12" Size="TextBoxSize.Large" />
+            <PhTextBox Label="@Loc["PatientPage_PatientName"]" @bind-Value="@ViewModel.Name" DisplayOnly="@NotAuthorized" Disabled="@PatientInputsDisabled" MaxLength="75" Size="TextBoxSize.Large" />
+            <PhDatePicker @bind-Value="ViewModel.BirthDate"
+                          Label="@Loc["PatientPage_PatientBirthDate"]"
+                          Size="DatePickerSize.LargeInputWidth"
+                          DisplayOnly="@NotAuthorized" Disabled="@PatientInputsDisabled" />
+            <PhLabel Text="@Loc["PatientPage_PatientAge"]" RenderAsLabel="false" Disabled="@PatientInputsDisabled">
+                <PhValueBox Size="TextBoxSize.Large">@(PatientAgeAtSampling?.ToString() ?? string.Empty)</PhValueBox>
+            </PhLabel>
+            <PhDropdown TValue="Gender" Options="@(_genderTypes)" Title="@Loc["PatientPage_PatientGender"]" Label="@Loc["PatientPage_PatientGender"]" @bind-Value="ViewModel.Gender" DisplayOnly="@NotAuthorized" Disabled="@PatientInputsDisabled" Size="DropdownSize.LargeInputWidth" />
+            <PhTextArea Label="@Loc["PatientPage_PatientAddress"]" @bind-Value="ViewModel.Address" DisplayOnly="@NotAuthorized" Disabled="@PatientInputsDisabled" MaxLength="150" Size="TextAreaSize.Large" />
+            <PhTextBox Label="@Loc["PatientPage_PatientZipCode"]" @bind-Value="@ViewModel.ZipCode" DisplayOnly="@NotAuthorized" Disabled="@PatientInputsDisabled" MaxLength="12" Size="TextBoxSize.Large" />
+        </PhInputColumn>
+    </div>
+
+    <div class="flex-1">
+        <PhInputColumn>
+            <PhTextArea Label="@Loc["PatientPage_PatientComment"]" @bind-Value="@ViewModel.Comment" DisplayOnly="@NotAuthorized" Disabled="@PatientInputsDisabled" Rows="7" Size="TextAreaSize.ExtraLarge" MaxLength="1000" />
+            <PhTextArea Label="@Loc["PatientPage_PatientDiagnosis"]" @bind-Value="@ViewModel.Diagnosis" DisplayOnly="@NotAuthorized" Disabled="@PatientInputsDisabled" Rows="7" Size="TextAreaSize.ExtraLarge" MaxLength="200" />
+        </PhInputColumn>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+@attribute [Route(PageRoute.DashboardTemperatures)]
+@attribute [Authorize]
+@using System.Linq
+@using Pharos.Client.Common.Localization
+@using Pharos.Client.Common.Models
+@using Pharos.Common.Web.Components.QuickFilter
+
+<PhPage>
+    <PageHeader>
+        <Breadcrumb Items="@Breadcrumbs" />
+    </PageHeader>
+    <ChildContent>
+        <PhDataGrid TGridItem="SensorValue"
+                    StateID="temperature"
+                    Items="FilteredSensorList.AsQueryable()"
+                    TableTitle="@Loc["TemperaturesPage_Title"]">
+            <HeaderContent>
+                <PhToggleFilter Label="@Loc["TemperaturesPage_ShowAll"]"
+                                Value="@(!Overview)"
+                                ValueChanged="@(value => Overview = !value)" />
+                <PhFilterActions OnClearAll="() => Overview = true" OnResetToDefault="() => Overview = true" />
+            </HeaderContent>
+            <Columns>
+                <Column Property="x => x.OutsideLimit">
+                    @if (context.OutsideLimit)
+                    {
+                        <div class="ph-instrument-sensors__status-col">
+                            <PhStatusIcon Icon="StatusIconType.Alarm"></PhStatusIcon>
+                        </div>
+                    }
+                </Column>
+                <Column Property="x => x.Sensor" Title="@Loc["TemperaturesPage_Sensor"]">
+                    @context.Sensor.ToLocalizedString("DashboardPage")
+                </Column>
+                <Column Property="x => x.LowerLimit" Title="@_temperatureRangeLocalized"
+                        Align="ColumnAlignEnum.Right">
+                    @if (context.LowerLimit.HasValue || context.UpperLimit.HasValue)
+                    {
+                        var lowerLimit = context.LowerLimit.HasValue
+                            ? Common.App.Services.FormatService.ConvertCelsiusToTemperatureUnit(context.LowerLimit.Value, _temperatureUnit).ToString("F0")
+                            : string.Empty;
+                        var upperLimit = context.UpperLimit.HasValue
+                            ? Common.App.Services.FormatService.ConvertCelsiusToTemperatureUnit(context.UpperLimit.Value, _temperatureUnit).ToString("F0")
+                            : string.Empty;
+                        @($"{lowerLimit} - {upperLimit}")
+                    }
+
+                </Column>
+                <Column Property="x => x.Value" Title="@_temperatureUnitLocalized"
+                        Align="ColumnAlignEnum.Right">
+                    @(context.Value.HasValue
+                        ? Common.App.Services.FormatService.ConvertCelsiusToTemperatureUnit(context.Value.Value, _temperatureUnit).ToString("F1")
+                        : "-")
+                </Column>
+            </Columns>
+        </PhDataGrid>
+    </ChildContent>
+</PhPage>

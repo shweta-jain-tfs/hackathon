@@ -1,0 +1,82 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+
+.ph-solid-waste-container-view {
+    width: 336px;
+    height: 240px;
+    border-radius: rounded.$drawer-rounded;
+    border: 2px dashed colors.$border-subtle-01;
+    position: relative;
+    overflow: hidden;
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    background-color: colors.$background-tertiary;
+    color: colors.$icon-primary;
+
+    &--empty {
+        border: 2px dashed colors.$liquid-bottle-border;
+        background-color: transparent;
+    }
+
+    &--error {
+        border: 4px solid colors.$loader-error-border;
+        background: colors.$background-tertiary;
+        padding: 0;
+    }
+
+    &--indicator {
+        border: 4px solid colors.$border-active;
+        padding: 0;
+    }
+
+    &--alarm {
+        border: 4px solid colors.$status-alarm;
+        padding: 0;
+    }
+
+    &__fill {
+        width: 100%;
+        height: var(--waste-fill-level, 0%);
+        background-color: colors.$reagent-bottle-content-dim;
+        @include rounded.rounded;
+        z-index: 0;
+    }
+
+    &__content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &__center-icon-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        z-index: 1;
+    }
+
+    &__error-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: spacing.$gap-xs;
+    }
+
+    &__empty-waste {
+        display: flex;
+        align-items: center;
+        margin-top: 56px;
+        justify-content: center;
+        gap: spacing.$gap-xs;
+    }
+}

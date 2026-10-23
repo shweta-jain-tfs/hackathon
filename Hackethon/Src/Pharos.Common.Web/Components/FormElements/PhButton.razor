@@ -1,0 +1,18 @@
+﻿@if (!HasPermission)
+{
+    return;
+}
+
+<button id="@Id" uiname="@AutomatedTestId" class="@Classname" @onclick="OnClickHandler" @onclick:stopPropagation="@StopPropagation" @onclick:preventDefault="@PreventDefault" disabled="@Disabled" type="@ButtonType" popovertarget="@PopoverTarget">
+    @if (StartIconType is not null)
+    {
+        <PhIcon IconType="StartIconType.Value" Size="IconSize.Md" />
+    }
+    <span class="ph-button__label">
+        @ChildContent
+    </span>
+    @if (EndIconType is not null)
+    {
+        <PhIcon IconType="EndIconType.Value" Size="IconSize.Sm" />
+    }
+</button>

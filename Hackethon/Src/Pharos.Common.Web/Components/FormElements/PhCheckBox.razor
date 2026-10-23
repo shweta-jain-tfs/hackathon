@@ -1,0 +1,79 @@
+﻿@using Pharos.Common.Web.Components.Status
+@using IconType = Pharos.Common.Web.Components.Icons.IconType
+
+<div class="@Classname">
+    @if (DisplayOnly)
+    {
+        <div class="ph-checkbox__label" uiname="@AutomatedTestId">
+            <span class="ph-checkbox__box">
+                @if (RadioStyle)
+                {
+                    if (IsChecked)
+                    {
+                        <span class="ph-checkbox__radio-indicator"></span>
+                    }
+                }
+                else
+                {
+                    if (Indeterminate)
+                    {
+                        <PhIcon IconType="IconType.Indeterminate" Size="@IconSize" />
+                    }
+                    else if (IsChecked)
+                    {
+                        <PhIcon IconType="IconType.CheckmarkCompact" Size="@IconSize" />
+                    }
+                }
+            </span>
+
+            <PhStatus Text="@Label" Status="@Status" FontSize="StatusFontSize.Inherit" Size="StatusSize.Md"/>
+        </div>
+    }
+    else
+    {
+        <label for="@Id" class="ph-checkbox__label" uiname="@AutomatedTestId">
+            <input type="checkbox"
+                   id="@Id"
+                   checked="@IsChecked"
+                   aria-checked="@(Indeterminate ? "mixed" : IsChecked ? "true" : "false")"
+                   @onchange="OnInternalChange"
+                   disabled="@Disabled"
+                   uiname="@AutomatedTestId" />
+            <span class="ph-checkbox__box">
+                @if (RadioStyle)
+                {
+                    if (IsChecked)
+                    {
+                        <span class="ph-checkbox__radio-indicator"></span>
+                    }
+                }
+                else
+                {
+                    if (Indeterminate)
+                    {
+                        <PhIcon IconType="IconType.Indeterminate" Size="@IconSize" />
+                    }
+                    else if (IsChecked)
+                    {
+                        <PhIcon IconType="IconType.CheckmarkCompact" Size="@IconSize" />
+                    }
+                }
+            </span>
+
+            <PhStatus Text="@Label" Status="@Status" FontSize="StatusFontSize.Inherit" Size="StatusSize.Md" />
+        </label>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(_errorText))
+    {
+        <p class="ph-checkbox__error-text">
+            @_errorText
+        </p>
+    }
+    else if (!string.IsNullOrWhiteSpace(LabelHelpText))
+    {
+        <p class="ph-checkbox__help-text">
+            @LabelHelpText
+        </p>
+    }
+</div>

@@ -1,0 +1,11 @@
+@use "../abstracts/spacing";
+
+.ph-about-modules-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: spacing.$gap-md;
+
+    @media (min-width: 768px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}

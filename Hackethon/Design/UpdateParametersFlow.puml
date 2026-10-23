@@ -1,0 +1,54 @@
+@startuml Update parameters flow
+
+node "Pharos PC" {
+  [Pharos sw]
+}
+
+node "Instrument PC" {
+  [ISW]
+}
+
+cloud {
+  [FLR file]
+}
+
+cloud {
+  [Method file]
+}
+note right of [Method file]
+ Method file created from Pharos 
+ and edited manually.
+ Readable for both Pharos sw and ISW
+end note
+
+cloud {
+  [CMR file]
+}
+
+cloud "Results"{
+    [Result 1]
+    [Result 2]
+    [Result ..]
+}
+
+[Method file] --> [Pharos sw]
+[Method file] <.. [Pharos sw]
+[Method file] --> [ISW]
+
+[ISW] --> [FLR file]
+[FLR file] --> [Pharos sw] : FLR import
+
+'[Pharos sw] ..> [CMR file] 
+[CMR file] --> [ISW]
+
+note right of [Pharos sw]
+ Edit calculation parameters,
+ recalculate RU.
+ Export result for each attempt
+end note
+[Pharos sw] --> [Result 1] 
+[Pharos sw] --> [Result 2] 
+[Pharos sw] --> [Result ..] : Result export
+
+
+@enduml

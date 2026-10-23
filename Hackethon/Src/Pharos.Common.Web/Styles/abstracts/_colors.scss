@@ -1,0 +1,190 @@
+// Palette
+// =======
+// Note: avoid using these directly as they cannot be themed!
+
+// Brand colors
+$_blue15: #90d1ff;
+$_blue20: #6BC1FF;
+$_blue25: #3EAFFF;
+$_blue30: #0092F3;
+$_blue40: #0071D0;
+$_blue50: #005DAA;
+$_blue70: #013560;
+$_blue80: #00294A;
+$_blue90: #001E36;
+
+$_darkblue: #003658; // not in design system — decorative gradients only
+
+$_cyan: #2BA7C5;
+
+$_green40: #01891E;
+
+$_orange30: #F56A00;
+
+$_yellow25: #FEB323;
+$_yellow90: #462300;
+
+$_red50: #E71316;
+$_red60: #C40003;
+$_red100: #310000;
+
+// Gray scale
+$_gray0: #F7F7F7;
+$_gray05: #E5E5E5;
+$_gray10: #CCCCCC;
+$_gray15: #B8B7BC;
+$_gray20: #A5A5AE;
+$_gray25: #92929E;
+$_gray30: #81828C;
+$_gray40: #70707A;
+$_gray50: #61616B;
+$_gray60: #54545C;
+$_gray70: #43434A;
+$_gray80: #38383E;
+$_gray90: #2B2B30;
+$_gray100: #1B1B1D;
+$_gray110: #0D0D0E;
+
+$_white: #FFFFFF;
+$_black: #000000;
+
+$_black-alpha-30: rgba(0, 0, 0, 0.3);
+$_black-alpha-50: rgba(0, 0, 0, 0.5);
+$_black-alpha-80: rgba(0, 0, 0, 0.80);
+
+// Reagent palette
+// ===============
+$liquid-waste-indicator: #FFC72C;
+$liquid-rinse-indicator: #006D68;
+
+// Colors
+// ======
+// Note: Use these. These match the names used in figma. Add more from Figma as needed.
+// Color aliases (add as css var if needed for theming, see _spacing.scss)
+// In Figma: Group/color-variant
+// Naming: Text/link -> $text-link or Buttons/primary -> $button-primary
+$backdrop-primary: $_black-alpha-50;
+$background-primary: $_black;
+$background-secondary: $_gray100;
+$background-tertiary: $_gray90;
+$border-active: $_blue40;
+$border-disabled: $_gray80;
+$border-heavy-01: $_gray30;
+$border-heavy-02: $_gray60;
+$border-hover: $_blue25;
+$border-selected: $_blue25;
+$border-subtle-01: $_gray90;
+$border-subtle-02: $_gray80;
+$button-disabled: $_gray70;
+$button-outline: $_blue40;
+$button-primary-hover: $_blue25;
+$button-primary-pressed: $_blue50;
+$button-primary: $_blue40;
+$button-toggle-on: $_blue40;
+$chart-warning-zone: $_yellow90;
+$chart-alarm-zone: $_red100;
+$drawer-border: $_gray40;
+$drawer-filled-background: $_gray70;
+$drawer-filled-container-background: $_gray90;
+$drawer-front-led: $_green40;
+$drawer-front: $_gray100;
+$drawer-position-bg: $_gray90;
+$dropdown-shadow: $_black-alpha-30;
+$icon-disabled-01: $_gray30;
+$icon-disabled-02: $_gray40;
+$icon-link-hover: $_blue30;
+$icon-link-pressed: $_blue15;
+$icon-link: $_blue25;
+$icon-on-color-selected: $_white;
+$icon-primary: $_white;
+$icon-secondary: $_gray10;
+$icon-subtle: $_gray40;
+$layer-accent: $_blue50;
+$layer-heavy-02: $_gray20;
+$layer-hover-01: $_gray90;
+$layer-hover-02: $_gray80;
+$layer-primary: $_black;
+$layer-secondary: $_gray100;
+$layer-selected-01: $_blue70;
+$layer-selected-02: $_blue80;
+$layer-selected-03: $_blue20;
+$layer-selected-hover: $_blue50;
+$layer-selected-pressed: $_blue90;
+$layer-subtle: $_gray110;
+$layer-tertiary: $_gray90;
+$liquid-bottle-border: $_gray40;
+$opacity-overlay: $_black-alpha-80;
+$progress-disabled-bg: $_gray90;
+$progress-disabled-fg: $_gray80;
+$progress-enabled-bg: $_blue70;
+$progress-enabled-fg: $_blue50;
+$status-alarm: $_red50;
+$status-alarm-bg: $_red60;
+$status-info: $_blue40;
+$status-off: $_gray90;
+$status-progress: $_blue40;
+$status-success: $_green40;
+$status-validation: $_orange30;
+$status-warning: $_yellow25;
+$text-disabled: $_gray30;
+$text-hint: $_gray20;
+$text-link-disabled: $_gray40;
+$text-link-hover: $_blue30;
+$text-link-pressed: $_blue15;
+$text-link: $_blue25;
+$text-primary: $_white;
+$text-secondary: $_gray10;
+
+// Developer added aliases (Not in Figma)
+$bg-progress: $_white;
+$border-primary: $_white;
+$chart-border: $_gray50;
+$curve-selected: $_white;
+$curve-point-inactive: $_gray25;
+$dilution-plate-error-background: $_gray90;
+$dilution-plate: $_gray10;
+$drawer-dim-overlay: $opacity-overlay;
+$highlighted-tube-background: $_gray70;
+$highlighted-bottle-slot: $_gray05;
+$instrument-state-info-shadow: $_black-alpha-80;
+$loader-error-border: $status-warning;
+$maintenance-card-background: $_gray80;
+$maintenance-card-image-background: $_gray90;
+$reagent-bottle-content-bright: $_gray15;
+$reagent-bottle-content-dim: $_gray40;
+$reagent-bottle-slot-background: $_gray90;
+$reagent-carrier-identified: $_blue40;
+$reagent-carrier-not-identified: $_gray25;
+$reagent-carrier-slot-background: $_gray90;
+$reagent-carrier-slot: $_gray70;
+$reagent-cartridge-error: $status-warning;
+$reagent-cartridge-identified: $_blue40;
+$sampletube-completed: $_green40;
+$sampletube-empty: $_gray40;
+$sampletube-high-priority: $_yellow25;
+$sampletube-in-progress: $_blue40;
+$sampletube-manual-entry: $_white;
+$sampletube-not-identified: $_gray25;
+$sampletube-notube-background: $_gray70;
+$sampletube-partly-completed: $_green40;
+$software-identification-label-background: $_white;
+$software-identification-label-foreground: $_black;
+$text-error: $status-warning;
+$tray-error-border: $status-warning;
+$tube-background-default: $_gray90;
+$tube-background-notselected-pressed: $_blue80;
+$tube-background-selected-default: $_blue80;
+$tube-background-selected-pressed: $_blue90;
+$tube-outline-selected-default: $_blue20;
+$tube-outline-selected-pressed: $_blue40;
+$tube-dim-overlay: $opacity-overlay;
+$unload-status: $_green40;
+$bottle-status-in-use-border: $_white;
+$bottle-status-empty-fill: $_gray40;
+$icon-inverse: $layer-primary;
+$text-inverse: $layer-primary;
+$lockscreen-gradient-center: $_darkblue;
+$lockscreen-gradient-edge: $_black;
+$sample-tray-error-text:$_white;
+$legend-item-selected: $_blue70;
+$legend-item-selected-pressed: $_blue90;

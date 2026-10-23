@@ -1,0 +1,26 @@
+﻿@using Pharos.Common.Web.Models.DataGrid
+@attribute [Authorize]
+
+<PhModalContent>
+    <Body>
+        <PhDataGrid TableTitle="@Loc["ConditionTestAddView_GridTitle"]" TGridItem="MethodTest"
+                    StateID=""
+                    ItemsProvider="ViewModel.ProvideGridItems"
+                    SelectionType="SelectionTypeEnum.SingleSelect"
+                    RowType="RowTypeEnum.LinesBetweenRows"
+                    DefaultSortColumn="MethodName"
+                    DefaultSortDirection="SortDirection.Ascending"
+                    OnSelectedItemChanged="SelectedTestChanged"
+                    ItemStyleOptions="_itemStyleOptions">
+            <Columns>
+                <Column Title="@Loc["ConditionTestAddView_Method"]" Property="@(item => item!.MethodName)" QuickFilter="true" Sortable="true" MultiSelectFilterItems="_methodList" />
+                <Column Title="@Loc["ConditionTestAddView_Test"]" Property="@(item => item!.TestName)" QuickFilter="true" />
+                <Column Title="@Loc["ConditionTestAddView_TestFullName"]" Property="@(item => item!.FullTestName)" QuickFilter="true" />
+            </Columns>
+        </PhDataGrid>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["ConditionTestAddView_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" Disabled="(_selectedItem is null)" OnClick="@(() => CloseModal(ModalResult.Ok(_selectedItem)))">@Loc["ConditionTestAddView_Select"]</PhButton>
+    </Footer>
+</PhModalContent>

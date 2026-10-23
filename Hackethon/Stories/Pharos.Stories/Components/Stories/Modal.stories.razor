@@ -1,0 +1,149 @@
+﻿@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.Modal
+@using Pharos.Stories.Components.Stories.Views
+@attribute [Stories("Components/Modal")]
+@inject IModalService Modal
+
+<Stories TComponent="PhModal">
+    <Story Name="Modal default">
+
+        <Template>
+            <PhModal @attributes="context.Args" />
+            <PhButton OnClick="@(() => OpenModalDefault(ModalSize.Medium))">Show the modal</PhButton>
+            <PhLabel Text="@_modalResult" />
+        </Template>
+
+    </Story>
+
+    <Story Name="Modal Small">
+
+        <Template>
+            <PhModal @attributes="context.Args" />
+            <PhButton OnClick="@(() => OpenModalDefault(ModalSize.Small))">Show the small modal</PhButton>
+            <PhLabel Text="@_modalResult" />
+        </Template>
+
+    </Story>
+
+    <Story Name="Modal Large">
+
+        <Template>
+            <PhModal @attributes="context.Args" />
+            <PhButton OnClick="@(() => OpenModalDefault(ModalSize.Large))">Show the large modal</PhButton>
+            <PhLabel Text="@_modalResult" />
+        </Template>
+
+    </Story>
+
+    <Story Name="Modal Large">
+
+        <Template>
+            <PhModal @attributes="context.Args" />
+            <PhButton OnClick="@(() => OpenModalDefault(ModalSize.Large))">Show the large modal</PhButton>
+            <PhLabel Text="@_modalResult" />
+        </Template>
+
+    </Story>
+
+
+    <Story Name="Modal Parameters">
+
+        <Template>
+            <PhModal @attributes="context.Args" />
+            <PhTextBox @bind-Value="@_input" />
+            <PhButton OnClick="@OpenModalParameters">Show the large modal</PhButton>
+            <PhLabel Text="@_modalResult" />
+        </Template>
+
+    </Story>
+
+    <Story Name="Dialog size (fit buttons)">
+
+        <Template>
+            <ModalInstance Options="@_modalSizeOptions">
+                <Content>
+                    <PhModalContent>
+                        <Body>
+                            This dialog has a size that only fits 2 buttons,
+                            but will grow to fit 3 buttons as long as there's enough screen real-estate left.
+                        </Body>
+                        <Footer>
+                            <PhButton>Third button</PhButton>
+                            <PhButton>Cancel</PhButton>
+                            <PhButton Type="@ButtonType.Primary">Done</PhButton>
+                        </Footer>
+                    </PhModalContent>
+                </Content>
+            </ModalInstance>
+        </Template>
+
+    </Story>
+
+    <Story Name="Dialog size (normal)">
+
+        <Template>
+            <ModalInstance Options="@_modalSizeOptions">
+                <Content>
+                    <PhModalContent>
+                        <Body>
+                            This dialog has a size that only fits 2 buttons.
+                            It will not grow to fit the body content.
+                            <img src="https://picsum.photos/1500/400" width="1500" height="400" alt="Large example" />
+                        </Body>
+                        <Footer>
+                            <PhButton>Cancel</PhButton>
+                            <PhButton Type="@ButtonType.Primary">Done</PhButton>
+                        </Footer>
+                    </PhModalContent>
+                </Content>
+            </ModalInstance>
+        </Template>
+
+    </Story>
+
+</Stories>
+
+@code {
+    private ModalOptions _modalSizeOptions = new()
+    {
+        Title = "Dialog size test",
+        ModalHeight = ModalSize.Small,
+        ModalWidth = ModalSize.Small,
+        ShowCloseButton = false,
+    };
+
+    private string? _modalResult;
+
+    private async Task OpenModalDefault(ModalSize modalSize)
+    {
+        var modal = Modal.Show<ModalView>(new ModalOptions() { Title = "Modal Story View", ModalWidth = modalSize, ModalHeight = modalSize });
+
+        var result = await modal.Result;
+
+        if (!result.Canceled)
+        {
+            _modalResult = result?.Data?.ToString();
+        }
+    }
+
+    private string _input;
+    private async Task OpenModalParameters()
+    {
+        ModalParameters parameters = new()
+        {
+            { nameof(ModalParameterView.Message), _input }
+        };
+
+        var modal = Modal.Show<ModalParameterView>(parameters);
+
+        var result = await modal.Result;
+
+        if (!result.Canceled)
+        {
+            _modalResult = result?.Data?.ToString();
+        }
+    }
+
+}

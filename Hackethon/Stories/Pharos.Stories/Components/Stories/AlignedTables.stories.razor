@@ -1,0 +1,391 @@
+@using Pharos.Common.Web.Components.AlignedTables
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/AlignedTables")]
+
+<Stories TComponent="PhAlignedTables">
+    <Story Name="Default">
+        <Description>Multiple tables with aligned column widths.</Description>
+        <Arguments>
+            <Arg For="_ => _!.Columns" Value="@ColumnCount.Five" />
+        </Arguments>
+        <Template>
+            <style>
+                th, td {
+                    border: 1px dashed gray;
+                }
+            </style>
+            <PhAlignedTables @attributes="context.Args">
+                <PhAlignedTableItem Title="Bottles">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th colspan="2">Name</th>
+                                <th>Quantity</th>
+                                <th>Instrument</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Warning" Text="8 min" /></td>
+                                <td colspan="2">Stop solution</td>
+                                <td>2</td>
+                                <td>Billy</td>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Info" Text="60 min" /></td>
+                                <td colspan="2">Wash additive</td>
+                                <td>2</td>
+                                <td>Billy</td>
+                                <th></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </PhAlignedTableItem>
+                <PhAlignedTableItem Title="Cartridges">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Method</th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Instrument</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Warning" Text="10 min" /></td>
+                                <td>tIgE</td>
+                                <td>Cal</td>
+                                <td>2</td>
+                                <td>Billy</td>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Warning" Text="10 min" /></td>
+                                <td>sIgE</td>
+                                <td>Conj L</td>
+                                <td>3</td>
+                                <td>Billy</td>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Info" Text="40 min" /></td>
+                                <td>El-G/El-A/El-M</td>
+                                <td>Conj</td>
+                                <td>2</td>
+                                <td>Billy</td>
+                                <th></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </PhAlignedTableItem>
+                <PhAlignedTableItem Title="Carriers">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Test</th>
+                                <th>Type</th>
+                                <th>Quantity</th>
+                                <th>Instrument</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Alarm" Text="0 min" /></td>
+                                <td>sms</td>
+                                <td>EliA</td>
+                                <td>3</td>
+                                <td>Billy</td>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Warning" Text="10 min" /></td>
+                                <td>e1</td>
+                                <td>ImmunoCAP</td>
+                                <td>3</td>
+                                <td>Billy</td>
+                                <th></th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </PhAlignedTableItem>
+            </PhAlignedTables>
+        </Template>
+    </Story>
+
+    <Story Name="Wrapping">
+        <Description>
+            Demonstrates text wrapping in columns. The "Name" and "Location" columns use <code>ph-aligned-tables__cell-wrap</code> to allow wrapping. Some cells contain longer content to illustrate wrapping.
+        </Description>
+        <Arguments>
+            <Arg For="_ => _!.Columns" Value="@ColumnCount.Eight" />
+        </Arguments>
+        <Template>
+            <style>
+                th, td {
+                    border: 1px dashed gray;
+                }
+            </style>
+            <PhAlignedTables @attributes="context.Args">
+                <PhAlignedTableItem Title="Bottles">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th colspan="2">Name</th>
+                                <th>Quantity</th>
+                                <th>Instrument</th>
+                                <th>Lot</th>
+                                <th>Exp. Date</th>
+                                <th>Location</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Warning" Text="8 min" /></td>
+                                <td colspan="2" class="ph-aligned-tables__cell-wrap">Stop solution for calibration and maintenance</td>
+                                <td>2</td>
+                                <td>Billy</td>
+                                <td>DEWRT</td>
+                                <td>2025-12-31</td>
+                                <td class="ph-aligned-tables__cell-wrap">Shelf 12A, Main Storage Room</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Info" Text="60 min" /></td>
+                                <td colspan="2" class="ph-aligned-tables__cell-wrap">Wash additive (secondary use)</td>
+                                <td>2</td>
+                                <td>Billy</td>
+                                <td>NRGNR</td>
+                                <td>2025-12-31</td>
+                                <td class="ph-aligned-tables__cell-wrap">Shelf 10B, Secondary Storage</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </PhAlignedTableItem>
+                <PhAlignedTableItem Title="Cartridges">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Method</th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Instrument</th>
+                                <th>Lot</th>
+                                <th>Exp. Date</th>
+                                <th>Location</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Warning" Text="10 min" /></td>
+                                <td>tIgE</td>
+                                <td class="ph-aligned-tables__cell-wrap">Calibration Cartridge Extra Long Name</td>
+                                <td>2</td>
+                                <td>Billy</td>
+                                <td>DE</td>
+                                <td>2025-12-31</td>
+                                <td class="ph-aligned-tables__cell-wrap">Shelf 1A, Laboratory Section</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Warning" Text="10 min" /></td>
+                                <td>sIgE</td>
+                                <td class="ph-aligned-tables__cell-wrap">Conjugate Labeled Cartridge</td>
+                                <td>3</td>
+                                <td>Billy</td>
+                                <td>NR</td>
+                                <td>2025-12-31</td>
+                                <td class="ph-aligned-tables__cell-wrap">Shelf 1B, Lab Storage</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </PhAlignedTableItem>
+                <PhAlignedTableItem Title="Carriers">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Test</th>
+                                <th>Type</th>
+                                <th>Quantity</th>
+                                <th>Instrument</th>
+                                <th>Lot</th>
+                                <th>Exp. Date</th>
+                                <th>Location</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Alarm" Text="0 min" /></td>
+                                <td>sms</td>
+                                <td>EliA</td>
+                                <td>3</td>
+                                <td>Billy</td>
+                                <td>NM</td>
+                                <td>2025-12-31</td>
+                                <td class="ph-aligned-tables__cell-wrap">Shelf 4D, Cold Room</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Alarm" Text="0 min" /></td>
+                                <td>e1</td>
+                                <td>ImmunoCAP</td>
+                                <td>3</td>
+                                <td>Billy</td>
+                                <td>TG</td>
+                                <td>2025-12-31</td>
+                                <td class="ph-aligned-tables__cell-wrap">Shelf 1D, Backup Storage Area</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </PhAlignedTableItem>
+            </PhAlignedTables>
+        </Template>
+    </Story>
+
+    <Story Name="Loadlist style">
+        <Description>Load list styling in the aligned tables. All columns are filled with representative data.</Description>
+        <Arguments>
+            <Arg For="_ => _!.Columns" Value="@ColumnCount.Eight" />
+        </Arguments>
+        <Template>
+            <PhAlignedTables @attributes="context.Args">
+                <PhAlignedTableItem Title="Bottles">
+                    <table class="ph-loadlist-grid">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="ph-loadlist-grid__col-title" aria-sort="ascending">
+                                        <span class="ph-loadlist-grid__col-title-text">Status</span>
+                                        <div class="ph-loadlist-grid__sort-indicator">
+                                            <PhIcon IconType="IconType.ChevronUp" Size="IconSize.Sm" />
+                                        </div>
+                                    </div>
+                                </th>
+                                <th colspan="2"><div class="ph-loadlist-grid__col-title">Name</div></th>
+                                <th><div class="ph-loadlist-grid__col-title ph-loadlist-grid__col-title--right">Quantity</div></th>
+                                <th><div class="ph-loadlist-grid__col-title">Instrument</div></th>
+                                <th><div class="ph-loadlist-grid__col-title">Lot</div></th>
+                                <th><div class="ph-loadlist-grid__col-title">Exp. Date</div></th>
+                                <th><div class="ph-loadlist-grid__col-title">Location</div></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Warning" Text="8 min" /></td>
+                                <td colspan="2" class="ph-aligned-tables__cell-wrap">Stop solution</td>
+                                <td class="text-right">2</td>
+                                <td>Billy</td>
+                                <td>DEWRT</td>
+                                <td>2025-12-31</td>
+                                <td class="ph-aligned-tables__cell-wrap">Shelf 12A</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Info" Text="60 min" /></td>
+                                <td colspan="2" class="ph-aligned-tables__cell-wrap">Wash additive</td>
+                                <td class="text-right">2</td>
+                                <td>Billy</td>
+                                <td>NRGNR</td>
+                                <td>2025-12-31</td>
+                                <td class="ph-aligned-tables__cell-wrap">Shelf 10B</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </PhAlignedTableItem>
+                <PhAlignedTableItem Title="Cartridges">
+                    <table class="ph-loadlist-grid ph-loadlist-grid--zebra-stripes">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="ph-loadlist-grid__col-title" aria-sort="ascending">
+                                        <span class="ph-loadlist-grid__col-title-text">Status</span>
+                                        <div class="ph-loadlist-grid__sort-indicator">
+                                            <PhIcon IconType="IconType.ChevronUp" Size="IconSize.Sm" />
+                                        </div>
+                                    </div>
+                                </th>
+                                <th><div class="ph-loadlist-grid__col-title">Method</div></th>
+                                <th><div class="ph-loadlist-grid__col-title">Name</div></th>
+                                <th><div class="ph-loadlist-grid__col-title ph-loadlist-grid__col-title--right">Quantity</div></th>
+                                <th><div class="ph-loadlist-grid__col-title">Instrument</div></th>
+                                <th><div class="ph-loadlist-grid__col-title">Lot</div></th>
+                                <th><div class="ph-loadlist-grid__col-title">Exp. Date</div></th>
+                                <th><div class="ph-loadlist-grid__col-title">Location</div></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Warning" Text="10 min" /></td>
+                                <td>tIgE</td>
+                                <td class="ph-aligned-tables__cell-wrap">Cal</td>
+                                <td class="text-right">2</td>
+                                <td>Billy</td>
+                                <td>DE</td>
+                                <td>2025-12-31</td>
+                                <td class="ph-aligned-tables__cell-wrap">Shelf 1A</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Warning" Text="10 min" /></td>
+                                <td>sIgE</td>
+                                <td class="ph-aligned-tables__cell-wrap">Conj L</td>
+                                <td class="text-right">3</td>
+                                <td>Billy</td>
+                                <td>NR</td>
+                                <td>2025-12-31</td>
+                                <td class="ph-aligned-tables__cell-wrap">Shelf 1B</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Info" Text="40 min" /></td>
+                                <td>El-G/El-A/El-M</td>
+                                <td class="ph-aligned-tables__cell-wrap">Conj</td>
+                                <td class="text-right">2</td>
+                                <td>Billy</td>
+                                <td>NM</td>
+                                <td>2025-12-31</td>
+                                <td class="ph-aligned-tables__cell-wrap">Shelf 4D</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><PhStatus Size="StatusSize.Md" Status="StatusType.Info" Text="40 min" /></td>
+                                <td>sIgG</td>
+                                <td class="ph-aligned-tables__cell-wrap">CC</td>
+                                <td class="text-right">5</td>
+                                <td>Billy</td>
+                                <td>TG</td>
+                                <td>2025-12-31</td>
+                                <td class="ph-aligned-tables__cell-wrap">Shelf 1D</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </PhAlignedTableItem>
+            </PhAlignedTables>
+        </Template>
+    </Story>
+
+</Stories>

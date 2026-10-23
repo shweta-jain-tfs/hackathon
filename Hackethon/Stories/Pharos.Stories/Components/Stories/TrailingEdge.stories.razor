@@ -1,0 +1,86 @@
+﻿@using Pharos.Common.Web.Components.PlaceHolder
+@using Pharos.Common.Web.Components.TabControl
+@using Pharos.Common.Web.Components.TrailingEdge
+@attribute [Stories("Components/TrailingEdge")]
+
+<Stories TComponent="PhTrailingEdge">
+    <Story Name="Modes and sizes">
+        <Arguments>
+            <Arg For="_ => _!.Mode" Value="@TrailingEdgeDisplayMode.ShowAllEdges" />
+            <Arg For="_ => _!.Size" Value="@TrailingEdgeSize.Default" />
+            <Arg For="_ => _!.ContentClassNames" Value="@("t-body1")" />
+        </Arguments>
+        <Template>
+            <div class="flex flex-col gap-md" style="height: 100vh">
+                <div>
+                    <p>Shows trailing edge in the direction where there's more content.</p>
+                    <p>Scroll to the edges to hide the trailing edge.</p>
+                    <p>Change @nameof(PhTrailingEdge.Mode) to hide the gradient on some edges.</p>
+                    <p>Change @nameof(PhTrailingEdge.Size) to change the width/height of the gradient.</p>
+                </div>
+                <div class="flex-grow" style="overflow: auto">
+                    <PhTrailingEdge @attributes="context.Args">
+                        <div class="flex flex-col" style="height: 150vh; width: 150vw; background: gray">
+                            <PhPlaceHolder Text="Light background to show the trailing edge better" />
+                        </div>
+                    </PhTrailingEdge>
+                </div>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Large content">
+        <Template>
+            <div style="height: 100vh; overflow: auto">
+                <PhTrailingEdge @attributes="context.Args">
+                    <div class="flex flex-col" style="height: 150vh; width: 150vw">
+                        <PhPlaceHolder Title="Large content" Text="Shows trailing edges (depending on mode)" />
+                    </div>
+                </PhTrailingEdge>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Non-scrolling content">
+        <Template>
+            <div style="height: 100vh; overflow: auto">
+                <PhTrailingEdge @attributes="context.Args">
+                    <div class="flex flex-col" style="height: 50vh; width: 50vw;">
+                        <PhPlaceHolder Title="Small content" Text="Does not show trailing edges" />
+                    </div>
+                </PhTrailingEdge>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Usage in tabs">
+        <Template>
+            <div style="height: 100vh">
+                <PhTabControl>
+                    <PhTabPage Text="Vertical scroll" TabId="1">
+                        <div style="height: 150vh">
+                            <PhPlaceHolder  />
+                        </div>
+                    </PhTabPage>
+                    <PhTabPage Text="Horizontal scroll" TabId="1">
+                        <div style="width: 150vw">
+                            <PhPlaceHolder />
+                        </div>
+                    </PhTabPage>
+                    <PhTabPage Text="Scrolling data grid" TabId="2" HideTrailingEdge="true">
+                        <Pharos.Stories.Components.TestContent.TestDataGrid />
+                    </PhTabPage>
+                    <PhTabPage Text="Non-scrolling tab" TabId="3">
+                        Too little content to scroll.
+                    </PhTabPage>
+                </PhTabControl>
+            </div>
+        </Template>
+    </Story>
+
+
+</Stories>
+
+@code
+{
+}

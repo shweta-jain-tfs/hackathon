@@ -1,0 +1,15 @@
+﻿@using Pharos.Client.Common.Localization
+
+<PhModalContent>
+    <Body>
+        <PhTextBox @bind-Value="_newRole.DisplayName"
+                   Label="@Loc["RolePage_AddDialog_DisplayName"]"
+                   PlaceHolder="@Loc["RolePage_AddDialog_NamePlaceholder"]"
+                   Error="@(!string.IsNullOrEmpty(ErrorText))"
+                   ErrorText="@ErrorText" />
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["RolePage_AddDialog_ButtonSecondary"]</PhButton>
+        <PhButton Disabled="@IsNewRoleInvalid" OnClick="@(() => CloseModal(ModalResult.Ok(_newRole)))">@Loc["RolePage_AddDialog_ButtonPrimary"]</PhButton>
+    </Footer>
+</PhModalContent>

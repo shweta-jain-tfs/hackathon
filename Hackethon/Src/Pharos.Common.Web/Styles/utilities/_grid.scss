@@ -1,0 +1,50 @@
+// Use ph-grid-layout for the full-height grid.
+
+.col-2 {
+    grid-column: span 2;
+}
+
+.col-3 {
+    grid-column: span 3;
+}
+
+.col-4 {
+    grid-column: span 4;
+}
+
+.col-5 {
+    grid-column: span 5;
+}
+
+.col-half,
+.col-6 {
+    grid-column: span 6;
+}
+
+.col-7 {
+    grid-column: span 7;
+}
+
+.col-8 {
+    grid-column: span 8;
+}
+
+.col-9 {
+    grid-column: span 9;
+}
+
+.col-10 {
+    grid-column: span 10;
+}
+
+.col-full {
+    grid-column: 1 / -1;
+}
+
+.grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, auto));
+}
+
+.grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, auto));
+}

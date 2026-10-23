@@ -1,0 +1,35 @@
+@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-breadcrumb {
+    color: colors.$text-secondary;
+    min-height: size.$control-height;
+    display: flex;
+    align-items: center;
+    @include text.h2;
+    line-height: normal; // avoid text clipping
+    user-select: none; // keep ellipsis stable during pointer interaction
+    overflow: hidden;
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: spacing.$gap-xs;
+        padding-right: spacing.$gap-xs;
+        text-wrap: nowrap;
+
+        &:last-child {
+            min-width: 0;
+            padding-right: 0;
+
+            > h2 {
+                min-width: 0;
+                overflow-y: visible; // allow vertical overflow in case glyphs are not fully contained by the line box. 
+                overflow-x: clip;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+}

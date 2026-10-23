@@ -1,0 +1,25 @@
+@using Pharos.Client.App.Quality.Views.Methods
+@using Pharos.Client.App.Quality.Views.QualityControls
+@using Pharos.Common.Web.Components.TabControl
+
+@attribute [Route(PageRoute.Quality.Default)]
+@attribute [Authorize]
+
+<PhPage>
+    <PhStack>
+        <PhTabControl>
+            <PhTabPage Text="@Loc["QualityPage_MethodCurrent"]" HideTrailingEdge="true">
+                <MethodListView/>
+            </PhTabPage>
+            <PhTabPage Text="@Loc["QualityPage_MethodHistory"]" HideTrailingEdge="true">
+                <PhPlaceHolder Title="@Loc["QualityPage_MethodHistory"]" />
+            </PhTabPage>
+            <PhTabPage Text="@Loc["QualityPage_QualityControls"]" HideTrailingEdge="true">
+                <MethodQualityControlOverviewView />
+            </PhTabPage>
+            <PhTabPage Text="@Loc["QualityPage_InstrumentPerformance"]" HideTrailingEdge="true">
+                <PhPlaceHolder Title="@Loc["QualityPage_InstrumentPerformance"]" />
+            </PhTabPage>
+        </PhTabControl>
+    </PhStack>
+</PhPage>

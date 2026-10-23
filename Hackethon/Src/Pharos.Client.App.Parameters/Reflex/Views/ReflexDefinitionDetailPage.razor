@@ -1,0 +1,45 @@
+@layout ParametersLayout
+@attribute [Route(PageRoute.Parameters.ReflexDefinitionDetails.Default)]
+@attribute [Route(PageRoute.Parameters.ReflexDefinitionDetails.IdParameter)]
+@attribute [Authorize]
+
+@using Pharos.Client.App.Parameters.Layout
+@using Pharos.Client.App.Parameters.Reflex.ViewModels
+@using Pharos.Client.Common.App.Validation
+@using Pharos.Common.Web.Components.NavigationLock
+@using Pharos.Common.Web.Components.TrailingEdge
+
+@inherits DetailsPageBase<ReflexDefinitionDetailsViewModel, ReflexDefinition>
+
+@if (DetailViewModel != null)
+{
+    <PhNavigationLock Modified="@DetailViewModel.IsModified" OnSave="() => SaveChanges(true)" IsValid="@IsValid()" InvalidEntryPrompt="ShowValidationMessage" />
+
+    <SectionContent SectionName="page-header">
+        <Breadcrumb Items="@Breadcrumbs"/>
+        @if (DetailViewModel.CanEdit)
+        {
+            <div class="flex gap-md">
+                <PhButton Disabled="@(!DetailViewModel.IsModified)" OnClick="DiscardChanges">@Loc["ReflexDetailPage_DiscardChanges"]</PhButton>
+                <PhButton Type="ButtonType.Primary" Disabled="@(!DetailViewModel.IsModified || string.IsNullOrWhiteSpace(DetailViewModel.DefinitionName))" OnClick="() => SaveChanges(false)">@Loc["ReflexDetailPage_Save"]</PhButton>
+            </div>
+        }
+    </SectionContent>
+
+    <PhTrailingEdge Mode="TrailingEdgeDisplayMode.VerticalOnly">
+        <PhStack Gap="StackGap.Lg">
+            <HeaderView @ref="_headerViewReference" ViewModel="@DetailViewModel"/>
+            <PhPanel>
+                <DetailsView ViewModel="@DetailViewModel"/>
+            </PhPanel>
+            <PhPanel>
+                <PhSimpleValidationContext @ref="_validation" Model="@DetailViewModel.ReflexConditionViewModel">
+                    <ConditionView DefinitionName="@DetailViewModel.DefinitionName" ViewModel="@DetailViewModel.ReflexConditionViewModel" OnTestSelected="@OnTestSelected"/>
+                </PhSimpleValidationContext>
+            </PhPanel>
+            <PhPanel>
+                <TestListView DefinitionName="@DetailViewModel.DefinitionName" @ref="_testsViewReference" ViewModel="@DetailViewModel"/>
+            </PhPanel>
+        </PhStack>
+    </PhTrailingEdge>
+}

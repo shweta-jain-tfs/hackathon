@@ -1,0 +1,9 @@
+﻿@using Pharos.Stories.Services
+<div class="theme-switcher" style="position: fixed; bottom: 0; right: 16px">
+    <InputSelect TValue="Theme" @bind-Value="Value" @bind-Value:after="ThemeChanged" style="padding: 5px; color-scheme: dark">
+        @foreach (var theme in Enum.GetValues<Theme>())
+        {
+            <option value="@theme">@theme theme</option>
+        }
+    </InputSelect>
+</div>

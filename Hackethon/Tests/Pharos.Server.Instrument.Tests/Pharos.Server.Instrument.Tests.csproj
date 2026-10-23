@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Pharos.Server.Instrument</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Src\Pharos.Server.Instrument\Pharos.Server.Instrument.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server.Application.Modules\Pharos.Server.Application.Modules.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server.Parameters\Pharos.Server.Parameters.csproj" />
+	</ItemGroup>
+
+</Project>

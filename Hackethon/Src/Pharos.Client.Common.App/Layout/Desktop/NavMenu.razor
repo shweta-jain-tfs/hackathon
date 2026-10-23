@@ -1,0 +1,76 @@
+@using Pharos.Contracts.Security
+
+@inherits LayoutComponentBase
+
+<PhSidebar Scroll>
+    <PhMenu>
+        <ChildContent>
+            @* <PhMenuItem Text="@Loc["NavMenu_TaskCards"]" Uri="@PageRoute.Tasks" Match="NavLinkMatch.All" /> *@
+            @* <PhMenuItem Text="@Loc["NavMenu_LoadList"]" Uri="@PageRoute.LoadList" /> *@
+            <PhMenuItem Text="@Loc["NavMenu_Requests"]" Uri="@PageRoute.Requests" />
+            <PhMenuItem Text="@Loc["NavMenu_Results"]" Uri="@PageRoute.Results" />
+
+            <PhMenuGroup SubMenu="PhMenuGroup.SubMenuType.FloatingRight" Text="@Loc["NavMenu_More"]">
+                <PhMenuItem Text="@Loc["NavMenu_Instruments"]" Uri="@PageRoute.Instruments" />
+                @* <PhMenuItem Text="@Loc["NavMenu_Trays"]" Uri="@PageRoute.Trays.Default" /> *@
+                @* <PhMenuItem Text="@Loc["NavMenu_Quality"]" Uri="@PageRoute.Quality.Default" />
+                <PhMenuItem Text="@Loc["NavMenu_Inventory"]" Uri="@PageRoute.Inventory" />
+                <PhMenuItem Text="@Loc["NavMenu_Consumption"]" Uri="@PageRoute.Reagents.Consumption" />
+                <PhMenuItem Text="@Loc["NavMenu_Stock"]" Uri="@PageRoute.Reagents.Stock" />
+                <PhMenuItem Text="@Loc["NavMenu_Maintenance"]" Uri="@PageRoute.Maintenance" />
+                <PhMenuSeparator />
+                <PhMenuItem Text="@Loc["NavMenu_Logs"]" Uri="@PageRoute.Logs" /> *@
+                <PhMenuItem Text="@Loc["NavMenu_Parameters"]" Uri="@PageRoute.Parameters.Default" />
+                <PhMenuItem Text="@Loc["NavMenu_Settings"]" Uri="@PageRoute.Settings" Permission="@Permissions.EditSystemSettings" />
+                @* <PhMenuItem Text="@Loc["NavMenu_Usersandroles"]" Uri="@PageRoute.UsersAndRolesGroup.Default" Permission="@Permissions.ManageUsersAndRoles" />*@
+                <PhMenuSeparator />
+                <PhMenuItem Text="@Loc["NavMenu_Tools"]" Uri="@PageRoute.Tools" Permission="@Permissions.RunServiceTools" /> 
+                @* <PhMenuSeparator /> *@
+                @* <PhMenuItem Text="@Loc["NavMenu_About"]" Uri="@PageRoute.About" />
+                <PhMenuItem Text="@Loc["NavMenu_Help"]" Uri="@PageRoute.Help" /> *@
+            </PhMenuGroup>
+        </ChildContent>
+        <RouteSubMenus>
+            @* Keep stable component identity during hot reload/reorder.
+                   PhRouteSubMenu treats MatchPrefix as immutable. *@
+            @if (_settingsMenuItems.Count > 0)
+            {
+                <PhRouteSubMenu @key="PageRoute.Settings"
+                                MatchPrefix="@PageRoute.Settings"
+                                Title="@Loc["NavMenu_Settings"]">
+                    @foreach (var item in _settingsMenuItems)
+                    {
+                        <PhMenuItem Uri="@item.Uri" Text="@item.Text" Permission="@item.Permission" />
+                    }
+                </PhRouteSubMenu>
+            }
+
+            <PhRouteSubMenu @key="PageRoute.Parameters.Default"
+                            MatchPrefix="@PageRoute.Parameters.Default"
+                            Title="@Loc["NavMenu_Parameters"]">
+                <PhMenuItem Uri="@PageRoute.Parameters.Methods" Text="@Loc["NavMenu_Methods"]" />
+                <PhMenuItem Uri="@PageRoute.Parameters.Packages" Text="@Loc["NavMenu_Products"]" />
+                <PhMenuItem Uri="@PageRoute.Parameters.TestPanels" Text="@Loc["NavMenu_TestPanels"]" />
+                @if (_uiSettings?.RequestSettings?.ReflexTestingEnabled == true)
+                {
+                    <PhMenuItem Uri="@PageRoute.Parameters.Reflex" Text="@Loc["NavMenu_Reflex"]" />
+                }
+                <PhMenuItem Uri="@PageRoute.Parameters.QualityControls" Text="@Loc["NavMenu_QualityControls"]" Permission="@Permissions.EditTestSettings"/>
+                @if (_uiSettings?.RequestSettings?.IsRequestorInformationEnabled == true)
+                {
+                    <PhMenuItem Uri="@PageRoute.Parameters.Requestors" Text="@Loc["NavMenu_Requestors"]" Permission="@Permissions.ViewPersonalAndHealthData" />
+                }
+                <PhMenuItem Uri="@PageRoute.Parameters.LoadListLevels" Text="@Loc["NavMenu_LoadListLevels"]" />
+                <PhMenuItem Uri="@PageRoute.Parameters.Configuration" Text="@Loc["NavMenu_Configuration"]" />
+            </PhRouteSubMenu>
+
+            <PhRouteSubMenu @key="PageRoute.UsersAndRoles.Default"
+                            MatchPrefix="@PageRoute.UsersAndRoles.Default"
+                            Title="@Loc["NavMenu_Usersandroles"]">
+                <PhMenuItem Uri="@PageRoute.UsersAndRoles.Users" Text="@Loc["NavMenu_Users"]" />
+                <PhMenuItem Uri="@PageRoute.UsersAndRoles.Roles" Text="@Loc["NavMenu_Roles"]" />
+            </PhRouteSubMenu>
+        </RouteSubMenus>
+    </PhMenu>
+</PhSidebar>
+

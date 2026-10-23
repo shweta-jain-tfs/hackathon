@@ -1,0 +1,68 @@
+@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/transition";
+@use "../abstracts/typography" as text;
+
+.ph-submenu-toggle {
+    --_hover-bg: #{colors.$layer-selected-hover};
+    display: flex;
+    align-items: center;
+    gap: spacing.$gap-xs;
+    min-height: size.$hit-area-lg;
+    width: 100%;
+    padding: spacing.$padding-xs spacing.$padding-md;
+    padding-left: spacing.$indent-single;
+    border-left: 2px solid colors.$layer-selected-03;
+    background: colors.$layer-selected-01;
+    color: colors.$text-secondary;
+    text-align: left;
+    @include text.body1;
+    @include transition.transition-colors;
+
+    &:hover {
+        background: var(--_hover-bg);
+    }
+    
+    &:active {
+        background: colors.$layer-selected-pressed;
+    }
+
+    > * {
+        flex-shrink: 0;
+    }
+
+    &__label {
+        flex-shrink: 1;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    :has(:popover-open) + & {
+        // remove active colors when more menu is open
+        background: transparent;
+        border-color: transparent;
+
+        &:hover {
+            background: colors.$layer-hover-01;
+        }
+
+        &:active {
+            background: colors.$layer-selected-01;
+        }
+    }
+
+    &--open {
+        --_hover-bg: #{colors.$background-secondary};
+        padding-left: spacing.$padding-md;
+        border-color: transparent;
+        background: colors.$background-secondary;
+        color: colors.$text-link;
+    }
+
+    &[hidden],
+    &--hidden {
+        display: none;
+    }
+}

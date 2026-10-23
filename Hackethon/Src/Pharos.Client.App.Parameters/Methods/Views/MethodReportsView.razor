@@ -1,0 +1,55 @@
+@using Pharos.Client.App.Parameters.Methods.ViewModels
+
+<PhStack Gap="StackGap.Md">
+    <PhNumberField TValue="double"
+                   Label="@Loc["MethodDetailsReportTab_MinConcToReport"]"
+                   HelpText="@GetManufacturerDefaultText(ReportViewModel.DefaultMinConcentrationToReport)"
+                   @bind-Value="ReportViewModel.MinConcentrationToReport"
+                   MaxNumberOfDigits="5"
+                   Disabled="@IsEditingDisabled" />
+
+    <div class="ph-methods-report__divider"></div>
+
+    <div class="ph-methods-report__field-row">
+        <PhTextBox Label="@Loc["MethodDetailsReportTab_TextBelowCutOff"]"
+                   HelpText="@GetManufacturerDefaultText(ReportViewModel.DefaultTextBelowCutOff)"
+                   @bind-Value="ReportViewModel.TextBelowCutOff"
+                   MaxLength="8"
+                   Size="TextBoxSize.Small"
+                   Disabled="@IsEditingDisabled" />
+
+        <PhTextBox Label="@Loc["MethodDetailsReportTab_TextAboveCutOff"]"
+                   HelpText="@GetManufacturerDefaultText(ReportViewModel.DefaultTextAboveCutOff)"
+                   @bind-Value="ReportViewModel.TextAboveCutOff"
+                   MaxLength="8"
+                   Size="TextBoxSize.Small"
+                   Disabled="@IsEditingDisabled" />
+    </div>
+
+    <div class="ph-methods-report__divider"></div>
+
+    <div class="ph-methods-report__field-row">
+        <PhTextBox Label="@Loc["MethodDetailsReportTab_TextQuantitativeBelow"]"
+                   HelpText="@GetManufacturerDefaultText(ReportViewModel.DefaultTextQuantitativeBelow)"
+                   @bind-Value="ReportViewModel.TextQuantitativeBelow"
+                   MaxLength="7"
+                   Size="TextBoxSize.Small"
+                   Disabled="@IsEditingDisabled" />
+
+        <PhTextBox Label="@Loc["MethodDetailsReportTab_TextQuantitativeDoubtful"]"
+                   HelpText="@GetManufacturerDefaultText(ReportViewModel.DefaultTextQuantitativeDoubtful)"
+                   @bind-Value="ReportViewModel.TextQuantitativeDoubtful"
+                   MaxLength="7"
+                   Size="TextBoxSize.Small"
+                   Disabled="@IsEditingDisabled" />
+
+        <PhTextBox Label="@Loc["MethodDetailsReportTab_TextQuantitativeAbove"]"
+                   HelpText="@GetManufacturerDefaultText(ReportViewModel.DefaultTextQuantitativeAbove)"
+                   @bind-Value="ReportViewModel.TextQuantitativeAbove"
+                   MaxLength="7"
+                   Size="TextBoxSize.Small"
+                   Disabled="@(IsEditingDisabled || ReportViewModel.UseCalculatedTextQuantitativeAbove)" />
+    </div>
+
+    <PhCheckBox Label="@Loc["MethodDetailsReportTab_UseCalculatedTextQuantitativeAbove"]" @bind-Value="ReportViewModel.UseCalculatedTextQuantitativeAbove" Disabled="@IsEditingDisabled" />
+</PhStack>

@@ -1,0 +1,61 @@
+@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-state-info-view {
+    display: flex;
+    height: 300px;
+    align-items: center;
+    justify-content: center;
+
+    &__samples-test-info {
+        min-width: 600px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: spacing.$gap-lg;
+        color: colors.$layer-heavy-02;
+
+        &__header {
+            @include text.h2;
+        }
+
+        &__text {
+            @include text.instrumentStateInfo;
+            display: flex;
+            align-items: baseline;
+            gap: spacing.$gap-xs;
+            color: colors.$icon-primary;
+            text-shadow: 0 0 0 colors.$instrument-state-info-shadow;
+
+            span {
+                @include text.h2;
+                color: colors.$layer-heavy-02;
+                margin-right: spacing.$gap-md;
+            }
+        }
+
+        &__completed {
+            @include text.display4;
+            color: colors.$icon-primary;
+            text-align: center;
+            max-width: 300px;
+        }
+    }
+
+    &__state-info {
+        min-width: 676px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        @include text.display4;
+        color: colors.$icon-secondary;
+        gap: spacing.$gap-sm;
+
+        &__count {
+            @include text.h3;
+        }
+    }
+}

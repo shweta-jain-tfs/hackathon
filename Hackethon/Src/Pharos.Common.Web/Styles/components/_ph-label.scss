@@ -1,0 +1,80 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-label {
+    $root: &;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: spacing.$gap-xs;
+    color: colors.$text-secondary;
+    @include text.body2;
+    
+    &:is(label) {
+        // don't make the whole label clickable
+        pointer-events: none;
+    }
+
+    &--color-discrete {
+        color: colors.$text-hint;
+    }
+
+    &--color-highlight {
+        color: colors.$text-primary;
+    }
+
+    &--color-warning {
+        color: colors.$status-warning;
+    }
+
+    &--direction-horizontal {
+        flex-direction: row;
+        align-items: flex-start;
+
+        > #{$root}__text {
+            // Align label text vertically with the input control
+            line-height: size.$control-height;
+        }
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-xs;
+        > * {
+            pointer-events: auto; // allow clicks on the input control
+        }
+    }
+
+    &--disabled {
+        color: colors.$text-disabled;
+    }
+    // No header but keep the distance from top.
+    &__is_blank_keep_distance {
+        display: inline-flex;
+        align-items: center;
+        min-height: size.$control-height;
+        margin-top: calc(1lh + #{spacing.$gap-xs});
+    }
+
+    &__text {
+        width: fit-content; // ignore clicks outside of the text
+        white-space: nowrap;
+        pointer-events: auto;
+    }
+
+    &__error-text {
+        @include text.helper-text;
+        color: colors.$status-validation;
+        pointer-events: none;
+    }
+
+    &__help-text {
+        min-height: 1lh; // reserve space if the help text is whitespace-only
+        @include text.helper-text;
+        color: colors.$text-hint;
+        pointer-events: none;
+    }
+}

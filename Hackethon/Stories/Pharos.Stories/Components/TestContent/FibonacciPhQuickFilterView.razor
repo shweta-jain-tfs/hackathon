@@ -1,0 +1,15 @@
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.QuickFilter
+
+<PhQuickFilter Title="Fibonacci Id"
+               ActiveFilterCount="ActiveFilterCount"
+               OnClearFilter="ClearFilter">
+    @foreach (var number in _numbers)
+    {
+        <div>
+            <PhCheckBox Label="@number.ToString()"
+                        Value="ColumnFilter.SelectedValues.Contains(number)"
+                        ValueChanged="@((bool isChecked) => SelectionChanged(number, isChecked))" />
+        </div>
+    }
+</PhQuickFilter>

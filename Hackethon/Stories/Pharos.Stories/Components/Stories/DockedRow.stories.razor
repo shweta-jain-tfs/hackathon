@@ -1,0 +1,89 @@
+@using Pharos.Common.Web.Components.DockedButtonRow
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Common.Web.Components.Panel
+@using Pharos.Common.Web.Components.PlaceHolder
+@using Pharos.Stories.Components.TestContent
+@attribute [Stories("Components/DockedRow")]
+
+@inject HttpClient httpClient
+
+<Stories TComponent="PhDockedButtonRow">
+
+    <Story Name="DockedToGenericContent">
+        <Template>
+            <div style="height: 100vh">
+                <PhDockedButtonRow @attributes="context.Args">
+                    <ChildContent>
+                        <PhPlaceHolder />
+                    </ChildContent>
+                    <Buttons>
+                        <PhButton Type="@ButtonType.Secondary">Add</PhButton>
+                        <PhButton Type="@ButtonType.Secondary">Delete</PhButton>
+                    </Buttons>
+                </PhDockedButtonRow>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="DockedToGrid">
+        <Template>
+            <div style="height: 100vh">
+                <PhDockedButtonRow @attributes="context.Args">
+                    <ChildContent>
+                        <TestDataGrid />
+                    </ChildContent>
+                    <Buttons>
+                        <PhButton Type="@ButtonType.Secondary">Add</PhButton>
+                        <PhButton Type="@ButtonType.Secondary">Delete</PhButton>
+                    </Buttons>
+                </PhDockedButtonRow>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="DockedToSmallGrid">
+        <Template>
+            <div style="height: 100vh">
+                <PhDockedButtonRow @attributes="context.Args">
+                    <ChildContent>
+                        <TestDataGrid MaxItems="3" />
+                    </ChildContent>
+                    <Buttons>
+                        <PhButton Type="@ButtonType.Secondary">Add</PhButton>
+                        <PhButton Type="@ButtonType.Secondary">Delete</PhButton>
+                    </Buttons>
+                </PhDockedButtonRow>
+            </div>
+        </Template>
+    </Story>
+
+    <Story Name="Mixed content">
+        <Template>
+            <div style="height: 100vh">
+                <PhStack>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                    <PhDockedButtonRow @attributes="context.Args">
+                        <ChildContent>
+                            <TestDataGrid MaxItems="5" />
+                        </ChildContent>
+                        <Buttons>
+                            <PhButton Type="@ButtonType.Secondary">Add</PhButton>
+                            <PhButton Type="@ButtonType.Secondary">Delete</PhButton>
+                        </Buttons>
+                    </PhDockedButtonRow>
+                </PhStack>
+            </div>
+        </Template>
+    </Story>
+
+</Stories>
+
+
+
+@code
+{
+}

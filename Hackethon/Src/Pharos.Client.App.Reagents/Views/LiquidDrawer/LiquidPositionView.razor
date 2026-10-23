@@ -1,0 +1,6 @@
+﻿<div class="liquid-position-view">
+	@foreach (var position in Positions)
+	{
+		<div class="@GetBottlePositionCss(position)">@position.Position</div>
+	}
+</div>

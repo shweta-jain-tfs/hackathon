@@ -1,0 +1,3 @@
+# Ensure consistent CRLF line endings for .resx (githook enforces CRLF locally).
+# Prevents false merge conflicts caused by line-ending differences.
+*.resx text eol=crlf

@@ -1,0 +1,82 @@
+﻿@using Pharos.Client.App.Reagents.ViewModels.Inventory
+@using Pharos.Client.Common.App.Helpers
+@using Pharos.Common.Web.Components.Reagent
+@using Pharos.Common.Web.Components.DataGrid
+@using Pharos.Common.Web.Components.DataGrid.Columns
+@using Pharos.Common.Web.Components.DockedButtonRow
+@using Pharos.Common.Web.Components.DropdownButton
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Common.Web.Models.DataGrid
+
+
+<PhDockedButtonRow>
+    <ChildContent>
+        <PhStack>
+            <div class="t-body2 flex gap-md">
+                <span><span class="text-hint">@Loc["InventoryPage_FreePositionsFront"]</span> <span class="text-secondary">@FreePositionsFrontText</span></span>
+                <span><span class="text-hint">@Loc["InventoryPage_FreePositionsBack"]</span> <span class="text-secondary">@FreePositionsBackText</span></span>
+            </div>
+            <PhDataGrid @ref="_dataGrid"
+                        TableTitle="@GetTitle()"
+                        StateID="cartridges"
+                        TGridItem="CartridgeListItem"
+                        ItemsProvider="ViewModel.ProvideItems"
+                        SelectionType="SelectionTypeEnum.MultiSelectWithSelectAll"
+                        HideTotalCount="true"
+                        OnSelectedItemsChanged="ViewModel.OnSelectedCartridgesChanged"
+                        RowType="RowTypeEnum.LinesBetweenRows"
+                        DefaultSortColumn="@nameof(CartridgeListItem.Id)"
+                        DefaultSortDirection="SortDirection.Ascending">
+                <Columns>
+                    <Column Property="@(x => x.Id)" Visible="false" />
+                    <Column Title="@Loc["InventoryPage_CartridgesTab_Method"]" Property="@(x => x.Method)" QuickFilter="true" FilterTitle="@Loc["InventoryPage_CartridgesTab_SearchCartridge"]" Sortable="true">
+                        <ReagentShapeView Colors="@context.Colors" Texts="@context.Texts"
+                                            IsCarrierTypeReagent="false"
+                                            Shape="@ReagentHelper.GetShape(context.Shape.GetValueOrDefault())"
+                                            Gap="ReagentShapeGap.Sm" />
+                    </Column>
+                    <Column Title=@Loc["InventoryPage_CartridgesTab_Name"] Property="@(x => x.Name)" Sortable="true" />
+                    <Column Title="@Loc["InventoryPage_CartridgesTab_Quantity"]" Property="@(x => x.Quantity)" Align="ColumnAlignEnum.Right" Sortable="true">
+                        @CartridgesListViewModel.GetQuantity(context.Quantity)
+                    </Column>
+                    <Column Title="@Loc["InventoryPage_CartridgesTab_Lot"]" Property="@(x => x.Lot)" Sortable="true" />
+                    <Column Title="@Loc["InventoryPage_CartridgesTab_Status"]" Property="@(x => x.Status)" Sortable="true" QuickFilter="true" MultiSelectFilterItems="StatusNameDict()" QuickFilterDefault="StatusFilterText">
+                        @{
+                            var status = CartridgesListViewModel.HasStatusError(context.Status) ? StatusType.Warning : StatusType.None;
+                            var text = CartridgesListViewModel.GetStatusText(context.Status);
+                        }
+                        <PhStatus Status="@status" Size="@StatusSize.Md" Text="@text" />
+                    </Column>
+                    <Column Title="@Loc["InventoryPage_CartridgesTab_ExpiryDate"]" Property="@(x => x.ExpiryDate)" Format="@FormatStrings.ShortDate" Sortable="true" />
+                    <Column Title="@Loc["InventoryPage_CartridgesTab_ExpiryDateOpenCell"]" Property="@(x => x.ExpiryDateOpenCell)" Align="ColumnAlignEnum.Right" Sortable="true">
+                        @CartridgesListViewModel.GetExpiryDateOpenCell(context.ExpiryDateOpenCell)
+                    </Column>
+                    <Column Title="@Loc["InventoryPage_CartridgesTab_Instrument"]"
+                            Property="@(x => x.Instrument)"
+                            Sortable="true"
+                            QuickFilter="true"
+                            QuickFilterDefault="@InstrumentFilterModel.DefaultFilterValueDisplayName"
+                            MultiSelectFilterItems="@InstrumentFilterModel.FilterDataSourceDisplayName" />
+                    <Column Title="@Loc["InventoryPage_CartridgesTab_Position"]" Property="@(x => x.Position)" Sortable="true">
+                        @CartridgesListViewModel.GetPosition(context.Position, context.StorageArea)
+                    </Column>
+                </Columns>
+            </PhDataGrid>
+        </PhStack>
+    </ChildContent>
+    <Buttons>
+        <PhAuthorize Permission="@Permissions.ManageReagents">
+            <PhButton Type="ButtonType.Secondary"
+                      Disabled="@(!ViewModel.CanUnloadSelectedCartridges)"
+                      OnClick="OnUnloadClicked">
+                @Loc["InventoryPage_UnloadButtonText"]
+            </PhButton>
+            <PhDropdownButton Text="@(Loc["InventoryPage_MoreButtonText"])" DropdownButtonType="DropdownButtonType.Secondary">
+                <PhDropdownButtonItem Text="@Loc["InventoryPage_AbortUnloadText"]" OnClick="OnAbortClicked" Disabled="@IsAbortUnloadDisabled" />
+                <PhDropdownButtonItem Text="@Loc["InventoryPage_ExportText"]" />
+            </PhDropdownButton>
+        </PhAuthorize>
+    </Buttons>
+</PhDockedButtonRow>

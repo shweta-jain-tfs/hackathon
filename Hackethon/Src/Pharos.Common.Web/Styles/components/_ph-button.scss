@@ -1,0 +1,119 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/transition";
+@use "../abstracts/typography" as text;
+
+.ph-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: spacing.$gap-xs;
+    border: 2px solid transparent;
+    min-width: size.$button-size-default;
+    max-width: size.$button-size-max;
+    min-height: size.$control-height;
+    padding-inline: spacing.$padding-lg;
+    padding-block: 4px;
+    @include rounded.rounded;
+    @include text.body1;
+    @include transition.transition-colors;
+    color: colors.$text-secondary;
+    font-weight: text.$font-normal;
+    vertical-align: middle;
+
+    &:disabled {
+        cursor: default;
+        color: colors.$text-disabled;
+    }
+
+    &__label {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        &:empty {
+            display: none;
+        }
+    }
+
+    &--primary {
+        background-color: colors.$button-primary;
+        color: colors.$text-primary;
+
+        &:hover,
+        &:focus-visible {
+            background-color: colors.$button-primary-hover;
+        }
+
+        &:active {
+            background-color: colors.$button-primary-pressed;
+        }
+
+        &:disabled {
+            background-color: colors.$button-disabled;
+            color: colors.$text-disabled;
+        }
+    }
+
+    &--secondary {
+        border-color: colors.$button-outline;
+        background-color: transparent;
+        color: colors.$text-link;
+
+        &:hover,
+        &:focus-visible {
+            background-color: colors.$layer-hover-01;
+        }
+
+        &:active {
+            background-color: colors.$layer-selected-01;
+        }
+
+        &:disabled {
+            border-color: colors.$button-disabled;
+            background-color: transparent;
+            color: colors.$text-link-disabled;
+        }
+    }
+
+    &--text {
+        min-width: 0;
+        max-width: 100%;
+        padding-inline: spacing.$padding-md;
+        color: colors.$text-secondary;
+        background: colors.$background-tertiary;
+
+        &:hover,
+        &:focus-visible {
+            background-color: colors.$layer-hover-01;
+        }
+
+        &:active {
+            background-color: colors.$layer-selected-01;
+        }
+
+        &:disabled {
+            border-color: colors.$button-disabled;
+            background-color: transparent;
+            color: colors.$text-disabled;
+        }
+    }
+
+    &--selected {
+        &,
+        &:hover,
+        &:focus-visible {   
+            background-color: colors.$layer-selected-01;
+        }
+    }
+
+    &--snug {
+        min-width: auto;
+    }
+
+    &--no-max-width {
+        max-width: none;
+    }
+}

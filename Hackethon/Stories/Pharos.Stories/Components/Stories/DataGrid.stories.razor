@@ -1,0 +1,805 @@
+@using System.Text.Json
+@using Bogus
+@using Pharos.Common.Web.Components.DataGrid
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Common.Web.Components.Links
+@using Pharos.Common.Web.Components.PlaceHolder
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Common.Web.Models.DataGrid
+@using Pharos.Stories.Components.TestContent
+@using Pharos.Stories.MoqClasses
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.DataGrid.Columns
+@using Microsoft.AspNetCore.Components.Routing
+
+@inject HttpClient httpClient
+@inject NavigationManager navManager
+
+@attribute [Stories("Components/DataGrid")]
+@implements IDisposable
+
+<Stories TComponent="PhDataGrid<DefaultDataGridItem>">
+
+    <Story Name="DataGrid">
+        <Template Context="template">
+            <MockedUiContext>
+                <PhDataGrid StateID="default" DefaultSortColumn="Firstname" TableTitle="Users" TGridItem="DefaultDataGridItem" ItemsProvider="LoadData" @attributes="template.Args">
+
+                    <Columns>
+
+                        <Column Property="@(x => x.Id)" Sortable="true">
+                            @context.Id
+                            <PhIcon IconType="IconType.Bell" Size="IconSize.Md" />
+                        </Column>
+
+                        <Column Title="Firstname" Property="@(x => x.Firstname)" QuickFilter="true" Sortable="true" />
+
+                        <Column Title="Lastname" Property="@(x => x.Lastname)" QuickFilter="true" Sortable="true" />
+
+                        <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" Sortable="true" />
+
+                        <Column Title="Has long Firstname" Property="@(x => x.HasLongFirstName)" QuickFilter="true" />
+
+                    </Columns>
+
+                </PhDataGrid>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+    <Story Name="DataGrid in Page">
+        <Template Context="template">
+            <MockedUiContext>
+                <div style="height: 100vh">
+                    <PhPage>
+                        <PhDataGrid StateID="inpage" DefaultSortColumn="Firstname" TableTitle="Users" TGridItem="DefaultDataGridItem" ItemsProvider="LoadData" @attributes="template.Args">
+                            <Columns>
+                                <Column Property="@(x => x.Id)"  Sortable="true">
+                                    @context.Id
+                                    <PhIcon IconType="IconType.Bell" Size="IconSize.Md" />
+                                </Column>
+                                <Column Title="Firstname" Property="@(x => x.Firstname)" QuickFilter="true" Sortable="true" />
+                                <Column Title="Lastname" Property="@(x => x.Lastname)" QuickFilter="true" Sortable="true" />
+                                <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" Sortable="true" />
+                                <Column Title="Has long Firstname" Property="@(x => x.HasLongFirstName)" QuickFilter="true" />
+                            </Columns>
+                        </PhDataGrid>
+                    </PhPage>
+                </div>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+    <Story Name="DataGrid with custom style items">
+        <Template Context="template">
+            <MockedUiContext>
+                <PhDataGrid DefaultSortColumn="@nameof(DefaultDataGridItem.Id)"
+                            StateID="predefineditems"
+                            TableTitle="Users"
+                            TGridItem="DefaultDataGridItem"
+                            ItemsProvider="LoadData"
+                            SelectionType="SelectionTypeEnum.MultiSelect"
+                            ItemStyleOptions="new() {
+                                Style = ItemStyleFlags.Disabled | ItemStyleFlags.Checked,
+                                Items = _preSelectedIds,
+                                Match = PreSelectedItemComparer
+                            }"
+                            @attributes="template.Args"
+                            ShowStatusSymbolInHeader="StatusType.Warning"
+                            >
+
+                    <Columns>
+
+                        <Column Property="@(x => x.Id)">
+                            @context.Id
+                            <PhIcon IconType="IconType.Bell" Size="IconSize.Md" />
+                        </Column>
+
+                        <Column Title="Firstname" Property="@(x => x.Firstname)" QuickFilter="true" />
+
+                        <Column Title="Lastname" Property="@(x => x.Lastname)" QuickFilter="true" />
+
+                        <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" />
+                    </Columns>
+
+                </PhDataGrid>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+    <Story Name="All item style states">
+        <Template>
+            <MockedUiContext>
+                <PhStack>
+                    <p>Each row demonstrates its named flags. Select all skips disabled and hidden checkboxes and stays indeterminate for mixed rows. Checked changes the checkbox appearance without selecting the row.</p>
+                    <div style="height: 800px">
+                        <PhDataGrid StateID="@null"
+                                    TGridItem="DefaultDataGridItem"
+                                    TableTitle="All item style states"
+                                    Items="_allItemStyleRows"
+                                    SelectionType="SelectionTypeEnum.MultiSelectWithSelectAll"
+                                    ItemStyleOptions="new() {
+                                        StyleSelector = row => (ItemStyleFlags)row.Id
+                                    }">
+                            <Columns>
+                                <Column Title="Flags" Property="@(x => x.Firstname)" />
+                                <Column Title="Expected appearance" Property="@(x => x.Description)" />
+                            </Columns>
+                        </PhDataGrid>
+                    </div>
+                </PhStack>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+    <Story Name="Item style flags">
+        <Template>
+            <MockedUiContext>
+                <PhStack>
+                    <p>Toggle flags to style rows 2 and 3. Clear all flags to demonstrate None. Row 1 stays unchanged for comparison.</p>
+                    @foreach (var option in _itemStyleFlagOptions)
+                    {
+                        <PhCheckBox Label="@option.Flag.ToString()"
+                                    LabelHelpText="@option.Description"
+                                    Value="@_demoItemStyleFlags.HasFlag(option.Flag)"
+                                    OnCheckChanged="@(isChecked => SetDemoItemStyleFlag(option.Flag, isChecked))" />
+                    }
+                    <p>Applied flags: @_demoItemStyleFlags. Actual selected rows: @_itemStyleSelectedCount.</p>
+                    <p>Checked only changes the checkbox appearance. CheckboxHidden takes precedence over other checkbox styles.</p>
+                    <div style="height: 300px">
+                        <PhDataGrid StateID="@null"
+                                    TGridItem="DefaultDataGridItem"
+                                    TableTitle="Item style preview"
+                                    Items="_itemStyleDemoRows"
+                                    SelectionType="SelectionTypeEnum.MultiSelectWithSelectAll"
+                                    OnSelectedItemsChanged="@(items => _itemStyleSelectedCount = items.Count)"
+                                    ItemStyleOptions="new() {
+                                        Style = _demoItemStyleFlags,
+                                        Items = [2, 3],
+                                        Match = PreSelectedItemComparer
+                                    }">
+                            <Columns>
+                                <Column Title="ID" Property="@(x => x.Id)" />
+                                <Column Title="Row" Property="@(x => x.Firstname)" />
+                                <Column Title="Style applies" Property="@(x => x.Description)" />
+                            </Columns>
+                        </PhDataGrid>
+                    </div>
+                </PhStack>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+    <Story Name="DataGrid with PhDateTime">
+        <Template Context="template">
+            <MockedUiContext>
+                <PhDataGrid StateID="withdate" TGridItem="DefaultDataGridItem" Items="_dataForDateTimeGrid">
+                    <Columns>
+                        <Column Property="@(x => x.Id)">
+                            @context.Id
+                        </Column>
+
+                        <Column Title="Status" Property="@(x => x.DateAndTimeOfBirth)">
+                            <PhStatus Status="StatusType.Warning" Text="Some Text for the status" Href="./?path=/story/components-status--status-symbol-and-text-" />
+                        </Column>
+
+                        <Column Title="Date and time" Property="@(x => x.DateAndTimeOfBirth)">
+                            <PhDateTime DateToShow="context.DateAndTimeOfBirth" TextFallback="Fallback when DateTime is null" />
+                        </Column>
+
+                        <Column Title="Firstname" Property="@(x => x.Firstname)" QuickFilter="true" />
+                        <Column Title="Lastname" Property="@(x => x.Lastname)" QuickFilter="true" />
+                    </Columns>
+                </PhDataGrid>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+    <Story Name="Expanding data grid">
+        <Template Context="template">
+            <MockedUiContext>
+                <div style="height: 100vh">
+                    <PhStack>
+                        <div style="height: 150px" class="@(_isExpanded ? "hidden" : "")">
+                            <PhPlaceHolder Title="Content to hide" Text="" />
+                        </div>
+                        <PhDataGrid StateID="extended" TGridItem="DefaultDataGridItem" ItemsProvider="LoadData" @attributes="template.Args">
+                            <Actions>
+                                <PhIconButton IconType="@(_isExpanded ? IconType.Shrink : IconType.Enlarge)" OnClick="() => _isExpanded = !_isExpanded" IconSize="IconSize.Xl" />
+                            </Actions>
+                            <Columns>
+                                <Column Property="@(x => x.Id)" Sortable="true">
+                                    @context.Id
+                                    <PhIcon IconType="IconType.Bell" Size="IconSize.Md" />
+                                </Column>
+
+                                <Column Title="Firstname" Property="@(x => x.Firstname)" QuickFilter="true" Sortable="true" />
+                                <Column Title="Lastname" Property="@(x => x.Lastname)" QuickFilter="true" Sortable="true" />
+                                <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" Sortable="true" />
+                            </Columns>
+                        </PhDataGrid>
+                    </PhStack>
+                </div>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+    <Story Name="Highlight row (internal state)">
+        <Template Context="template">
+            <MockedUiContext>
+                <div style="height: 100vh">
+                    <PhDataGrid StateID="highlight-internal"
+                                TGridItem="DefaultDataGridItem"
+                                ItemsProvider="LoadData"
+                                HighlightOptions="new(){ Mode = HighlightMode.Internal }"
+                                SelectionType="SelectionTypeEnum.MultiSelect"
+                                DefaultSortColumn="Id"
+                                @attributes="template.Args">
+                        <Columns>
+                            <Column Property="@(x => x.Id)" Sortable="true">
+                                @context.Id
+                                <PhIcon IconType="IconType.Bell" Size="IconSize.Md" />
+                            </Column>
+                            <Column Title="Firstname" Property="@(x => x.Firstname)" QuickFilter="true" Sortable="true" />
+                            <Column Title="Lastname" Property="@(x => x.Lastname)" QuickFilter="true" Sortable="true" />
+                            <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" Sortable="true" />
+                        </Columns>
+                    </PhDataGrid>
+                </div>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+    <Story Name="Highlight row (external state)">
+        <Template Context="template">
+            <MockedUiContext>
+                <div style="height: 100vh">
+                    <PhDataGrid StateID="highlight-external"
+                                TGridItem="DefaultDataGridItem"
+                                ItemsProvider="LoadData"
+                                HighlightOptions="new() {
+                                    Mode = HighlightMode.ExternalState,
+                                    IsHighlighted = x => x.Id == _highlightedId,
+                                    HighlightedItemChanged = HighlightedChanged
+                                }"
+                                SelectionType="SelectionTypeEnum.MultiSelect"
+                                DefaultSortColumn="Id">
+                        <Columns>
+                            <Column Property="@(x => x.Id)" Sortable="true">
+                                @context.Id
+                                <PhIcon IconType="IconType.Bell" Size="IconSize.Md" />
+                            </Column>
+                            <Column Title="Firstname" Property="@(x => x.Firstname)" QuickFilter="true" Sortable="true" />
+                            <Column Title="Lastname" Property="@(x => x.Lastname)" QuickFilter="true" Sortable="true" />
+                            <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" Sortable="true" />
+                        </Columns>
+                    </PhDataGrid>
+                </div>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+    <Story Name="Wrap headers">
+        <Template Context="template">
+            <MockedUiContext>
+                <PhDataGrid StateID="default" DefaultSortColumn="Firstname" TableTitle="Users" TGridItem="DefaultDataGridItem" ItemsProvider="LoadData" @attributes="template.Args">
+
+                    <Columns>
+
+                        <Column Property="@(x => x.Id)" Sortable="true">
+                            @context.Id
+                            <PhIcon IconType="IconType.Bell" Size="IconSize.Md" />
+                        </Column>
+
+                        <Column Title="First name (fill column)" Property="@(x => x.Firstname)" QuickFilter="true" Sortable="true" Size="ColumnSizeEnum.Fill" />
+
+                        <Column Title="Last name" Property="@(x => x.Lastname)" QuickFilter="true" Sortable="true" Size="ColumnSizeEnum.WrapTitle" />
+
+                        <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" Sortable="true" />
+
+                        <Column Title="Has long Firstname" Property="@(x => x.HasLongFirstName)" QuickFilter="true" Size="ColumnSizeEnum.WrapTitle" />
+
+                        <Column Title="Has long Firstname (right aligned)" Property="@(x => x.HasLongFirstName)" Size="ColumnSizeEnum.WrapTitle" Align="ColumnAlignEnum.Right" />
+                    </Columns>
+
+                </PhDataGrid>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+    <Story Name="Wrap content">
+        <Template Context="template">
+            <MockedUiContext>
+                <PhDataGrid StateID="default" DefaultSortColumn="Id" TableTitle="Users" TGridItem="DefaultDataGridItem" ItemsProvider="LoadMixedDescriptionsData" SelectionType="SelectionTypeEnum.MultiSelect" @attributes="template.Args">
+
+                    <Columns>
+
+                        <Column Title="ID" Property="@(x => x.Id)"  Sortable="true">
+                            @context.Id
+                            <PhIcon IconType="IconType.Bell" Size="IconSize.Md" />
+                        </Column>
+
+                        <Column Title="First name" Property="@(x => x.Firstname)"  QuickFilter="true" Sortable="true" />
+
+                        <Column Title="Last name" Property="@(x => x.Lastname)"  QuickFilter="true" Sortable="true">
+                            <PhHrefLink OnClick="@(() => {})">@context.Lastname</PhHrefLink>
+                        </Column>
+
+                        <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" Sortable="true" />
+
+                        <Column Title="Description (wraps)" Property="@(x => x.Description)" />
+
+                        <Column Title="Has long Firstname" Property="@(x => x.HasLongFirstName)" />
+
+                    </Columns>
+
+                </PhDataGrid>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+<Story Name="Grouped rows">
+    <Arguments>
+        <Arg For="_ => _!.StateID" Value="@null" />
+        <Arg For="_ => _!.DefaultSortColumn" Value="@nameof(DefaultDataGridItem.Firstname)" />
+        <Arg For="_ => _!.DefaultSortDirection" Value="@SortDirection.Ascending" />
+        <Arg For="_ => _!.SelectionType" Value="@SelectionTypeEnum.MultiSelect" />
+        <Arg For="_ => _!.TableTitle" Value="@("Grouped names")" />
+        <Arg For="_ => _!.RowType" Value="@RowTypeEnum.LinesBetweenRows" />
+    </Arguments>
+    <Template Context="template">
+        <MockedUiContext>
+            <PhDataGrid TGridItem="DefaultDataGridItem" ItemsProvider="LoadGroupedData" @attributes="template.Args">
+
+                <Columns>
+
+                    <Column Title="Firstname" Property="@(x => x.Firstname)"  QuickFilter="true" Sortable="true" Grouped="true" />
+
+                    <Column Title="Lastname" Property="@(x => x.Lastname)"  QuickFilter="true" Sortable="true" Grouped="true" />
+
+                    <Column Title="Has long Firstname" Property="@(x => x.HasLongFirstName)"  QuickFilter="true" Grouped="true" />
+
+                    <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" Sortable="true" />
+
+                    <Column Title="ID" Property="@(x => x.Id)"  Sortable="true" />
+
+                </Columns>
+
+            </PhDataGrid>
+        </MockedUiContext>
+    </Template>
+</Story>
+
+<Story Name="Set Items Selected">
+    <Arguments>
+        <Arg For="_ => _!.StateID" Value="@null" />
+        <Arg For="_ => _!.DefaultSortColumn" Value="@nameof(DefaultDataGridItem.Id)" />
+        <Arg For="_ => _!.DefaultSortDirection" Value="@SortDirection.Ascending" />
+        <Arg For="_ => _!.SelectionType" Value="@SelectionTypeEnum.MultiSelect" />
+        <Arg For="_ => _!.TableTitle" Value="@("Set Items Selected")" />
+        <Arg For="_ => _!.RowType" Value="@RowTypeEnum.LinesBetweenRows" />
+    </Arguments>
+    <Template Context="template">
+        <MockedUiContext>
+            <PhDataGrid @ref="_refDgSetISelectedItems" TGridItem="DefaultDataGridItem" ItemsProvider="LoadData" @attributes="template.Args">
+
+                <Columns>
+                
+                    <Column Title="ID" Property="@(x => x.Id)"  Sortable="true" />
+
+                    <Column Title="Firstname" Property="@(x => x.Firstname)"  QuickFilter="true" Sortable="true" />
+
+                    <Column Title="Lastname" Property="@(x => x.Lastname)"  QuickFilter="true" Sortable="true" />
+
+                    <Column Title="Has long Firstname" Property="@(x => x.HasLongFirstName)"  QuickFilter="true" />
+
+                    <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" Sortable="true" />
+
+                </Columns>
+
+            </PhDataGrid>
+        </MockedUiContext>
+    </Template>
+</Story>
+
+    <Story Name="DataGrid with custom filter">
+        <Template Context="template">
+            <MockedUiContext>
+                <PhDataGrid DefaultSortColumn="Id"
+                            TableTitle="Users"
+                            TGridItem="DefaultDataGridItem"
+                            ItemsProvider="LoadData"
+                            CustomQuickFilters="_fibonacciQuickFilters"
+                            @attributes="template.Args">
+                    <Columns>
+                        <Column Property="@(x => x.Id)" Sortable="true" />
+                        <Column Title="Firstname" Property="@(x => x.Firstname)"  QuickFilter="true" Sortable="true" />
+                        <Column Title="Lastname" Property="@(x => x.Lastname)"  QuickFilter="true" Sortable="true" />
+                        <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" Sortable="true" />
+                    </Columns>
+                </PhDataGrid>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+    <Story Name="DataGrid with custom filter using PhQuickFilter">
+        <Template Context="template">
+            <MockedUiContext>
+                <PhDataGrid DefaultSortColumn="Id"
+                            TableTitle="Users"
+                            TGridItem="DefaultDataGridItem"
+                            ItemsProvider="LoadData"
+                            CustomQuickFilters="_fibonacciPhQuickFilters"
+                            @attributes="template.Args">
+                    <Columns>
+                        <Column Property="@(x => x.Id)" Sortable="true" />
+                        <Column Title="Firstname" Property="@(x => x.Firstname)"  QuickFilter="true" Sortable="true" />
+                        <Column Title="Lastname" Property="@(x => x.Lastname)"  QuickFilter="true" Sortable="true" />
+                        <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" Sortable="true" />
+                    </Columns>
+                </PhDataGrid>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+    <Story Name="DataGrid with custom filter at end">
+        <Template Context="template">
+            <MockedUiContext>
+                <PhDataGrid DefaultSortColumn="Id"
+                            TableTitle="Users"
+                            TGridItem="DefaultDataGridItem"
+                            ItemsProvider="LoadData"
+                            CustomQuickFilters="_fibonacciQuickFiltersAtEnd"
+                            @attributes="template.Args">
+                    <Columns>
+                        <Column Property="@(x => x.Id)" Sortable="true" />
+                        <Column Title="Firstname" Property="@(x => x.Firstname)"  QuickFilter="true" Sortable="true" />
+                        <Column Title="Lastname" Property="@(x => x.Lastname)"  QuickFilter="true" Sortable="true" />
+                        <Column Title="DoB" Property="@(x => x.DateAndTimeOfBirth)" Sortable="true" />
+                    </Columns>
+                </PhDataGrid>
+            </MockedUiContext>
+        </Template>
+    </Story>
+
+</Stories>
+
+@code
+{
+    private int _highlightedId = 10;
+    private List<DefaultDataGridItem> _data = new();
+    private IQueryable<DefaultDataGridItem>? _dataForDateTimeGrid;
+    private IEnumerable<object> _preSelectedIds = [];
+    private bool _isExpanded;
+    private PhDataGrid<DefaultDataGridItem>? _refDgSetISelectedItems = default!;
+    private List<DefaultDataGridItem> _setSelectedItems = [];
+    private bool _disposed;
+    private readonly CustomQuickFilter[] _fibonacciQuickFilters =
+    [
+        new(new FibonacciIdFilter(nameof(DefaultDataGridItem.Id)), typeof(FibonacciQuickFilterView))
+    ];
+    private readonly CustomQuickFilter[] _fibonacciPhQuickFilters =
+    [
+        new(new FibonacciIdsFilter(nameof(DefaultDataGridItem.Id)), typeof(FibonacciPhQuickFilterView))
+    ];
+    private readonly CustomQuickFilter[] _fibonacciQuickFiltersAtEnd =
+    [
+        new(new FibonacciIdFilter(nameof(DefaultDataGridItem.Id)), typeof(FibonacciQuickFilterView))
+        {
+            Position = CustomQuickFilterPosition.End
+        }
+    ];
+    private ItemStyleFlags _demoItemStyleFlags = ItemStyleFlags.None;
+    private readonly IQueryable<DefaultDataGridItem> _allItemStyleRows = new[]
+    {
+        (ItemStyleFlags.None, "Normal row with an enabled checkbox."),
+        (ItemStyleFlags.Disabled, "Dimmed row with a disabled checkbox."),
+        (ItemStyleFlags.Checked, "Checked checkbox; row is not selected."),
+        (ItemStyleFlags.Dimmed, "Dimmed row with an enabled checkbox."),
+        (ItemStyleFlags.CheckboxDisabled, "Normal row with a disabled checkbox."),
+        (ItemStyleFlags.CheckboxHidden, "Normal row without a checkbox."),
+        (ItemStyleFlags.Disabled | ItemStyleFlags.Checked, "Dimmed row with a disabled, checked checkbox."),
+        (ItemStyleFlags.CheckboxDisabled | ItemStyleFlags.Checked, "Normal row with a disabled, checked checkbox."),
+        (ItemStyleFlags.Dimmed | ItemStyleFlags.CheckboxHidden, "Dimmed row without a checkbox.")
+    }.Select(option => new DefaultDataGridItem
+    {
+        Id = (int)option.Item1,
+        Firstname = option.Item1.ToString(),
+        Description = option.Item2
+    }).AsQueryable();
+    private int _itemStyleSelectedCount;
+    private readonly IQueryable<DefaultDataGridItem> _itemStyleDemoRows = new[]
+    {
+        new DefaultDataGridItem { Id = 1, Firstname = "Normal row", Description = "No" },
+        new DefaultDataGridItem { Id = 2, Firstname = "Styled row", Description = "Yes" },
+        new DefaultDataGridItem { Id = 3, Firstname = "Another styled row", Description = "Yes" }
+    }.AsQueryable();
+    private readonly (ItemStyleFlags Flag, string Description)[] _itemStyleFlagOptions =
+    [
+        (ItemStyleFlags.Disabled, "Dims the row and disables its selection checkbox."),
+        (ItemStyleFlags.Checked, "Shows a checked checkbox without changing the actual selection."),
+        (ItemStyleFlags.Dimmed, "Dims the row while keeping its selection checkbox enabled."),
+        (ItemStyleFlags.CheckboxDisabled, "Disables the selection checkbox without dimming the row."),
+        (ItemStyleFlags.CheckboxHidden, "Hides the selection checkbox without dimming the row.")
+    ];
+
+    private void SetDemoItemStyleFlag(ItemStyleFlags flag, bool isChecked)
+    {
+        _demoItemStyleFlags = isChecked ? _demoItemStyleFlags | flag : _demoItemStyleFlags & ~flag;
+    }
+
+    protected override void OnInitialized()
+    {
+        //If you need a new JSON file to test data against use this.
+        //I was a bit lazy so you have to add a break point and copy the text in the json var and paste it in wwwroot/FakeApiData/DefaultDataGrid.json
+        // GenerateJsonFile();
+
+        navManager.LocationChanged += OnLocationChanged;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Safe to interact with DOM or load data
+            _data = await LoadData();
+            _dataForDateTimeGrid = LoadDataForDateTimeGrid().AsQueryable();
+            _preSelectedIds = LoadPreSelectedIds();
+        }
+        
+        if (_refDgSetISelectedItems is not null && _setSelectedItems is {Count: 0})
+        {
+            SetSelectedItems();
+        }
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        // In Blazing Story the story component instance can be reused.
+        // Reset so the "Set Items Selected" story runs again when navigating back.
+        _setSelectedItems.Clear();
+
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private void HighlightedChanged(DefaultDataGridItem? item)
+    {
+        _highlightedId = item?.Id ?? -1;
+    }
+
+    private IEnumerable<object> LoadPreSelectedIds()
+    {
+        return [1, 2, 3, 5, 7, 9];
+    }
+
+    private async ValueTask<GridItemsProviderResult<DefaultDataGridItem>> LoadMixedDescriptionsData(GridItemsProviderRequest<DefaultDataGridItem> request)
+    {
+        return await LoadData(request, "/FakeApiData/MixedDescriptionsDataGrid.json");
+    }
+
+    private async ValueTask<GridItemsProviderResult<DefaultDataGridItem>> LoadGroupedData(GridItemsProviderRequest<DefaultDataGridItem> request)
+    {
+        return await LoadData(
+            request,
+            "/FakeApiData/GroupedDataGrid.json",
+            groupedCountFunc: items =>
+            {
+                // simulate a server-provided GroupedCount
+                var groups = 0;
+                string? last = null;
+
+                foreach (var item in items)
+                {
+                    if (!string.Equals(item.Firstname, last, StringComparison.Ordinal))
+                    {
+                        groups++;
+                        last = item.Firstname;
+                    }
+                }
+
+                return groups;
+            });
+    }
+
+    private async ValueTask<GridItemsProviderResult<DefaultDataGridItem>> LoadData(GridItemsProviderRequest<DefaultDataGridItem> request)
+    {
+        return await LoadData(request, "/FakeApiData/DefaultDataGrid.json");
+    }
+
+    private async ValueTask<GridItemsProviderResult<DefaultDataGridItem>> LoadData(
+        GridItemsProviderRequest<DefaultDataGridItem> request,
+        string dataFile,
+        Func<IReadOnlyList<DefaultDataGridItem>, int?>? groupedCountFunc = null)
+    {
+        List<DefaultDataGridItem> result;
+
+        try
+        {
+            result = await httpClient.GetFromJsonAsync<List<DefaultDataGridItem>>(dataFile) ?? [];
+        }
+        catch
+        {
+            return GridItemsProviderResult.From([new DefaultDataGridItem
+            {
+                Id = -1,
+                Firstname = dataFile,
+                Lastname = "could not be loaded"
+            }], 1);
+        }
+
+        if (result.Count == 0)
+        {
+            return GridItemsProviderResult.From(result, 0);
+        }
+
+        // Apply all column filters
+        foreach (var filter in request.ColumnFilters ?? [])
+        {
+            // Multi-select filters (e.g. checkboxes) use OR: keep rows matching any selected value.
+            if (filter.PropertyName == nameof(DefaultDataGridItem.Id)
+                && filter.LogicalOperator == LogicalFilterOperator.Or)
+            {
+                var ids = filter.FilterExpressions
+                    .OfType<PropertyFilterExpression<int>>()
+                    .Select(x => x.Value)
+                    .ToHashSet();
+
+                if (ids.Count > 0)
+                {
+                    result = result.Where(x => ids.Contains(x.Id)).ToList();
+                }
+
+                continue;
+            }
+
+            foreach (var expression in filter.FilterExpressions)
+            {
+                switch (filter.PropertyName)
+                {
+                    case nameof(DefaultDataGridItem.Firstname):
+                        if (expression.UntypedValue is string firstnameValue && !string.IsNullOrEmpty(firstnameValue))
+                        {
+                            result = result.Where(x => x.Firstname != null && x.Firstname.Contains(firstnameValue, StringComparison.OrdinalIgnoreCase)).ToList();
+                        }
+                        break;
+
+                    case nameof(DefaultDataGridItem.Lastname):
+                        if (expression.UntypedValue is string lastnameValue && !string.IsNullOrEmpty(lastnameValue))
+                        {
+                            result = result.Where(x => x.Lastname != null && x.Lastname.Contains(lastnameValue, StringComparison.OrdinalIgnoreCase)).ToList();
+                        }
+                        break;
+
+                    case nameof(DefaultDataGridItem.Id):
+                        if (expression is PropertyFilterExpression<int> { Value: var idValue })
+                        {
+                            result = result.Where(x => x.Id == idValue).ToList();
+                        }
+                        break;
+                    case nameof(DefaultDataGridItem.HasLongFirstName):
+                        if (expression.UntypedValue is bool boolValue)
+                        {
+                            result = result.Where(x => x.HasLongFirstName == boolValue).ToList();
+                        }
+                        break;
+                }
+            }
+        }
+
+        var totalCount = result.Count;
+
+        if (request.SortByColumn != null)
+        {
+            var sortProp = typeof(DefaultDataGridItem).GetProperty(request.SortByColumn);
+            if (sortProp != null)
+            {
+                if (request.SortByAscending)
+                {
+                    result = result.OrderBy(x => sortProp.GetValue(x, null)).ToList();
+                }
+                else
+                {
+                    result = result.OrderByDescending(x => sortProp.GetValue(x, null)).ToList();
+                }
+            }
+        }
+
+        var groupedCount = groupedCountFunc?.Invoke(result);
+
+        result = result.Skip(request.StartIndex).Take(request.Count ?? 9999).ToList();
+
+        return new GridItemsProviderResult<DefaultDataGridItem>
+            {
+                Items = result,
+                TotalItemCount = totalCount,
+                GroupedCount = groupedCount,
+            };
+    }
+
+    private async ValueTask<List<DefaultDataGridItem>> LoadData()
+    {
+        var result = await httpClient.GetFromJsonAsync<List<DefaultDataGridItem>>("/FakeApiData/DefaultDataGrid.json");
+
+        return result!;
+    }
+
+    private List<DefaultDataGridItem> LoadDataForDateTimeGrid()
+    {
+        var rows = new List<DefaultDataGridItem>();
+
+        for (int i = 0; i < 20; i++)
+        {
+            var faker = new Faker<DefaultDataGridItem>()
+                .RuleFor(u => u.DateAndTimeOfBirth, f => f.Date.PastOffset(60, DateTime.Now.AddYears(-18)).DateTime)
+                .RuleFor(u => u.Firstname, f => f.Person.FirstName)
+                .RuleFor(u => u.Lastname, f => f.Person.LastName);
+
+            rows.Add(faker);
+        }
+
+        return rows;
+    }
+    
+
+    private void SetSelectedItems()
+    {
+        _setSelectedItems = new List<DefaultDataGridItem>
+        {
+            new DefaultDataGridItem {
+                Id =0,
+                Firstname = "Jamie",
+                Lastname = "Tillman",
+                DateAndTimeOfBirth = DateTime.Parse("1962-04-12T06:47:18.8548484+02:00"),
+                HasLongFirstName = false
+            },
+            new DefaultDataGridItem {
+                Id= 1,
+                Firstname= "Bryan",
+                Lastname= "Brekke",
+                DateAndTimeOfBirth= DateTime.Parse("2004-08-31T23:29:47.3878323+02:00"),
+                HasLongFirstName= false
+            },
+        };
+
+        _refDgSetISelectedItems?.SetSelectItems(_setSelectedItems);
+    }
+
+    //If you need a new JSON file to test data against use this.
+    //I was a bit lazy so you have to add a break point and copy the text in the json var and paste it in wwwroot/FakeApiData/DefaultDataGrid.json
+    private void GenerateJsonFile()
+    {
+        for (int i = 0; i < 100; i++)
+        {
+            var faker = new Faker();
+
+            _data.Add(new DefaultDataGridItem()
+                {
+                    Id = i,
+                    Firstname = faker.Person.FirstName,
+                    Lastname = faker.Person.LastName,
+                    DateAndTimeOfBirth = faker.Person.DateOfBirth,
+                    HasLongFirstName = faker.Person.FirstName.Length > 7
+                });
+        }
+
+        var json = JsonSerializer.Serialize(_data);
+    }
+
+    private bool PreSelectedItemComparer(DefaultDataGridItem arg1, object arg2)
+    {
+        var id = (int)arg2;
+        return arg1.Id.Equals(id);
+    }
+
+    public void Dispose()
+    {
+        _disposed = true;
+        navManager.LocationChanged -= OnLocationChanged;
+    }
+}

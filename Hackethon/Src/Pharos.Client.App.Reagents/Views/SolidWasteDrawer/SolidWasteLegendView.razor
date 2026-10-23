@@ -1,0 +1,10 @@
+@namespace Pharos.Client.App.Reagents.Views.SolidWasteDrawer
+@using Pharos.Common.Web.Components.Legend
+@using Pharos.Common.Web.Components.SolidWaste
+
+<PhLegend TStatus="NoLegendStatus"
+          GetStatusText="static _ => string.Empty"
+          ErrorHeaderText="@Loc["Legend_Issue_Header"]"
+          LegendErrors="@ViewModel.LegendErrors"
+          IsAnyHighPriority="false"
+          IsAnyManualEntry="false" />

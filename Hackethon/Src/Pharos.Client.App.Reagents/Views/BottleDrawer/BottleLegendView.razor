@@ -1,0 +1,15 @@
+@namespace Pharos.Client.App.Reagents.Views.BottleDrawer
+@using Pharos.Common.Web.Components.Legend
+@using Pharos.Common.Web.Components.Reagent
+@using Pharos.Client.App.Reagents.ViewModels.BottleDrawer
+
+<PhLegend TStatus="BottleStatus"
+              @ref="_phLegend"
+              StatusHeaderText="@Loc["Legend_State_Header"]"
+              LegendStatuses="@ViewModel.BottleStatuses"
+              GetStatusText="@BottleLegendViewModel.GetBottleStatusText"
+              SelectionChanged="@ViewModel.OnLegendSelectionChanged"
+              ErrorHeaderText="@Loc["Legend_Issue_Header"]"
+              LegendErrors="@ViewModel.LegendErrors"
+              IsAnyHighPriority="false"
+              IsAnyManualEntry="false" />

@@ -1,0 +1,161 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/spacing";
+@use "../abstracts/size";
+@use "../abstracts/rounded";
+@use "../abstracts/typography" as text;
+
+.ph-autocomplete {
+    $root: &;
+    position: relative;
+
+    :has(:focus) {
+        input[type="text"] {
+            background-color: colors.$layer-selected-01;
+        }
+    }
+
+    input[type="text"] {
+        width: 100%;
+        min-height: size.$control-height;
+        padding: 4px spacing.$padding-sm;
+        border: 2px solid colors.$border-active;
+        background-color: colors.$layer-secondary;
+        color: colors.$text-secondary;
+        @include text.body1;
+        @include rounded.rounded;
+        text-overflow: ellipsis;
+
+        &::placeholder {
+            color: colors.$text-hint;
+        }
+
+        &::selection {
+            background-color: colors.$layer-accent;
+        }
+
+        &:hover {
+            background-color: colors.$layer-hover-01;
+        }
+
+        &:focus-visible {
+            outline: none;
+            background-color: colors.$layer-selected-01;
+        }
+
+        &:disabled {
+            border-color: colors.$border-disabled;
+            background-color: colors.$layer-secondary;
+            color: colors.$text-disabled;
+            cursor: default;
+
+            &::placeholder {
+                color: currentColor;
+            }
+        }
+    }
+
+    &__clear-btn {
+        display: none;
+        position: absolute;
+        inset-block: 0;
+        inset-inline: auto spacing.$padding-xs;
+    }
+
+    &__notfound {
+        padding: spacing.$padding-xs spacing.$padding-sm;
+    }
+
+    [popover]:popover-open {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__dropdown {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+    }
+
+    &__items {
+        overflow: auto;
+    }
+
+    &__dropdown-row {
+        color: colors.$text-secondary;
+        padding-block: spacing.$padding-xs;
+        padding-inline: spacing.$padding-sm;
+        @include text.body1;
+
+        &:hover,
+        &:focus {
+            background-color: colors.$layer-selected-hover;
+            color: colors.$text-primary;
+            cursor: pointer;
+        }
+    }
+
+    &__dropdown-row-1 {
+        @include text.body1;
+    }
+
+    &__dropdown-row-2 {
+        @include text.helper-text;
+    }
+
+    &__dropdown-footer {
+        padding-block: spacing.$padding-xs 0;
+        padding-inline: spacing.$padding-sm;
+        border-top: 2px solid colors.$border-disabled;
+        @include text.helper-text;
+    }
+
+    &__dropdown-row-active-item {
+        background-color: colors.$layer-selected-hover;
+    }
+
+    &__highlight {
+        color: colors.$text-primary;
+        font-weight: text.$font-bold;
+    }
+
+    &--has-text {
+        input[type="text"] {
+            padding-right: calc(spacing.$padding-xs + size.$control-height);
+        }
+
+        #{$root}__clear-btn {
+            display: block;
+        }
+    }
+    
+    &--error {
+        position: relative;
+
+        input[type="text"] {
+            &, &:disabled {
+                border-color: colors.$status-validation;
+            }
+        }
+    }
+
+    &--size-xsmall {
+        width: size.$input-width-xsmall;
+    }
+
+    &--size-small {
+        width: size.$input-width-small;
+    }
+
+    &--size-medium {
+        width: size.$input-width-medium;
+    }
+
+    &--size-large {
+        width: size.$input-width-large;
+    }
+
+    &--size-xlarge {
+        width: size.$input-width-xlarge;
+        max-width: 100%;
+    }
+}

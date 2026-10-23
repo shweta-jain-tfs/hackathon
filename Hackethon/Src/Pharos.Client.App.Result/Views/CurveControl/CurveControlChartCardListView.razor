@@ -1,0 +1,26 @@
+﻿@using Pharos.Common.Web.Components.ChartCard
+
+@if (ViewModel.IsWaitingForCurveControl)
+{
+    <PhChartCard Narrow="@Narrow" Status="StatusType.Processing" Title="@Loc["CurveControlChartCardListView_CurveControl"]" Href="@NavigateToCurveControlDetails()">
+        <div style="width: 192px; height: 140px">
+            <PhPlaceHolder Title="@Loc["CurveControlChartCardListView_WaitingForCurveControl"]" Text="" />
+        </div>
+    </PhChartCard>
+}
+else if (ViewModel.ChartHolders is { Count: > 0 })
+{
+    @foreach (var cc in ViewModel.ChartHolders)
+    {
+        <PhChartCard Narrow="@Narrow" Status="GetStatusSymbol(cc)" Title="@cc.CurveControlName" Href="@NavigateToCurveControlDetails()">
+            <CurveControlThumbnailChartView Miniature="true" Interactive="false" NrOfPoints="@NrOfPoints"
+                                            OuterParameters="@cc.OuterParameters" ChartComponents="@cc.ChartComponents"/>
+            @if (cc.CurveControlTotalJudgment == CurveControlJudgmentResult.Flagged && cc.FrozenAt != null)
+            {
+                <div class="flex justify-center">
+                    <PhLabel Text="@Loc["CalibratorPage_CurveAccepted"]" />
+                </div>
+            }
+        </PhChartCard>
+    }
+}

@@ -1,0 +1,23 @@
+@use "../abstracts/spacing";
+
+// dock a row of buttons under content (e.g. a data grid)
+.ph-docked-row {
+    max-height: 100%; // don't fill more than height of parent
+    min-height: 0; // allow to shrink when placed in non-grid layout
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    gap: spacing.$gap-md;
+
+    &__content {
+        min-height: 80px; // reduce flicker when used with data grids
+        overflow: auto;
+    }
+
+    &--fill {
+        height: 100%;
+    }
+
+    &--no-buttons {
+        grid-template-rows: minmax(0, 1fr);
+    }
+}

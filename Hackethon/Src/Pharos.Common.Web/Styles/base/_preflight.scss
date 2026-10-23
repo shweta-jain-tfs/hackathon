@@ -1,0 +1,109 @@
+/*
+Scrub default styles of buttons, lists, etc. instead of overriding these for each component.
+Opt-in to list styles, button backgrounds, etc. by explicitly setting those styles in the component that needs them.
+*/
+
+body {
+    line-height: inherit;
+}
+
+// Use the modern Firefox focus style for all focusable elements.
+:-moz-focusring {
+    outline: auto;
+}
+
+// pointer for buttons by default
+button,
+[role="button"] {
+    cursor: pointer;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+    background-color: transparent;
+    background-image: none;
+}
+
+// unstyle buttons and inputs
+button,
+input,
+optgroup,
+select,
+textarea {
+    font-family: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+// unstyle lists
+ol,
+ul,
+menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+// reset link style
+a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+// reset margins
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+    margin: 0;
+}
+
+// reset heading font size
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: inherit;
+    font-weight: inherit;
+}
+
+// reset borders + allow setting border by setting width only
+*,
+::before,
+::after {
+    border-width: 0;
+    border-style: solid;
+    border-color: var(--ph-border-color, currentColor);
+}
+
+// remove popover styles
+[popover] {
+    inset: auto;
+    padding: 0;
+    background: none;
+    margin: 0;
+    color: unset;
+}
+
+dialog {
+    padding: 0;
+}

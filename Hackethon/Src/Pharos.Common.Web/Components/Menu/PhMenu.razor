@@ -1,0 +1,9 @@
+﻿<CascadingValue Value="_menuContext">
+    <div>
+        <ul class="ph-menu" inert="@_menuContext.IsRouteSubMenuOpen">
+            @ChildContent
+        </ul>
+
+        @RouteSubMenus
+    </div>
+</CascadingValue>

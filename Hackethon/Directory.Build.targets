@@ -1,0 +1,31 @@
+<Project>
+  <PropertyGroup>
+    <!-- True when running in CI (Azure DevOps sets TF_BUILD=True) -->
+    <IsCI Condition="'$(IsCI)'=='' and '$(TF_BUILD)'=='True'">true</IsCI>
+  </PropertyGroup>
+
+  <Target Name="ConfigureGitHooks"
+          BeforeTargets="Build"
+          Condition="Exists('$(MSBuildThisFileDirectory).githooks\pre-commit') and '$(IsCI)'!='true'">
+
+    <Exec Command="git config --local --get core.hooksPath"
+          IgnoreExitCode="true"
+          ConsoleToMsBuild="true"
+          StandardOutputImportance="Low"
+          EchoOff="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitHooksPathRaw" />
+    </Exec>
+
+    <PropertyGroup>
+      <GitHooksPath>$([System.String]::Copy('$(GitHooksPathRaw)').Trim())</GitHooksPath>
+    </PropertyGroup>
+
+    <Exec Command="git config --local core.hooksPath .githooks"
+          Condition="'$(GitHooksPath)' != '.githooks'"
+          EchoOff="true" />
+
+    <Message Text="Ensured Git hooks path is .githooks"
+             Importance="high"
+             Condition="'$(GitHooksPath)' != '.githooks'" />
+  </Target>
+</Project>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<Fragment>
+		<Property Id="PharosServiceAccountName" Value="NT AUTHORITY\SYSTEM"/>
+		<DirectoryRef Id="INSTALLFOLDER" >
+			<Component
+				Id="PharosService"
+				Guid="{DB182C74-5EA1-4274-AD0C-7A31FFEAFB94}">
+			
+				<File
+					Id="Pharos.Server.exe"
+					Name="Pharos.Server.exe"
+					KeyPath="yes"/>
+				
+				<ServiceInstall
+					Id="PharosServiceInstall"
+					Name="PharosService"
+					DisplayName="PharosService"
+					Description="ThermoFisher Pharos"
+					Start="auto"
+					Type="ownProcess"
+					ErrorControl="normal"
+					Vital="yes"
+					Interactive="no">
+				
+					<ServiceDependency Id="MSSQLSERVER" />
+				
+				</ServiceInstall>
+				
+				<ServiceControl Id="PharosServiceControl" Name="PharosService" Start="install" Stop="both" Remove="uninstall" Wait="yes"/>
+			</Component>
+		</DirectoryRef>
+	</Fragment>
+</Wix>

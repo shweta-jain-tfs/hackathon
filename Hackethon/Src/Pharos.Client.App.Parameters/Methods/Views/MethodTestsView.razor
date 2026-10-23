@@ -1,0 +1,36 @@
+<PhDataGrid TableTitle="@Loc["MethodDetailsTestTab_Tests"]" 
+            StateID="" 
+            DefaultSortColumn="@nameof(MethodTest.TestName)" 
+            TGridItem="MethodTest" 
+            ItemsProvider="@(request => TestsGridViewModel.ProvideGridItems(request, MethodId))" 
+            RowType="RowTypeEnum.LinesBetweenRows">
+    <Columns>
+        <Column Title="@Loc["MethodDetailsTestTab_Name"]" Property="@(x => x.TestName)" FilterTitle="@Loc["MethodDetailsTestTab_FilterByText"]" QuickFilter>
+            <PhHrefLink Href="@($"{PageRoute.Parameters.TestDetails.Default}/{context?.Id}")">@context?.TestName</PhHrefLink>
+        </Column>
+        <Column Title="@Loc["MethodDetailsTestTab_Enabled"]" Property="@(x => x.Active)">
+            @(context.Active ? Loc["MethodDetailsTestTab_Yes"] : Loc["MethodDetailsTestTab_No"])
+        </Column>
+        <Column Title="@Loc["MethodDetailsTestTab_Replicates"]" Property="@(x => x.Replicates)" />
+        <Column Title="@Loc["MethodDetailsTestTab_LabTestName"]" Property="@(x => x.DefaultLabTestName)" Size="ColumnSizeEnum.WrapTitle">
+            @FormatLabNames(context?.MethodTestLabNames)
+        </Column>
+        <Column Title="@Loc["MethodDetailsTestTab_FullName"]" Property="@(x => x.FullTestName)" Size="ColumnSizeEnum.Fill" />
+        <Column Title="@Loc["MethodDetailsTestTab_ConcUnit"]" Property="@(x => x.MethodConcentrationUnit)" Size="ColumnSizeEnum.WrapTitle" />
+        <Column Title="@Loc["MethodDetailsTestTab_ReportConc"]" Property="@(x => x.ReportConcentration)" Size="ColumnSizeEnum.WrapTitle">
+            @(context.ReportConcentration ? Loc["MethodDetailsTestTab_Yes"] : Loc["MethodDetailsTestTab_No"])
+        </Column>
+        <Column Title="@Loc["MethodDetailsTestTab_ReportClass"]" Property="@(x => x.ReportClass)" Size="ColumnSizeEnum.WrapTitle">
+            @(context.ReportClass ? Loc["MethodDetailsTestTab_Yes"] : Loc["MethodDetailsTestTab_No"])
+        </Column>
+        <Column Title="@Loc["MethodDetailsTestTab_ReportCutOff"]" Property="@(x => x.ReportCutOff)" Size="ColumnSizeEnum.WrapTitle">
+            @(context.ReportCutOff ? Loc["MethodDetailsTestTab_Yes"] : Loc["MethodDetailsTestTab_No"])  
+        </Column>
+        <Column Title="@Loc["MethodDetailsTestTab_ReportQuotientMode"]" Property="@(x => x.QuotientReportMode)" Size="ColumnSizeEnum.WrapTitle">
+            @(IsReportQuotient(context) ? Loc["MethodDetailsTestTab_Yes"] : Loc["MethodDetailsTestTab_No"])
+        </Column>
+        <Column Title="@Loc["MethodDetailsTestTab_IsRuo"]" Property="@(x => x.IsRuo)" Size="ColumnSizeEnum.WrapTitle">
+            @(context.IsRuo ? Loc["MethodDetailsTestTab_Yes"] : Loc["MethodDetailsTestTab_No"])
+        </Column>
+    </Columns>
+</PhDataGrid>

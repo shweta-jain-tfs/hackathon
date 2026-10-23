@@ -1,0 +1,57 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-expansion-panel {
+
+    $root: &;
+
+    display: flex;
+    flex-direction: column;
+    @include rounded.rounded;
+    overflow: hidden;
+
+    &__bar {
+        display: flex;
+        align-items: center;
+        gap: spacing.$gap-sm;
+        min-height: size.$hit-area-lg;
+        padding: spacing.$padding-xs spacing.$padding-sm;
+        @include text.h3;
+        background-color: colors.$layer-secondary;
+        color: colors.$text-secondary;
+
+        &:focus-visible {
+            background: colors.$layer-selected-01;
+        }
+
+        &:hover {
+            background-color: colors.$layer-hover-01;
+        }
+    }
+
+    &__content {
+        height: 0;
+        overflow: hidden;
+    }
+
+    &--expanded {
+
+        #{$root}__bar {
+            background-color: colors.$layer-selected-01;
+
+            &:hover {
+                background-color: colors.$layer-selected-hover;
+            }
+        }
+
+        #{$root}__content {
+            height: auto;
+            padding: spacing.$padding-sm;
+            background-color: colors.$layer-secondary;
+            margin-top: 2px;
+        }
+    }
+}

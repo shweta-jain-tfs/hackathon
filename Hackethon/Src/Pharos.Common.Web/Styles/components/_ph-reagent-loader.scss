@@ -1,0 +1,78 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/typography" as text;
+
+$reagent-loader-width: 344px;
+$reagent-loader-height: 168px;
+$spacing-xs: 2px;
+$spacing-sm: 4px;
+$spacing-medium: 8px;
+
+.reagent-loader {
+    width: $reagent-loader-width;
+    min-height: $reagent-loader-height;
+    padding: $spacing-medium;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-medium;
+    flex-wrap: wrap;
+    position: relative;
+
+    &--empty {
+        border-radius: rounded.$rounded-default;
+        border: $spacing-xs dashed colors.$liquid-bottle-border;
+    }
+
+    &--error {
+        background: colors.$drawer-filled-background;
+        border-radius: rounded.$rounded-default;
+        border: 4px solid colors.$loader-error-border;
+    }
+
+    &--filled {
+        background: colors.$background-tertiary;
+        border-radius: rounded.$drawer-rounded;
+        color: colors.$liquid-bottle-border;
+    }
+
+    &--scan {
+        background: colors.$drawer-filled-container-background;
+        border-radius: rounded.$rounded-default;
+        border: $spacing-xs thin colors.$liquid-bottle-border;
+    }
+
+    &__error-text {
+        color: colors.$text-primary;
+        @include text.body1;
+    }
+
+    &__selection-frame {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+        &::before {
+            border-radius: rounded.$drawer-rounded;
+            content: "";
+            position: absolute;
+            width: calc($reagent-loader-width + 56px);
+            height: calc($reagent-loader-height + 16px);
+        }
+
+        &:not(.selected):active::before {
+            background: colors.$layer-selected-02;
+        }
+
+        &.selected:not(:active)::before {
+            background: colors.$layer-selected-02;
+            border: $spacing-sm solid colors.$layer-selected-03;
+        }
+
+        &.selected:active::before {
+            background: colors.$layer-selected-pressed;
+            border: $spacing-sm solid colors.$border-active;
+        }
+    }
+}

@@ -1,0 +1,50 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.TabControl
+
+<PhModalContent>
+    <Body>
+        <PhStack Gap="StackGap.Xxl">
+
+            <PhLabel Text="@Loc["TestReplicateModalView_Replicate"]" Direction="LabelDirection.Horizontal">
+                <PhDropdown TValue="int" Options="DropDownList" @bind-Value="SelectedReplicate" Size="DropdownSize.FitContent" />
+            </PhLabel>
+
+            <PhTabControl Style="TabControlStyle.Secondary">
+                <PhTabPage Text="@Loc["TestReplicateModalView_Components"]" SymbolType="GetHeaderSymbol()" TabId="1" HideTrailingEdge="true">
+                    <PhDataGrid RowType="RowTypeEnum.LinesBetweenRows" TGridItem="ReplicateReagentDetail"
+                                StateID=""
+                                Items="Replicates.Single(x => x.Id == SelectedReplicate).Reagents.AsQueryable()" RowHeight="RowHeightEnum.Relaxed">
+                        <Columns>
+                            <Column Title="@Loc["TestReplicateModalView_Component"]" Property="@(x => x.ReagentType)">
+                                @context.ReagentType.ToLocalizedString()
+                            </Column>
+
+                            <Column Title="@Loc["TestReplicateModalView_LotNo"]" Property="@(x => x.LotNumber)" />
+
+                            <Column Title="@Loc["TestReplicateModalView_ExpiryDate"]" Property="@(x => x.ExpiryDate)">
+                                <PhStatus Text="@GetDateAsString(context.ExpiryDate)" Status="GetStatus(context.ExpiryDate)" />
+                            </Column>
+
+                            <Column Title="@Loc["TestReplicateModalView_Expired"]" Property="@(x => x.Expired)" HasPermission="IsRndMode">
+                                @(context.Expired ? Loc["TestReplicateModalView_Yes"] : Loc["TestReplicateModalView_No"])
+                            </Column>
+
+                            <Column Title="@Loc["TestReplicateModalView_Factor"]" Property="@(x => x.Factor)" />
+                        </Columns>
+                    </PhDataGrid>
+                </PhTabPage>
+
+                <PhTabPage Text="@Loc["SampleTestReplicateDetails_ErrorHeader", Replicates.Single(x => x.Id == SelectedReplicate).Errors.Count]" TabId="2" HideTrailingEdge="true">
+                    <PhDataGrid TGridItem="ReplicateError" StateID="" Items="Replicates.Single(x => x.Id == SelectedReplicate).Errors.AsQueryable()">
+                        <Columns>
+                            <Column Title="@Loc["TestReplicateModalView_ErrorCode"]" Property="@(x => x.ErrorCode)" />
+                            <Column Title="@Loc["TestReplicateModalView_Description"]" Property="@(x => x.ErrorCode)" Align="ColumnAlignEnum.Left">
+                                @Loc["AssayResultErrorDescription_" + context.ErrorCode]
+                            </Column>
+                        </Columns>
+                    </PhDataGrid>
+                </PhTabPage>
+            </PhTabControl>
+        </PhStack>
+    </Body>
+</PhModalContent>

@@ -1,0 +1,14 @@
+@use "../abstracts/colors";
+
+// List utility classes for displaying lists with native markers
+// Use these when you need a simple bulleted or numbered list without a component wrapper
+
+.list-disc {
+    list-style: disc;
+    padding-inline-start: 1.5em;
+}
+
+.list-circle {
+    list-style: circle;
+    padding-inline-start: 1.5em;
+}

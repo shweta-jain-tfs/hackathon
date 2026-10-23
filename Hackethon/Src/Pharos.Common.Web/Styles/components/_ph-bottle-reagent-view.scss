@@ -1,0 +1,43 @@
+@use '../abstracts/spacing';
+@use "../abstracts/typography" as text;
+@use '../abstracts/rounded';
+@use '../abstracts/size';
+
+.bottle-reagent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: spacing.$gap-md;
+    @include rounded.rounded;
+
+    &__title {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-sm;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        @include text.body1;
+    }
+
+    &__indication {
+        width: 100%;
+        height: 8px;
+    }
+
+    &__circle {
+        min-width: 240px;
+        align-items: flex-start;
+    }
+
+    &__positions--row {
+        display: flex;
+        gap: spacing.$gap-xl;
+    }
+
+    &__positions--col {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-md;
+    }
+}

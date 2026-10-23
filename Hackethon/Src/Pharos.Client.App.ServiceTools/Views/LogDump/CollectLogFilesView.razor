@@ -1,0 +1,65 @@
+@using Pharos.Client.App.ServiceTools.ViewModels
+@using Pharos.Client.Common.Models
+@using Pharos.Common.Web.Components.DatePicker
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.FormElements.RadioButton
+
+<PhModalContent>
+    <Body>
+        <div class="ph-collect-log-files">
+            <section class="ph-collect-log-files__date-selection">
+                <div class="t-body2">@Loc["CollectLogFilesDialog_CreateDumpFor"]</div>
+
+                <PhRadioGroup @bind-SelectedValue="ViewModel.DateMode">
+                    <PhRadioButton Value="LogCollectionDateMode.SingleDate"
+                                   Label="@Loc["CollectLogFilesDialog_SingleDate"]">
+                        <PhDatePicker @bind-Value="ViewModel.SingleDate"
+                                      Size="DatePickerSize.MediumInputWidth" />
+                    </PhRadioButton>
+
+                    <PhRadioButton Value="LogCollectionDateMode.DateRange"
+                                   Label="@Loc["CollectLogFilesDialog_DateRange"]">
+                        <div class="ph-collect-log-files__date-range">
+                            <PhDatePicker Label="@Loc["CollectLogFilesDialog_From"]"
+                                          @bind-Value="ViewModel.FromDate"
+                                          Size="DatePickerSize.MediumInputWidth" />
+                            <PhDatePicker Label="@Loc["CollectLogFilesDialog_To"]"
+                                          @bind-Value="ViewModel.ToDate"
+                                          Size="DatePickerSize.MediumInputWidth" />
+                        </div>
+                    </PhRadioButton>
+                </PhRadioGroup>
+            </section>
+
+            <hr class="ph-separator ph-collect-log-files__separator" />
+
+            <section class="ph-collect-log-files__collection-selection">
+                <div class="ph-collect-log-files__file-selection">
+                    <div class="t-body2">@Loc["CollectLogFilesDialog_PharosFiles"]</div>
+                    <PhRadioGroup @bind-SelectedValue="ViewModel.PharosFiles">
+                        <PhRadioButton Value="LogFileSelection.None" Label="@Loc["CollectLogFilesDialog_NoFiles"]" />
+                        <PhRadioButton Value="LogFileSelection.Default" Label="@Loc["CollectLogFilesDialog_DefaultFiles"]" />
+                        <PhRadioButton Value="LogFileSelection.All" Label="@Loc["CollectLogFilesDialog_AllFiles"]" />
+                    </PhRadioGroup>
+                </div>
+
+                <div class="ph-collect-log-files__file-selection">
+                    <div class="t-body2">@Loc["CollectLogFilesDialog_IswFiles"]</div>
+                    <PhRadioGroup @bind-SelectedValue="ViewModel.IswFiles">
+                        <PhRadioButton Value="LogFileSelection.None" Label="@Loc["CollectLogFilesDialog_NoFiles"]" />
+                        <PhRadioButton Value="LogFileSelection.Default" Label="@Loc["CollectLogFilesDialog_DefaultFiles"]" />
+                        <PhRadioButton Value="LogFileSelection.All" Label="@Loc["CollectLogFilesDialog_AllFiles"]" />
+                    </PhRadioGroup>
+                </div>
+            </section>
+        </div>
+    </Body>
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="CancelAsync">
+            @Loc["CollectLogFilesDialog_Cancel"]
+        </PhButton>
+        <PhButton Type="ButtonType.Primary" Disabled="@(!ViewModel.CanStart)" OnClick="StartAsync">
+            @Loc["CollectLogFilesDialog_Start"]
+        </PhButton>
+    </Footer>
+</PhModalContent>

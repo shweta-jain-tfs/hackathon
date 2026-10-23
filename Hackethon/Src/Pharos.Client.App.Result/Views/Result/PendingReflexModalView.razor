@@ -1,0 +1,51 @@
+﻿@using Pharos.Common.Web.Components.FormElements.Enums
+<PhModalContent>
+    <Body>
+
+        @if (CanAddReflexTests)
+        {
+            <PhDockedButtonRow>
+                <ChildContent>
+                    <PhDataGrid TableTitle="@Loc["AddPendingReflex_Reflexes"]"
+                                StateID=""
+                                TGridItem="PendingReflex"
+                                Items="_displayedTests.AsQueryable()"
+                                SelectionType="SelectionTypeEnum.MultiSelect"
+                                RowType="RowTypeEnum.LinesBetweenRows"
+                                OnSelectedItemsChanged="OnSelectedItemsChanged"
+                                @ref="_dataGrid">
+                        <Columns>
+                            <Column Title="@Loc["AddPendingReflex_Reflex"]" Property="@(item => item!.DefinitionName)" />
+                            <Column Title="@Loc["AddPendingReflex_SampleID"]" Property="@(item => item!.SampleIdDisplay)" />
+                            <Column Title="@Loc["AddPendingReflex_Result"]" Property="@(item => item!.ResultType)">
+                                @PendingReflexViewModel.FormatResultDisplay(context)
+                            </Column>
+                        </Columns>
+                    </PhDataGrid>
+                </ChildContent>
+                
+                <Buttons>
+                    <PhButton Disabled="!CanPerformActions"
+                              Type="ButtonType.Secondary"
+                              OnClick="DiscardSelectedReflexTests">
+                        @Loc["AddPendingReflex_Discard"]
+                    </PhButton>
+                    <PhButton Disabled="!CanPerformActions"
+                              Type="ButtonType.Secondary"
+                              OnClick="AddSelectedReflexTests">
+                        @Loc["AddPendingReflex_Add"]
+                    </PhButton>
+                </Buttons>
+            </PhDockedButtonRow>
+        }
+        else
+        {
+            @Loc["AddPendingReflex_NoTestsPendingReflex"]
+        }
+
+    </Body>
+
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => CloseModal())">@Loc["AddPendingReflex_Close"]</PhButton>
+    </Footer>
+</PhModalContent>

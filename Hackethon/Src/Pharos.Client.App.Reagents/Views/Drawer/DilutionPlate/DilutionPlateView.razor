@@ -1,0 +1,13 @@
+﻿@namespace Pharos.Client.App.Reagents.Views.Drawer.DilutionPlate
+@using Pharos.Common.Web.Components.Icons
+
+<div class="@_dilutionPlateCss">
+    @if (Position == 1)
+    {
+        <DilutionPlateActive></DilutionPlateActive>
+    }
+    else
+    {
+        <DilutionPlate></DilutionPlate>
+    }
+</div>

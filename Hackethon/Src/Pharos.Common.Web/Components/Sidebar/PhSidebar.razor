@@ -1,0 +1,23 @@
+﻿<div class="@CssClasses">
+    @if (Header != null)
+    {
+        <div class="ph-sidebar__header">
+            @Header
+        </div>
+    }
+    @if (ChildContent != null)
+    {
+        <div class="ph-sidebar__main">
+            <div class="ph-sidebar__main-scroll">
+                @ChildContent
+            </div>
+        </div>
+    }
+    @if (Footer != null)
+    {
+        <div class="ph-sidebar__footer">
+            @Footer
+        </div>
+    }
+</div>
+

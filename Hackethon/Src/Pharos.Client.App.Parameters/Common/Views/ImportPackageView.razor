@@ -1,0 +1,11 @@
+﻿<PhModalContent>
+    <Body>
+        <p class="whitespace-pre-line">@ImportPackageDescriptionText</p>
+    </Body>
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["MethodsPage_ImportPackage_Confirm_Cancel"]</PhButton>
+        <PhButton Type="ButtonType.Primary" OnClick="@(() => CloseModal(ModalResult.Ok()))">@Loc["MethodsPage_ImportPackage_Confirm_Ok"]</PhButton>
+    </Footer>
+</PhModalContent>
+
+

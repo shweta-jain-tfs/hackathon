@@ -1,0 +1,81 @@
+﻿@using Pharos.Contracts.Security
+@attribute [Route(AccountRoutes.Login)]
+@inject IHostEnvironment Env
+
+<div class="ph-server-page">
+
+    <section>
+        <EditForm Model="this" method="post" OnValidSubmit="OnSubmit" FormName="login" autocomplete="off">
+            <DataAnnotationsValidator />
+
+            <div class="ph-server-page__content">
+                <div class="ph-server-page__header">
+                    <h1 class="t-h1">@Translations.Login_Title</h1>
+                    <p>@Translations.Login_Title_Text</p>
+                </div>
+
+                <PhTextBox Id="@nameof(UserName)"
+                           @bind-Value="UserName"
+                           Label="@Translations.UserName"
+                           Size="TextBoxSize.Default"
+                           Error="@_usernameEmpty"
+                           MaxLength="UserContract.MaximumNameLength"
+                           autocomplete="one-time-code"
+                           autofocus="@(!ShouldFocusPassword)" />
+
+                <PhTextBox Id="@nameof(Password)"
+                           @bind-Value="Password"
+                           Label="@Translations.Password"
+                           Type="TextBoxType.Password"
+                           Size="TextBoxSize.Default"
+                           Error="@_passwordEmpty"
+                           autofocus="@ShouldFocusPassword" />
+
+                @if (LoginFailed)
+                {
+                    <p class="text-warning ph-server-page__error_message">
+                        @_errorMessage
+                    </p>
+                }
+                @if (Env.IsDevelopment())
+                {
+                    <div class="ph-checkbox ph-checkbox--size-large ph-checkbox--css-icon">
+                        <label asp-for="RememberMe" class="ph-checkbox__label">
+                            <InputCheckbox @bind-Value="RememberMe" />
+                            <span class="ph-checkbox__box"></span>
+                            @Translations.Login_RememberMe
+                        </label>
+                    </div>
+                }
+
+                <div class="ph-server-page__footer">
+                    @if (CurrentInstrumentService.InstrumentId != null)
+                    {
+                        <a href="/" class="ph-button ph-button--secondary ph-button--no-max-width">@Translations.Login_CancelButton</a>
+                    }
+                    <PhButton ButtonType="submit" Type="ButtonType.Primary" IgnoreMaxWidth>@Translations.Login_LoginButton</PhButton>
+                </div>
+
+                @if (_isPinModeEnabled)
+                {
+                    <div class="text-center login__pin-link">
+                        @if (_isPinLoginAvailable)
+                        {
+                            <a href="@AccountRoutes.LoginWithPin" class="ph-link">@Translations.Login_LoginWithPinLink</a>
+                        }
+                        else
+                        {
+                            <span class="ph-link ph-link--disabled">@Translations.Login_LoginWithPinLink_Disabled</span>
+                        }
+                    </div>
+                }
+            </div>
+        </EditForm>
+    </section>
+
+</div>
+
+@if (LoginFailed)
+{
+    <CleanupError FieldId1="@nameof(UserName)" FieldId2="@nameof(Password)" />
+}

@@ -1,0 +1,86 @@
+@using Pharos.Common.Web.Components.Label
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Common.Web.Components.MonthPicker
+@attribute [Stories("Components/MonthPicker")]
+
+<Stories TComponent="PhMonthPicker">
+
+    <Story Name="Default">
+        <Template>
+            <PhMonthPicker @attributes="context.Args" @bind-Value="_defaultValue" />
+            <p class="mt-md t-helper-text">Current value: @(_defaultValue?.ToString("yyyy-MM") ?? "none")</p>
+        </Template>
+    </Story>
+
+    <Story Name="3 month clamped range">
+        <Arguments>
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.MinDate" Value="@_minDate" />
+            <Arg For="_ => _!.MaxDate" Value="@_maxDate" />
+        </Arguments>
+        <Template>
+            <PhMonthPicker @attributes="context.Args" @bind-Value="_defaultValue" />
+            <p class="mt-md t-helper-text">Current value: @(_defaultValue?.ToString("yyyy-MM") ?? "none")</p>
+        </Template>
+    </Story>
+
+    <Story Name="Custom future range">
+        <Arguments>
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.MinDate" Value="@_minFutureDate" />
+            <Arg For="_ => _!.MaxDate" Value="@_maxFutureDate" />
+        </Arguments>
+        <Template>
+            <PhMonthPicker @attributes="context.Args" @bind-Value="_defaultValue" />
+            <p class="mt-md t-helper-text">Current value: @(_defaultValue?.ToString("yyyy-MM") ?? "none")</p>
+        </Template>
+    </Story>
+
+    <Story Name="Custom past range">
+        <Arguments>
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.MinDate" Value="@_minPastDate" />
+            <Arg For="_ => _!.MaxDate" Value="@_maxPastDate" />
+        </Arguments>
+        <Template>
+            <PhMonthPicker @attributes="context.Args" @bind-Value="_defaultValue" />
+            <p class="mt-md t-helper-text">Current value: @(_defaultValue?.ToString("yyyy-MM") ?? "none")</p>
+        </Template>
+    </Story>
+
+    <Story Name="Single month range">
+        <Arguments>
+            <Arg For="_ => _!.Disabled" Value="false" />
+            <Arg For="_ => _!.MinDate" Value="@_minDate" />
+            <Arg For="_ => _!.MaxDate" Value="@_minDate" />
+        </Arguments>
+        <Template>
+            <PhMonthPicker @attributes="context.Args" @bind-Value="_defaultValue" />
+            <p class="mt-md t-helper-text">Current value: @(_defaultValue?.ToString("yyyy-MM") ?? "none")</p>
+        </Template>
+    </Story>
+
+    <Story Name="Regional formats">
+        <Template>
+            <PhInputColumn>
+                @foreach (var culture in new string[] { "en-US", "ja-JP", "sv-SE", "es-ES" })
+                {
+                    <PhLabel Text="@culture">
+                        <PhMonthPicker @attributes="context.Args" Culture="@culture" @bind-Value="_defaultValue" />
+                    </PhLabel>
+                }
+            </PhInputColumn>
+        </Template>
+    </Story>
+
+</Stories>
+
+@code {
+    private DateOnly? _defaultValue;
+    private DateOnly _minDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(-1));
+    private DateOnly _maxDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(1));
+    private DateOnly _minFutureDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(7));
+    private DateOnly _maxFutureDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(27));
+    private DateOnly _minPastDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(-27));
+    private DateOnly _maxPastDate = DateOnly.FromDateTime(DateTime.Now.AddMonths(-7));
+}

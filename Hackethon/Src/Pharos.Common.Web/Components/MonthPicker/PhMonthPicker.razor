@@ -1,0 +1,16 @@
+﻿<div class="flex gap-gutter">
+    <PhDropdown
+        TValue="int"
+        Value="@_selected.Month"
+        ValueChanged="MonthChanged"
+        Options="_months"
+        Size="Size"
+        Disabled="Disabled" />
+    <PhDropdown
+        TValue="int"
+        Value="@_selected.Year"
+        ValueChanged="YearChanged"
+        Options="_years"
+        Size="Size"
+        Disabled="Disabled" />
+</div>

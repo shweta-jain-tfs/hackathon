@@ -1,0 +1,10 @@
+﻿global using Microsoft.AspNetCore.Components;
+global using Pharos.Client.App.Settings.Models;
+global using Pharos.Client.App.Settings.ViewModels;
+global using Pharos.Client.Common.Models;
+global using Pharos.Client.Common.Models.DataServices;
+global using Pharos.Client.Common.Models.Notifications;
+global using Pharos.Client.Common.Models.Services;
+global using Pharos.Client.Common.ViewModels;
+global using Pharos.Common.Web.Components.FormElements;
+global using Pharos.Contracts.Notifications;

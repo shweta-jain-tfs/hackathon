@@ -1,0 +1,4 @@
+[FILE]
+Type=Phadia E UniCAP VERSION FILE
+FormatVersion=1.0
+Version=10000

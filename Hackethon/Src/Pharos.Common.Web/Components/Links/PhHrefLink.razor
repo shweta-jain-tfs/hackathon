@@ -1,0 +1,8 @@
+﻿@if (Disabled)
+{
+    <a class="@Classname" role="link" aria-disabled="true">@ChildContent</a>
+}
+else
+{
+    <a class="@Classname" href="@Href" @onclick="OnClickHandler">@ChildContent</a>
+}

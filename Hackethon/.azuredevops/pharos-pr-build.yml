@@ -1,0 +1,212 @@
+# Makes required checks before a PR can be merged to main. Runs all tests, checks if the api needs to be updated and
+# makes sure Pharos builds without errors.
+# Runs security scans (CodeQL and JFrog) in paralell on other agent pool
+
+name: PrChecks_$(BuildVersion).$(Build.BuildId)
+
+trigger: none
+
+resources:
+  repositories:
+    - repository: sharedPipeline # Name to reference this repository at a later step
+      type: git
+      name: "TetrisSoftware/SharedPipelineTemplates"
+
+parameters:
+- name: 'BuildConfiguration'
+  displayName: Build Configuration
+  default: Release
+  type: string
+- name: 'EnableExtendedTestLogging'
+  displayName: Enable Extended Test Logging
+  default: true
+  type: boolean
+
+variables:
+- group: CodeQL
+- group: JFrog
+- group: PRBuild
+- group: JFrogArtifactory
+- name: 'buildConfiguration'
+  value: '${{ parameters.BuildConfiguration }}'
+- name: dotNetVersion
+  value: '10.0.402'
+- name: nodeVersion
+  value: '20.11.0'
+# following is used in jf code ananalysis report tests step TODO: if possible move in to step as parameters or env
+- name: timestamp
+  value: $[format('{0:yyyyMMddHHmmss}', pipeline.startTime)]
+- name: branchName
+  value: $[replace(variables['Build.SourceBranchName'], '/', '_')]
+
+
+stages:
+  - stage:
+    jobs:
+    - job: BuildAndTest
+      pool:
+         name: 'Development'
+      workspace:
+        clean: all
+      steps:
+      - template: .azuredevops/templates/build-npm-step.yml@sharedPipeline
+        parameters:
+          nodeVersion: '$(nodeVersion)'
+          webPath: '$(Build.SourcesDirectory)\Src\Pharos.Common.Web'
+          buildNumber: '$(Build.BuildId)'
+          jfNpmRepoName: '$(JF_NPM_REPO_NAME)'
+          jfXrayBuildName: '$(XRAY_BUILD_NAME)'
+
+      - task: DeleteFiles@1
+        displayName: 'Clean temp folder'
+        inputs:
+            SourceFolder: '$(Build.SourcesDirectory)\temp'
+            Contents: Models.generated.cs*
+
+      - task: CopyFiles@2
+        displayName: 'Copy the current Models.generated.cs file to a temp folder for NSWAG validation'
+        inputs:
+          SourceFolder: '$(Build.SourcesDirectory)\src\Pharos.Client.Common.Models'
+          Contents: 'Models.generated.cs'
+          TargetFolder: '$(Build.SourcesDirectory)\temp'
+          CleanTargetFolder: true
+
+      - template: .azuredevops/templates/build-dot-net-prerequisite-step.yml@sharedPipeline
+        parameters:
+          nugetConfigPath: '$(Build.SourcesDirectory)\nuget.config'
+          nugetRestoreProjects: '$(Build.SourcesDirectory)\Pharos.sln'
+          sdkVersion: '$(dotNetVersion)'
+          toolsDirectory: '$(Agent.ToolsDirectory)'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Build Pharos Solution with configuration: ${{ parameters.buildConfiguration }}'
+        inputs:
+          command: 'build'
+          projects: '$(Build.SourcesDirectory)\Pharos.sln'
+          arguments: '--configuration $(buildConfiguration) --no-restore -p:Version=$(BuildVersion).$(Build.BuildId) -p:TreatWarningsAsErrors=true -p:CodeAnalysisTreatWarningsAsErrors=true'
+  
+
+      - task: PowerShell@2
+        displayName: 'Install NSwag'
+        inputs:
+        # Gets the correct nswag version from the nuget version.
+          targetType: 'inline'
+          script: |
+            $xml = [Xml] (Get-Content $(Build.SourcesDirectory)\Directory.Packages.props)
+            $version = ($xml.Project.ItemGroup.PackageVersion | Where-Object {$_.Include -eq "NSwag.AspNetCore"}).Version
+            echo "Installing nswag version $version"
+            npm install nswag@$version -gg
+
+      - task: PowerShell@2
+        name: RunNswag
+        displayName: 'Run NSwag to re-generate HTTP clients and models'
+        inputs:
+          targetType: 'inline'
+          script: |
+            cd $(Build.SourcesDirectory)\src\Pharos.Client.Common.Models
+            .\nswag_run.bat
+
+      - task: PowerShell@2
+        displayName: 'Check that the auto-generated code for Pharos HTTP clients and models is updated'
+        inputs:
+          targetType: 'inline'
+          # Uses powershell diff to make sure the API is updated.
+          script: |
+            $temp = get-content $(Build.SourcesDirectory)\temp\Models.generated.cs
+            $generated = get-content $(Build.SourcesDirectory)\src\Pharos.Client.Common.Models\Models.generated.cs
+            $diff = diff ($generated) ($temp)
+            If(![string]::IsNullOrEmpty($diff)){
+              echo "diff: ($diff)"
+              Throw "REST API changes detected. You need to generate client models to complete pull request. Open Src\Pharos.Client.Common.Models folder and execute `.\nswag_run.bat`."
+            }
+            else
+            {
+              echo "Generated HTTP models and clients are up-to-date."
+            }
+
+      - template: templates/run-and-publish-xunit-test.yml
+        parameters:
+          buildConfiguration: '$(buildConfiguration)'
+          buildSourcesDirectory: '$(Build.SourcesDirectory)'
+          sqlPassword: '$(SQLPass)'
+          tempDirectory: '$(Agent.TempDirectory)'
+          agentName: '$(Agent.Name)'
+          enableExtendedTestLogging: ${{ parameters.EnableExtendedTestLogging }}
+
+    - job: CodeQLJob
+      pool:
+        name: 'Security'
+      workspace:
+        clean: all
+      displayName: Perform Static Code Analysis (CodeQL)
+      steps:
+        - template: .azuredevops/templates/build-dot-net-prerequisite-step.yml@sharedPipeline
+          parameters:
+            nugetConfigPath: '$(Build.SourcesDirectory)\nuget.config'
+            nugetRestoreProjects: '$(Build.SourcesDirectory)\Pharos.sln'
+            sdkVersion: '$(dotNetVersion)'
+            toolsDirectory: '$(Agent.ToolsDirectory)'
+        - template: .azuredevops/templates/security-codeql-code-scan.yml@sharedPipeline
+          parameters:
+            buildCommand: '$(buildCommand)'
+            codeqlExeDir: '$(codeqlExeDir)'
+            dotNetVersion: '$(dotNetVersion)'
+            downloadUrl: '$(downloadURL)'
+            installPath: '$(installPath)'
+            netInstallPath: '$(netInstallPath)'
+            sourcePath: '$(sourcePath)'
+            tarOutputPath: '$(tarOutputPath)'
+
+
+        - template: .azuredevops/templates/security-codeql-add-pr-comment.yml@sharedPipeline
+          parameters:
+            addCommentTag: '$(addCommentTag)'
+            adoApiUri: '$(adoApiUri)'
+            commentTag: '$(commentTag)'
+            exceptionsArray: $(exceptionsArray)
+            maxSeverityScore: $(maxSeverityScore)
+            minSeverityScore: $(minSeverityScore)
+            sarifFilePath: '$(Build.SourcesDirectory)\csharp-results.sarif'
+            threadApiUri: '$(threadApiUri)'
+
+        - template: .azuredevops/templates/security-codeql-add-pr-comment.yml@sharedPipeline
+          parameters:
+            addCommentTag: '$(addCommentTag)'
+            adoApiUri: '$(adoApiUri)'
+            commentTag: '$(commentTag)'
+            exceptionsArray: $(exceptionsArray)
+            maxSeverityScore: $(maxSeverityScore)
+            minSeverityScore: $(minSeverityScore)
+            sarifFilePath: '$(Build.SourcesDirectory)\github-csharp-results.sarif'
+            threadApiUri: '$(threadApiUri)'
+            
+            
+    - job: JFrogJob
+      pool:
+        name: 'Security'
+      workspace:
+        clean: all
+      displayName: Perform Pull Request Dependency Security Scan (JFrog Frogbot)
+      steps:
+        - task: UseDotNet@2
+          displayName: 'Assert .Net version $(dotNetVersion)'
+          inputs:
+            version: '$(dotNetVersion)'
+            installationPath: '$(Agent.ToolsDirectory)\dotnet'
+        - template: .azuredevops/templates/build-npm-step.yml@sharedPipeline
+          parameters:
+            nodeVersion: '$(nodeVersion)'
+            webPath: '$(Build.SourcesDirectory)\Src\Pharos.Common.Web'
+            buildNumber: '$(Build.BuildId)'
+            jfNpmRepoName: '$(JF_NPM_REPO_NAME)'
+            jfXrayBuildName: '$(XRAY_BUILD_NAME)'
+        - template: .azuredevops/templates/security-jfrog-scan.yml@sharedPipeline
+          parameters:
+            adoApiUrl: '$(ADO_API_URL)'
+            commentStatus: '$(COMMENT_STATUS)'
+            commentTag: '$(COMMENT_TAG)'
+            jfAccessToken: '$(JF_ACCESS_TOKEN)'
+            jfExePath: '$(JF_EXE_PATH)' 
+            jfFrogbotScriptPath: '$(JF_FROGBOT_SCRIPT_PATH)'
+            jfGitToken: '$(System.AccessToken)'
+            patchUrl:  '$(ADO_API_THREADS_URL)/$($thread.id)?api-version=$(ADO_API_VERSION)'

@@ -1,0 +1,30 @@
+﻿@use "../abstracts/colors";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography";
+
+.ph-settings-group {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    height: 100%;
+    min-height: 0; // allow to shrink in flex layout
+
+    &__label {
+        display: flex;
+        justify-content: space-between;
+        background-color: #{colors.$background-secondary};
+        padding: spacing.$padding-lg;
+        padding-bottom: 0;
+        font-size: typography.$font-size-h2;
+    }
+
+    &__panel {
+        // set background color to be used by child components (e.g. grid)
+        --ph-bg-color: #{colors.$background-secondary};
+        display: grid;
+        background-color: var(--ph-bg-color);
+        padding-block: spacing.$padding-md;
+        padding-inline: spacing.$padding-md calc((spacing.$padding-md - size.$scrollbar-width) / 2);
+        gap: spacing.$gap-gutter;
+    }
+}

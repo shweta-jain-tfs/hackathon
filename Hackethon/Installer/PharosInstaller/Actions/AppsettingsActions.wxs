@@ -1,0 +1,19 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <Property Id="APPSETTINGSPATH" Secure="yes" />
+
+    <CustomAction Id="SetAppSettingsPath"
+                  Property="APPSETTINGSPATH"
+                  Value="[INSTALLFOLDER]appsettings.Production.json" />
+
+    <CustomAction Id="SetParamsForUpdateAppSettings"
+                  Property="UpdateAppSettings"
+                  Value="AppSettingsPath=[APPSETTINGSPATH];EnableDataProtection=[SECUREENCLAVESENABLED]" />
+
+    <CustomAction Id="UpdateAppSettings"
+                  DllEntry="UpdateAppSettings"
+                  Return="check"
+                  BinaryRef="CustomAction.CA"
+                  Execute="deferred" />
+  </Fragment>
+</Wix>

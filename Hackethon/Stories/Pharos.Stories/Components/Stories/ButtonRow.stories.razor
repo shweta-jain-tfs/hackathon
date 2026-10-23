@@ -1,0 +1,78 @@
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.Panel
+@using Pharos.Common.Web.Components.PlaceHolder
+@attribute [Stories("Components/ButtonRow")]
+
+<Stories TComponent="PhButtonRow">
+
+    <Story Name="OnlyButtons">
+        <Template>
+            <PhPanel>
+                <PhButtonRow @attributes="context.Args">
+                    <Buttons>
+                        <PhButton Type="@ButtonType.Secondary">Cancel</PhButton>
+                        <PhButton Type="@ButtonType.Primary">Save</PhButton>
+                    </Buttons>
+                </PhButtonRow>
+            </PhPanel>
+            <br />
+            <br />
+            <PhPanel>
+                <PhButtonRow @attributes="context.Args">
+                    <Buttons>
+                        <PhButton Type="@ButtonType.Primary" StartIconType="IconType.ArrowLeft">Back</PhButton>
+                    </Buttons>
+                </PhButtonRow>
+            </PhPanel>
+        </Template>
+    </Story>
+
+    <Story Name="MixedContent">
+        <Template>
+            <PhPanel>
+                <PhButtonRow @attributes="context.Args">
+                    <LeftContent>
+                        <PhPlaceHolder />
+                    </LeftContent>
+                    <Buttons>
+                        <PhButton Type="@ButtonType.Secondary">Cancel</PhButton>
+                        <PhButton Type="@ButtonType.Primary">Save</PhButton>
+                    </Buttons>
+                </PhButtonRow>
+            </PhPanel>
+            <br />
+            <br />
+            <PhPanel>
+                <PhButtonRow @attributes="context.Args">
+                    <LeftContent>
+                        <PhPlaceHolder />
+                    </LeftContent>
+                    <Buttons>
+                        <PhButton Type="@ButtonType.Primary" StartIconType="IconType.ArrowLeft">Back</PhButton>
+                    </Buttons>
+                </PhButtonRow>
+            </PhPanel>
+        </Template>
+    </Story>
+
+    <Story Name="FillFlexContainer">
+        <Template>
+            <div class="flex">
+                <PhButtonRow @attributes="context.Args">
+                    <Buttons>
+                        <PhButton Type="@ButtonType.Secondary">Cancel</PhButton>
+                        <PhButton Type="@ButtonType.Primary">Save</PhButton>
+                    </Buttons>
+                </PhButtonRow>
+            </div>
+        </Template>
+    </Story>
+</Stories>
+
+
+
+@code
+{
+}

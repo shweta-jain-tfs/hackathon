@@ -1,0 +1,101 @@
+﻿@inherits ComponentBase
+
+<div class="flex flex-wrap gap-gutter">
+    <div class="flex-1">
+        <PhInputColumn>
+            <PhDatePicker @bind-Value="ViewModel.SampleCollectionDate"
+                          Label="@Loc["RequestDetailPage_SampleDate"]"
+                          Size="DatePickerSize.LargeInputWidth"
+                          DisplayOnly="@DisplayOnly"
+                          Disabled="@(DetailInputsDisabled)" />
+
+            <PhNumberField @bind-Value="ViewModel.PreDilutionFactor"
+                           Label="@Loc["RequestDetailPage_PreDilution"]"
+                           DisplayOnly="@PreDilutionDisplayOnly"
+                           MaxNumberOfDigits="4"
+                           Size="@(PreDilutionDisplayOnly? TextBoxSize.Large: TextBoxSize.ExtraSmall)"
+                           Disabled="@(DetailInputsDisabled)" />
+            
+            <PhDropdown TValue="int?"
+                        Options="@ViewModel.TubeDefinitions"
+                        Title="@Loc["RequestDetailPage_SampleTubeSelect"]"
+                        Label="@Loc["RequestDetailPage_SampleTube"]"
+                        Size="DropdownSize.LargeInputWidth"
+                        @bind-Value="ViewModel.SampleTubeType"
+                        DisplayOnly="@(!CanEditTubeType)"
+                        Disabled="@(CanEditTubeType && ViewModel.IsEmptySampleId)" />
+                        
+            @if (ViewModel.SelectedSampleTubeSupportsVolumeCalculation)
+            {
+                <PhDropdown TValue="SampleVolumeCheck"
+                            Options="@_sampleVolumeChecks"
+                            Label="@Loc["RequestDetailPage_SampleVolumeCheck"]"
+                            Size="DropdownSize.LargeInputWidth"
+                            @bind-Value="ViewModel.SampleVolumeCheck"
+                            DisplayOnly="@DisplayOnly"
+                            Disabled="@(DetailInputsDisabled)" />
+            }
+        </PhInputColumn>
+    </div>
+
+    <div class="flex-1">
+        <PhInputColumn>
+            <PhTextBox Label="@Loc["RequestDetailPage_RequestId"]"
+                       @bind-Value="ViewModel.RequestId"
+                       MaxLength="32"
+                       Size="TextBoxSize.Large"
+                       DisplayOnly="@DisplayOnly"
+                       Disabled="@DetailInputsDisabled" />
+            
+            <PhDatePicker @bind-Value="ViewModel.RequestDate"
+                            Label="@Loc["RequestDetailPage_RequestDate"]"
+                            Size="DatePickerSize.LargeInputWidth"
+                            DisplayOnly="@DisplayOnly"
+                            Disabled="@DetailInputsDisabled" />
+            
+            <PhCheckBox Label="@Loc["RequestDetailPage_HighPriority"]"
+                        DisplayOnly="@NotAuthorized"
+                        Disabled="@DetailInputsDisabled"
+                        @bind-Value="ViewModel.HighPriority" />
+            
+            @if (CanEditRequestInfo)
+            {
+                <div class="flex flex-wrap gap-md">
+                    <PhLabel Text="@Loc["RequestDetailPage_Requestor"]" Disabled="@ViewModel.IsEmptySampleId">
+                        <PhAutocomplete TValue="Requestor"
+                                        Result="ViewModel.RequestorViewModel.GetRequestors"
+                                        Value="ViewModel.RequestorViewModel.Model"
+                                        ValueChanged="ViewModel.RequestorViewModel.RequestorSelected"
+                                        SelectedText="FormatRequestor"
+                                        Row1Text="@(x => string.IsNullOrWhiteSpace(x.Name) ? "–" : x.Name)"
+                                        Row2Text="@(x => x.RequestorId)"
+                                        PlaceHolder="@Loc["RequestDetailPage_SearchByIdOrName"]"
+                                        Size="TextBoxSize.Large"
+                                        Disabled="@ViewModel.IsEmptySampleId"
+                                        NoResultsText="@Loc["RequestDetailPage_NoResultsFound"]"
+                                        FooterTextFormat="@Loc["RequestDetailPage_FooterTextFormat"]"/>
+                    </PhLabel>
+
+                    <PhLabel IsBlankKeepDistance>
+                        <PhHrefLink LinkSize="LinkSize.Body1" OnClick="ViewRequestorDetails" Disabled="@(ViewModel.RequestorViewModel.Model.Id == 0)">
+                            @Loc["RequestDetailPage_ViewDetails"]
+                        </PhHrefLink>
+                    </PhLabel>
+                </div>
+            }
+            else if (CanViewRequestInfo)
+            {
+                <PhLabel Text="@Loc["RequestDetailPage_Requestor"]" RenderAsLabel="false" Disabled="@ViewModel.IsEmptySampleId">
+                    <PhValueBox Size="TextBoxSize.Large">
+                        @if (ViewModel.RequestorViewModel.Model.Id != 0)
+                        {
+                            <PhHrefLink LinkSize="LinkSize.Body1" OnClick="ViewRequestorDetails">
+                                @FormatRequestor(ViewModel.RequestorViewModel.Model)
+                            </PhHrefLink>
+                        }
+                    </PhValueBox>
+                </PhLabel>
+            }
+        </PhInputColumn>
+    </div>
+</div>

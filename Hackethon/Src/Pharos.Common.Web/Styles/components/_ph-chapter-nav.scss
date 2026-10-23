@@ -1,0 +1,121 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-chapter-nav {
+    $baseIndent: 12px;
+    $topLevelPadding: $baseIndent - 2;
+    --_indent: #{$topLevelPadding};
+
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    @include text.body1;
+    font-weight: text.$font-bold;
+    text-wrap: balance;
+    color: colors.$text-primary;
+
+    > ul {
+        min-height: 0;
+        flex: 1;
+        overflow: auto;
+    }
+
+    // indent and handle heading numbering
+    ul ul {
+        --_indent: #{$baseIndent * 2 - 2};
+        counter-reset: ph-h2 ph-h3;
+        font-weight: text.$font-normal;
+
+        > li {
+            counter-increment: ph-h2;
+        }
+    }
+
+    ul ul ul {
+        --_indent: #{$baseIndent * 3 - 2};
+        counter-reset: ph-h3;
+
+        > li {
+            counter-increment: ph-h3;
+        }
+    }
+
+    ul ul ul ul {
+        --_indent: #{$baseIndent * 4 - 2};
+
+        > li {
+            counter-increment: none;
+        }
+    }
+
+    &__item {
+        display: flex;
+        border: 2px solid transparent;
+        @include rounded.rounded;
+
+        &:has(:hover),
+        &:has(:focus-visible) {
+            background: colors.$layer-hover-01;
+        }
+
+        &:has([aria-current]) {
+            background: colors.$layer-selected-01;
+            border-color: colors.$border-selected;
+        }
+    }
+
+    &__link {
+        flex-grow: 1;
+        display: flex; // don't wrap text under numbering
+        align-items: start;
+        gap: spacing.$gap-xs;
+        padding-block: spacing.$padding-xs;
+        padding-inline: var(--_indent) spacing.$padding-sm;
+        cursor: pointer;
+
+        &:has(+ button) {
+            padding-right: spacing.$gap-xs;
+        }
+        &::before {
+            content: none;
+
+            ul ul & {
+                content: counter(ph-h2);
+                min-width: 2ch;
+            }
+
+            ul ul ul & {
+                content: counter(ph-h2) "." counter(ph-h3);
+                min-width: 3.5ch;
+            }
+
+            ul ul ul ul & {
+                content: none;
+            }
+        }
+    }
+
+    &__toggle {
+        display: flex;
+        align-items: start;
+        padding: spacing.$padding-xs;
+        padding-right: $topLevelPadding;
+
+        svg {
+            // center the icon over one line of text
+            min-height: 1lh;
+        }
+    }
+
+    &--with-background {
+        background-color: colors.$layer-subtle;
+        padding-block: spacing.$padding-xs;
+        
+        > ul {
+            scrollbar-gutter: stable both-edges;
+        }
+    }
+}

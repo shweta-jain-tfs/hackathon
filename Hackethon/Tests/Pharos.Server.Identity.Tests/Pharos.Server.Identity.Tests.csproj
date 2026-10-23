@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+	<PropertyGroup>
+		<AssemblyName>$(MSBuildProjectName)</AssemblyName>
+		<RootNamespace>Pharos.Server.Identity</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="bunit" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Src\Pharos.Server.Identity\Pharos.Server.Identity.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server\Pharos.Server.csproj" />
+	</ItemGroup>
+
+</Project>

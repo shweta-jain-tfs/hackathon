@@ -1,0 +1,9 @@
+﻿@if (InstrumentModel.SignalTower.PossibleToMute)
+{
+    <button type="button" class="ph-mute-button ph-mute-button--primary" @onclick="MuteSound">
+        <span class="ph-mute-button__icon ph-mute-button__icon--swing">
+            <PhIcon IconType="IconType.Bell" Size="IconSize.Xl" />
+        </span>
+        <span class="ph-mute-button__label">@Loc["InstrumentStatusBarView_Mute"]</span>
+    </button>
+}

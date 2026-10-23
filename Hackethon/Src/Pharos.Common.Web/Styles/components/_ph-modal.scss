@@ -1,0 +1,182 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/spacing";
+@use "../abstracts/size";
+@use "../abstracts/typography" as text;
+
+.ph-modal-anchor {
+    anchor-name: --modal-anchor;
+}
+
+.ph-modal {
+    --ph-title-color: #{colors.$background-secondary};
+    --ph-bg-color: #{colors.$background-secondary};
+    --_height: #{size.$modal-height-size-medium};
+    --_width: #{size.$modal-width-size-medium};
+    --_header-text-color: #{colors.$text-primary};
+    --_close-icon-color: #{colors.$icon-primary};
+    display: flex;
+    flex-direction: column;
+    background-color: var(--ph-bg-color);
+    @include text.body1;
+    color: colors.$text-secondary;
+    position-anchor: --modal-anchor;
+    position-area: center;
+    height: var(--_height);
+    max-height: 100%;
+    max-width: 100%;
+    min-width: size.$modal-width-size-xsmall;
+
+    &:not(:has(.ph-modal__body)) {
+        width: var(--_width);
+    }
+
+    &:focus-visible {
+        outline: none;
+    }
+
+    &__header {
+        display: grid;
+        grid-template-columns: 1fr minmax(0, auto) 1fr;
+        align-content: center;
+        align-items: center;
+        width: var(--_width);
+        min-width: 100%;
+        max-width: 100%;
+        padding: spacing.$padding-sm;
+        gap: spacing.$gap-md;
+        background-color: var(--ph-title-color);
+        text-align: center;
+    }
+
+    &--info {
+        --ph-title-color: #{colors.$status-info};
+    }
+
+    &--warning {
+        --ph-title-color: #{colors.$status-validation};
+    }
+
+    &--alarm {
+        --ph-title-color: #{colors.$status-alarm};
+    }
+
+    &__title {
+        grid-column-start: 2;
+        width: 100%;
+        @include text.h2;
+        color: var(--_header-text-color);
+        > h3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;            
+        }
+    }
+
+    &__header-actions {
+        grid-column-start: 3;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: spacing.$gap-sm;
+    }
+
+    &__close {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        color: var(--_close-icon-color);
+    }
+
+    &__divider {
+        flex-shrink: 0;
+        height: 2px;
+        background-image: linear-gradient(to right, transparent, colors.$border-subtle-02, colors.$border-subtle-02, transparent);
+    }
+
+    &__internalcontent {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-md;
+        padding: spacing.$padding-md;
+        min-height: 0;
+        height: 100%;
+    }
+
+    &__body {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        // set width on the body to allow the footer to grow to fit all buttons
+        width: calc(var(--_width) - 2 * spacing.$padding-md);
+        max-width: 100%;
+        min-width: 100%;
+        min-height: 2lh;
+        overflow: auto;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: spacing.$gap-gutter;
+        @include text.body2;
+    }
+
+    &__selected-count {
+        flex: 1;
+        @include text.body2;
+    }
+
+    &--centertext {
+        text-align: center;
+    }
+
+    &--width-xsmall {
+        --_width: #{size.$modal-width-size-xsmall};
+    }
+
+    &--width-small {
+        --_width: #{size.$modal-width-size-small};
+    }
+
+    &--width-medium {
+        --_width: #{size.$modal-width-size-medium};
+    }
+
+    &--width-large {
+        --_width: #{size.$modal-width-size-large};
+    }
+
+    &--width-xlarge {
+        --_width: #{size.$modal-width-size-xlarge};
+    }
+
+    &--height-xsmall {
+        --_height: #{size.$modal-height-size-xsmall};
+    }
+
+    &--height-small {
+        --_height: #{size.$modal-height-size-small};
+    }
+
+    &--height-medium {
+        --_height: #{size.$modal-height-size-medium};
+    }
+
+    &--height-large {
+        --_height: #{size.$modal-height-size-large};
+    }
+
+    &--height-xlarge {
+        --_height: #{size.$modal-height-size-xlarge};
+    }
+
+
+    &::backdrop {
+        background-color: colors.$backdrop-primary;
+    }
+}

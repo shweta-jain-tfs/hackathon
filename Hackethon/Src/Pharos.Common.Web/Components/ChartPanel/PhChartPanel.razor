@@ -1,0 +1,32 @@
+﻿@using Pharos.Common.Web.Components.Status
+<div class="ph-chart-panel">
+
+    <div class="ph-chart-panel__header">
+        <div class="ph-chart-panel__header-title">
+            <PhStatus Status="@Status" Size="StatusSize.Xl" />
+            @if (Title != null)
+            {
+                @Title
+            }
+        </div>
+        @if (Action != null)
+        {
+            <div class="ph-chart-panel__header-action">
+                @Action
+            </div>
+        }
+    </div>
+
+    <div class="ph-chart-panel__content">
+        <div class="ph-chart-panel__content-chart">
+            @Chart
+        </div>
+
+        @if (Footer != null)
+        {
+            <div class="ph-chart-panel__content-footer">
+                @Footer
+            </div>
+        }
+    </div>
+</div>

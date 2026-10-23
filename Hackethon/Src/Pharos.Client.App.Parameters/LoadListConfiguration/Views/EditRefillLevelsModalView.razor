@@ -1,0 +1,113 @@
+﻿@using Pharos.Common.Web.Components.DetailsList
+@using Pharos.Common.Web.Models.DataGrid
+@using Pharos.Client.Common.App.Views.ReagentShapeColor
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Client.Common.App.Validation
+
+<PhModalContent>
+    <Body>
+    <PhStack>
+        <PhDetailsList AlignedValues="false" TextSize="DetailsListTextSize.Default" HighlightedValues>
+            <PhDetailsListItem Label="@Loc["LoadListConfigurationsEditModal_Instrument"]"> @SelectedInstrument </PhDetailsListItem>
+        </PhDetailsList>
+
+        <PhSimpleValidationContext Model="ConfigurationItem" @ref="_validation">
+            <PhGrid>
+                <PhGridColumn Span="ColumnSpan.Col4">
+                    <PhNumberField Label="@Loc["LoadListLevels_NewRefillLevel"]"
+                                   HelpText="@Loc["LoadListConfigurationsEditModal_HelpTextRefillLevel"]"
+                                   Value="@ConfigurationItem.RefillLevel"
+                                   ValueChanged="@((int? value) => OnRefillLevelChanged(value))"
+                                   ValueExpression="() => ConfigurationItem.RefillLevel"
+                                   Size="TextBoxSize.Small"
+                                   MaxNumberOfDigits="6"
+                                   PlaceHolder="@Loc["LoadListConfigurationsEditModal_RefillLevelPlaceHolder"]"/>
+                </PhGridColumn>
+                <PhGridColumn Span="ColumnSpan.Col4">
+                    <PhNumberField Label="@Loc["LoadListLevels_NewTriggerLevel"]"
+                                   HelpText="@Loc["LoadListConfigurationsEditModal_HelpTextTriggerLevel"]"
+                                   Value="@ConfigurationItem.TriggerLevel"
+                                   ValueChanged="@((int? value) => OnTriggerLevelChanged(value))"
+                                   ValueExpression="() => ConfigurationItem.TriggerLevel"
+                                   Size="TextBoxSize.Small"
+                                   MaxNumberOfDigits="6"
+                                   PlaceHolder="@Loc["LoadListConfigurationsEditModal_TriggerLevelPlaceHolder"]"/>
+                </PhGridColumn>
+            </PhGrid>
+        </PhSimpleValidationContext>
+
+
+        @if (_updatedConfigurations != null)
+        {
+            <PhDataGrid Items="_updatedConfigurations.AsQueryable()"
+                        TGridItem="LoadListConfiguration" HeaderSize="HeaderSizeEnum.PartOfPage" RowType="RowTypeEnum.LinesBetweenRows" StateID=""
+                        DefaultSortDirection="SortDirection.Ascending" DefaultSortColumn="@nameof(LoadListConfiguration.FriendlyName)">
+                <Columns>
+                    <Column Property="@(x => x.Id)">
+                        <PhIconButton OnClick="@(() => RemoveFromSelection(context.Id))" IconType="IconType.X" Type="IconButtonType.Blank" IconSize="IconSize.Sm"/>
+                    </Column>
+
+                    <Column Title="@Loc["LoadListLevels_Name"]" Property="@(x => x.FriendlyName)">
+
+                        @if (context.LoadListItemType == LoadListItemType.Cartridge)
+                        {
+                            <ReagentShapeColorView Colors="context.Colors" Methods="@context.Texts" Shape="context.Shape" />
+                        }
+                        else
+                        {
+                            <ReagentShapeColorView Colors="context.Colors" Name="@context.FriendlyName" Shape="context.Shape"/>
+                        }
+
+                    </Column>
+                    <Column Title="@Loc["LoadListLevels_FullName"]" Property="@(x => x.FullName)"/>
+                    <Column Title="@Loc["LoadListLevels_CurrentRefillLevel"]" Property="@(x => x.RefillLevel)" Align="ColumnAlignEnum.Left">
+
+                        @if (context.LoadListItemType == LoadListItemType.DilutionPlate)
+                        {
+                            <span>
+                                @context.RefillLevel wells
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @context.RefillLevel @context.Unit.ToLocalizedString()
+                            </span>
+                        }
+
+                    </Column>
+                    <Column Title="@Loc["LoadListLevels_CurrentTriggerLevel"]" Property="@(x => x.TriggerLevel)" Align="ColumnAlignEnum.Left">
+
+                        @if (context.LoadListItemType == LoadListItemType.DilutionPlate)
+                        {
+                            <span>
+                                @context.TriggerLevel wells
+                            </span>
+                        }
+                        else
+                        {
+                            <span>
+                                @context.TriggerLevel @context.Unit.ToLocalizedString()
+                            </span>
+                        }
+
+                    </Column>
+                </Columns>
+            </PhDataGrid>
+        }
+
+    </PhStack>
+    </Body>
+
+    <Footer>
+        <PhButton Type="ButtonType.Secondary" OnClick="@(() => CloseModal(ModalResult.Cancel()))">
+            @Loc["LoadListConfigurationsEditModal_Cancel"]
+        </PhButton>
+
+        <PhButton Disabled="!IsValid() || _updatedConfigurations?.Count == 0 || 
+                            (ConfigurationItem.RefillLevel == null && ConfigurationItem.TriggerLevel == null)"
+                            Type="ButtonType.Primary" OnClick="ValidateAndSave">
+            @Loc["LoadListConfigurationsEditModal_Save"]
+        </PhButton>
+    </Footer>
+</PhModalContent>

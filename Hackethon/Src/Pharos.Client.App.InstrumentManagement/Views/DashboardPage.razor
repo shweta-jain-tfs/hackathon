@@ -1,0 +1,84 @@
+@using Pharos.Client.App.InstrumentManagement.Views.Dashboard
+@using Pharos.Common.Web.Components.DockedButtonRow
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.DropdownButton
+@using Pharos.Client.Common.Models
+@attribute [Route(PageRoute.Dashboard)]
+@attribute [Authorize]
+
+<PhPage>
+    <PhGrid FillHeight="true">
+        <PhGridColumn Span="ColumnSpan.Col8">
+            <PhDockedButtonRow DockToBottom>
+                <ChildContent>
+                    <PhStack>
+                        <PhScroll>
+                            <ProcessListView />
+                        </PhScroll>
+                    </PhStack>
+                </ChildContent>
+                <Buttons>
+                    @if (ShowStartAssayButton)
+                    {
+                        <PhButton Type="ButtonType.Secondary" Disabled="_isDisabledStartAssayButton" OnClick="AssayStart">
+                            @Loc["DashboardPage_StartAssayButton"]
+                        </PhButton>
+                    }
+                    @if (ShowEndAssayButton)
+                    {
+                        <PhButton Type="ButtonType.Secondary" Disabled="_isDisabledEndAssayButton" OnClick="AssayEnd">
+                            @Loc["DashboardPage_EndAssayButton"]
+                        </PhButton>
+                    }
+                    @if (ShowGoToStandbyButton)
+                    {
+                        <PhButton Type="ButtonType.Secondary" Disabled="_isDisabledGoToStandbyButton" OnClick="Standby">
+                            @Loc["DashboardPage_GotoStandbyButton"]
+                        </PhButton>
+                    }
+                    @if (_dropdownItems.Any())
+                    {
+                        <PhDropdownButton Text="More" DropdownButtonType="DropdownButtonType.Secondary">
+                            @foreach (var item in _dropdownItems)
+                            {
+                                <PhDropdownButtonItem Text="@item.Text" OnClick="@item.OnClick" Disabled="@item.Disabled" />
+                            }
+                        </PhDropdownButton>
+                    }
+                </Buttons>
+            </PhDockedButtonRow>
+        </PhGridColumn>
+        <PhGridColumn Span="ColumnSpan.Col4">
+            <PhStack>
+                <PhPanel Grow>
+                    <PhScroll>
+                        <MethodSettingsView TableHeader="Methods" ShowRunColumns="false" />
+                    </PhScroll>
+                </PhPanel>
+                <div class="flex flex-row gap-sm">
+                    <PhPanel Grow>
+                        <div class="flex flex-col gap-sm">
+                            <ConnectionsView />
+                            <TemperaturesView />
+                            <HumidityView />
+                        </div>
+                    </PhPanel>
+                    <PhPanel Grow>
+                        <div class="flex flex-col gap-lg">
+                            <HoodStatusView IsStandbyState="InstrumentModel.State == InstrumentState.Standby"
+                                            HoodLockState="InstrumentModel.HoodLockState"
+                                            IsUnlockInProgress="InstrumentModel.IsHoodUnlockInProgress"
+                                            OnUnlockHoodClick="UnlockHoodClicked" />
+                            @if (ShowLightButton)
+                            {
+                                <PhButton Type="ButtonType.Secondary" StartIconType="IconType.Light" OnClick="OnLightOnOffClicked">
+                                    @Loc["DashboardPage_LightOnOff"]
+                                </PhButton>
+                            }
+                        </div>
+                    </PhPanel>
+                </div>
+            </PhStack>
+        </PhGridColumn>
+    </PhGrid>
+</PhPage>

@@ -1,0 +1,24 @@
+﻿@using Pharos.Client.Common.Localization
+@using Pharos.Client.Common.App.Validation
+
+<PhModalContent>
+    <Body>
+        <PhSimpleValidationContext @ref="_validation" Model="ViewModel" OnValidationStateChanged="OnValidationContextStateChanged">
+            <div class="ph-tray-page__dialog-content">
+                <PhTextBox autofocus
+                           Label="@Loc["TraysPage_AddDialog_TrayIdInputLabel"]"
+                           @bind-Value="ViewModel.TrayId"
+                           PlaceHolder="@Loc["TraysPage_AddDialog_TrayIdInputPlaceholder"]"
+                           Size="TextBoxSize.Small"
+                           MaxLength="@_maxTrayIdLength"
+                           HelpText=" "
+                           Error="!string.IsNullOrEmpty(ViewModel.ErrorMessage)"
+                           ErrorText="@ViewModel.ErrorMessage" />
+            </div>
+        </PhSimpleValidationContext>
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["TraysPage_AddDialog_ButtonSecondary"]</PhButton>
+        <PhButton Type="ButtonType.Primary" Disabled="@(!IsValid())" OnClick="ValidateAndSave">@Loc["TraysPage_AddDialog_ButtonPrimary"]</PhButton>
+    </Footer>
+</PhModalContent>

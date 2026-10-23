@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Pharos.Server.Settings</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Src\Pharos.Server.Application.Settings\Pharos.Server.Application.Settings.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server.Mediator\Pharos.Server.Mediator.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server.Settings\Pharos.Server.Settings.csproj" />
+		<ProjectReference Include="..\..\Src\Pharos.Server\Pharos.Server.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,28 @@
+﻿<div class="ph-searchbox">
+    <input type="search"
+           placeholder="@PlaceholderText"
+           @bind="SearchText"
+           @bind:event="oninput"
+           @onkeydown="HandleInputKeydown"
+           class="@CssClassInputWhenFilled"
+           disabled="@Disabled"
+           @ref="_searchInputRef" />
+
+    @if (!string.IsNullOrWhiteSpace(SearchText))
+    {
+        <button type="button"
+                class="ph-searchbox__clear"
+                @onclick="ClearAndFocusAsync"
+                disabled="@Disabled"
+                aria-label="Clear search">
+            <PhIcon IconType="IconType.X" Size="IconSize.Lg" />
+        </button>
+    }
+
+    <button type="button"
+            class="ph-searchbox__button"
+            disabled="@Disabled"
+            @onclick="TriggerSearch">
+        <PhIcon IconType="IconType.Search" Size="IconSize.Md"></PhIcon>
+    </button>
+</div>

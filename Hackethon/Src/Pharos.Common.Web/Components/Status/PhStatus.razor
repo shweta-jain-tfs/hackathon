@@ -1,0 +1,24 @@
+﻿@if (Icon != null || !string.IsNullOrEmpty(Text))
+{
+    <div class="@CssClasses">
+        @if (Icon != null)
+        {
+            <PhStatusIcon Icon="@Icon.Value" Size="@IconSize" />
+        }
+        @if (!string.IsNullOrEmpty(Text))
+        {
+            @if (string.IsNullOrEmpty(Href) && !OnClick.HasDelegate)
+            {
+                <div class="@CssClassesText">
+                    @Text
+                </div>
+            }
+            else
+            {
+                <div class="@CssClassesText">
+                    <PhHrefLink Href="@Href" OnClick="@OnClick">@Text</PhHrefLink>
+                </div>
+            }
+        }
+    </div>
+}

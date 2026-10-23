@@ -1,0 +1,59 @@
+@using Pharos.Client.App.Identity.ViewModels
+@layout UsersAndRolesLayout
+@attribute [Route(PageRoute.UsersAndRoles.Roles)]
+@attribute [Authorize(Permissions.ManageUsersAndRoles)]
+
+<SectionContent SectionName="page-header">
+    <Breadcrumb Items="@Breadcrumbs" />
+</SectionContent>
+
+<PhStack>
+    <PhDockedButtonRow>
+        <ChildContent>
+            <PhDataGrid @ref="_phDataGrid"
+                        TableTitle="@Loc["Role_Roles"]"
+                        StateID="roles"
+                        TGridItem="RoleViewModel"
+                        Items="ViewModel.AsQueryable()"
+                        SelectionType="SelectionTypeEnum.MultiSelect"
+                        ItemStyleOptions="@(new() {
+                            Style = ItemStyleFlags.Disabled,
+                            Match = MatchesProtectedRole,
+                            Items = _protectedRoles
+                        })"
+                        OnSelectedItemsChanged="SelectedRoleChanged">
+                <Columns>
+                    <Column Title="@Loc["Role_DisplayName"]" Property="@(role => role.Model.DisplayName)">
+                        <PhHrefLink Href="@($"{PageRoute.UsersAndRoles.RoleDetails.Default}/{context.Model.Id}")">@context?.Model.DisplayName</PhHrefLink>
+                    </Column>
+                    <Column Title="@Loc["Role_UsersInRole"]" Property="@(role => role.Model.UsersInRole)" />
+                    <Column Property="@(role => role.Model.IsBuiltInRole)">
+                        @if (context.Model.IsBuiltInRole)
+                        {
+                            if(context.Model.IncludesCurrentUser)
+                            {
+                                @Loc["Role_BuiltInRoleAndIncludesCurrentUser"]
+                            }
+                            else if (context.Model.IsBuiltInRole)
+                            { 
+                                @Loc["Role_BuiltInRole"] 
+                            }
+                        }
+                        else if (context.Model.IncludesCurrentUser)
+                        {
+                            @Loc["Role_IncludesCurrentUser"]
+                        }
+                    </Column>
+                </Columns>
+            </PhDataGrid>
+        </ChildContent>
+        <Buttons>
+            <PhButton Type="ButtonType.Secondary" Disabled="@(!_isDeleteAvailable)" OnClick="DeleteRoles">
+                @Loc["Role_Delete"]
+            </PhButton>
+            <PhButton OnClick="AddRoleButtonClicked">
+                @Loc["Role_Add"]
+            </PhButton>
+        </Buttons>
+    </PhDockedButtonRow>
+</PhStack>

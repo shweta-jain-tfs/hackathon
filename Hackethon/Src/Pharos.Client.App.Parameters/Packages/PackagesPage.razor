@@ -1,0 +1,22 @@
+@using Pharos.Client.App.Parameters.Common.Views
+@using Pharos.Client.App.Parameters.Layout
+@layout ParametersLayout
+@attribute [Route(PageRoute.Parameters.Packages)]
+@attribute [Authorize]
+
+<SectionContent SectionName="page-header">
+    <Breadcrumb Items="@Breadcrumbs" />
+</SectionContent>
+
+<PhDataGrid TableTitle="@Loc["PackagesPage_Header"]" StateID="packages" TGridItem="Package" ItemsProvider="ViewModel.ProvideGridItems">
+    <Columns>
+        <Column Title="@Loc["PackagesPage_ArticleNumber"]" Property="@(x => x.OrderingNumber)" QuickFilter FilterTitle="@Loc["PackagesPage_SearchPackages"]">
+            <PhHrefLink Href="@($"{PageRoute.Parameters.PackageDetails.Default}/{context.Id}")">
+                @context.OrderingNumber
+            </PhHrefLink>
+        </Column>
+        <Column Title="@Loc["PackagesPage_FullName"]" Property="@(x => x.PackageFullName)" />
+        <Column Title="@Loc["PackagesPage_PackageBarcode"]" Property="@(x => x.PackageBarcode)" />
+        <Column Title="@Loc["PackagesPage_IntendedMarket"]" Property="@(x => x.IntendedMarket)" QuickFilter="true" MultiSelectFilterItems="_marketNameDict" />
+    </Columns>
+</PhDataGrid>

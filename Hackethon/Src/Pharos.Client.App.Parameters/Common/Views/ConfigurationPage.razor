@@ -1,0 +1,24 @@
+@using Pharos.Client.Common.App.Auth
+@using Pharos.Contracts.Security
+@attribute [Route(PageRoute.Parameters.Configuration)]
+@attribute [Authorize]
+
+<PhPage>
+    <PageHeader>
+        <Breadcrumb Items="@Breadcrumbs" />
+    </PageHeader>
+    <ChildContent>
+        <div class="ph-panel ph-panel--pad-md">
+            <PhStack Gap="StackGap.Md">
+                <PhAuthorize Permission="@Permissions.EditTestSettings">
+                    <h2 class="t-h2 my-sm">
+                        @Loc["ParameterImportExport_Title"]
+                    </h2>
+                    <ParameterImportExportView />
+                    <hr class="ph-separator" />
+                </PhAuthorize>
+                <ParameterUpdatePackageVersionView/>
+            </PhStack>
+        </div>
+    </ChildContent>
+</PhPage>

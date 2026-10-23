@@ -1,0 +1,7 @@
+.ph-server-page__content ::deep .ph-label {
+    align-items: center;
+}
+
+.login-with-pin__password-link {
+    margin-top: 1rem;
+}

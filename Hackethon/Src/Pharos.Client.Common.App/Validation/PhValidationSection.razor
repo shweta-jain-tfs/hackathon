@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using Pharos.Client.Common.BlazorFluentValidation
+
+<EditForm @ref="_editForm" Model="@Model" style="display: contents" id="Id">
+    @if (_ruleSets.Length > 0)
+    {
+        <FluentValidationValidator Options="options => options.IncludeRuleSets(_ruleSets)" />
+    }
+    else
+    {
+        <FluentValidationValidator Options="options => options.IncludeAllRuleSets()" />
+    }
+    @ChildContent
+</EditForm>
+

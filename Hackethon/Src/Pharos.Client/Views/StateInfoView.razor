@@ -1,0 +1,59 @@
+@using Pharos.Client.Common.App.ViewModels
+<div class="@GetStatusPanelsClass()">
+    @foreach (var item in LockScreenViewModel.StateInfoItems)
+    {
+        @if (item.Type == LockScreenStateInfoItemType.InstrumentState)
+        {
+            <div class="@GetStateInfoCssClass()">
+                <div class="ph-state-info-view__state-info__state">
+                    @item.PrimaryText
+                </div>
+                @if (!string.IsNullOrWhiteSpace(item.SecondaryText))
+                {
+                    <div class="ph-state-info-view__state-info__count">
+                        @item.SecondaryText
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="ph-state-info-view__samples-test-info">
+                @if (!string.IsNullOrWhiteSpace(item.HeaderText))
+                {
+                    <div class="ph-state-info-view__samples-test-info__header">
+                        @item.HeaderText
+                    </div>
+                }
+                @if (item.Hours.HasValue || item.Minutes.HasValue)
+                {
+                    <div class="ph-state-info-view__samples-test-info__text">
+                        @if (item.Hours.HasValue)
+                        {
+                            @item.Hours
+                            <span>@item.HoursUnit</span>
+                        }
+                        @if (item.Minutes.HasValue)
+                        {
+                            @FormatMinutes(item)
+                            <span>@item.MinutesUnit</span>
+                        }
+                    </div>
+                }
+                else if (!string.IsNullOrWhiteSpace(item.PrimaryText))
+                {
+                    <div class="ph-state-info-view__samples-test-info__completed">
+                        @item.PrimaryText
+                    </div>
+                }
+                @if (!string.IsNullOrWhiteSpace(item.TimeText))
+                {
+                    <div class="ph-state-info-view__samples-test-info__header flex items-center justify-center gap-xs">
+                        <PhIcon IconType="IconType.Clock" Size="IconSize.Sm"/>
+                        @item.TimeText
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>

@@ -1,0 +1,50 @@
+{%- for property in Properties -%}
+  {%- if property.PropertyName == "Id" -%}
+    {%- if property.Type == "int" -%}
+public bool Equals({{ ClassName }} other)
+{
+    if (other == null)
+    {
+        return false;
+    }
+
+    if (Id == 0 && other.Id == 0)
+    {
+        return Equals(this, other);
+    }
+
+    return Id == other.Id;
+}
+    {% endif %}{%- if property.Type == "string" -%}
+public bool Equals({{ ClassName }} other)
+{
+    if (other == null)
+    {
+        return false;
+    }
+
+    if (string.IsNullOrEmpty(Id) && string.IsNullOrEmpty(other.Id))
+    {
+        return Equals(this, other);
+    }
+
+    return Id == other.Id;
+}
+    {% endif %}{%- if property.Type == "System.Guid" -%}
+public bool Equals({{ ClassName }} other)
+{
+    if (other == null)
+    {
+        return false;
+    }
+
+    if (Id == Guid.Empty && other.Id == Guid.Empty)
+    {
+        return Equals(this, other);
+    }
+
+    return Id == other.Id;
+}
+    {% endif %}
+  {% endif %}
+{% endfor %}

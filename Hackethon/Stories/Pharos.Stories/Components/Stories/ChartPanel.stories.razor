@@ -1,0 +1,401 @@
+﻿@using Pharos.Common.Web.Components.ChartPanel
+@using Pharos.Common.Web.Components.Charts.ChartBase
+@using Pharos.Common.Web.Components.DataGrid
+@using Pharos.Common.Web.Components.DataGrid.Columns
+@using Pharos.Common.Web.Components.FormElements
+@using Pharos.Common.Web.Components.FormElements.Enums
+@using Pharos.Common.Web.Components.Icons
+@using Pharos.Common.Web.Components.Layout
+@using Pharos.Common.Web.Components.Modal
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Stories.MoqClasses
+@using Bogus
+@attribute [Stories("Components/ChartPanel")]
+@inject IModalService Modal
+
+<Stories TComponent="PhChartPanel">
+    <Story Name="One chart - with text">
+        <Template Context="template">
+            <div style="height: 100vh">
+                <PhChartPanel Status="StatusType.Alarm" @attributes="@template.Args">
+                    <Title>
+                        Just a status text
+                    </Title>
+                    <Action>
+                        <PhIconButton IconType="IconType.More" IconSize="IconSize.Md" OnClick="OnSomeActionClick"></PhIconButton>
+                    </Action>
+                    <Chart>
+                        <PhChartLinear Interactive="true" Content="ContentStandard" ChartWidth="800" ChartHeight="400" DataRangeXMin="@_startDate" DataRangeXMax="@_endDate" DataRangeYMin="0.2" DataRangeYMax="1.2" @attributes="template.Args"></PhChartLinear>
+                    </Chart>
+                    <Footer>
+                        <PhDataGrid StateID="" TGridItem="DefaultDataGridItem" Items="_dataForDateTimeGrid.AsQueryable()" RowHeight="RowHeightEnum.Compact">
+                            <Columns>
+                                <Column Property="@(x => x.Id)">
+                                    @context.Id
+                                </Column>
+
+                                <Column Title="Status" Property="@(x => x.DateAndTimeOfBirth)">
+                                    <PhStatus Status="StatusType.Warning" Text="Some Text for the status" Href="./?path=/story/components-status--status-symbol-and-text-" />
+                                </Column>
+
+                                <Column Title="Date and time" Property="@(x => x.DateAndTimeOfBirth)">
+                                    <PhDateTime DateToShow="context.DateAndTimeOfBirth" TextFallback="Fallback when DateTime is null" />
+                                </Column>
+
+                                <Column Title="Firstname" Property="@(x => x.Firstname)" />
+                                <Column Title="Lastname" Property="@(x => x.Lastname)" />
+                            </Columns>
+                        </PhDataGrid>
+                    </Footer>
+                </PhChartPanel>
+            </div>
+
+            <PhModal />
+
+            </Template>
+    </Story>
+
+    <Story Name="One chart - with drop down">
+        <Template Context="template">
+            <div style="height: 100vh">
+                <PhChartPanel Status="StatusType.Alarm" @attributes="@template.Args">
+                    <Title>
+                        <PhDropdown TValue="int?" Options="_nullableDdValues" @bind-Value="@_nullableValue1" />
+                    </Title>
+                    <Action>
+                        <PhIconButton IconType="IconType.More" IconSize="IconSize.Md" OnClick="OnSomeActionClick"></PhIconButton>
+                    </Action>
+                    <Chart>
+                        <PhChartLinear Interactive="true" Content="ContentStandard" ChartWidth="800" ChartHeight="400" DataRangeXMin="@_startDate" DataRangeXMax="@_endDate" DataRangeYMin="0.2" DataRangeYMax="1.2" @attributes="template.Args"></PhChartLinear>
+                    </Chart>
+                    <Footer>
+                        <PhDataGrid StateID="" TGridItem="DefaultDataGridItem" Items="_dataForDateTimeGrid.AsQueryable()" RowHeight="RowHeightEnum.Compact">
+                            <Columns>
+                                <Column Property="@(x => x.Id)">
+                                    @context.Id
+                                </Column>
+
+                                <Column Title="Status" Property="@(x => x.DateAndTimeOfBirth)">
+                                    <PhStatus Status="StatusType.Warning" Text="Some Text for the status" Href="./?path=/story/components-status--status-symbol-and-text-" />
+                                </Column>
+
+                                <Column Title="Date and time" Property="@(x => x.DateAndTimeOfBirth)">
+                                    <PhDateTime DateToShow="context.DateAndTimeOfBirth" TextFallback="Fallback when DateTime is null" />
+                                </Column>
+
+                                <Column Title="Firstname" Property="@(x => x.Firstname)" />
+                                <Column Title="Lastname" Property="@(x => x.Lastname)" />
+                            </Columns>
+                        </PhDataGrid>
+                    </Footer>
+                </PhChartPanel>
+            </div>
+
+            <PhModal />
+
+        </Template>
+    </Story>
+
+    <Story Name="Two charts - with drop down">
+        <Template Context="template">
+            <div style="height: 100vh">
+                <PhGrid FillHeight>
+                    <PhGridColumn Span="ColumnSpan.Half">
+                        <PhChartPanel Status="StatusType.Alarm" @attributes="@template.Args">
+                            <Title>
+                                <PhDropdown TValue="int?" Options="_nullableDdValues" @bind-Value="@_nullableValue1" />
+                            </Title>
+                            <Action>
+                                <PhIconButton IconType="IconType.More" IconSize="IconSize.Md" OnClick="OnSomeActionClick"></PhIconButton>
+                            </Action>
+                            <Chart>
+                                <PhChartLinear Interactive="true" Content="ContentStandard" ChartWidth="800" ChartHeight="400" DataRangeXMin="@_startDate" DataRangeXMax="@_endDate" DataRangeYMin="0.2" DataRangeYMax="1.2" @attributes="template.Args"></PhChartLinear>
+                            </Chart>
+                            <Footer>
+                                <PhDataGrid StateID="" TGridItem="DefaultDataGridItem" Items="_dataForDateTimeGrid.Take(2).AsQueryable()" RowHeight="RowHeightEnum.Compact">
+                                    <Columns>
+                                        <Column Property="@(x => x.Id)">
+                                            @context.Id
+                                        </Column>
+
+                                        <Column Title="Status" Property="@(x => x.DateAndTimeOfBirth)">
+                                            <PhStatus Status="StatusType.Warning" Text="Some Text for the status" Href="./?path=/story/components-status--status-symbol-and-text-" />
+                                        </Column>
+
+                                        <Column Title="Firstname" Property="@(x => x.Firstname)" />
+                                        <Column Title="Lastname" Property="@(x => x.Lastname)" />
+                                    </Columns>
+                                </PhDataGrid>
+                            </Footer>
+                        </PhChartPanel>
+
+                    </PhGridColumn>
+                    <PhGridColumn Span="ColumnSpan.Half">
+                        <PhChartPanel Status="StatusType.Alarm" @attributes="@template.Args">
+                            <Title>
+                                <PhDropdown TValue="int?" Options="_nullableDdValues" @bind-Value="@_nullableValue2" />
+                            </Title>
+                            <Action>
+                                <PhIconButton IconType="IconType.More" IconSize="IconSize.Md" OnClick="OnSomeActionClick"></PhIconButton>
+                            </Action>
+                            <Chart>
+                                <PhChartLinear Interactive="true" Content="ContentStandard" ChartWidth="800" ChartHeight="400" DataRangeXMin="@_startDate" DataRangeXMax="@_endDate" DataRangeYMin="0.2" DataRangeYMax="1.2" @attributes="template.Args"></PhChartLinear>
+                            </Chart>
+                            <Footer>
+                                <PhDataGrid StateID="" TGridItem="DefaultDataGridItem" Items="_dataForDateTimeGrid.Take(1).AsQueryable()" RowHeight="RowHeightEnum.Compact">
+                                    <Columns>
+                                        <Column Property="@(x => x.Id)">
+                                            @context.Id
+                                        </Column>
+
+                                        <Column Title="Status" Property="@(x => x.DateAndTimeOfBirth)">
+                                            <PhStatus Status="StatusType.Warning" Text="Some Text for the status" Href="./?path=/story/components-status--status-symbol-and-text-" />
+                                        </Column>
+
+                                        <Column Title="Firstname" Property="@(x => x.Firstname)" />
+                                        <Column Title="Lastname" Property="@(x => x.Lastname)" />
+                                    </Columns>
+                                </PhDataGrid>
+                            </Footer>
+                        </PhChartPanel>
+
+                    </PhGridColumn>
+                </PhGrid>
+            </div>
+
+            <PhModal />
+
+        </Template>
+    </Story>
+
+</Stories>
+
+@code
+{
+    private List<PhChartLinear.IDrawable> ContentStandard => LoadContentStandard();
+
+    private int? _nullableValue1;
+    private int? _nullableValue2;
+    private List<DropDownOption<int?>> _nullableDdValues = new();
+    private List<DefaultDataGridItem> _dataForDateTimeGrid = new();
+    private DateTimeOffset _startDate = new DateTime(2024, 01, 01);
+    private DateTimeOffset _endDate = new DateTime(2024, 01, 20);
+
+
+    protected override Task OnInitializedAsync()
+    {
+        _dataForDateTimeGrid = LoadDataForDateTimeGrid();
+
+        var faker = new Faker();
+
+        for (int i = 0; i < 10; i++)
+        {
+            _nullableDdValues.Add(new DropDownOption<int?>()
+                {
+                    Value = i,
+                    Text = faker.Lorem.Word()
+                });
+        }
+
+        _nullableValue1 = _nullableDdValues.First().Value;
+        _nullableValue2 = _nullableDdValues.Last().Value;
+        return Task.CompletedTask;
+    }
+
+    private List<DefaultDataGridItem> LoadDataForDateTimeGrid()
+    {
+        var rows = new List<DefaultDataGridItem>
+        {
+            new()
+            {
+    // DateTime - in future - today.
+                DateAndTimeOfBirth = DateTime.Now.AddHours(2),
+                Firstname = "Lisa",
+                Id = 1,
+                Lastname = "Smith",
+            },
+            new()
+            {
+    // DateTime - in future - tomorrow.
+                DateAndTimeOfBirth = DateTime.Now.AddDays(1),
+                Firstname = "John",
+                Id = 2,
+                Lastname = "Smith",
+            },
+            new()
+            {
+    // DateTime - in past - today.
+                DateAndTimeOfBirth = DateTime.Now.AddHours(-2),
+                Firstname = "Eric",
+                Id = 3,
+                Lastname = "Smith",
+            },
+            new()
+            {
+    // DateTime - in past - yesterday.
+                DateAndTimeOfBirth = DateTime.Now.AddDays(-1),
+                Firstname = "Robert",
+                Id = 4,
+                Lastname = "Smith",
+            },
+            new()
+            {
+    // DateTime is null, write fallback text.
+                DateAndTimeOfBirth = null,
+                Firstname = "Anna",
+                Id = 5,
+                Lastname = "Smith",
+            }
+        };
+
+        return rows;
+    }
+
+    private List<PhChartLinear.IDrawable> LoadContentStandard()
+    {
+        PhChartLinear.Regions regions = new PhChartLinear.Regions
+            {
+                RegionList = new List<PhChartLinear.Region>
+            {
+                new()
+                {
+                    Start = new DateTime(2023, 12, 1),
+                    End = new DateTime(2024, 2, 1),
+                    UpperAlert = 1.1,
+                    UpperWarning = 1.0,
+                    LowerWarning = 0.4,
+                    LowerAlert = 0.3,
+                }
+            }
+            };
+
+        PhChartLinear.VerticalLine verticalLineDashed = new PhChartLinear.VerticalLine
+            {
+                Value = new DateTime(2024, 1, 4),
+                Label = false,
+                Dashed = true
+            };
+
+        PhChartLinear.Border border = new PhChartLinear.Border();
+
+        PhChartLinear.HorizontalAxis axisX = new PhChartLinear.HorizontalAxis
+            {
+                DrawAxisLine = false,
+            };
+
+        PhChartLinear.VerticalAxis axisY = new PhChartLinear.VerticalAxis
+            {
+                TickDistance = 0.1,
+                DrawAxisLine = false,
+                DrawValues = false,
+                DrawTicks = false
+            };
+
+        var content = new List<PhChartLinear.IDrawable>();
+        content.Add(regions);
+        content.Add(border);
+        content.Add(axisX);
+        content.Add(axisY);
+        content.Add(line03);
+        content.Add(line04);
+        content.Add(line07);
+        content.Add(line10);
+        content.Add(line11);
+        content.Add(verticalLineDashed);
+        var points = randomizePointsLinear(50, _startDate, new TimeSpan(12, 0, 0), 0.0, 1.4);
+        content.Add(points);
+
+        return content;
+    }
+
+    PhChartLinear.HorizontalLine line03 = new PhChartLinear.HorizontalLine
+        {
+            Value = 0.3,
+            Label = true,
+            Dashed = false,
+            DrawTick = false
+        };
+
+    PhChartLinear.HorizontalLine line04 = new PhChartLinear.HorizontalLine
+        {
+            Value = 0.4,
+            Label = true,
+            Dashed = false,
+            DrawTick = false
+        };
+
+    PhChartLinear.HorizontalLine line06 = new PhChartLinear.HorizontalLine
+        {
+            Value = 0.6,
+            Label = true,
+            Dashed = false,
+            DrawTick = false
+        };
+
+    PhChartLinear.HorizontalLine line07 = new PhChartLinear.HorizontalLine
+        {
+            Value = 0.7,
+            Label = true,
+            Dashed = false,
+            DrawTick = false
+        };
+
+    PhChartLinear.HorizontalLine line08 = new PhChartLinear.HorizontalLine
+        {
+            Value = 0.8,
+            Label = true,
+            Dashed = false,
+            DrawTick = false
+        };
+
+    PhChartLinear.HorizontalLine line09 = new PhChartLinear.HorizontalLine
+        {
+            Value = 0.9,
+            Label = true,
+            Dashed = false,
+            DrawTick = false
+        };
+
+    PhChartLinear.HorizontalLine line10 = new PhChartLinear.HorizontalLine
+        {
+            Value = 1.0,
+            Label = true,
+            Dashed = true,
+            DrawTick = false
+        };
+
+    PhChartLinear.HorizontalLine line11 = new PhChartLinear.HorizontalLine
+        {
+            Value = 1.1,
+            Label = true,
+            Dashed = true,
+            DrawTick = false
+        };
+
+
+    private PhChartLinear.Points randomizePointsLinear(int numPoints, DateTimeOffset startDate, TimeSpan deltaTime, double min, double max)
+    {
+        var points = new PhChartLinear.Points();
+        var rnd = new Random();
+        for (var i = 0; i < numPoints; i++)
+        {
+            var p = new PhChartLinear.Point
+                {
+                    X = startDate + i * deltaTime,
+                    // #pragma warning disable CA5394
+                    Y = min + ((max - min) / 2.0) + (rnd.Next(0, 2) * 2 - 1) * Math.Pow(rnd.NextDouble(), 3) * ((max - min) / 2.0),
+                    // #pragma warning restore CA5394
+                };
+            points.PointList.Add(p.X, new() { p });
+        }
+
+        return points;
+    }
+
+    private async Task OnSomeActionClick()
+    {
+        var modal = Modal.ShowInformation("Some action", "OK",  new ModalOptions() { Title = "Dummy action" });
+
+        var result = await modal.Result;
+    }
+}

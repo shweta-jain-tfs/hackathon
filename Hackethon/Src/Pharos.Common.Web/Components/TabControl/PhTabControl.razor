@@ -1,0 +1,19 @@
+﻿<div class="@CssClasses">
+    <CascadingValue Value="this">
+        <div class="ph-tab-control__tabs">
+            @foreach (var tabPage in _pages)
+            {
+                <PhTabButton Selected="@(tabPage == SelectedPage)" Disabled="@(tabPage.Disabled || Disabled)" OnClick=@(() => ActivatePage(tabPage)) TabControlStyle="Style">
+                    @if (tabPage.StatusIcon.HasValue)
+                    {
+                        <PhStatusIcon Icon="@tabPage.StatusIcon.Value" Size="StatusIconSize.Sm" />
+                    }
+                    @tabPage.Text
+                </PhTabButton>
+            }
+        </div>
+        <div class="ph-tab-control__panel">
+            @ChildContent
+        </div>
+    </CascadingValue>
+</div>

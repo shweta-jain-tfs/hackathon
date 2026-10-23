@@ -1,0 +1,17 @@
+<div class="@CssClasses" @onclick="CloseToasterWitNoTransition">
+    <div class="ph-toaster__indicator"></div>
+    <div class="ph-toaster__content">
+        @if (ShowIcon(Type))
+        {
+            <PhStatusIcon Icon="@GetStatusType(Type)" Size="StatusIconSize.Xxl"/>
+        }
+        <span class="ph-toaster__text">@Text</span>
+        <div class="ph-toaster__icon-cancel">
+            <PhIconButton Type="IconButtonType.Blank"
+                          IconType="IconType.X"
+                          IconSize="IconSize.Xl"
+                          OnClick="@(() => CloseToaster())">
+            </PhIconButton>
+        </div>
+    </div>
+</div>

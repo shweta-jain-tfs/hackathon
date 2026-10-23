@@ -1,0 +1,10 @@
+﻿@using Pharos.Client.Common.Localization
+
+<PhModalContent>
+    <Body>
+        @Loc["TrayPanel_EditNotPossibleDialog_Body"]
+    </Body>
+    <Footer>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["TrayPanel_EditNotPossibleDialog_ButtonPrimary"]</PhButton>
+    </Footer>
+</PhModalContent>

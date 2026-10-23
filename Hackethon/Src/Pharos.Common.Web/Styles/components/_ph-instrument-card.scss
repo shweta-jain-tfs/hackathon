@@ -1,0 +1,137 @@
+@use "../abstracts/colors";
+@use "../abstracts/rounded";
+@use "../abstracts/size";
+@use "../abstracts/spacing";
+@use "../abstracts/typography" as text;
+
+.ph-instrument-card {
+    --_rows: 4;
+    --_row-height: 30px;
+    --_gap: 2px;
+    --_gaps: 3;
+    border: 2px solid colors.$border-subtle-01;
+    background-color: colors.$background-secondary;
+    @include rounded.rounded;
+
+    &--selected {
+        border-color: colors.$border-selected;
+        background-color: colors.$layer-selected-01;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: spacing.$gap-xs;
+        padding: spacing.$padding-xs spacing.$padding-sm spacing.$padding-sm;
+        @include text.h3;
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        min-height: 48px;
+    }
+
+    &__header-main {
+        display: flex;
+        align-items: center;
+        gap: spacing.$gap-sm;
+        flex: 1;
+    }
+
+    &__title {
+        color: colors.$text-secondary;
+    }
+
+    &__dropdown {
+        display: flex;
+        justify-content: flex-end;
+        flex: none;
+    }
+
+    &__details {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 121px;
+        column-gap: spacing.$gap-xs;
+        padding-left: size.$hit-area-lg;
+        @include text.body2;
+    }
+
+    &__left-side {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: spacing.$gap-lg;
+        min-width: 0;
+    }
+
+    &__left-top {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) max-content;
+        column-gap: 2px;
+        width: 100%;
+        min-width: 0;
+    }
+
+    &__run-information {
+        min-width: 0;
+    }
+
+    &__scheduling {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        margin-top: auto;
+        gap: spacing.$gap-xs;
+        max-width: 100%;
+        min-height: 32px;
+        @include text.helper-text;
+    }
+
+    &__scheduling-label {
+        flex: none;
+        white-space: nowrap;
+    }
+
+    &__scheduling-icon {
+        display: inline-flex;
+        vertical-align: text-bottom;
+
+        &--hidden {
+            display: none;
+        }
+    }
+
+    &__scheduling-switch {
+        display: inline-flex;
+        margin-left: spacing.$gap-xs;
+        vertical-align: middle;
+    }
+
+    &__technology-label {
+        display: flex;
+        align-items: center;
+        align-self: start;
+        min-height: var(--_row-height);
+        color: colors.$text-hint;
+        white-space: nowrap;
+        @include text.helper-text;
+    }
+
+    &__technology-list {
+        display: flex;
+        flex-direction: column;
+        align-self: start;
+        gap: var(--_gap);
+        min-height: calc(var(--_rows) * var(--_row-height) + var(--_gaps) * var(--_gap));
+        @include text.helper-text;
+    }
+
+    &__technology-name {
+        color: colors.$text-primary;
+        display: flex;
+        align-items: center;
+        min-height: var(--_row-height);
+        overflow-wrap: anywhere;
+    }
+}

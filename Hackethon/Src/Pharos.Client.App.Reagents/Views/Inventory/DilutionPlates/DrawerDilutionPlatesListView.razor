@@ -1,0 +1,35 @@
+@using Pharos.Client.App.Reagents.ViewModels.Inventory
+@using Pharos.Common.Web.Components.DataGrid
+@using Pharos.Common.Web.Components.DataGrid.Columns
+@using Pharos.Common.Web.Components.Status
+@using Pharos.Common.Web.Models.DataGrid
+
+<PhDataGrid TableTitle="@GetTitle()"
+            StateID="drawerdilutionplates"
+            TGridItem="DrawerDilutionPlate"
+            ItemsProvider="ViewModel.ProvideItems"
+            HideTotalCount="true"
+            RowType="RowTypeEnum.LinesBetweenRows"
+            DefaultSortColumn="@nameof(DrawerDilutionPlate.Id)"
+            DefaultSortDirection="SortDirection.Ascending">
+    <Columns>
+        <Column Property="@(x => x.Id)" Visible="false" />
+        <Column Title="@Loc["InventoryPage_DilutionPlatesTab_GridColumn_DrawerPosition"]" Property="@(x => x.DrawerPosition)" Sortable="true" />
+        <Column Title="@Loc["InventoryPage_DilutionPlatesTab_GridColumn_DilutionPlates"]" Property="@(x => x.DilutionPlates)" Sortable="true">
+            @GetDilutionPlates(context.DilutionPlates, context.Status)
+        </Column>
+        <Column Title="@Loc["InventoryPage_DilutionPlatesTab_GridColumn_Status"]" Property="@(x => x.Status)" Sortable="true">
+            @{
+                var status = DrawerDilutionPlatesViewModel.HasStatusError(context.Status) ? StatusType.Warning : StatusType.None;
+                var text = DrawerDilutionPlatesViewModel.GetStatusText(context.Status);
+            }
+            <PhStatus Status="@status" Size="@StatusSize.Md" Text="@text" />
+        </Column>
+        <Column Title="@Loc["InventoryPage_DilutionPlatesTab_GridColumn_Instrument"]"
+                Property="@(x => x.Instrument)"
+                Sortable="true"
+                QuickFilter="true"
+                QuickFilterDefault="@InstrumentFilterModel.DefaultFilterValueDisplayName"
+                MultiSelectFilterItems="@InstrumentFilterModel.FilterDataSourceDisplayName" />
+    </Columns>
+</PhDataGrid>

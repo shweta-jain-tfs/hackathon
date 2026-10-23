@@ -1,0 +1,185 @@
+// Typography variables: rem for fonts, unitless for line height, em for letter spacing
+
+// How to use:
+// - In SCSS components: use the mixins at the bottom of this file
+// - In general markup: see utilities/text
+
+@use "sass:map";
+@use "sass:math";
+
+// ===== Font size setup (scroll down for variables and mixins) =====
+
+// Helper function to get the number without unit, e.g. 12px -> 12
+@function stripUnit($value) {
+    @return math.div($value, ($value * 0 + 1));
+}
+
+// Helper function to convert px to rem
+@function rem($pxValue) {
+    $html-font-size: 16;
+    @return #{math.div(stripUnit($pxValue), $html-font-size)}rem;
+}
+
+// Get unitless line-height from px values
+@function lineHeight($fontSizePx, $lineHeightPx) {
+    @return #{math.div(stripUnit($lineHeightPx), stripUnit($fontSizePx))};
+}
+
+// Create a map with font-size and line-height with the correct units
+@function fontSize($fontSizePx, $lineHeightPx) {
+    @return (
+        "font-size": rem($fontSizePx),
+        "line-height": lineHeight($fontSizePx, $lineHeightPx)
+    );
+}
+
+// e.g. var(--ph-font-size-body1, 1.5rem)
+@function fontSizeVar($map, $sizeName) {
+    @return var(--ph-font-size-#{$sizeName}, map.get($map, $sizeName, "font-size"));
+}
+
+// e.g. var(--ph-line-height-body1, 1.2)
+@function lineHeightVar($map, $sizeName) {
+    @return var(--ph-line-height-#{$sizeName}, map.get($map, $sizeName, "line-height"));
+}
+
+$desktopFontSizes: (
+    "display1": fontSize(50, 63),
+    "display2": fontSize(40, 50),
+    "display3": fontSize(30, 38),
+    "display4": fontSize(64, 78),
+    "display5": fontSize(128, 128),
+    "h1": fontSize(26, 33),
+    "h2": fontSize(22, 28),
+    "h3": fontSize(18, 23),
+    "body1": fontSize(16, 26),
+    "body2": fontSize(14, 22),
+    "helper-text": fontSize(12, 16),
+);
+
+$instrumentFontSizes: (
+    "display1": fontSize(56, 56),
+    "display2": fontSize(44, 48),
+    "display3": fontSize(40, 44),
+    "display4": fontSize(64, 78),
+    "display5": fontSize(128, 128),
+    "h1": fontSize(36, 40),
+    "h2": fontSize(32, 36),
+    "h3": fontSize(28, 32),
+    "body1": fontSize(24, 36),
+    "body2": fontSize(20, 30),
+    "helper-text": fontSize(16, 24),
+);
+
+// ===== Variables =====
+
+// Global font sizes
+// Defaults to desktop sizes using a CSS variable --ph-font-size-<size name> and --ph-line-height-<size name>
+$font-size-display1: fontSizeVar($desktopFontSizes, "display1");
+$line-height-display1: lineHeightVar($desktopFontSizes, "display1");
+$font-size-display2: fontSizeVar($desktopFontSizes, "display2");
+$line-height-display2: lineHeightVar($desktopFontSizes, "display2");
+$font-size-display3: fontSizeVar($desktopFontSizes, "display3");
+$line-height-display3: lineHeightVar($desktopFontSizes, "display3");
+$font-size-display4: fontSizeVar($desktopFontSizes, "display4");
+$line-height-display4: lineHeightVar($desktopFontSizes, "display4");
+$font-size-display5: fontSizeVar($desktopFontSizes, "display5");
+$line-height-display5: lineHeightVar($desktopFontSizes, "display5");
+
+$font-size-h1: fontSizeVar($desktopFontSizes, "h1");
+$line-height-h1: lineHeightVar($desktopFontSizes, "h1");
+$font-size-h2: fontSizeVar($desktopFontSizes, "h2");
+$line-height-h2: lineHeightVar($desktopFontSizes, "h2");
+$font-size-h3: fontSizeVar($desktopFontSizes, "h3");
+$line-height-h3: lineHeightVar($desktopFontSizes, "h3");
+
+$font-size-body1: fontSizeVar($desktopFontSizes, "body1");
+$line-height-body1: lineHeightVar($desktopFontSizes, "body1");
+$font-size-body2: fontSizeVar($desktopFontSizes, "body2");
+$line-height-body2: lineHeightVar($desktopFontSizes, "body2");
+
+$font-size-helper-text: fontSizeVar($desktopFontSizes, "helper-text");
+$line-height-helper-text: lineHeightVar($desktopFontSizes, "helper-text");
+
+
+$font-family-helvetica-neue: "Helvetica Neue";
+$font-family-noto-sans-jp: "Noto Sans JP";
+$font-family-noto-sans-sc: "Noto Sans SC";
+$fallback-font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+
+
+$font-bold: 700;
+$font-normal: 400;
+$font-light: 300;
+
+// ===== Mixins =====
+
+// Font size and line-height combo mixins
+@mixin display1 {
+    font-size: $font-size-display1;
+    line-height: $line-height-display1;
+}
+
+@mixin display2 {
+    font-size: $font-size-display2;
+    line-height: $line-height-display2;
+}
+
+@mixin display3 {
+    font-size: $font-size-display3;
+    line-height: $line-height-display3;
+}
+
+@mixin display4 {
+    font-size: $font-size-display4;
+    line-height: $line-height-display4;
+}
+
+@mixin display5 {
+    font-size: $font-size-display5;
+    line-height: $line-height-display5;
+}
+
+@mixin h1 {
+    font-size: $font-size-h1;
+    line-height: $line-height-h1;
+}
+
+@mixin h2 {
+    font-size: $font-size-h2;
+    line-height: $line-height-h2;
+}
+
+@mixin h3 {
+    font-size: $font-size-h3;
+    line-height: $line-height-h3;
+}
+
+@mixin body1 {
+    font-size: $font-size-body1;
+    line-height: $line-height-body1;
+}
+
+@mixin body2 {
+    font-size: $font-size-body2;
+    line-height: $line-height-body2;
+}
+
+@mixin helper-text {
+    font-size: $font-size-helper-text;
+    line-height: $line-height-helper-text;
+}
+
+@mixin instrumentStateInfo {
+    font-weight: $font-normal;
+    font-size: $font-size-display5;
+    line-height: $line-height-display5;
+}
+
+// Theme mixin
+@mixin instrument-font-size-variables {
+    @each $sizeName, $sizeValues in $instrumentFontSizes {
+        --ph-font-size-#{$sizeName}: #{map.get($sizeValues, "font-size")};
+        --ph-line-height-#{$sizeName}: #{map.get($sizeValues, "line-height")};
+    }
+}

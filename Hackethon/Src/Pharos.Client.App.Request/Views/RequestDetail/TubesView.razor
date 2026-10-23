@@ -1,0 +1,61 @@
+@using Pharos.Common.Web.Components.Status
+
+<PhStack>
+    <PhDockedButtonRow Justified="false">
+        <ChildContent>
+            <PhDataGrid TGridItem="SampleTubeHistoryViewModel"
+                        StateID="tubes"
+                        Items="ViewModel.SampleTubes.AsQueryable()"
+                        RowType="RowTypeEnum.LinesBetweenRows">
+                <Columns>
+                    <Column Title="@_localization["RequestDetailPage_Tubes_TubeId"]" Visible="ShowTubeId" Property="@(x => x.TubeId)" />
+                    <Column Title="@_localization["RequestDetailPage_Tubes_DetectedTime"]" Property="@(x => x.LoadTimestamp)" Format="@FormatStrings.ShortDateTime" />
+                    <Column Title="@_localization["RequestDetailPage_Tubes_Instrument"]" Property="@(x => x.InstrumentText)">
+                        @if (context.ShowInstrumentLink)
+                        {
+                            <PhHrefLink Href="@PageRoute.Samples">@context.InstrumentText</PhHrefLink>
+                        }
+                        else
+                        {
+                            @context.InstrumentText
+                        }
+                    </Column>
+                    
+                    <Column Title="@_localization["RequestDetailPage_Tubes_Tray"]" Property="@(x => x.TrayPosition)">
+                        @if (context.ShowPositionLink)
+                        {
+                            <PhHrefLink Href="@($"{PageRoute.Trays.SelectedPosition(context.TrayId!, context.TubePosition!.Value)}")">@context.TrayPosition</PhHrefLink>
+                        }
+                        else
+                        {
+                            @context.TrayPosition
+                        }
+                    </Column>
+
+                    <Column Title="@_localization["RequestDetailPage_Tubes_State"]" Property="@(x => x.TubeStatus)">
+                        <PhStatus Status="@context.TubePhStatus" Size="StatusSize.Xs" Text="@context.GetTubeStatusText()" />
+                    </Column>
+
+                    <Column Title="@_localization["RequestDetailPage_Tubes_Issue"]" Property="@(x => x.Error)">
+                        <PhStatus Status="@context.ErrorPhStatus" Size="StatusSize.Sm" Text="@context.GetErrorText()" />
+                    </Column>
+                    
+                    <Column Title="@_localization["RequestDetailPage_Tubes_RemainingVolume"]" Property="@(x => x.SampleVolumeToDisplay)" />
+
+                    <Column Title="@_localization["RequestDetailPage_Tubes_Image"]" Property="@(x => x.ImageIdentity)" HasPermission="@_canViewSampleTubeImage">
+                        @if (context.ShowImageLink)
+                        {
+                            <PhHrefLink OnClick="@(() => ShowImage(context))">@_localization["RequestDetailPage_Tubes_View"]</PhHrefLink>
+                        }
+                    </Column>
+                </Columns>
+            </PhDataGrid>
+        </ChildContent>
+        <Buttons>
+            @if (HasManageTestOrdersPermission)
+            {
+                <PhButton OnClick="@(UnloadSampleTubes)">@_localization["RequestDetailPage_Tubes_Unload"]</PhButton>
+            }
+        </Buttons>
+    </PhDockedButtonRow>
+</PhStack>
