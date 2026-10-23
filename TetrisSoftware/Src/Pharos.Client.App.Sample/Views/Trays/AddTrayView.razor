@@ -5,6 +5,8 @@
     <Body>
         <PhSimpleValidationContext @ref="_validation" Model="ViewModel" OnValidationStateChanged="OnValidationContextStateChanged">
             <div class="ph-tray-page__dialog-content">
+ <PhLabel Text="@Loc["ApplicationUsersPage_AddDialog_UserName"]"
+          ValidationFor="@(() => ViewModel.UserName)">
                 <PhTextBox autofocus
                            Label="@Loc["TraysPage_AddDialog_TrayIdInputLabel"]"
                            @bind-Value="ViewModel.TrayId"
@@ -14,11 +16,12 @@
                            HelpText=" "
                            Error="!string.IsNullOrEmpty(ViewModel.ErrorMessage)"
                            ErrorText="@ViewModel.ErrorMessage" />
+</PhLabel>
             </div>
         </PhSimpleValidationContext>
     </Body>
     <Footer>
-        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))">@Loc["TraysPage_AddDialog_ButtonSecondary"]</PhButton>
+        <PhButton OnClick="@(() => CloseModal(ModalResult.Cancel()))" @onfocus="ValidateAndSave">@Loc["TraysPage_AddDialog_ButtonSecondary"]</PhButton>
         <PhButton Type="ButtonType.Primary" Disabled="@(!IsValid())" OnClick="ValidateAndSave">@Loc["TraysPage_AddDialog_ButtonPrimary"]</PhButton>
     </Footer>
 </PhModalContent>
