@@ -8,10 +8,10 @@
                 <PhTextBox autofocus
                            Label="@Loc["TraysPage_AddDialog_TrayIdInputLabel"]"
                            @bind-Value="ViewModel.TrayId"
-                           PlaceHolder="@Loc["TraysPage_AddDialog_TrayIdInputPlaceholder"]"
+                           PlaceHolder="TrayId"
                            Size="TextBoxSize.Small"
                            MaxLength="@_maxTrayIdLength"
-                           HelpText=" "
+                           HelpText="testing"
                            Error="!string.IsNullOrEmpty(ViewModel.ErrorMessage)"
                            ErrorText="@ViewModel.ErrorMessage" />
             </div>
